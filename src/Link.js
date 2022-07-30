@@ -26,6 +26,7 @@ export function ExternalIcon(props) {
  * @property {string} children
  * @property {string} [className]
  * @property {boolean} [isExternal]
+ * @property {boolean} [newTab]
  */
 
 /**
@@ -33,7 +34,7 @@ export function ExternalIcon(props) {
  * @param {LinkProps} options
  * @returns {React.ReactNode}
  */
-export function Link({ children, href, isExternal, blurple, className }) {
+export function Link({ children, href, isExternal, blurple, className, newTab }) {
     if (blurple == null) blurple = true;
 
     if (
@@ -43,21 +44,21 @@ export function Link({ children, href, isExternal, blurple, className }) {
         )
     ) {
         return (
-            <a href={href} className={mergeClassNames(`hover:underline`, blurple === true ? `text-blurple` : "", className)}>
+            <a target="_blank" rel="noreferrer" href={href} className={mergeClassNames(`hover:underline`, blurple === true ? `text-blurple` : "", className)}>
                 {children}
                 <ExternalIcon />
             </a>
         );
     }
     return (
-        <a className={mergeClassNames(`hover:underline`, "text-blurple", className)} href={href}>
+        <a target="_blank" rel="noreferrer" className={mergeClassNames(`hover:underline`, "text-blurple", className)} href={href}>
             {children}
         </a>
     );
 };
 
-export function mergeClassNames(defaults = "", useIfNone, classNames){
-    if((classNames === null || classNames === undefined) || classNames === ""){
-      return `${defaults == null ? "" : (defaults + " ")}${useIfNone}`;
+export function mergeClassNames(defaults = "", useIfNone, classNames) {
+    if ((classNames === null || classNames === undefined) || classNames === "") {
+        return `${defaults == null ? "" : (defaults + " ")}${useIfNone}`;
     } else return `${defaults == null ? "" : (defaults + " ")}${classNames}`;
 }

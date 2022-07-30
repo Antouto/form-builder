@@ -99,13 +99,13 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                                                 {actionRow.components[0].label}
                                             </Text>
                                             <Text fontSize='0.875rem' color={actionRow.components[0].value ? 'white' : '#a3a6aa'}>
-                                                {actionRow.components[0].value || '< Answer will be displayed here >'}
+                                                {actionRow.components[0].value || '(Answer will be displayed here)'}
                                             </Text>
                                         </Box>
                                     ))}
                                 </Box>
                                 <Box display='flex' alignItems='center' mt='8px'>
-                                    <Image src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%'/>
+                                    <Image src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%' />
                                     <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#fbfbfb'>643945264868098049</Text>
                                 </Box>
                             </Box>
@@ -113,8 +113,10 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                     </Box>
                 </Box>
             </Box>
-            <Text mt={5}>Forms Demo</Text>
-            <img src='https://cdn.discordapp.com/attachments/944646735643410482/953299030669152256/forms_demo.png' />
+            <img alt='' className='pt pb-small' src='https://cdn.discordapp.com/attachments/944646735643410482/953299030669152256/forms_demo.png' />
+            <Text fontSize='0.875rem' color='#a3a6aa' className='text-center pb'>
+                Forms Demo Image
+            </Text>
         </Box>
     );
 }

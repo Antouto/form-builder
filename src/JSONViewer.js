@@ -21,7 +21,7 @@ function JSONViewer({ children }) {
               {show ? 'Collapse' : 'Expand'} ({children.split(/\r\n|\r|\n/).length} Lines)
             </Box>
           } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6} >
-            <svg style={{ margin: '8px', transition: 'transform 0.2s', transform: `rotate(${(show ? 0 : 180)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg className="pointer" style={{ margin: '8px', transition: 'transform 0.2s', transform: `rotate(${(show ? 0 : 180)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M12 10L8 6L4 10"
                 stroke={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}
@@ -40,7 +40,7 @@ function JSONViewer({ children }) {
               Download
             </Box>
           } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6}>
-            <MdOutlineFileDownload onClick={() => {
+            <MdOutlineFileDownload className="pointer" onClick={() => {
               const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                 children
               )}`;

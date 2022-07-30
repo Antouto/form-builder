@@ -183,7 +183,7 @@ function App() {
               </Button>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the JSON file.</ErrorMessage>}
             </HStack>
-            <Text>After downloading use /form create on the <a style={{ color: '#00b0f4', textDecoration: 'underline' }} href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot' target="_blank" rel="noopener noreferrer">forms bot</a> and upload the JSON file.</Text>
+            <Text fontSize='0.875rem' color='#a3a6aa'>After downloading use /form create on the <Link href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot'>forms bot</Link> and upload the JSON file.</Text>
           </VStack>
           <Box className="text-sm pt-5 pb-10" paddingBottom='10px'>
             <p className="font-medium">©️ 2022 Forms Discord Bot</p>
@@ -191,6 +191,8 @@ function App() {
               Not affiliated with Discord, Inc.
               <br />
               Discord is a registered trademark of Discord, Inc.
+              <br />
+              This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
             </p>
           </Box>
         </VStack>

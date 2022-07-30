@@ -35,12 +35,38 @@
     color: #afafaf !important;
 }
 
-header { display: flex; align-items: center; justify-content: space-between; position: sticky; box-shadow: rgb(0 0 0 / 16%) 0px 4px 4px; padding: 12px; border-bottom: 1px solid rgb(32, 34, 37); font-weight: 600; font-size: 15px; }
-nav { display: flex; align-items: center; }
-nav a { display: flex; align-items: center; text-decoration: none; padding-left: 20px; font-family: 'Whitney Bold' !important; }
-nav a:hover { text-decoration: underline; }
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    box-shadow: rgb(0 0 0 / 16%) 0px 4px 4px;
+    padding: 12px;
+    border-bottom: 1px solid rgb(32, 34, 37);
+    font-weight: 600;
+    font-size: 15px;
+}
 
-input { transition: border-color .2s ease-in-out; }
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding-left: 20px;
+    font-family: 'Whitney Bold' !important;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+input {
+    transition: border-color .2s ease-in-out;
+}
 
 @font-face {
     font-family: 'Whitney';
@@ -67,6 +93,30 @@ input { transition: border-color .2s ease-in-out; }
     src: url('./Fonts/Whitney/WhitneySemiboldItalic.otf');
 }
 
-body { font-family: 'Whitney' !important; }
-label { font-family: 'Whitney Bold' !important; }
-select { height: 36px !important; }
+body {
+    font-family: 'Whitney' !important;
+}
+
+label {
+    font-family: 'Whitney Bold' !important;
+}
+
+select {
+    height: 36px !important;
+}
+
+.pt {
+    padding-top: 1rem;
+}
+
+.pb {
+    padding-bottom: 1rem;
+}
+
+.pb-small {
+    padding-bottom: .2rem;
+}
+
+.pointer {
+    cursor: pointer;
+}

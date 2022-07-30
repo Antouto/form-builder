@@ -26,7 +26,7 @@ function Collapsible({ name, deleteButton, children, variant }) {
         color={variant === 'large' ? (colorMode === 'dark' ? 'black' : 'white') : '#bcbcbc'}
       >
         <Box display='flex'>
-          <svg style={{ marginRight: '8px', transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <svg className='pointer' style={{ marginRight: '8px', transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
               d="M12 10L8 6L4 10"
               stroke="#bcbcbc"

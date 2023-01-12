@@ -1,7 +1,5 @@
 import React from 'react'
 import { Button, Collapse, Box, useDisclosure, useColorMode } from '@chakra-ui/react'
-import { HiChevronRight } from 'react-icons/hi'
-import { IconContext } from 'react-icons';
 
 function Collapsible({ name, deleteButton, children, variant }) {
   const { isOpen, onToggle } = useDisclosure();

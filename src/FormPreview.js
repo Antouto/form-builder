@@ -1,9 +1,8 @@
-import { Box, Button, CloseButton, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { HiChevronRight, HiChevronLeft } from 'react-icons/hi'
+/* eslint eqeqeq: 0 */
+import { Box, Button, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
+import React from 'react';
 
-function FormPreview({ message, forms, displayForm, setDisplayForm }) {
-
+function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
     const { colorMode } = useColorMode();
 
     if (displayForm < 0) displayForm = 0;
@@ -11,11 +10,11 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
     return (
         <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);'>
             <Box>
-                <Box display='flex' >
-                    <Image src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                <Box display='flex'>
+                    <Image className='cursor-pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
                         <Box display='flex' alignItems='center'>
-                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Forms</Text>
+                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }} className='cursor-pointer'>Forms</Text>
                             <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' width='39px'>
                                 <Tooltip hasArrow label={
                                     <Box>
@@ -27,10 +26,41 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
-
                         </Box>
                         <Box>
-                            <Text fontFamily='Whitney'>{message.content || ' '}</Text>
+                            {
+                                type == "content" ? (
+                                    <Text fontFamily='Whitney'>{message.content || ' '}</Text>
+                                ) : (
+                                    <>
+                                        <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${(message.embeds[0].color != '' && message.embeds[0].color != null) ? message.embeds[0].color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+                                            <Box padding='0.5rem 1rem 1rem 0.75rem'>
+                                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                                <a href={message.embeds[0].author.url == '' ? null : message.embeds[0].author.url} className={message.embeds[0].author.url != '' ? "cursor-pointer hover:underline" : "cursor-default"}>
+                                                    <Box display='flex' alignItems='center' m='2px 0px 0px'>
+                                                        {message.embeds[0].author.icon_url && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                                                        <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0].author.name}</Box>
+                                                    </Box>
+                                                </a>
+                                                <Box>
+                                                    <Text fontFamily='Whitney Semibold' fontSize='0.975rem' mt='3px'>
+                                                        {message.embeds[0].title}
+                                                    </Text>
+                                                    <Text fontSize='0.875rem' color='#c5c5d3'>
+                                                        {message.embeds[0].description}
+                                                    </Text>
+                                                </Box>
+                                                {message.embeds[0].footer.text != '' && (
+                                                    <Box display='flex' alignItems='center' mt='8px'>
+                                                        {message.embeds[0].footer.icon_url && <Image src={message.embeds[0].footer.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                                                        <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0].footer.text}</Text>
+                                                    </Box>
+                                                )}
+                                            </Box>
+                                        </Box>
+                                    </>
+                                )
+                            }
                             <Box p='4px 0'>
                                 {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button.style == 1 ? 'primary' : (form.button.style == 2 ? 'secondary' : (form.button.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
                             </Box>
@@ -60,7 +90,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                     <Box>
                         {forms[displayForm]?.modal.components.map(actionRow => (
                             <Box key={Math.random()} m='0 1em 1em'>
-                                <Text textTransform='uppercase' fontFamily='Helvetica Neue' fontWeight='black' fontSize='12px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
+                                <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
                                     {actionRow.components[0].label}
                                     {actionRow.components[0].required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
@@ -76,17 +106,16 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
             </Box>
             <Box mt='12px'>
                 <Box display='flex'>
-                    <Image src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                    <Image _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
                         <Box display='flex' alignItems='center'>
-                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Webhook</Text>
-                            <Box display='flex' backgroundColor='#5865F2' color='white'  borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
+                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline', cursor: "pointer" }}>Webhook</Text>
+                            <Box display='flex' backgroundColor='#5865F2' color='white' borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
-
                         </Box>
-                        <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'}  borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
+                        <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
                                     <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />

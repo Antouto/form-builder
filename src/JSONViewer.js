@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Button, Collapse, HStack, Text, Tooltip, useColorMode } from '@chakra-ui/react'
+import { Box, Collapse, HStack, Text, Tooltip, useColorMode } from '@chakra-ui/react'
 import { MdOutlineFileDownload } from 'react-icons/md'
 
 function JSONViewer({ children }) {

@@ -5,53 +5,50 @@ import {
   ChakraProvider,
   Box,
   VStack,
+  Code,
   Grid,
+  Input,
   Radio,
   Text,
+  Checkbox,
+  extendTheme,
   Button,
   Heading,
+  HStack,
+  FormControl,
   FormLabel,
+  FormErrorMessage,
+  CloseButton,
+  useTheme,
+  Tooltip,
   RadioGroup,
-  Stack
+  Switch,
+  Stack,
+  Textarea,
+  DarkMode
 } from '@chakra-ui/react';
+import { Rest, sendForm } from "./Discord";
 import './App.css';
+import { IconContext } from "react-icons";
+import { IoInformationCircle } from 'react-icons/io5';
 import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+import Collapsible from './Collapsible';
 import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
-import Collapsible from './Collapsible';
-
-const Defaults = {
-  Embed: {
-    color: '#5865f2',
-    title: "Example Form",
-    description: "Fill out the form below!",
-    author: {
-      name: "",
-      url: "",
-      icon_url: ""
-    },
-    footer: {
-      text: "",
-      icon_url: ""
-    }
-  },
-  Message: 'Fill out the form below!'
-};
 
 const defaultValues = {
   message: {
-    content: Defaults.Message,
-    embeds: []
+    content: 'Fill out the form below!'
   },
   forms: [
     {
       webhook_url: '',
       button: {
         label: 'Open Form',
-        style: 1
+        style: '1'
       },
       modal: {
         title: 'Example Form',
@@ -62,11 +59,11 @@ const defaultValues = {
               {
                 type: 4,
                 label: 'Example Text Input',
-                style: 1,
+                style: '1',
                 placeholder: 'Write text here',
                 value: '',
-                min_length: 0,
-                max_length: 1024,
+                min_length: '0',
+                max_length: '1024',
                 required: true
               }
             ]
@@ -79,28 +76,14 @@ const defaultValues = {
 
 const clearValues = {
   message: {
-    content: '',
-    embeds: [{
-      color: "",
-      title: "",
-      description: "",
-      author: {
-        name: "",
-        url: "",
-        icon_url: ""
-      },
-      footer: {
-        text: "",
-        icon_url: ""
-      }
-    }]
+    content: ''
   },
   forms: [
     {
       webhook_url: '',
       button: {
         label: '',
-        style: 1
+        style: '1'
       },
       modal: {
         title: '',
@@ -111,11 +94,11 @@ const clearValues = {
               {
                 type: 4,
                 label: '',
-                style: 1,
+                style: '1',
                 placeholder: '',
                 value: '',
-                min_length: 0,
-                max_length: 1024,
+                min_length: '0',
+                max_length: '1024',
                 required: true
               }
             ]
@@ -128,6 +111,7 @@ const clearValues = {
 
 
 function App() {
+
   const {
     control,
     register,
@@ -137,9 +121,6 @@ function App() {
     reset,
     setValue,
     formState,
-    // eslint-disable-next-line no-unused-vars
-    resetField,
-    // eslint-disable-next-line no-unused-vars
     formState: { errors }
   } = useForm({
     mode: 'onChange',
@@ -148,82 +129,11 @@ function App() {
 
   const onSubmit = (data) => console.log("data", data);
 
-  const [displayForm, setDisplayForm] = useState(0);
-  const [messageType, setMessageType] = useState("content");
-  const MessageType = {
-    Content: "content",
-    Embed: "embed",
-    ContentAndEmbed: "both"
-  };
-  const Embed = () => (
-    <>
-      <FormLabel pb={2}>Embed</FormLabel>
-      <Collapsible name="Embed">
-        {/* Embed Title */}
-        <FormLabel htmlFor="message.embeds[0].title">Embed Title</FormLabel>
-        <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].title', { minLength: 1, maxLength: 256 })} id='message.embeds[0].title' />
-        <ErrorMessage fieldName='embed title' fieldType='The' field={errors?.message?.embeds[0]?.title}></ErrorMessage>
-        {/* Embed Description */}
-        <FormLabel htmlFor="message.embeds[0].description">Embed Description</FormLabel>
-        <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].description', { minLength: 1, maxLength: 4096 })} id='message.embeds[0].description' />
-        <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds[0]?.description}></ErrorMessage>
-        {/* Embed Color */}
-        <FormLabel htmlFor="message.embeds[0].color">Embed Color</FormLabel>
-        <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].color', { required: true, minLength: 4, maxLength: 9 })} id='message.embeds[0].color' />
-        <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds[0]?.color}></ErrorMessage>
-        {/* Embed Author */}
-        <Collapsible name="Embed Author" style={{ marginLeft: 20 }}>
-          {/* Embed Author Name */}
-          <FormLabel htmlFor="message.embeds[0].author.name">Author Name</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.name', { minLength: 1, maxLength: 256 })} id='message.embeds[0].author.name' />
-          <ErrorMessage fieldName='embed author name' fieldType='The' field={errors?.message?.embeds[0]?.author?.name}></ErrorMessage>
-          {/* Embed Author Icon URL */}
-          <FormLabel htmlFor="message.embeds[0].author.icon_url">Author Image URL</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.icon_url', { minLength: 1 })} id='message.embeds[0].author.icon_url' />
-          <ErrorMessage fieldName='embed author image' fieldType='The' field={errors?.message?.embeds[0]?.author?.icon_url}></ErrorMessage>
-          {/* Embed Author URL */}
-          <FormLabel htmlFor="message.embeds[0].author.url">Author URL</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.url', { minLength: 1 })} id='message.embeds[0].author.url' />
-          <ErrorMessage fieldName='embed author url' fieldType='The' field={errors?.message?.embeds[0]?.author?.url}></ErrorMessage>
-        </Collapsible>
-        {/* Embed Footer */}
-        <Collapsible name="Embed Footer" style={{ marginLeft: 20 }}>
-          {/* Embed Footer Text */}
-          <FormLabel htmlFor="message.embeds[0].footer.text">Footer Text</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].footer.text', { minLength: 1, maxLength: 2048 })} id='message.embeds[0].color' />
-          <ErrorMessage fieldName='embed footer text' fieldType='The' field={errors?.message?.embeds[0]?.footer?.text}></ErrorMessage>
-          {/* Embed Footer Icon URL */}
-          <FormLabel htmlFor="message.embeds[0].footer.icon_url">Footer Image URL</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].footer.icon_url', { minLength: 1 })} id='message.embeds[0].footer.icon_url' />
-          <ErrorMessage fieldName='embed footer url' fieldType='The' field={errors?.message?.embeds[0]?.footer?.icon_url}></ErrorMessage>
-        </Collapsible>
-      </Collapsible>
-    </>
-  );
-
-  const MessageContent = () => (
-    <>
-      <FormLabel htmlFor="message.content">Message</FormLabel>
-      <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.content', { required: true })} id='message.content' />
-    </>
-  );
-
-  const HandleInteraction = (value) => {
-    setMessageType(value);
-    if (value === MessageType.Content) {
-      setValue("message.embeds", []);
-      setValue("message.content", Defaults.Message);
-    } else if (value === MessageType.Embed) {
-      setValue("message.content", null);
-      setValue("message.embeds", [Defaults.Embed]);
-    } else if (value === MessageType.ContentAndEmbed) {
-      setValue("message.embeds", [Defaults.Embed]);
-      setValue("message.content", Defaults.Message);
-    }
-  }
+  const [displayForm, setDisplayForm] = useState(0)
 
   return (
     <ChakraProvider theme={theme}>
+
       <Grid gridTemplateRows='48px 1fr'>
         <header>
           <Box display='flex' alignItems='center'>
@@ -238,59 +148,22 @@ function App() {
         </header>
 
         <Grid paddingBottom={0} gridTemplateColumns='1fr 1fr'>
-          <VStack spacing={3} alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
+          <VStack spacing={3}  alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
             <Button onClick={() => reset(clearValues)}>Clear All</Button>
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <FormLabel pb={2}>Message</FormLabel>
-                <Collapsible variant='large' name="Message">
-                  <Box width='100%' marginBottom="8px">
-                    <FormLabel htmlFor="messageType">Message Type</FormLabel>
-                    <RadioGroup onChange={HandleInteraction} value={messageType} id="messageType">
-                      <Stack direction="row">
-                        <Radio
-                          name={MessageType.Content}
-                          value={MessageType.Content}
-                          colorScheme='blurple'
-                        >
-                          <Text>Message</Text>
-                        </Radio>
-                        <Radio
-                          name={MessageType.Embed}
-                          value={MessageType.Embed}
-                          colorScheme='blurple'
-                        >
-                          <Text>Embed</Text>
-                        </Radio>
-                        <Radio
-                          name={MessageType.ContentAndEmbed}
-                          value={MessageType.ContentAndEmbed}
-                          colorScheme='blurple'
-                        >
-                          <Text>Both</Text>
-                        </Radio>
-                      </Stack>
-                    </RadioGroup>
 
-                    <div className='pt-1'>
-                      {
-                        messageType === "content" ? (
-                          <MessageContent />
-                        ) : (messageType === "embed" ? <Embed /> : (
-                          <>
-                            <MessageContent />
-                            <Embed />
-                          </>
-                        ))
-                      }
-                    </div>
-                  </Box>
-                </Collapsible>
 
-                <FormLabel pb={2}>Forms</FormLabel>
+                <Box width='100%' marginBottom="8px">
+                  <FormLabel htmlFor="message.content">Message</FormLabel>
+                  <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.content')} id='message.content' />
+                </Box>
+
+
                 <FieldArray
                   {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
                 />
+
               </form>
             </Box>
             <VStack width='100%' align='flex-start'>
@@ -318,21 +191,21 @@ function App() {
               <Text>Upload the configuration' file to the /form create command on the forms bot.</Text>
             </VStack>
             <Box className="text-sm pt-5">
-              <p className="font-medium">©️ 2022 Forms Discord Bot</p>
-              <p className="text-muted">
-                Not affiliated with Discord, Inc.
-                <br />
-                Discord is a registered trademark of Discord, Inc.
-                <br />
-                This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
-              </p>
-            </Box>
+            <p className="font-medium">©️ 2022 Forms Discord Bot</p>
+            <p className="text-muted">
+              Not affiliated with Discord, Inc.
+              <br />
+              Discord is a registered trademark of Discord, Inc.
+              <br />
+              This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
+            </p>
+          </Box>
           </VStack>
-          <FormPreview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
+          <FormPreview message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
         </Grid>
-      </Grid >
+      </Grid>
 
-    </ChakraProvider >
+    </ChakraProvider>
   );
 }
 

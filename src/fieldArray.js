@@ -1,4 +1,5 @@
 import { Box, Button, CloseButton, FormLabel, HStack, Select, Text, Tooltip } from "@chakra-ui/react";
+import { Link } from "./Link";
 import React from "react";
 import { useFieldArray } from "react-hook-form";
 import { IconContext } from "react-icons";
@@ -22,8 +23,8 @@ export default function Fields({ control, register, setValue, getValues, formSta
           return (
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
-              setDisplayForm(displayForm - 1)
-            }} /> : null} key={item.id}>
+              setDisplayForm(displayForm-1)
+              }} /> : null} key={item.id}>
               <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
                 <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Webhook URL</Text>
                 <Tooltip hasArrow label={
@@ -52,7 +53,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
                     id={`forms[${index}].button.label`}
                     placeholder='Open Form'
                   />
-                  <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
                 </Box>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.style`}>Button Style</FormLabel>
@@ -72,6 +73,8 @@ export default function Fields({ control, register, setValue, getValues, formSta
                 style={{ marginBottom: '8px' }}
               />
               <ErrorMessage>{(errors.forms?.[index]?.modal?.title?.type === 'required' && 'The Title is required') || (errors.forms?.[index]?.modal?.title?.type === 'maxLength' && 'The Title is too long')}</ErrorMessage>
+
+
               <FormLabel marginTop='8px' htmlFor={`forms[${index}].modal.components`} >Text Inputs</FormLabel>
               <NestedArray id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState, watch }} />
             </Collapsible>
@@ -86,32 +89,32 @@ export default function Fields({ control, register, setValue, getValues, formSta
           onClick={() => {
             setDisplayForm(fields.length)
             append({
-              webhook_url: '',
-              button: {
-                label: '',
-                style: '1'
-              },
-              modal: {
-                title: '',
-                components: [
-                  {
-                    type: 1,
-                    components: [
-                      {
-                        type: 4,
-                        label: '',
-                        style: '1',
-                        placeholder: '',
-                        min_length: '0',
-                        max_length: '1024',
-                        value: '',
-                        required: true
-                      }
-                    ]
-                  }
-                ]
-              }
-            })
+            webhook_url: '',
+            button: {
+              label: '',
+              style: '1'
+            },
+            modal: {
+              title: '',
+              components: [
+                {
+                  type: 1,
+                  components: [
+                    {
+                      type: 4,
+                      label: '',
+                      style: '1',
+                      placeholder: '',
+                      min_length: '0',
+                      max_length: '1024',
+                      value: '',
+                      required: true
+                    }
+                  ]
+                }
+              ]
+            }
+          })
           }}
         >
           Add Form

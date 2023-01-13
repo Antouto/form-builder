@@ -15,7 +15,7 @@ Forms is a Discord bot that allows you to create forms (aka modals) and receive 
 
 <hr />
 
-> Modals are kinda like Google Forms but in Discord, cool, right?
+> Modals are kinda like Google Forms but in Discord.
 
 </details>
 <details>
@@ -23,7 +23,7 @@ Forms is a Discord bot that allows you to create forms (aka modals) and receive 
 
 <hr />
 
-> You can invite it by going to [https://discord.com/oauth2/authorize/...][invite]. You can also invite it by clicking <kbd>Add to Server</kbd> on the bot's profile.
+> You can invite it by going to [Form's invite link][invite]. You can also invite it by clicking <kbd>Add to Server</kbd> on the bot's profile.
 
 </details>
 

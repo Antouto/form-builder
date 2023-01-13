@@ -8,34 +8,22 @@ import {
   Stack,
   Text,
   Tooltip,
-  RangeSlider,
-  RangeSliderTrack,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
-  RangeSliderMark,
   Switch,
-  HStack
+  HStack,
+  Image
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
-import ErrorMessage from "./ErrorMessage";
 
-export default ({ nestIndex, control, register, formState, formState: { errors }, watch }) => {
+export default function useNestedFieldArray({ nestIndex, control, register, formState, formState: { errors }, watch }) {
   const { fields, remove, append } = useFieldArray({
     control,
     name: `forms[${nestIndex}].modal.components`
   });
   const [textInputStyle, setTextInputStyle] = React.useState(['1', '1', '1', '1', '1'])
-  const [sliderValue, setSliderValue] = useState([1, 1024])
-  const labelStyles = {
-    mt: '2',
-    ml: '-1.5',
-    fontSize: 'sm',
-  }
-
 
   return (
     <div>
@@ -51,18 +39,16 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`, { required: true, maxLength: 45 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}
                 defaultValue={item.label}
-                style={{ marginRight: "25px", marginBottom:'8px' }}
-                
+                style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
               <HStack marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>
-
                   <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`} display='flex' alignItems='center'>
                     <Text>Style</Text>
                     <Tooltip hasArrow label={
                       <Box>
-                        <img src='https://cdn.discordapp.com/attachments/944646735643410482/975084229467729980/single_or_multiline_input.png' />
+                        <Image src='https://cdn.discordapp.com/attachments/944646735643410482/975084229467729980/single_or_multiline_input.png' alt="Single or multiline input example" />
                       </Box>
                     } placement='top' shouldWrapChildren bg="white" borderRadius={6} padding={0} marginLeft={1} >
                       <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
@@ -114,7 +100,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`, { maxLength: 100 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`}
                 defaultValue={item.placeholder}
-                style={{ marginRight: "25px", marginBottom:'8px' }}
+                style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length !== 0 && (Number.isNaN(minimumLength) || Number.isNaN(maximumLength) || minimumLength < 0 || minimumLength > 1024 || maximumLength < 1 || maximumLength > 1024 || textInput?.value?.length < minimumLength || textInput?.value?.length > maximumLength)) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{(minimumLength <= maximumLength && minimumLength >= 0 && minimumLength <= 1024 && maximumLength >= 1 && maximumLength <= 1024) ? `Must be betweeen ${minimumLength < 1024 ? minimumLength : 1023} and ${maximumLength <= 1024 ? maximumLength : 1024}` : 'Invalid minimum/maximum characters, fix these first'}</span></FormLabel>
@@ -137,7 +123,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                   />
                 </Box>
                 <Box width='100%'>
-                <FormLabel display='flex' alignItems='flex-end'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (Number.isNaN(maximumLength) || maximumLength > 1024 || maximumLength < minimumLength || maximumLength < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen {minimumLength > 1024 ? 1024 : (minimumLength < 0 ? 1 : minimumLength || 1)} and 1024</span></FormLabel>
+                  <FormLabel display='flex' alignItems='flex-end'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (Number.isNaN(maximumLength) || maximumLength > 1024 || maximumLength < minimumLength || maximumLength < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen {minimumLength > 1024 ? 1024 : (minimumLength < 0 ? 1 : minimumLength || 1)} and 1024</span></FormLabel>
                   <input
                     {...register(`forms[${nestIndex}].modal.components[${k}].components[0].max_length`, { min: 1, max: 1024 })}
                     id={`forms[${nestIndex}].modal.components[${k}].components[0].max_length`}

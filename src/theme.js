@@ -1,7 +1,7 @@
-import { border, extendTheme } from "@chakra-ui/react"
+import { extendTheme } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 
-const colours =  {
+const colours = {
   'blurple': '#5865F2',
   'blurple.500': '#5865F2',
   'green': '#2d7d46',
@@ -43,7 +43,7 @@ const theme = extendTheme({
         width: '100%',
         padding: '6px 9px',
         border: `2px solid transparent`,
-        height: '95px',
+        //height: '95px',
         minHeight: '43px',
         transition: '0.2s',
         outline: 'none',

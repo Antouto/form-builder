@@ -10,9 +10,15 @@ export interface SettingsManager {
     ShowFixFormButton: boolean;
 }
 
-export const SettingsManagerContext = createContext<SettingsManager | null>(
-    null
-);
+export const DEFAULT_PREFERENCES: SettingsManager = {
+    ShowFixFormButton: false,
+    LastWhatsNew: null
+}
+
+
+export const SettingsManagerContext = createContext<SettingsManager>({
+    ...DEFAULT_PREFERENCES
+});
 
 SettingsManagerContext.displayName = "SettingsManagerContext"
 
@@ -21,11 +27,6 @@ export function useSettings() {
 }
 
 export const SettingsManagerProvider = SettingsManagerContext.Provider;
-export const DEFAULT_PREFERENCES: SettingsManager = {
-    ShowFixFormButton: false,
-    LastWhatsNew: null
-}
-
 export class SettingsManagerBuilder {
     @observable settings: SettingsManager = { ...DEFAULT_PREFERENCES }
 

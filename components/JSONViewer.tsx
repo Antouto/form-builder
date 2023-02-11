@@ -7,6 +7,8 @@ export interface JSONViewerProperties {
   children: string;
 }
 
+export const DOWNLOAD_SPINNER_TIME = 1000;
+
 function JSONViewer({ children, downloadForm: downloadFile }: JSONViewerProperties) {
   const [show, setShow] = React.useState(false)
   const { colorMode } = useColorMode();
@@ -15,7 +17,7 @@ function JSONViewer({ children, downloadForm: downloadFile }: JSONViewerProperti
   const downloadForm = () => {
     setLoading(true);
     downloadFile();
-    setTimeout(() => setLoading(false), 1000)
+    setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
   }
 
   return (

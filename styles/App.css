@@ -49,27 +49,27 @@ input {
 
 @font-face {
     font-family: 'Whitney';
-    src: url('../Fonts/Whitney/whitneymedium.otf');
+    src: url('/Fonts/Whitney/whitneymedium.otf');
 }
 
 @font-face {
     font-family: 'Whitney Italic';
-    src: url('../Fonts/Whitney/whitneymediumitalic.otf');
+    src: url('/Fonts/Whitney/whitneymediumitalic.otf');
 }
 
 @font-face {
     font-family: 'Whitney Bold';
-    src: url('../Fonts/Whitney/whitneysemibold.otf');
+    src: url('/Fonts/Whitney/whitneysemibold.otf');
 }
 
 @font-face {
     font-family: 'Whitney Black';
-    src: url('../Fonts/Whitney/whitneybold.otf');
+    src: url('/Fonts/Whitney/whitneybold.otf');
 }
 
 @font-face {
     font-family: 'Whitney Bold Italic';
-    src: url('../Fonts/Whitney/WhitneySemiboldItalic.otf');
+    src: url('/Fonts/Whitney/WhitneySemiboldItalic.otf');
 }
 
 body {
@@ -113,4 +113,8 @@ select {
     border-radius: 8px;
     margin-bottom: 8px;
     background-clip: padding-box;
+}
+
+.forceFloat {
+    float: right !important;
 }

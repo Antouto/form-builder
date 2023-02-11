@@ -23,11 +23,12 @@ import {
   ModalHeader,
   ModalOverlay,
   Switch,
-  cssVar
+  cssVar,
+  Spinner
 } from '@chakra-ui/react';
 import Image from "next/image";
 import { ColorModeSwitcher } from '../components/ColorModeSwitcher';
-import JSONViewer from '../components/JSONViewer';
+import JSONViewer, { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
 import Preview from '../components/Preview';
 import MessageBuilder, { MessageType } from '../components/messageBuilder';
@@ -35,10 +36,13 @@ import { SlashCommand, UserMention } from '../components/Mention';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { VercelFooter } from '../components/Footer';
+import { Footer } from '../components/Footer';
 import { FormAndMessageBuilder } from "../util/types";
 import { useSettings } from '../util/settings';
 import { bindToInput } from '../util/bind';
+import { Switches, Toggle, useToggle } from '../components/Toggle';
+import { useAutorun } from '../util/useAutorun';
+import { Navigation } from '../components/Navigation';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -244,35 +248,30 @@ export default function App() {
     }, 500)
   }
 
-  enum Switches {
-    FixFormButton = "fix_form_button"
+  const ShowFixFormButton = useToggle();
+  const [loading, setLoading] = useState(false);
+  const handleLoad = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
 
-  const Settings = useSettings();
-  console.log(Settings)
+  // useAutorun(() => {
+  //   const json = JSON.stringify({
+  //     forms: getValues("forms").map(form => {
+  //       form.webhook_url = "hidden";
+  //       return form;
+  //     }),
+  //     message: getValues("message")
+  //   })
+  //   const base64 = Buffer.from(json, 'binary');
+
+  //   history.replaceState({ __N: false }, "", `/?data=${base64}`)
+  // })
 
   return (
     <>
       <Meta>Home</Meta>
-      <header>
-        <Box display='flex' alignItems='center'>
-          <Image
-            src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png"
-            alt="Forms Logo"
-            width={28}
-            height={28}
-            style={{
-              clipPath: 'circle(50%)'
-            }}
-          />
-          <nav>
-            <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
-            <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>
-            <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Documentation</a>
-          </nav>
-        </Box>
-        <ColorModeSwitcher height='0px' />
-      </header>
+      <Navigation />
       <Grid gridTemplateColumns='1fr 1fr'>
         <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);'>
           <HStack>
@@ -294,7 +293,7 @@ export default function App() {
             <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
             <Button onClick={onOpen}>Options</Button>
           </HStack>
-          {/* <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent backgroundColor="#36393f">
               <ModalHeader _after={{
@@ -304,10 +303,11 @@ export default function App() {
               <ModalBody paddingY={6}>
                 <Box paddingBottom={5}>
                   <Heading size="sm" fontWeight="bold" paddingBottom={2}>Appearance</Heading>
-                  <Switch {...bindToInput(Settings, "ShowFixFormButton")}>Show Fix Form Button</Switch>
+                  {/* <Switch defaultChecked={useGetSetting("fix_form")} onChange={() => useSetSetting("fix_form", !useGetSetting("fix_form"))}>Show Fix Form Button</Switch> */}
+                  <Toggle itemName='Show Fix Form Button' switchName={Switches.FixFormButton} {...ShowFixFormButton.toJSON()} />
                 </Box>
                 <Heading size="sm" fontWeight="bold" paddingBottom={2}>Developer Settings</Heading>
-                <Switch {...bindToInput(Settings, "ShowFixFormButton")}> Show Fix Form Button</Switch>
+                {/* <Switch {...bindToInput(Settings, "ShowFixFormButton")}> Show Fix Form Button</Switch> */}
               </ModalBody>
 
               <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
@@ -316,7 +316,7 @@ export default function App() {
                 </Button>
               </ModalFooter>
             </ModalContent>
-          </Modal> */}
+          </Modal>
           <MessageBuilder
             {...{ Defaults, formState, messageType, register, setMessageType, setValue }}
           />
@@ -334,11 +334,17 @@ export default function App() {
                 <Button
                   variant='success'
                   disabled={!formState.isValid}
-                  onClick={downloadForm}
+                  onClick={() => {
+                    handleLoad();
+                    downloadForm();
+                  }}
+                  width={225}
+                // bgColor={loading ? "#215b32" : undefined}
                 >
-                  Download Configuration File
+                  {!loading && "Download Configuration File"}
+                  {loading && <Spinner size="sm" />}
                 </Button>
-                <Button onClick={() => fixForm()}>Fix Form</Button>
+                {ShowFixFormButton.currentState && <Button onClick={() => fixForm()}>Fix Form</Button>}
               </HStack>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>
@@ -346,21 +352,7 @@ export default function App() {
               Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.
             </Box>
           </VStack>
-          <Box pt={5} fontSize='sm'>
-            <Text>©️ 2023 Forms Discord Bot</Text>
-            <Box color='#6c757d'>
-              Made with <svg style={{ display: "inline-block", marginLeft: "1px", marginRight: "1px" }} width={15} height={15} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868-3.308 0-6.227 1.633-8.018 4.129-1.791-2.496-4.71-4.129-8.017-4.129-5.45 0-9.868 4.417-9.868 9.868 0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447 17.617-19.959.17-.721.268-1.469.268-2.242z" /></svg>
-              {' '}from <UserMention
-                text="#d0d3d8"
-                avatar='https://github.com/antouto.png'
-              >Anthony</UserMention> and <UserMention
-                text="#d0d3d8"
-                avatar='https://github.com/turtlepaw.png'
-              >Turtlepaw</UserMention>
-              <br />
-              This website is <Link href='https://github.com/Antouto/form-builder' target="_blank" rel="noopener noreferrer" color='#00b0f4'>open-source</Link>
-            </Box>
-          </Box>
+          <Footer />
         </VStack>
         <Preview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
       </Grid>

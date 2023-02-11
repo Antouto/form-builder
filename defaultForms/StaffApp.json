@@ -1,0 +1,267 @@
+{
+    "message": {
+        "content": "**Staff Applications**",
+        "embeds": []
+    },
+    "select_menu_placeholder": "Choose a position to apply for",
+    "forms": [
+        {
+            "select_menu_option": {
+                "label": "Administrator",
+                "description": "Creates content and builds the community",
+                "emoji": {
+                    "id": "1015248668066074725"
+                }
+            },
+            "submit_channel_id": "YOUR_SUBMIT_CHANNEL_ID",
+            "modal": {
+                "title": "Administrator Application",
+                "components": [
+                    {
+                        "type": 1,
+                        "components": [
+                            {
+                                "type": 4,
+                                "label": "Why are you applying for this position?",
+                                "style": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            "submit_components": [
+                {
+                    "type": 1,
+                    "components": [
+                        {
+                            "type": 2,
+                            "label": "Promote to Admin",
+                            "style": 3,
+                            "logic": {
+                                "DM_SUBMITTER": {
+                                    "content": "Your **{FormTitle}** has been accepted!"
+                                },
+                                "DISABLE_ALL_COMPONENTS": false,
+                                "REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW": true,
+                                "UPDATE_COMPONENT": {
+                                    "label": "Promoted to Admin"
+                                },
+                                "ADD_ROLE_TO_SUBMITTER": "YOUR_ROLE_ID"
+                            }
+                        },
+                        {
+                            "type": 2,
+                            "label": "Deny",
+                            "style": 4,
+                            "logic": {
+                                "DM_SUBMITTER_WITH_MODAL_INPUT": {
+                                    "modal": {
+                                        "title": "Deny Form",
+                                        "components": [
+                                            {
+                                                "type": 1,
+                                                "components": [
+                                                    {
+                                                        "type": 4,
+                                                        "style": 2,
+                                                        "label": "Reason for denial"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "message": {
+                                        "content": "Sorry! Your **{FormTitle}** has been denied.",
+                                        "embeds": [
+                                            {
+                                                "title": "Reason",
+                                                "description": "{TextInputValue1}"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "DISABLE_ALL_COMPONENTS": false,
+                                "REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW": true,
+                                "UPDATE_COMPONENT": {
+                                    "label": "Denied"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "select_menu_option": {
+                "label": "Moderator",
+                "description": "Keeps the community safe",
+                "emoji": {
+                    "id": "1015248666807779329"
+                }
+            },
+            "submit_channel_id": "YOUR_SUBMIT_CHANNEL_ID",
+            "modal": {
+                "title": "Moderator Application",
+                "components": [
+                    {
+                        "type": 1,
+                        "components": [
+                            {
+                                "type": 4,
+                                "label": "Why are you applying for this position?",
+                                "style": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            "submit_components": [
+                {
+                    "type": 1,
+                    "components": [
+                        {
+                            "type": 2,
+                            "label": "Promote to Mod",
+                            "style": 3,
+                            "logic": {
+                                "DM_SUBMITTER": {
+                                    "content": "Your **{FormTitle}** has been accepted!"
+                                },
+                                "DISABLE_ALL_COMPONENTS": false,
+                                "REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW": true,
+                                "UPDATE_COMPONENT": {
+                                    "label": "Promoted to Mod"
+                                },
+                                "ADD_ROLE_TO_SUBMITTER": "YOUR_ROLE_ID"
+                            }
+                        },
+                        {
+                            "type": 2,
+                            "label": "Deny",
+                            "style": 4,
+                            "logic": {
+                                "DM_SUBMITTER_WITH_MODAL_INPUT": {
+                                    "modal": {
+                                        "title": "Deny Form",
+                                        "components": [
+                                            {
+                                                "type": 1,
+                                                "components": [
+                                                    {
+                                                        "type": 4,
+                                                        "style": 2,
+                                                        "label": "Reason for denial"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "message": {
+                                        "content": "Sorry! Your **{FormTitle}** has been denied.",
+                                        "embeds": [
+                                            {
+                                                "title": "Reason",
+                                                "description": "{TextInputValue1}"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "DISABLE_ALL_COMPONENTS": false,
+                                "REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW": true,
+                                "UPDATE_COMPONENT": {
+                                    "label": "Denied"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "select_menu_option": {
+                "label": "Helper",
+                "description": "Helps other community members",
+                "emoji": {
+                    "id": "1015248669399851048"
+                }
+            },
+            "submit_channel_id": "YOUR_SUBMIT_CHANNEL_ID",
+            "modal": {
+                "title": "Helper Application",
+                "components": [
+                    {
+                        "type": 1,
+                        "components": [
+                            {
+                                "type": 4,
+                                "label": "Why are you applying for this position?",
+                                "style": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            "submit_components": [
+                {
+                    "type": 1,
+                    "components": [
+                        {
+                            "type": 2,
+                            "label": "Promote to Helper",
+                            "style": 3,
+                            "logic": {
+                                "DM_SUBMITTER": {
+                                    "content": "Your **{FormTitle}** has been accepted!"
+                                },
+                                "DISABLE_ALL_COMPONENTS": false,
+                                "REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW": true,
+                                "UPDATE_COMPONENT": {
+                                    "label": "Promoted to Helper"
+                                },
+                                "ADD_ROLE_TO_SUBMITTER": "YOUR_ROLE_ID"
+                            }
+                        },
+                        {
+                            "type": 2,
+                            "label": "Deny",
+                            "style": 4,
+                            "logic": {
+                                "DM_SUBMITTER_WITH_MODAL_INPUT": {
+                                    "modal": {
+                                        "title": "Deny Form",
+                                        "components": [
+                                            {
+                                                "type": 1,
+                                                "components": [
+                                                    {
+                                                        "type": 4,
+                                                        "style": 2,
+                                                        "label": "Reason for denial"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "message": {
+                                        "content": "Sorry! Your **{FormTitle}** has been denied.",
+                                        "embeds": [
+                                            {
+                                                "title": "Reason",
+                                                "description": "{TextInputValue1}"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "DISABLE_ALL_COMPONENTS": false,
+                                "REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW": true,
+                                "UPDATE_COMPONENT": {
+                                    "label": "Denied"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

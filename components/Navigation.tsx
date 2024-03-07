@@ -215,6 +215,14 @@ export function Navigation({
             </a>
             <NextLink href="/templates">Templates</NextLink>
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
+          <ColorModeSwitcher
+            placement="bottom"
+            position="absolute"
+            height="32px"
+            width="32px"
+            top={2}
+            right={12}
+          />
           </nav>
         )}
       </Box>

@@ -1,9 +1,7 @@
 import "../styles/App.css";
 import "../styles/Json.css";
 import "../util/framer-motion.d";
-import {
-  ChakraProvider, ColorModeScript
-} from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "../components/theme";
 import { AppProps } from "next/app";
 import ColorModeCSS from "../styles/ColorModeCSS";

@@ -11,6 +11,7 @@ import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
 import { debounce } from 'lodash';
 
+
 export enum OpenFormType {
   button,
   select_menu,
@@ -80,6 +81,9 @@ export default function App() {
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} />
       </Grid>
+
+
+
     </>
   );
 }

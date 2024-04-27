@@ -1,4 +1,4 @@
-import { cssVar, extendTheme, ThemeConfig } from "@chakra-ui/react"
+import { cssVar, extendTheme, ThemeConfig, defineStyleConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 import { Button } from "./Button";
 import { Tooltip } from "./Tooltip";

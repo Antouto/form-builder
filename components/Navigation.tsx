@@ -148,7 +148,6 @@ export function Navigation({
             </Button>
             <Tooltip
               pointerEvents="all"
-              zIndex={100}
               label={
                 <Box>
                   <HStack>

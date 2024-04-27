@@ -584,8 +584,8 @@ export function Editor({
       {!isSmallScreen && <Footer />}
     </VStack>
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside'>
-        <ModalOverlay />
-        <ModalContent background='#36393F' borderRadius='8px'>
+        <ModalOverlay zIndex={2000} />
+        <ModalContent background='#36393F' borderRadius='8px' containerProps={{ zIndex: '2000' }}>
           <ModalHeader>How should users open your form?</ModalHeader>
           <ModalCloseButton padding='22px' _focusVisible={{ border: 'none' }}/>
           <ModalBody>

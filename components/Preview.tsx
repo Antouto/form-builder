@@ -267,7 +267,7 @@ function Preview({
                       fontSize=".625rem"
                       textColor="white"
                     >
-                      BOT
+                      APP
                     </Text>
                   </Box>
                   <Box pl={2} display="inline-block">
@@ -600,7 +600,7 @@ function Preview({
                     p="0px 4px 0px 5px"
                   >
                     <Text fontFamily="Whitney Bold" fontSize=".625rem">
-                      BOT
+                      APP
                     </Text>
                   </Box>
                   <Text

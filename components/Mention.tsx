@@ -124,7 +124,7 @@ export function FormProfile({
                   </svg>
                 </Tooltip>
                 <Text fontFamily="Whitney Bold" fontSize=".625rem">
-                  BOT
+                  APP
                 </Text>
               </Box>
             </Center>

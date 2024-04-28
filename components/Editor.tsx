@@ -273,6 +273,7 @@ export function Editor({
   };
 
   const isSmallScreen = !useScreenWidth(1070);
+  const isReallySmallScreen = !useScreenWidth(500);
 
   const [openFormType, _setOpenFormType] = useState("button");
 
@@ -583,7 +584,7 @@ export function Editor({
       </VStack>
       {!isSmallScreen && <Footer />}
     </VStack>
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside'>
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>
         <ModalOverlay zIndex={2000} />
         <ModalContent background='#36393F' borderRadius='8px' containerProps={{ zIndex: '2000' }}>
           <ModalHeader>How should users open your form?</ModalHeader>

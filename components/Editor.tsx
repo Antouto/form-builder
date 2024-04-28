@@ -586,9 +586,9 @@ export function Editor({
     </VStack>
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>
         <ModalOverlay zIndex={2000} />
-        <ModalContent background='#36393F' borderRadius='8px' containerProps={{ zIndex: '2000' }}>
+        <ModalContent background='#36393F' borderRadius={isReallySmallScreen ? '0' : '8px'} containerProps={{ zIndex: '2000' }}>
           <ModalHeader>How should users open your form?</ModalHeader>
-          <ModalCloseButton padding='22px' _focusVisible={{ border: 'none' }}/>
+          <ModalCloseButton display={isReallySmallScreen ? 'none' : 'flex'} padding='22px' _focusVisible={{ border: 'none' }}/>
           <ModalBody>
             <VStack align='left'>
               <FormLabel fontSize={18}>Buttons</FormLabel>
@@ -675,7 +675,7 @@ export function Editor({
             </VStack>
           </ModalBody>
 
-          <ModalFooter background='#2B2D31' borderBottomRadius='8px' padding='16px'>
+          <ModalFooter background='#2B2D31' borderBottomRadius={isReallySmallScreen ? '0' : '8px'} padding='16px'>
             <Button variant='ghost' onClick={onClose}>Skip to editor</Button>
             <Button variant='primary' onClick={onClose}>
               Continue

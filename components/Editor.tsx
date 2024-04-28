@@ -695,7 +695,7 @@ export function Editor({
           <ModalHeader>Setup your slash command</ModalHeader>
           <ModalCloseButton display={isReallySmallScreen ? 'none' : 'flex'} padding='22px' _focusVisible={{ border: 'none' }}/>
           <ModalBody py='16px'>
-            <ApplicationCommandBuilder register={register} getValues={getValues} errors={formState.errors}/>
+            <ApplicationCommandBuilder register={register} getValues={getValues} formState={formState}/>
           </ModalBody>
 
           <ModalFooter background='#2B2D31' borderBottomRadius={isReallySmallScreen ? '0' : '8px'} padding='16px'>

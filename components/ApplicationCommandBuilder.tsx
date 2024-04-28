@@ -2,8 +2,8 @@ import { FormLabel, Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import Counter from './Counter'
 import ErrorMessage from './ErrorMessage'
-
-export default function ApplicationCommandBuilder({ register, getValues, errors }) {
+//@ts-expect-error
+export default function ApplicationCommandBuilder({ register, getValues, formState: { errors } }) {
   const { colorMode } = useColorMode();
 
   return (

@@ -51,6 +51,7 @@ import {
   ModalBody,
   ModalCloseButton
 } from '@chakra-ui/react'
+import ApplicationCommandBuilder from "./ApplicationCommandBuilder";
 
 
 
@@ -126,8 +127,8 @@ export function Editor({
     });
   }
 
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true })
-
+  const { isOpen: openFormTypeSetupModalIsOpen, onOpen: openFormTypeSetupModalOnOpen, onClose: openFormTypeSetupModalOnClose } = useDisclosure({ defaultIsOpen: true })
+  const { isOpen: applicationCommandSetupModalIsOpen, onOpen: applicationCommandSetupModalOnOpen, onClose: applicationCommandSetupModalOnClose } = useDisclosure()
 
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [isReading, setReading] = useState(false);
@@ -584,12 +585,12 @@ export function Editor({
       </VStack>
       {!isSmallScreen && <Footer />}
     </VStack>
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>
+    <Modal isOpen={openFormTypeSetupModalIsOpen} onClose={openFormTypeSetupModalOnClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>
         <ModalOverlay zIndex={2000} />
         <ModalContent background='#36393F' borderRadius={isReallySmallScreen ? '0' : '8px'} containerProps={{ zIndex: '2000' }}>
           <ModalHeader>How should users open your form?</ModalHeader>
           <ModalCloseButton display={isReallySmallScreen ? 'none' : 'flex'} padding='22px' _focusVisible={{ border: 'none' }}/>
-          <ModalBody>
+          <ModalBody py='16px'>
             <VStack align='left'>
               <FormLabel fontSize={18}>Buttons</FormLabel>
               <Box>
@@ -676,8 +677,33 @@ export function Editor({
           </ModalBody>
 
           <ModalFooter background='#2B2D31' borderBottomRadius={isReallySmallScreen ? '0' : '8px'} padding='16px'>
-            <Button variant='ghost' onClick={onClose}>Skip to editor</Button>
-            <Button variant='primary' onClick={onClose}>
+            <Button variant='ghost' onClick={openFormTypeSetupModalOnClose}>Skip to editor</Button>
+            <Button variant='primary' onClick={() => {
+              openFormTypeSetupModalOnClose();
+              switch(openFormType) {
+                case 'application_command': applicationCommandSetupModalOnOpen(); break;
+              }
+              }}>
+              Continue
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={applicationCommandSetupModalIsOpen} onClose={applicationCommandSetupModalOnClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>
+        <ModalOverlay zIndex={2000} />
+        <ModalContent background='#36393F' borderRadius={isReallySmallScreen ? '0' : '8px'} containerProps={{ zIndex: '2000' }}>
+          <ModalHeader>Setup your slash command</ModalHeader>
+          <ModalCloseButton display={isReallySmallScreen ? 'none' : 'flex'} padding='22px' _focusVisible={{ border: 'none' }}/>
+          <ModalBody py='16px'>
+            <ApplicationCommandBuilder register={register} getValues={getValues} errors={formState.errors}/>
+          </ModalBody>
+
+          <ModalFooter background='#2B2D31' borderBottomRadius={isReallySmallScreen ? '0' : '8px'} padding='16px'>
+            <Button variant='ghost' onClick={() => {
+              applicationCommandSetupModalOnClose();
+              openFormTypeSetupModalOnOpen();
+            }}>Go Back</Button>
+            <Button variant='primary' onClick={applicationCommandSetupModalOnClose}>
               Continue
             </Button>
           </ModalFooter>

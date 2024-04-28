@@ -3,7 +3,7 @@ import React from 'react'
 import Counter from './Counter'
 import ErrorMessage from './ErrorMessage'
 //@ts-expect-error
-export default function ApplicationCommandBuilder({ register, getValues, formState: { errors } }) {
+export default function ApplicationCommandBuilder({ register, getValues, errors }) {
   const { colorMode } = useColorMode();
 
   return (

@@ -696,7 +696,10 @@ export function Editor({
       <Box  width='100%' maxWidth='350px'>
         <ApplicationCommandBuilder register={register} getValues={getValues} errors={formState.errors}/>
       </Box>
-      <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+      <HStack>
+        <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
+        <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+      </HStack>
     </VStack></> }
     </VStack>
     <Modal isOpen={openFormTypeSetupModalIsOpen} onClose={openFormTypeSetupModalOnClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>

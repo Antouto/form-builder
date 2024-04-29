@@ -693,10 +693,10 @@ export function Editor({
     </VStack></> }
     {stage === 'applicationCommand' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup your slash command</Text>
     <VStack align='center' mt={5} width='100%' gap={5}>
-      <VStack align='left' width='350px'>
+      <Box  width='100%' maxWidth='350px'>
         <ApplicationCommandBuilder register={register} getValues={getValues} errors={formState.errors}/>
-      </VStack>
-      <Button variant='primary' onClick={() => setStage('editor')}>Continue</Button>
+      </Box>
+      <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
     </VStack></> }
     </VStack>
     <Modal isOpen={openFormTypeSetupModalIsOpen} onClose={openFormTypeSetupModalOnClose} scrollBehavior='inside' size={isReallySmallScreen ? 'full' : 'md'}>

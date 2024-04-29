@@ -56,9 +56,15 @@ export interface ModalBuilder {
     components: ModalActionRowBuilder[];
 }
 
+export interface ApplicationCommandBuilder {
+    name: string;
+    description?: string;
+}
+
 export interface FormBuilder {
     webhook_url: string;
     button: ButtonBuilder;
+    application_command?: ApplicationCommandBuilder;
     select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;
     submit_message?: FormMessageBuilder;

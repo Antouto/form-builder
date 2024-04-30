@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { Replacer } from "./template";
-import { FormAndMessageBuilder } from "./types";
+import { FormAndOpenFormTypeBuilder } from "./types";
 
 export interface CustomFormData {
     type: "array" | "string";
@@ -15,7 +15,7 @@ export interface CustomFormData {
 }
 
 export interface CreateFormData {
-    data: FormAndMessageBuilder;
+    data: FormAndOpenFormTypeBuilder;
     name: string;
     description: string;
     approved: false,

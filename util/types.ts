@@ -20,7 +20,7 @@ export interface Embed {
     footer?: EmbedFooter;
 }
 
-export interface FormMessageBuilder {
+export interface FormOpenFormTypeBuilder {
     content?: string;
     embeds?: Embed[];
 }
@@ -67,13 +67,13 @@ export interface FormBuilder {
     application_command?: ApplicationCommandBuilder;
     select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;
-    submit_message?: FormMessageBuilder;
-    guild_submit_message?: FormMessageBuilder;
-    dm_submit_message?: FormMessageBuilder;
+    submit_message?: FormOpenFormTypeBuilder;
+    guild_submit_message?: FormOpenFormTypeBuilder;
+    dm_submit_message?: FormOpenFormTypeBuilder;
 }
 
-export interface FormAndMessageBuilder {
-    message?: FormMessageBuilder;
+export interface FormAndOpenFormTypeBuilder {
+    message?: FormOpenFormTypeBuilder;
     select_menu_placeholder?: string;
     application_command?: {
         name: String,

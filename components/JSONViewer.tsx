@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { Box, Button, Collapse, HStack, Spinner, Text, Tooltip, useColorMode } from '@chakra-ui/react'
 import { UseFormGetValues } from "react-hook-form";
-import { FormAndMessageBuilder } from "../util/types";
+import { FormAndOpenFormTypeBuilder } from "../util/types";
 import { createName } from "../util/form";
 import Highlight from "react-highlight"
 
 export interface JSONViewerProperties {
   downloadForm: () => void;
   children: string;
-  getValues: UseFormGetValues<FormAndMessageBuilder>;
+  getValues: UseFormGetValues<FormAndOpenFormTypeBuilder>;
 }
 
 export const DOWNLOAD_SPINNER_TIME = 600;

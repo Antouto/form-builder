@@ -32,7 +32,7 @@ import {
 } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
-import { FormAndMessageBuilder, ModalComponentBuilder } from "../util/types";
+import { FormAndOpenFormTypeBuilder, ModalComponentBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
@@ -48,6 +48,7 @@ export interface TextInputBuilderProperties<T extends FieldValues> {
   setValue: UseFormSetValue<T>;
   resetField: UseFormResetField<T>;
   id?: string;
+  compact?: boolean;
 }
 
 
@@ -61,17 +62,111 @@ export default function TextInputBuilder({
   resetField,
   //@ts-expect-error
   fixMessage,
-  id
-}: TextInputBuilderProperties<FormAndMessageBuilder>) {
+  id,
+  compact
+}: TextInputBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, remove, append } = useFieldArray({
     control,
     name: `forms.${nestIndex}.modal.components`
   });
-  const [textInputStyle, setTextInputStyle] = React.useState(['1', '1', '1', '1', '1'])
+  const [textInputStyle, setTextInputStyle] = React.useState([1,1,1,1,1])
   const isSmallScreen = !useScreenWidth(500);
+  const isTinyScreen = !useScreenWidth(450);
+  
   const colorMode = useColorMode().colorMode
 
   useEffect(() => fixMessage(), [])
+
+  if (compact) {
+    return  <VStack align='flex-start'  id={id}>
+    {fields.map((item, k) => {
+      let textInput = watch(`forms.${nestIndex}.modal.components.${k}.components.0`) as ModalComponentBuilder;
+      return (
+        <Box key={item.id} width='100%'>
+            <HStack gap={3} alignItems='flex-start'>
+              <Box width='100%' >
+                {k === 0 && <FormLabel margin={0}         display="flex"
+        alignItems="flex-end"> 
+                  <Text           _after={{
+            content: '" *"',
+            color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
+          }}>Text Inputs</Text>
+                  <Counter
+          count={watch(`forms.${nestIndex}.modal.components`).length}
+          max={5}
+        />
+                </FormLabel>}
+                <input
+                  {...register(`forms.${nestIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
+                  id={`forms.${nestIndex}.modal.components.${k}.components.0.label`}
+                  defaultValue={textInput.label}
+                />
+                <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label}/>
+              </Box>
+              <Box minWidth='62px'>
+                {k === 0 && <FormLabel margin={0}>Multiline</FormLabel> }
+                <Controller
+                  control={control}
+                  name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
+                  render={({ field }) => (
+                    <Switch
+                      onChange={event => {
+                        console.log(event.target.checked)
+                        field.onChange(event.target.checked ? 2 : 1);
+                        console.log(watch(`forms.${nestIndex}.modal.components.${k}.components.0.style`))
+                        // setValue(`forms.${nestIndex}.modal.components.${k}.components.0.style`, event.target.checked ? 2 : 1)
+                        console.log(watch(`forms.${nestIndex}.modal.components.${k}.components.0.style`))
+
+                        console.log('a', field.value, field.value === 1 ? false : true)
+
+
+                        let newTextInputStyle = textInputStyle
+                        newTextInputStyle[k] = event.target.checked ? 2 : 1
+                        setTextInputStyle(newTextInputStyle)
+                        fixMessage();
+                      }}
+                      isChecked={field.value === 1 ? false : true}
+                      colorScheme='blurple'
+                    />
+                  )}
+                />
+              </Box>
+              <Box minWidth='62px'>
+              {k === 0 && <FormLabel margin={0}>Required</FormLabel> }
+                <Controller
+                  control={control}
+                  name={`forms.${nestIndex}.modal.components.${k}.components.0.required`}
+                  render={({ field }) => (
+                    <Switch
+                      onChange={event => { field.onChange(event); fixMessage() }}
+                      colorScheme='blurple'
+                      isChecked={field.value === false ? false : true}
+                    />
+                  )}
+                />
+              </Box>
+              {fields.length > 1 && <CloseButton my='auto' onClick={() => remove(k)} />}
+            </HStack>     
+        </Box>
+
+      );
+    })}
+    <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => {
+      append({
+        type: 1,
+        components: [
+          {
+            type: 4,
+            label: '',
+            style: 1,
+            max_length: 1024
+          }
+        ]
+      })
+      fixMessage()
+    }}>Add Text Input</Button>
+  </VStack>
+  }
 
   return (
     <VStack align='flex-start' pl={3} pt={1} id={id}>
@@ -93,46 +188,29 @@ export default function TextInputBuilder({
               />
               <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label}/>
 
-              <HStack marginBottom='8px' alignItems='flex-start'>
-                <Box width='100%'>
-                  <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`} display='flex' alignItems='center'>
-                    <Text>Style</Text>
-                    <Tooltip hasArrow label={
-                      <Box>
-                        <Image src='https://cdn.discordapp.com/attachments/944646735643410482/975084229467729980/single_or_multiline_input.png' alt="Single or multiline input example" />
-                      </Box>
-                    } placement='top' shouldWrapChildren bg="white" borderRadius={6} padding={0} marginLeft={1} >
-                      <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
-                    </Tooltip>
-                  </FormLabel>
-                  <RadioGroup onChange={(value) => {
-                    let newTextInputStyle = textInputStyle
-                    newTextInputStyle[k] = value
-                    setTextInputStyle(newTextInputStyle)
-                    fixMessage()
-                  }} value={textInputStyle[k]} id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
-                    <HStack>
-                      <Radio
-                        //name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
-                        {...register(`forms.${nestIndex}.modal.components.${k}.components.0.style`)}
-                        value="1"
+              <HStack marginBottom='8px' gap={isTinyScreen ? 0 : 20} justifyContent={isTinyScreen ? 'space-between' : 'flex-start'}>
+                <HStack>
+                  <FormLabel margin={0}>Multiline</FormLabel>
+                  <Controller
+                    control={control}
+                    name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
+                    render={({ field }) => (
+                      <Switch
+                        onChange={event => {
+                          field.onChange(event.target.checked ? 2 : 1);
+                          let newTextInputStyle = textInputStyle
+                          newTextInputStyle[k] = event.target.checked ? 2 : 1
+                          setTextInputStyle(newTextInputStyle)
+                          fixMessage();
+                        }}
+                        isChecked={field.value === 1 ? false : true}
                         colorScheme='blurple'
-                      >
-                        <Text>Singleline</Text>
-                      </Radio>
-                      <Radio
-                        //name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
-                        {...register(`forms.${nestIndex}.modal.components.${k}.components.0.style`)}
-                        value="2"
-                        colorScheme='blurple'
-                      >
-                        <Text>Multiline</Text>
-                      </Radio>
-                    </HStack>
-                  </RadioGroup>
-                </Box>
-                <Box width='100%'>
-                  <FormLabel>Required</FormLabel>
+                      />
+                    )}
+                  />
+                </HStack>
+                <HStack>
+                  <FormLabel margin={0}>Required</FormLabel>
                   <Controller
                     control={control}
                     name={`forms.${nestIndex}.modal.components.${k}.components.0.required`}
@@ -144,7 +222,7 @@ export default function TextInputBuilder({
                       />
                     )}
                   />
-                </Box>
+                </HStack>
               </HStack>
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text>
@@ -171,7 +249,7 @@ export default function TextInputBuilder({
                 </span>
                 </FormLabel>
               <Box
-                as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
+                as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage() })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
                 style={{ marginRight: "25px", marginBottom: '8px' }}

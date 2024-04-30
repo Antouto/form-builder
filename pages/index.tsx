@@ -4,7 +4,7 @@ import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { FormAndMessageBuilder, FormBuilder, FormMessageBuilder } from "../util/types";
+import { FormAndOpenFormTypeBuilder, FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
 import { useModal } from '../components/SettingsModal';
 import { Editor } from '../components/Editor';
@@ -29,7 +29,7 @@ export default function App() {
     formState,
     resetField,
     formState: { errors }
-  } = useForm<FormAndMessageBuilder>({
+  } = useForm<FormAndOpenFormTypeBuilder>({
     mode: 'onChange'
   });
 

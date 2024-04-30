@@ -29,14 +29,13 @@ import {
 } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
-import MessageBuilder from "./MessageBuilder";
+import OpenFormTypeBuilder from "./OpenFormTypeBuilder";
 import { SlashCommand, UserMention } from "../components/Mention";
 import _ClearedValues from "../ClearedValues.json";
 import { Footer } from "../components/Footer";
 import {
-  ButtonBuilder,
   Embed,
-  FormAndMessageBuilder,
+  FormAndOpenFormTypeBuilder,
   ToastStyles,
 } from "../util/types";
 import { createName } from "../util/form";
@@ -52,10 +51,15 @@ import {
   ModalCloseButton
 } from '@chakra-ui/react'
 import ApplicationCommandBuilder from "./ApplicationCommandBuilder";
+import MessageBuilder from "./MessageBuilder";
+import ButtonBuilder from "./ButtonBuilder";
+import WebhookURLInput from "./WebhookURLInput";
+import FormTitleInput from "./FormTitleInput";
+import TextInputBuilder from "./TextInputBuilder";
 
 
 
-const ClearedValues = _ClearedValues as FormAndMessageBuilder;
+const ClearedValues = _ClearedValues as FormAndOpenFormTypeBuilder;
 
 const Defaults = {
   Embed: {
@@ -101,7 +105,7 @@ export function Editor({
   reset,
   displaySection,
   resetField,
-}: EditorProps<FormAndMessageBuilder>) {
+}: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
   function postToast({
@@ -131,6 +135,8 @@ export function Editor({
 
   const { isOpen: openFormTypeSetupModalIsOpen, onOpen: openFormTypeSetupModalOnOpen, onClose: openFormTypeSetupModalOnClose } = useDisclosure() //{ defaultIsOpen: true }
   const { isOpen: applicationCommandSetupModalIsOpen, onOpen: applicationCommandSetupModalOnOpen, onClose: applicationCommandSetupModalOnClose } = useDisclosure()
+
+  const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
 
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [isReading, setReading] = useState(false);
@@ -167,7 +173,7 @@ export function Editor({
 
     reader.onload = (e) => {
       if (typeof e.target?.result != "string") return CannotRead();
-      const json = JSON.parse(e.target.result) as FormAndMessageBuilder;
+      const json = JSON.parse(e.target.result) as FormAndOpenFormTypeBuilder;
 
       // Log for debugging purposes
       console.log(json);
@@ -458,7 +464,7 @@ export function Editor({
           Clear All
         </Button>
       </HStack>
-      <MessageBuilder
+      <OpenFormTypeBuilder
         {...{
           Defaults,
           getValues,
@@ -484,6 +490,8 @@ export function Editor({
           displayForm,
           setDisplayForm,
           fixMessage,
+          webhookUrlFocused,
+          webhookUrlSetFocused
         }}
       />
       <VStack width="100%" align="flex-start">
@@ -592,7 +600,7 @@ export function Editor({
         </Box>
       </VStack>
       {!isSmallScreen && <Footer />}</>
-    }
+    }    
     {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' mt={20} width='100%'>
         
         <Button variant='primary' onClick={() => setStage('openFormType')}>Start guided setup</Button>
@@ -600,7 +608,7 @@ export function Editor({
         <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
     </VStack></> }
     {stage === 'openFormType' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>How should users open your form?</Text>
-    <VStack align='center' mt={10} width='100%' gap={5}>
+    <VStack align='center' mt={10} width='100%' gap={10}>
       <VStack align='left'>
         <FormLabel fontSize={18}>Buttons</FormLabel>
         <Box>
@@ -684,14 +692,18 @@ export function Editor({
           <Text fontSize={12} color='#DBDEE1'>Supports 1 form per command.</Text>
         </Box>
       </VStack>
-      <Button variant='primary' onClick={() => {
-        switch(openFormType) {
-          case 'application_command': setStage('applicationCommand'); break;
-          default: setStage('editor')
-        }
-      }}>Continue</Button>
+      <HStack>
+        <Button variant='secondary' onClick={() => setStage('welcome')}>Go back</Button>
+        <Button variant='primary' onClick={() => {
+          switch(openFormType) {
+            case 'application_command': setStage('applicationCommand'); break;
+            case 'button': case 'select_menu': setStage('form'); break;
+            default: setStage('editor')
+          }
+        }}>Continue</Button>
+      </HStack>
     </VStack></> }
-    {stage === 'applicationCommand' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup your slash command</Text>
+    {stage === 'applicationCommand' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup slash command</Text>
     <VStack align='center' mt={5} width='100%' gap={5}>
       <Box  width='100%' maxWidth='350px'>
         <ApplicationCommandBuilder register={register} getValues={getValues} errors={formState.errors}/>
@@ -699,6 +711,39 @@ export function Editor({
       <HStack>
         <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
         <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+      </HStack>
+    </VStack></> }
+    {stage === 'message' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup webhook</Text>
+    <VStack align='center' mt={5} width='100%' gap={5}>
+      <Box  width='100%' maxWidth='500px'>
+        <MessageBuilder control={control} register={register} errors={formState.errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType}/>
+        <HStack marginBottom='8px' alignItems='flex-start'><ButtonBuilder register={register} index={0} fixMessage={fixMessage} getValues={getValues} errors={formState.errors} setValue={setValue} watch={watch}/></HStack>
+      </Box>
+      <HStack>
+        <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
+        <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+      </HStack>
+    </VStack></> }
+    {stage === 'webhook' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup webhook</Text>
+    <VStack align='center' mt={5} width='100%' gap={5}>
+      <Box  width='100%' maxWidth='500px'>
+        <MessageBuilder control={control} register={register} errors={formState.errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType}/>
+        <HStack marginBottom='8px' alignItems='flex-start'><ButtonBuilder register={register} index={0} fixMessage={fixMessage} getValues={getValues} errors={formState.errors} setValue={setValue} watch={watch}/></HStack>
+      </Box>
+      <HStack>
+        <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
+        <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+      </HStack>
+    </VStack></> }
+    {stage === 'form' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup form</Text>
+    <VStack align='center' mt={5} width='100%' gap={5}>
+      <Box  width='100%' maxWidth='500px'>
+      <FormTitleInput index={0} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors}/>
+      <TextInputBuilder compact id={`forms.${0}.modal.components`} nestIndex={0} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
+      </Box>
+      <HStack>
+        <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
+        <Button variant='primary' onClick={() => setStage('editor')}>Continue</Button>
       </HStack>
     </VStack></> }
     </VStack>

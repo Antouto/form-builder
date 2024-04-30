@@ -23,7 +23,7 @@ import { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { EmbedAuthor, Embed, EmbedFooter, FormAndMessageBuilder } from "../util/types";
+import { EmbedAuthor, Embed, EmbedFooter, FormAndOpenFormTypeBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
 import * as StaffAppForm from "../templates/StaffApp";
 import { FormDataResponse } from '../util/api';
@@ -34,7 +34,7 @@ import Preview from '../components/Preview';
 import Link from 'next/link';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
-const ClearedValues = _ClearedValues as FormAndMessageBuilder;
+const ClearedValues = _ClearedValues as FormAndOpenFormTypeBuilder;
 const $SwitchBackground = cssVar("switch-bg");
 
 const Defaults = {

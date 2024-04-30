@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { FormBuilder, FormMessageBuilder } from "../util/types";
+import { FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
 import { FormProfile } from "./Mention";
 import { PreviewStep } from "./PreviewStep";
 import { AVATAR_URL } from "../util/config";
@@ -27,7 +27,7 @@ function isEmpty(value: any) {
 }
 
 export interface PreviewProperties {
-  message: FormMessageBuilder;
+  message: FormOpenFormTypeBuilder;
   forms: FormBuilder[];
   select_menu_placeholder: string;
   displayForm: number;

@@ -16,10 +16,13 @@ import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
-import { FormAndMessageBuilder } from "../util/types";
+import { FormAndOpenFormTypeBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
 import { useColorMode } from "@chakra-ui/react";
 import Counter from "./Counter";
+import ButtonBuilder from "./ButtonBuilder";
+import WebhookURLInput from "./WebhookURLInput";
+import FormTitleInput from "./FormTitleInput";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -45,16 +48,16 @@ export default function FormBuilder({
   displayForm,
   setDisplayForm,
   //@ts-expect-error
-  fixMessage
-
-}: FormBuilderProperties<FormAndMessageBuilder>) {
+  fixMessage,
+  webhookUrlFocused,
+  webhookUrlSetFocused
+}: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms",
     rules: { minLength: 1 }
   });
 
-  const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
   const [serverSubmissionMessage, __setServerSubmissionMessage] = useState(['default'])
   const [dmSubmissionMessage, __setdmSubmissionMessage] = useState(['default'])
   const isSmallScreen = !useScreenWidth(1070);
@@ -210,24 +213,7 @@ export default function FormBuilder({
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
               <Collapsible name="General">
-                <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
-                  <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Webhook URL</Text>
-                  <Tooltip hasArrow label={
-                    'The webhook url to post submissions to. Keep this secret! You can create the webhook in channel settings, integrations tab for the channel you want to post the submission to.'
-                  } placement='right' shouldWrapChildren bg="#181414">
-                    <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
-                  </Tooltip>
-                </FormLabel>
-                <input
-                  {...register(`forms.${index}.webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/, onChange: () => fixMessage() })}
-                  id={`forms[${index}].webhook_url`}
-                  onFocus={() => webhookUrlSetFocused(true)}
-                  onBlur={() => webhookUrlSetFocused(false)}
-                  type={webhookUrlFocused ? 'text' : 'password'}
-                  placeholder='https://discord.com/api/webhooks/ ...'
-                  style={{ marginBottom: '8px' }}
-                />
-                <ErrorMessage error={errors.forms?.[index]?.webhook_url} />
+                <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/>
                 <HStack marginBottom='8px' alignItems='flex-start'>
                   {
                     watch('forms.0.select_menu_option') && <>
@@ -258,41 +244,11 @@ export default function FormBuilder({
                   }
 
                   {
-                    watch('forms.0.button') && <>
-                      <Box width={isSmallScreen ? '100%' : '50%'}>
-                        <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text>
-                          <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>
-                        </FormLabel>
-                        <input
-                          {...register(`forms.${index}.button.label`, { required: true, maxLength: 80, onChange: () => fixMessage() })}
-                          id={`forms[${index}].button.label`}
-                          placeholder='Open Form'
-                        />
-                        <ErrorMessage error={errors.forms?.[index]?.button?.label} />
-                      </Box>
-                      <Box>
-                        <FormLabel htmlFor={`forms[${index}].button.style`}><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Colour</Text></FormLabel>
-                        <HStack>
-                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'blurple' }} background={'blurple'} onClick={() => setValue(`forms.${index}.button.style`, 1)}>{watch(`forms.${index}.button.style`) === 1 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
-                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'grey.light' }} background={'grey.light'} onClick={() => setValue(`forms.${index}.button.style`, 2)}>{watch(`forms.${index}.button.style`) === 2 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
-                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'green' }} background={'green'} onClick={() => setValue(`forms.${index}.button.style`, 3)}>{watch(`forms.${index}.button.style`) === 3 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
-                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'red' }} background={'red'} onClick={() => setValue(`forms.${index}.button.style`, 4)}>{watch(`forms.${index}.button.style`) === 4 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
-                        </HStack>
-                      </Box>
-                    </>
+                    watch('forms.0.button') && <ButtonBuilder register={register} index={index} fixMessage={fixMessage} getValues={getValues} errors={errors} setValue={setValue} watch={watch}/>
                   }
                 </HStack>
 
-                <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'>
-                  <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text>
-                  <Counter count={getValues('forms')[index]?.modal.title?.length} max={45} />
-                </FormLabel>
-                <input
-                  {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
-                  id={`forms[${index}].modal.title`}
-                  style={{ marginBottom: '8px' }}
-                />
-                <ErrorMessage error={errors.forms?.[index]?.modal?.title} />
+                <FormTitleInput index={index} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors}/>
               </Collapsible >
               <hr />
               <Collapsible name="Text Inputs">

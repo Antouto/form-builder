@@ -49,7 +49,9 @@ export default function FormBuilder({
   setDisplayForm,
   //@ts-expect-error
   fixMessage,
+    //@ts-expect-error
   webhookUrlFocused,
+    //@ts-expect-error
   webhookUrlSetFocused
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({

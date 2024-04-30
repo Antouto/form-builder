@@ -2,6 +2,8 @@ import React from 'react'
 import { VStack, FormLabel, Box } from '@chakra-ui/react'
 import EmbedBuilder from './EmbedBuilder'
 
+  //@ts-expect-error
+
 export default function MessageBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage, openFormType }) {
   return (
     <VStack align="flex-start" width="100%" marginBottom="8px">

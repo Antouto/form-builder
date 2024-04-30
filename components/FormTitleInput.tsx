@@ -3,6 +3,7 @@ import React from 'react'
 import Counter from './Counter'
 import ErrorMessage from './ErrorMessage'
 
+  //@ts-expect-error
 export default function FormTitleInput({ index, register, getValues, fixMessage, errors }) {
   const colorMode = useColorMode().colorMode
 

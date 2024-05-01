@@ -33,6 +33,7 @@ export interface PreviewProperties {
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
   displaySection: boolean;
+  stage: string;
 }
 
 function Preview({
@@ -44,6 +45,7 @@ function Preview({
   displayForm,
   setDisplayForm,
   displaySection,
+  stage
 }: PreviewProperties) {
   const { colorMode } = useColorMode();
   const defaultValues = {
@@ -190,6 +192,7 @@ function Preview({
         {(forms?.[0].button || forms?.[0].select_menu_option) && (
           <PreviewStep
             number={1}
+            highlighted={stage === 'openFormType'}
             title={`A message with ${
               forms?.[0].button ? "buttons" : "a select menu"
             } to open forms is sent to a channel`}
@@ -442,6 +445,7 @@ function Preview({
                     : "the slash command"
                 }`
           }
+          highlighted={stage === 'form'}
         >
           <Box
             display="flex"

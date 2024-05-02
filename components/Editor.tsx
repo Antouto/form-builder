@@ -25,7 +25,9 @@ import {
   Spinner,
   Text,
   FormLabel,
-  useDisclosure
+  useDisclosure,
+  Link,
+  Divider
 } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
@@ -312,7 +314,6 @@ export function Editor({
         break;
       case "select_menu":
         resetField("application_command");
-        resetField("message");
         if (setContent) {
           setTimeout(
             () => setValue("message", { content: "Fill out the form below" }),
@@ -332,6 +333,10 @@ export function Editor({
         });
         break;
       case "application_command":
+        setValue('message', undefined)
+        setTimeout(() => {
+          resetField("message");
+        }, 1);
         getValues("forms").forEach((form, i) => {
           setValue(`forms.${i}.select_menu_option`, undefined);
           resetField(`forms.${i}.select_menu_option`);
@@ -698,7 +703,6 @@ export function Editor({
           switch(openFormType) {
             case 'application_command': setStage('applicationCommand'); break;
             case 'button': case 'select_menu': setStage('form'); break;
-            default: setStage('editor')
           }
         }}>Continue</Button>
       </HStack>
@@ -713,17 +717,7 @@ export function Editor({
         <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('form')}>Continue</Button>
       </HStack>
     </VStack></> }
-    {stage === 'message' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup webhook</Text>
-    <VStack align='center' mt={5} width='100%' gap={5}>
-      <Box  width='100%' maxWidth='500px'>
-        <MessageBuilder control={control} register={register} errors={formState.errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType}/>
-        <HStack marginBottom='8px' alignItems='flex-start'><ButtonBuilder register={register} index={0} fixMessage={fixMessage} getValues={getValues} errors={formState.errors} setValue={setValue} watch={watch}/></HStack>
-      </Box>
-      <HStack>
-        <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
-        <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('editor')}>Continue</Button>
-      </HStack>
-    </VStack></> }
+
     {stage === 'webhook' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup webhook</Text>
     <VStack align='center' mt={5} width='100%' gap={5}>
       <Box  width='100%' maxWidth='500px'>
@@ -743,63 +737,58 @@ export function Editor({
       </Box>
       <HStack>
         <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
-        <Button variant='primary' isDisabled={!getValues('forms.0')?.modal?.title || (getValues('forms.0')?.modal?.components[0] ? !getValues('forms.0')?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[1] ? !getValues('forms.0')?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[2] ? !getValues('forms.0')?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[3] ? !getValues('forms.0')?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[4] ? !getValues('forms.0')?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+        <Button variant='primary' isDisabled={!getValues('forms.0')?.modal?.title || (getValues('forms.0')?.modal?.components[0] ? !getValues('forms.0')?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[1] ? !getValues('forms.0')?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[2] ? !getValues('forms.0')?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[3] ? !getValues('forms.0')?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[4] ? !getValues('forms.0')?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms?.[0]?.modal ? true : false} onClick={() => setStage('submissions')}>Continue</Button>
       </HStack>
     </VStack></> }
-    {stage === 'addToServer' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Add the form to your server</Text>
+    {stage === 'submissions' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text>
     <VStack align='center' mt={5} width='100%' gap={5}>
       <Box  width='100%' maxWidth='500px'>
+      Create a webhook in the channel you want submissions to be sent to.<br/><br/>
+      <WebhookURLInput index={0} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/>
+      <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br/><br/></Text>
+      In the webhooks settings you can customise the name and avatar of your submissions.
+      </Box>
+      <HStack>
+        <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>
+        <Button variant='primary' isDisabled={!getValues('forms.0')?.webhook_url || formState.errors.forms ? true : false} onClick={() => setStage('finishOrContinue')}>Continue</Button>
+      </HStack>
+    </VStack></> }
+    {stage === 'finishOrContinue' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Done</Text>
+    <VStack align='center' mt={5} width='100%' gap={5}>
+      <Box  width='100%' maxWidth='500px'>
+      <Text fontSize={20} fontFamily='Whitney Bold'>Continue Customising</Text>
+      <Text mb={2}>Add more forms, edit the message, add placeholders and more!</Text>
+      <Button mb={5} variant='primary' onClick={() => setStage('editor')}>Open Editor</Button>
+      <Box display='flex' justifyContent='center' alignItems='center'>
+        <Divider bg='grey'/>
+        <Text mx={4} fontSize={18}>or</Text>
+        <Divider bg='grey'/>
+      </Box>
+      <Text fontSize={20} fontFamily='Whitney Bold'>Finish</Text>  
+      <Text mb={2}>On the forms bot run <SlashCommand>form create</SlashCommand> and upload the JSON configuration file.</Text>
       <HStack alignItems="flex-start">
+      
+      
+      <HStack>
+      
+            <Link href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309440&scope=bot+applications.commands' target='_blank' rel='noopener noreferrer'><Button variant='success'>Invite Forms</Button></Link>
             <Button
               variant="success"
-              //@ts-expect-error
-              isDisabled={
-                !formState.isValid ||
-                watch("forms").length >
-                  (watch("application_command")
-                    ? 1
-                    : getValues("message") &&
-                      getValues("forms.0.select_menu_option")
-                    ? 25
-                    : 5) ||
-                (getValues("message.embeds")?.length &&
-                  (() => {
-                    const embeds = getValues("message.embeds");
-                    if (embeds != undefined) {
-                      for (const {
-                        title,
-                        description,
-                        author,
-                        footer,
-                      } of embeds) {
-                        if (
-                          !(
-                            title ||
-                            description ||
-                            author?.name ||
-                            footer?.text
-                          )
-                        )
-                          return true;
-                      }
-                    }
-                  })())
-              }
+              disabled={!formState.isValid}
               onClick={() => {
                 handleLoad();
                 downloadForm();
               }}
               width={225}
-              // bgColor={loading ? "#215b32" : undefined}
             >
               {!loading && "Download Configuration File"}
               {loading && <Spinner size="sm" />}
             </Button>
           </HStack>
+          </HStack>
       </Box>
       <HStack>
-        <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>
-        <Button variant='primary' isDisabled={!getValues('forms.0')?.modal?.title || (getValues('forms.0')?.modal?.components[0] ? !getValues('forms.0')?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[1] ? !getValues('forms.0')?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[2] ? !getValues('forms.0')?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[3] ? !getValues('forms.0')?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[4] ? !getValues('forms.0')?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms ? true : false} onClick={() => setStage('editor')}>Continue</Button>
+        <Button variant='secondary' onClick={() => setStage('submissions')}>Go back</Button>
       </HStack>
     </VStack></> }
     </VStack>

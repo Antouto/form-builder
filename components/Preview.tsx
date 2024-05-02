@@ -569,6 +569,7 @@ function Preview({
         <PreviewStep
           number={forms?.[0].button || forms?.[0].select_menu_option ? 3 : 2}
           title="The submission is sent to a channel"
+          highlighted={stage === 'submissions'}
         >
           <Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}

@@ -24,7 +24,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
     <>
       {fields.map((item, iii) => {
         const button = getValues(`forms[${i}].submit_components.${ii}.components.${iii}`)
-        return <Collapsible name={`Button ${iii + 1}${button?.label && button?.label.match(/\S/) ? ` – ${button?.label}` : ''}`} deleteButton={<CloseButton onClick={() => { remove(iii); }} />}>
+        return <Collapsible key={item.id} name={`Button ${iii + 1}${button?.label && button?.label.match(/\S/) ? ` – ${button?.label}` : ''}`} deleteButton={<CloseButton onClick={() => { remove(iii); }} />}>
           <HStack><ButtonBuilder forButton={`forms[${i}].submit_components.${ii}.components.${iii}`} error={errors.forms?.[i]?.submit_components?.[ii]?.components[iii]?.label} button={button} register={register} setValue={setValue} watch={watch} fix={() => { }} /></HStack>
         </Collapsible>
       })}

@@ -21,7 +21,7 @@ export default function ActionRowBuilder({ control, i, getValues, setValue, rese
   return (
     <>
       {fields.map((item, ii) =>
-        <Collapsible name={`Action Row ${ii + 1}`} deleteButton={<CloseButton onClick={() => { remove(ii); }} />}>
+        <Collapsible key={item.id} name={`Action Row ${ii + 1}`} deleteButton={<CloseButton onClick={() => { remove(ii); }} />}>
           <SubmitComponentsBuilder i={i} ii={ii}  control={control} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} />
         </Collapsible>
       )}

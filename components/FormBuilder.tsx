@@ -23,6 +23,8 @@ import Counter from "./Counter";
 import ButtonBuilder from "./ButtonBuilder";
 import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
+import SubmitComponentsBuilder from "./SubmitComponentsBuilder";
+import ActionRowBuilder from "./ActionRowBuilder";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -246,7 +248,7 @@ export default function FormBuilder({
                   }
 
                   {
-                    watch('forms.0.button') && <ButtonBuilder register={register} index={index} fixMessage={fixMessage} getValues={getValues} errors={errors} setValue={setValue} watch={watch}/>
+                    watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch}/>
                   }
                 </HStack>
 
@@ -257,11 +259,11 @@ export default function FormBuilder({
                 <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
               </Collapsible>
               <hr />
-              <Collapsible name="Submission & Conformation Messages">
+              <Collapsible name="Submission & Confirmation Messages">
                 <VStack align={'flex-start'}>
                 <HStack>
                   <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
-                  <Text>This section is still in developement and currently only supports the message content</Text>
+                  <Text>This section is still in development and currently only supports the message content</Text>
                 </HStack>
                 <HStack><Text>Use variables to add the response content to your message:</Text><Link color='#00b0f4' href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940#variables" isExternal>Show Variables</Link></HStack>
                   <HStack justifyContent='space-between' width='100%'>
@@ -343,6 +345,8 @@ export default function FormBuilder({
                     />
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                   </Box>}
+                  {/* <FormLabel>Submission Buttons</FormLabel> 
+                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch}/> */}
                 </VStack>
               </Collapsible>
             </Collapsible >

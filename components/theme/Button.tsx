@@ -25,6 +25,12 @@ export const Button: ComponentTheme<ButtonProps> = {
             _disabled: { _hover: { bg: 'green!important' }},
             _hover: { bg: '#215b32' }
         },
+        'success-outline': {
+            bg: 'transparent',
+            border: '2px solid #2d7d46',
+            _disabled: { _hover: { border: '2px solid #2d7d46!important' }},
+            _hover: { bg: '#2d7d46' }
+        },
         danger: {
             bg: '#ED4245',
             _disabled: { _hover: { bg: '#ED4245!important' }},

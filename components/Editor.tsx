@@ -603,8 +603,7 @@ export function Editor({
             <SlashCommand>form create</SlashCommand> command on the{" "}
             <UserMention isFormsBot>Forms</UserMention> bot.
           </Box>
-        </VStack>
-        {!isSmallScreen && <Footer />}</>
+        </VStack></>
         }
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' mt={20} width='100%'>
 

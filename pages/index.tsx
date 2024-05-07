@@ -39,7 +39,6 @@ export default function App() {
     })
     setValue('forms', [
       {
-        "webhook_url": "",
         "button": {
           "label": "Open Form",
           "style": 1

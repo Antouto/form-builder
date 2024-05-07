@@ -25,6 +25,7 @@ import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
 import SubmitComponentsBuilder from "./SubmitComponentsBuilder";
 import ActionRowBuilder from "./ActionRowBuilder";
+import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -217,7 +218,9 @@ export default function FormBuilder({
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
               <Collapsible name="General">
-                <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/>
+                {/* <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/> */}
+                <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage}/>
+
                 <HStack marginBottom='8px' alignItems='flex-start'>
                   {
                     watch('forms.0.select_menu_option') && <>
@@ -361,7 +364,6 @@ export default function FormBuilder({
           onClick={() => {
             setDisplayForm(fields.length)
             append({
-              webhook_url: '',
               button: {
                 label: '',
                 style: 1

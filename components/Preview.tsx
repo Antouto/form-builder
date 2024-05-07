@@ -212,8 +212,6 @@ function Preview({
               >
                 <Image
                   alt="Form's Avatar"
-                  onClick={HandleInteraction}
-                  cursor="pointer"
                   src={AVATAR_URL}
                   style={{
                     width: "40px",
@@ -232,7 +230,6 @@ function Preview({
               <Box>
                 <Box display="flex" alignItems="center">
                   <Text
-                    onClick={HandleInteraction}
                     fontFamily="Whitney Bold"
                     _hover={{ textDecoration: "underline" }}
                     cursor="pointer"
@@ -249,7 +246,7 @@ function Preview({
                   >
                     <Tooltip
                       hasArrow
-                      label={<Box>Verified Bot</Box>}
+                      label={<Box>Verified App</Box>}
                       placement="top"
                       bg="#181414"
                     >
@@ -577,34 +574,69 @@ function Preview({
             p={4}
           >
             <Box display="flex">
-              <Image
-                alt="Default Avatar"
-                _hover={{ cursor: "pointer" }}
-                src="https://cdn.discordapp.com/embed/avatars/1.png"
-                width="40px"
-                height="40px"
-                clipPath="circle(50%)"
-                mt="5px"
-                mr="16px"
-              />
+            <FormProfile
+                {...{
+                  avatar: AVATAR_URL,
+                  hidden: FormsProfileHidden,
+                  HandleInteraction,
+                }}
+              >
+                <Image
+                  alt="Form's Avatar"
+                  src={AVATAR_URL}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    clipPath: "circle(50%)",
+                    marginTop: "5px",
+                    marginRight: "16px",
+                  }}
+                  width="40px"
+                  height="40px"
+                  clipPath="circle(50%)"
+                  mt="5px"
+                  mr="16px"
+                />
+              </FormProfile>
               <Box>
                 <Box display="flex" alignItems="center">
                   <Text
                     fontFamily="Whitney Bold"
                     _hover={{ textDecoration: "underline", cursor: "pointer" }}
                   >
-                    Webhook
+                    Forms
                   </Text>
                   <Box
                     display="flex"
                     backgroundColor="#5865F2"
-                    color="white"
                     borderRadius=".1875rem"
                     ml="4px"
                     height=".9375rem"
-                    p="0px 4px 0px 5px"
+                    width="39px"
                   >
-                    <Text fontFamily="Whitney Bold" fontSize=".625rem">
+                    <Tooltip
+                      hasArrow
+                      label={<Box>Verified App</Box>}
+                      placement="top"
+                      bg="#181414"
+                    >
+                      <svg
+                        color="white"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 15.2"
+                      >
+                        <path
+                          d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
+                    </Tooltip>
+                    <Text
+                      fontFamily="Whitney Bold"
+                      fontSize=".625rem"
+                      textColor="white"
+                    >
                       APP
                     </Text>
                   </Box>

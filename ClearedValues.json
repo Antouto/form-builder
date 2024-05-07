@@ -4,7 +4,6 @@
   },
   "forms": [
     {
-      "webhook_url": "",
       "button": {
         "label": "",
         "style": 1

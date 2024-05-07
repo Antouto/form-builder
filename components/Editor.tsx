@@ -58,6 +58,7 @@ import ButtonBuilder from "./ButtonBuilder";
 import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
 import TextInputBuilder from "./TextInputBuilder";
+import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 
 
 
@@ -730,20 +731,22 @@ export function Editor({
         {stage === 'submissions' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text>
           <VStack align='center' mt={5} width='100%' gap={5}>
             <Box width='100%' maxWidth='500px'>
-              Create a webhook in the channel you want submissions to be sent to.<br /><br />
+              {/* Create a webhook in the channel you want submissions to be sent to.<br /><br />
               <WebhookURLInput index={0} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>
-              In the webhooks settings you can customise the name and avatar of your submissions.
+              In the webhooks settings you can customise the name and avatar of your submissions. */}
+              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} fixMessage={fixMessage}/>
+              <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br/> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>
-              <Button variant='primary' isDisabled={!getValues('forms.0')?.webhook_url || formState.errors.forms ? true : false} onClick={() => setStage('finishOrContinue')}>Continue</Button>
+              <Button variant='primary' isDisabled={!getValues('forms.0')?.submit_channel_id || formState.errors.forms ? true : false} onClick={() => setStage('finishOrContinue')}>Continue</Button>
             </HStack>
           </VStack></>}
         {stage === 'finishOrContinue' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Done</Text>
           <VStack align='center' mt={5} width='100%' gap={5}>
             <Box width='100%' maxWidth='500px'>
-              <Text fontSize={20} fontFamily='Whitney Bold'>Continue Customising</Text>
+              <Text fontSize={20} fontFamily='Whitney Bold'>Continue to advanced customisation</Text>
               <Text mb={2}>Add more forms, edit the message, add placeholders and more!</Text>
               <Button mb={5} variant='primary' onClick={() => setStage('editor')}>Open Editor</Button>
               <Box display='flex' justifyContent='center' alignItems='center'>

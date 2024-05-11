@@ -27,7 +27,11 @@ import {
   FormLabel,
   useDisclosure,
   Link,
-  Divider
+  Divider,
+  Switch,
+  Flex,
+  Tooltip,
+  Stack
 } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
@@ -59,6 +63,8 @@ import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
 import TextInputBuilder from "./TextInputBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
+import { IoInformationCircle } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 
 
@@ -140,6 +146,18 @@ export function Editor({
   }
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
+  const [submissionType, _setSubmissionType] = useState(['bot'])
+  const [premium, _setPremium] = useState(false);
+
+  function setPremium(value: any) {
+    _setPremium(value)
+    if (!value) {
+      _setSubmissionType(submissionType.map((value, i) => {
+        resetField(`forms.${i}.webhook_url`);
+        return 'bot';
+      }))
+    }
+  }
 
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [isReading, setReading] = useState(false);
@@ -211,9 +229,18 @@ export function Editor({
         // incase of a button modal and a select menu modal
         let buttons = 0;
         let menus = 0;
-        json.forms.forEach((form) => {
+        json.forms.forEach((form, i) => {
           if (form.select_menu_option != null) menus++;
           if (form.button != null) buttons++;
+          if (form.webhook_url) setPremium(true)
+
+
+          if (i === 0) {
+            setSubmissionType('edit', form.webhook_url ? 'webhook_url' : 'bot', i)
+          } else {
+            //@ts-expect-error
+            setSubmissionType('append', form.webhook_url ? 'webhook_url' : 'bot')
+          }
         });
 
         if (buttons < menus) {
@@ -288,6 +315,31 @@ export function Editor({
   const isReallySmallScreen = !useScreenWidth(500);
 
   const [openFormType, _setOpenFormType] = useState("button");
+
+
+  function setSubmissionType(type: string, value: string, index: number) {
+    let newSubmissionType = submissionType
+    switch (type) {
+      case 'edit': {
+        newSubmissionType[index] = value
+        _setSubmissionType(newSubmissionType)
+        switch (value) {
+          case 'bot': resetField(`forms.${index}.webhook_url`); break;
+          case 'webhook': resetField(`forms.${index}.submit_channel_id`); break;
+        }
+        break;
+      }
+      case 'append': {
+        newSubmissionType.push(value)
+        break;
+      }
+      case 'delete': {
+        //@ts-expect-error
+        newSubmissionType.splice(value, 1)
+        break;
+      }
+    }
+  }
 
   const setOpenFormType = (type: string, setContent = true) => {
     _setOpenFormType(type);
@@ -439,37 +491,55 @@ export function Editor({
         height="calc(100vh - 48px);"
         display={displaySection ? "flex" : "none"}
       >{stage === 'editor' && <>
-        <HStack>
-          <Button
-            onClick={() => {
-              if (fileInput == null) {
-                return postToast({
-                  title: "Something didn't go right.",
-                  style: ToastStyles.Error,
-                });
-              } else fileInput.click();
-            }}
-            variant="secondary"
-            isLoading={isReading}
-          >
-            Upload JSON
-          </Button>
-          <Input
-            id="json"
-            type="file"
-            accept=".json"
-            display="none"
-            onChange={ReadFile}
-            ref={(input) => {
-              if (input != null) {
-                setFileInput(input);
-              }
-            }}
-          />
-          <Button variant="danger-outline" onClick={() => reset(ClearedValues)}>
-            Clear All
-          </Button>
-        </HStack>
+        <Stack direction={isReallySmallScreen ? 'column' : 'row'} justifyContent='space-between' width='100%'>
+          <HStack>
+            <Button
+              onClick={() => {
+                if (fileInput == null) {
+                  return postToast({
+                    title: "Something didn't go right.",
+                    style: ToastStyles.Error,
+                  });
+                } else fileInput.click();
+              }}
+              variant="secondary"
+              isLoading={isReading}
+            >
+              Upload JSON
+            </Button>
+            <Input
+              id="json"
+              type="file"
+              accept=".json"
+              display="none"
+              onChange={ReadFile}
+              ref={(input) => {
+                if (input != null) {
+                  setFileInput(input);
+                }
+              }}
+            />
+            <Button variant="danger-outline" onClick={() => {
+              reset(ClearedValues)
+              _setSubmissionType(['bot'])
+            }}>
+              Clear All
+            </Button>
+          </HStack>
+          <HStack border='2px solid #1C5CBE' backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' borderRadius={8} p={2}>
+            <Switch
+              variant='green'
+              onChange={(event) => setPremium(event.target.checked)}
+              isChecked={premium}
+            />
+            <Text>Use premium features</Text>
+            <Tooltip hasArrow label={
+              'Forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile. Enables the use of webhook urls.'
+            } placement='right' shouldWrapChildren bg="#181414">
+              <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
+            </Tooltip>
+          </HStack>
+        </Stack>
         <OpenFormTypeBuilder
           {...{
             Defaults,
@@ -497,7 +567,10 @@ export function Editor({
             setDisplayForm,
             fixMessage,
             webhookUrlFocused,
-            webhookUrlSetFocused
+            webhookUrlSetFocused,
+            premium,
+            submissionType,
+            setSubmissionType
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -735,8 +808,8 @@ export function Editor({
               <WebhookURLInput index={0} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>
               In the webhooks settings you can customise the name and avatar of your submissions. */}
-              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} fixMessage={fixMessage}/>
-              <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br/> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
+              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} fixMessage={fixMessage} />
+              <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>

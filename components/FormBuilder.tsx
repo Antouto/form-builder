@@ -37,6 +37,7 @@ export interface FormBuilderProperties<T extends FieldValues> {
   resetField: UseFormResetField<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
+  premium: boolean;
 }
 
 export default function FormBuilder({
@@ -52,10 +53,15 @@ export default function FormBuilder({
   setDisplayForm,
   //@ts-expect-error
   fixMessage,
-    //@ts-expect-error
+  //@ts-expect-error
   webhookUrlFocused,
-    //@ts-expect-error
-  webhookUrlSetFocused
+  //@ts-expect-error
+  webhookUrlSetFocused,
+  premium,
+  //@ts-expect-error
+  submissionType,
+  //@ts-expect-error
+  setSubmissionType
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -68,7 +74,6 @@ export default function FormBuilder({
   const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode
 
-  
   function _setServerSubmissionMessage(value: string, index: number) {
     const array = serverSubmissionMessage.slice();
     array[index] = value;
@@ -87,22 +92,22 @@ export default function FormBuilder({
     _setServerSubmissionMessage(value, index)
     console.log('_setServerSubmissionMessage')
 
-    switch(value) {
+    switch (value) {
       case 'default': {
         resetField(`forms.${index}.guild_submit_message`);
-        if(serverSubmissionMessage[index] === 'same_as_dm') {
+        if (serverSubmissionMessage[index] === 'same_as_dm') {
           setValue(`forms.${index}.dm_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
           _setServerSubmissionMessage('default', index);
           console.log('_setdmSubmissionMessage')
         }
-        if(dmSubmissionMessage[index] === 'same_as_server') {
+        if (dmSubmissionMessage[index] === 'same_as_server') {
           resetField(`forms.${index}.submit_message`);
           _setdmSubmissionMessage('default', index)
         }
         break;
       } case 'custom': {
-        if(serverSubmissionMessage[index] === 'same_as_dm') {
+        if (serverSubmissionMessage[index] === 'same_as_dm') {
           setValue(`forms.${index}.dm_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
         }
@@ -114,7 +119,7 @@ export default function FormBuilder({
         resetField(`forms.${index}.dm_submit_message`)
         resetField(`forms.${index}.guild_submit_message`)
         break;
-      } 
+      }
     }
     fixSubmissionMessage(index);
     fixdmSubmissionMessage(index);
@@ -123,22 +128,22 @@ export default function FormBuilder({
 
   function setdmSubmissionMessage(value: string, index: number) {
     _setdmSubmissionMessage(value, index)
-    switch(value) {
+    switch (value) {
       case 'default': {
         resetField(`forms.${index}.dm_submit_message`);
-        if(dmSubmissionMessage[index] === 'same_as_server') {
+        if (dmSubmissionMessage[index] === 'same_as_server') {
           setValue(`forms.${index}.guild_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
           _setdmSubmissionMessage('default', index);
           console.log('_setServerSubmissionMessage')
         }
-        if(serverSubmissionMessage[index] === 'same_as_dm') {
+        if (serverSubmissionMessage[index] === 'same_as_dm') {
           resetField(`forms.${index}.submit_message`);
           _setServerSubmissionMessage('default', index)
         }
         break;
       } case 'custom': {
-        if(dmSubmissionMessage[index] === 'same_as_server') {
+        if (dmSubmissionMessage[index] === 'same_as_server') {
           setValue(`forms.${index}.guild_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
         }
@@ -152,13 +157,13 @@ export default function FormBuilder({
         break;
       }
       case 'off': {
-        if(dmSubmissionMessage[index] === 'same_as_server') {
+        if (dmSubmissionMessage[index] === 'same_as_server') {
           setValue(`forms.${index}.guild_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
         }
         //@ts-expect-error
         setValue(`forms.${index}.dm_submit_message`, null);
-        if(serverSubmissionMessage[index] === 'same_as_dm') {
+        if (serverSubmissionMessage[index] === 'same_as_dm') {
           resetField(`forms.${index}.submit_message`);
           _setServerSubmissionMessage('default', index);
           console.log('_setServerSubmissionMessage')
@@ -179,24 +184,24 @@ export default function FormBuilder({
   }
 
   function fixServerSubmissionMessage(index: number) {
-    if(!getValues(`forms.${index}.guild_submit_message`)) return;
+    if (!getValues(`forms.${index}.guild_submit_message`)) return;
     //@ts-expect-error
     const { content } = getValues(`forms.${index}.guild_submit_message`)
-    if(!content) resetField(`forms.${index}.guild_submit_message`);
+    if (!content) resetField(`forms.${index}.guild_submit_message`);
   }
 
   function fixdmSubmissionMessage(index: number) {
-    if(!getValues(`forms.${index}.dm_submit_message`)) return;
+    if (!getValues(`forms.${index}.dm_submit_message`)) return;
     //@ts-expect-error
     const { content } = getValues(`forms.${index}.dm_submit_message`)
-    if(!content) resetField(`forms.${index}.dm_submit_message`);
+    if (!content) resetField(`forms.${index}.dm_submit_message`);
   }
 
   function fixSubmissionMessage(index: number) {
-    if(!getValues(`forms.${index}.submit_message`)) return;
+    if (!getValues(`forms.${index}.submit_message`)) return;
     //@ts-expect-error
     const { content } = getValues(`forms.${index}.submit_message`)
-    if(!content) resetField(`forms.${index}.submit_message`);
+    if (!content) resetField(`forms.${index}.submit_message`);
   }
 
   return (
@@ -215,11 +220,38 @@ export default function FormBuilder({
               let newdmSubmissionMessage = dmSubmissionMessage;
               newdmSubmissionMessage.splice(index, 1);
               __setdmSubmissionMessage(newdmSubmissionMessage)
+
+              setSubmissionType('delete')
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
               <Collapsible name="General">
-                {/* <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/> */}
-                <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage}/>
+
+                {premium &&
+                  <HStack borderRadius={4} px={3} py={1} backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'>
+                    <FormLabel whiteSpace="nowrap" m={0}>
+                      Send submissions using
+                    </FormLabel>
+                    <Select
+                      height="24px!important"
+                      width='fit-content'
+                      borderWidth="2px"
+                      borderColor="transparent"
+                      borderRadius="4px"
+                      bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
+                      _focus={{ borderWidth: "2px", borderColor: "blurple" }}
+                      _hover={{ borderColor: "transparent" }}
+                      onChange={(event) => {
+                        setSubmissionType('edit', event.target.value, index)
+                      }}
+                      value={submissionType[index]}
+                    >
+                      <option value="bot">Forms Bot</option>
+                      <option value="webhook">Webhook</option>
+                    </Select>
+                  </HStack>
+                }
+                {submissionType[index] === 'bot'  && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} /> }
+                {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/> }
 
                 <HStack marginBottom='8px' alignItems='flex-start'>
                   {
@@ -251,11 +283,11 @@ export default function FormBuilder({
                   }
 
                   {
-                    watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch}/>
+                    watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} />
                   }
                 </HStack>
 
-                <FormTitleInput index={index} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors}/>
+                <FormTitleInput index={index} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
               </Collapsible >
               <hr />
               <Collapsible name="Text Inputs">
@@ -264,11 +296,11 @@ export default function FormBuilder({
               <hr />
               <Collapsible name="Submission & Confirmation Messages">
                 <VStack align={'flex-start'}>
-                <HStack>
-                  <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
-                  <Text>This section is still in development and currently only supports the message content</Text>
-                </HStack>
-                <HStack><Text>Use variables to add the response content to your message:</Text><Link color='#00b0f4' href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940#variables" isExternal>Show Variables</Link></HStack>
+                  <HStack>
+                    <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
+                    <Text>This section is still in development and currently only supports the message content</Text>
+                  </HStack>
+                  <HStack><Text>Use variables to add the response content to your message:</Text><Link color='#00b0f4' href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940#variables" isExternal>Show Variables</Link></HStack>
                   <HStack justifyContent='space-between' width='100%'>
                     <FormLabel whiteSpace='nowrap' m={0}>Server Submission Message</FormLabel>
                     <Select
@@ -308,8 +340,8 @@ export default function FormBuilder({
                     />
                     <ErrorMessage error={errors.forms?.[index]?.guild_submit_message?.content} />
                   </Box>}
-                  <HStack justifyContent='space-between'  width='100%'>
-                    <FormLabel whiteSpace='nowrap' m={0}>DM Conformation Message</FormLabel>
+                  <HStack justifyContent='space-between' width='100%'>
+                    <FormLabel whiteSpace='nowrap' m={0}>DM Confirmation Message</FormLabel>
                     <Select
                       height='24px!important'
                       maxWidth='155px'
@@ -387,6 +419,8 @@ export default function FormBuilder({
             })
             serverSubmissionMessage.push('default')
             dmSubmissionMessage.push('default')
+            setSubmissionType('append', 'bot')
+
             fixMessage()
           }}
         >

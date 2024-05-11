@@ -82,6 +82,19 @@ const theme = extendTheme({
           },
           [$SwitchBackground.variable]: colours.disabled,
         }
+      },
+      variants: {
+        green: {
+          track: {
+            _checked: {
+              [$SwitchBackground.variable]: colours.green,
+              _dark: {
+                [$SwitchBackground.variable]: colours.green,
+              },
+            },
+            [$SwitchBackground.variable]: colours.disabled,
+          }
+        }
       }
     },
     Input: { defaultProps: { variant: 'normal' } },

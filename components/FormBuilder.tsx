@@ -71,7 +71,8 @@ export default function FormBuilder({
 
   const [serverSubmissionMessage, __setServerSubmissionMessage] = useState(['default'])
   const [dmSubmissionMessage, __setdmSubmissionMessage] = useState(['default'])
-  const isSmallScreen = !useScreenWidth(1070);
+  const isSmallScreen = !useScreenWidth(1240);
+  const isReallySmallScreen = !useScreenWidth(400);
   const colorMode = useColorMode().colorMode
 
   function _setServerSubmissionMessage(value: string, index: number) {
@@ -227,53 +228,37 @@ export default function FormBuilder({
               <Collapsible name="General">
 
                 {premium &&
-                  <HStack borderRadius={4} px={3} py={1} backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'>
+                  <HStack>
                     <FormLabel whiteSpace="nowrap" m={0}>
                       Send submissions using
                     </FormLabel>
                     <Select
+                      backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'
                       height="24px!important"
                       width='fit-content'
                       borderWidth="2px"
                       borderColor="transparent"
                       borderRadius="4px"
-                      bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
-                      _focus={{ borderWidth: "2px", borderColor: "blurple" }}
+                      border='1px solid rgba(255, 255, 255, 0.16)'
+                      // bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
+                      _focus={{ outline: 'none' }}
+                      _focusVisible={{ outline: 'none' }}
                       _hover={{ borderColor: "transparent" }}
                       onChange={(event) => {
                         setSubmissionType('edit', event.target.value, index)
                       }}
                       value={submissionType[index]}
                     >
-                      <option value="bot">Forms Bot</option>
+                      <option value="bot">Bot</option>
                       <option value="webhook">Webhook</option>
                     </Select>
                   </HStack>
                 }
                 {submissionType[index] === 'bot' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
-                {premium && <>
-                  <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown in seconds (Use 0 for infinity or leave blank to turn off)</Text></FormLabel>
-                  <NumberInput min={0}>
-                    <NumberInputField backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
-                      setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
-                    }} />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper onClick={() => {
-                        const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
-                        //@ts-expect-error
-                        const newValue = currentValue ? parseInt(currentValue) + 1 : 1; // Increment value
-                        setValue(`forms.${index}.cooldown`, newValue); // Update form field value
-                      }} />
-                      <NumberDecrementStepper onClick={() => {
-                        const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
-                        //@ts-expect-error
-                        const newValue = currentValue ? parseInt(currentValue) - 1 : 0; // Decrement value
-                        setValue(`forms.${index}.cooldown`, newValue >= 0 ? newValue : 0); // Update form field value
-                      }} />
-                    </NumberInputStepper>
-                  </NumberInput></>}
-                <HStack marginBottom='8px' alignItems='flex-start'>
+
+                <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>
+                  <Stack direction={isReallySmallScreen ? 'column' : 'row'}>
                   {
                     watch('forms.0.select_menu_option') && <>
                       <Box width='100%'>
@@ -305,7 +290,31 @@ export default function FormBuilder({
                   {
                     watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} />
                   }
-                </HStack>
+                  </Stack>
+
+
+                  {premium && <Box width={isSmallScreen ? '100%' : '40%'}>
+                    <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (seconds)</Text></FormLabel>
+                    <NumberInput min={0} >
+                      <NumberInputField _focusVisible={{ boxShadow: 'inset 0 0 0 2px #5865F2', border: 'none' }} height='36px' placeholder="OFF, Use 0 for Infinity" backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
+                        setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
+                      }} />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper onClick={() => {
+                          const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
+                          //@ts-expect-error
+                          const newValue = currentValue ? parseInt(currentValue) + 1 : 1; // Increment value
+                          setValue(`forms.${index}.cooldown`, newValue); // Update form field value
+                        }} />
+                        <NumberDecrementStepper onClick={() => {
+                          const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
+                          //@ts-expect-error
+                          const newValue = currentValue ? parseInt(currentValue) - 1 : 0; // Decrement value
+                          setValue(`forms.${index}.cooldown`, newValue >= 0 ? newValue : 0); // Update form field value
+                        }} />
+                      </NumberInputStepper>
+                    </NumberInput></Box>}
+                </Stack>
 
                 <FormTitleInput index={index} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
               </Collapsible >

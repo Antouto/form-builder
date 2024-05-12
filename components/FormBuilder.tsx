@@ -295,25 +295,11 @@ export default function FormBuilder({
 
 
                   <Box width={isSmallScreen ? '100%' : '40%'}>
-                    <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (seconds)</Text></FormLabel>
+                    <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (days)</Text></FormLabel>
                     <NumberInput min={0} isDisabled={!premium}>
                       <NumberInputField _focusVisible={{ boxShadow: 'inset 0 0 0 2px #5865F2', border: 'none' }} height='36px' placeholder="OFF, Use 0 for Infinity" backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
                         setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
                       }} />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper onClick={() => {
-                          const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
-                          //@ts-expect-error
-                          const newValue = currentValue ? parseInt(currentValue) + 1 : 1; // Increment value
-                          setValue(`forms.${index}.cooldown`, newValue); // Update form field value
-                        }} />
-                        <NumberDecrementStepper onClick={() => {
-                          const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
-                          //@ts-expect-error
-                          const newValue = currentValue ? parseInt(currentValue) - 1 : 0; // Decrement value
-                          setValue(`forms.${index}.cooldown`, newValue >= 0 ? newValue : 0); // Update form field value
-                        }} />
-                      </NumberInputStepper>
                     </NumberInput></Box>
                 </Stack>
 

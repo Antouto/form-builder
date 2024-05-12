@@ -252,7 +252,7 @@ export default function FormBuilder({
                 }
                 {submissionType[index] === 'bot' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
-                <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (Use 0 for infinity or leave blank to turn off)</Text></FormLabel>
+                <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown in seconds (Use 0 for infinity or leave blank to turn off)</Text></FormLabel>
                 {premium && <NumberInput min={0}>
                   <NumberInputField backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
                     setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));

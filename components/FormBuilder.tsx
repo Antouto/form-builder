@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Link, Select, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { Box, Button, CloseButton, FormLabel, HStack, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   Control,
@@ -250,9 +250,28 @@ export default function FormBuilder({
                     </Select>
                   </HStack>
                 }
-                {submissionType[index] === 'bot'  && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} /> }
-                {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage}/> }
-
+                {submissionType[index] === 'bot' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
+                {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
+                <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (Use 0 for infinity or leave blank to turn off)</Text></FormLabel>
+                {premium && <NumberInput min={0}>
+                  <NumberInputField backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
+                    setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
+                  }} />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper onClick={() => {
+                      const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
+                      //@ts-expect-error
+                      const newValue = currentValue ? parseInt(currentValue) + 1 : 1; // Increment value
+                      setValue(`forms.${index}.cooldown`, newValue); // Update form field value
+                    }} />
+                    <NumberDecrementStepper onClick={() => {
+                      const currentValue = getValues(`forms.${index}.cooldown`); // Get current value
+                      //@ts-expect-error
+                      const newValue = currentValue ? parseInt(currentValue) - 1 : 0; // Decrement value
+                      setValue(`forms.${index}.cooldown`, newValue >= 0 ? newValue : 0); // Update form field value
+                    }} />
+                  </NumberInputStepper>
+                </NumberInput>}
                 <HStack marginBottom='8px' alignItems='flex-start'>
                   {
                     watch('forms.0.select_menu_option') && <>

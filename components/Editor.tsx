@@ -156,6 +156,9 @@ export function Editor({
         resetField(`forms.${i}.webhook_url`);
         return 'bot';
       }))
+      getValues('forms').forEach((form, index) => {
+        resetField(`forms.${index}.cooldown`)
+      })
     }
   }
 
@@ -534,7 +537,7 @@ export function Editor({
             />
             <Text>Use premium features</Text>
             <Tooltip hasArrow label={
-              'Forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile. Enables the use of webhook urls.'
+              'Forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile. Enables the use of webhook urls and cooldowns.'
             } placement='right' shouldWrapChildren bg="#181414">
               <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
             </Tooltip>

@@ -64,6 +64,7 @@ export interface ApplicationCommandBuilder {
 export interface FormBuilder {
     webhook_url?: string;
     submit_channel_id?: string;
+    cooldown?: number;
     button: ButtonBuilder;
     application_command?: ApplicationCommandBuilder;
     select_menu_option?: SelectMenuBuilder;

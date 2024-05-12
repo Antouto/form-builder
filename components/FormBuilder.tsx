@@ -227,75 +227,76 @@ export default function FormBuilder({
             }} /> : null} key={item.id}>
               <Collapsible name="General">
 
-                {premium &&
-                  <HStack>
-                    <FormLabel whiteSpace="nowrap" m={0}>
-                      Send submissions using
-                    </FormLabel>
-                    <Select
-                      backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'
-                      height="24px!important"
-                      width='fit-content'
-                      borderWidth="2px"
-                      borderColor="transparent"
-                      borderRadius="4px"
-                      border='1px solid rgba(255, 255, 255, 0.16)'
-                      // bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
-                      _focus={{ outline: 'none' }}
-                      _focusVisible={{ outline: 'none' }}
-                      _hover={{ borderColor: "transparent" }}
-                      onChange={(event) => {
-                        setSubmissionType('edit', event.target.value, index)
-                      }}
-                      value={submissionType[index]}
-                    >
-                      <option value="bot">Bot</option>
-                      <option value="webhook">Webhook</option>
-                    </Select>
-                  </HStack>
-                }
+
+                <HStack>
+                  <FormLabel whiteSpace="nowrap" m={0}>
+                    Send submissions using
+                  </FormLabel>
+                  <Select
+                    backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'
+                    height="24px!important"
+                    width='fit-content'
+                    borderWidth="2px"
+                    borderColor="transparent"
+                    borderRadius="4px"
+                    isDisabled={!premium}
+                    border='1px solid rgba(255, 255, 255, 0.16)'
+                    // bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
+                    _focus={{ outline: 'none' }}
+                    _focusVisible={{ outline: 'none' }}
+                    _hover={{ borderColor: "transparent" }}
+                    onChange={(event) => {
+                      setSubmissionType('edit', event.target.value, index)
+                    }}
+                    value={submissionType[index]}
+                  >
+                    <option value="bot">Bot</option>
+                    <option value="webhook">Webhook</option>
+                  </Select>
+                </HStack>
+
                 {submissionType[index] === 'bot' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
 
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>
                   <Stack direction={isReallySmallScreen ? 'column' : 'row'}>
-                  {
-                    watch('forms.0.select_menu_option') && <>
-                      <Box width='100%'>
-                        <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
-                          <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
-                          <Counter count={getValues('forms')[index].select_menu_option?.label?.length} max={100} />
-                        </FormLabel>
-                        <input
-                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100, onChange: () => fixMessage() })}
-                          id={`forms[${index}].select_menu_option.label`}
-                          placeholder='Form'
-                        />
-                        <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.label} />
-                      </Box>
-                      <Box width='100%'>
-                        <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
-                          <Text>Select Menu Option Description</Text>
-                          <Counter count={getValues('forms')[index].select_menu_option?.description?.length} max={100}></Counter>
-                        </FormLabel>
-                        <input
-                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100, onChange: () => fixMessage() })}
-                          id={`forms[${index}].select_menu_option.description`}
-                        />
-                        <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.description} />
-                      </Box>
-                    </>
-                  }
+                    {
+                      watch('forms.0.select_menu_option') && <>
+                        <Box width='100%'>
+                          <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
+                            <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
+                            <Counter count={getValues('forms')[index].select_menu_option?.label?.length} max={100} />
+                          </FormLabel>
+                          <input
+                            {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100, onChange: () => fixMessage() })}
+                            id={`forms[${index}].select_menu_option.label`}
+                            placeholder='Form'
+                          />
+                          <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.label} />
+                        </Box>
+                        <Box width='100%'>
+                          <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
+                            <Text>Select Menu Option Description</Text>
+                            <Counter count={getValues('forms')[index].select_menu_option?.description?.length} max={100}></Counter>
+                          </FormLabel>
+                          <input
+                            {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100, onChange: () => fixMessage() })}
+                            id={`forms[${index}].select_menu_option.description`}
+                          />
+                          <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.description} />
+                        </Box>
+                      </>
+                    }
 
-                  {
-                    watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} />
-                  }
+                    {
+                      watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} />
+                    }
                   </Stack>
 
 
-                  {premium && <Box width={isSmallScreen ? '100%' : '40%'}>
+                  <Box width={isSmallScreen ? '100%' : '40%'}>
                     <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (seconds)</Text></FormLabel>
-                    <NumberInput min={0} >
+                    <NumberInput min={0} isDisabled={!premium}>
                       <NumberInputField _focusVisible={{ boxShadow: 'inset 0 0 0 2px #5865F2', border: 'none' }} height='36px' placeholder="OFF, Use 0 for Infinity" backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
                         setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
                       }} />
@@ -313,7 +314,7 @@ export default function FormBuilder({
                           setValue(`forms.${index}.cooldown`, newValue >= 0 ? newValue : 0); // Update form field value
                         }} />
                       </NumberInputStepper>
-                    </NumberInput></Box>}
+                    </NumberInput></Box>
                 </Stack>
 
                 <FormTitleInput index={index} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />

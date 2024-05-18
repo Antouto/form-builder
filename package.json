@@ -23,6 +23,7 @@
     "@chakra-ui/react": "^2.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.9.0",
+    "@hotjar/browser": "^1.0.9",
     "@testing-library/dom": "^8.20.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",

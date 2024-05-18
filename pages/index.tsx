@@ -11,6 +11,10 @@ import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
 import { debounce } from 'lodash';
 
+import Hotjar from '@hotjar/browser';
+
+
+
 
 export enum OpenFormType {
   button,
@@ -33,7 +37,16 @@ export default function App() {
     mode: 'onChange'
   });
 
-  useEffect(()=> {
+  const siteId = 4987367;
+  const hotjarVersion = 6;
+
+  useEffect(() => {
+    Hotjar.init(siteId, hotjarVersion);
+  }, []);
+
+
+
+  useEffect(() => {
     setValue('message', {
       content: 'Fill out the form below'
     })
@@ -63,7 +76,7 @@ export default function App() {
       }
     ])
   }, [])
- 
+
 
 
   const [displayForm, setDisplayForm] = useState(0);
@@ -79,7 +92,7 @@ export default function App() {
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
         <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} />
         {/* @ts-expect-error */}
-        <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage}/>
+        <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} />
       </Grid>
 
 

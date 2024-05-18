@@ -729,7 +729,7 @@ function Preview({
                     <HStack key={Math.random()} gap={0}>
                       {/* @ts-expect-error */}
                       {forms?.[displayForm]?.submit_components[i].components?.map(button =>
-                        <Button height="32px"
+                        <Button key={Math.random()} height="32px"
                         fontSize="14px"
                         paddingBlock={0}
                         paddingInline={0}

@@ -158,6 +158,13 @@ export function Editor({
       }))
       getValues('forms').forEach((form, index) => {
         resetField(`forms.${index}.cooldown`)
+        getValues(`forms.${index}.submit_components`)?.forEach((action_row, ii) => {
+          //@ts-expect-error
+          getValues(`forms.${index}.submit_components.${ii}.components`)?.forEach((component, iii) => {
+            //@ts-expect-error
+            resetField(`forms.${index}.submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`)
+          })
+        })
       })
     }
   }

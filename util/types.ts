@@ -70,6 +70,7 @@ export interface FormBuilder {
     select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;
     submit_message?: FormOpenFormTypeBuilder;
+    submit_components?: Array<Object>;
     guild_submit_message?: FormOpenFormTypeBuilder;
     dm_submit_message?: FormOpenFormTypeBuilder;
 }

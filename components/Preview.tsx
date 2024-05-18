@@ -10,6 +10,7 @@ import {
   Tooltip,
   useColorMode,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
 //import Image from "next/image";
 import React, { useState } from "react";
@@ -71,13 +72,12 @@ function Preview({
             borderLeftWidth="4px"
             mt="0.2rem"
             bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
-            borderLeft={`4px solid ${
-              !isEmpty(embed?.color)
-                ? message?.embeds?.[0]?.color
-                : colorMode === "dark"
+            borderLeft={`4px solid ${!isEmpty(embed?.color)
+              ? message?.embeds?.[0]?.color
+              : colorMode === "dark"
                 ? "#202225"
                 : "#e3e5e8"
-            }`}
+              }`}
             maxWidth="520px"
             borderRadius="4px"
           >
@@ -193,9 +193,8 @@ function Preview({
           <PreviewStep
             number={1}
             highlighted={stage === 'openFormType'}
-            title={`A message with ${
-              forms?.[0].button ? "buttons" : "a select menu"
-            } to open forms is sent to a channel`}
+            title={`A message with ${forms?.[0].button ? "buttons" : "a select menu"
+              } to open forms is sent to a channel`}
           >
             <Box
               display="flex"
@@ -330,10 +329,10 @@ function Preview({
                             form.button?.style == 1
                               ? "primary"
                               : form.button?.style == 2
-                              ? "secondary"
-                              : form.button?.style == 3
-                              ? "success"
-                              : "danger"
+                                ? "secondary"
+                                : form.button?.style == 3
+                                  ? "success"
+                                  : "danger"
                           }
                         >
                           {form.button?.label}
@@ -436,11 +435,10 @@ function Preview({
           title={
             forms?.[0].button || forms?.[0].select_menu_option
               ? "User opens a form"
-              : `User opens the form with ${
-                  application_command?.name
-                    ? `/${application_command?.name}`
-                    : "the slash command"
-                }`
+              : `User opens the form with ${application_command?.name
+                ? `/${application_command?.name}`
+                : "the slash command"
+              }`
           }
           highlighted={stage === 'form'}
         >
@@ -451,9 +449,8 @@ function Preview({
             p={4}
           >
             <Box
-              border={`1px solid ${
-                colorMode === "dark" ? "#292b2f" : "#e3e5e8"
-              }`}
+              border={`1px solid ${colorMode === "dark" ? "#292b2f" : "#e3e5e8"
+                }`}
               borderRadius="3px"
               width="440px"
               height="fit-content"
@@ -574,7 +571,7 @@ function Preview({
             p={4}
           >
             <Box display="flex">
-            <FormProfile
+              <FormProfile
                 {...{
                   avatar: AVATAR_URL,
                   hidden: FormsProfileHidden,
@@ -726,6 +723,21 @@ function Preview({
                       </Text>
                     </Box>
                   </Box>
+                </Box>
+                <Box>
+                  {forms?.[displayForm]?.submit_components?.map((action_row, i) =>
+                    <HStack key={Math.random()} gap={0}>
+                      {/* @ts-expect-error */}
+                      {forms?.[displayForm]?.submit_components[i].components?.map(button =>
+                        <Button height="32px"
+                        fontSize="14px"
+                        paddingBlock={0}
+                        paddingInline={0}
+                        padding="2px 16px"
+                        m="4px 8px 4px 0" variant={button.style === 1 ? 'primary' : (button.style === 2 ? 'secondary' : (button.style === 3 ? 'success' : 'danger'))}>{button.label}</Button>
+                      )}
+                    </HStack>
+                  )}
                 </Box>
               </Box>
             </Box>

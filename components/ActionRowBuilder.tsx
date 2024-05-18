@@ -4,7 +4,7 @@ import { useFieldArray } from 'react-hook-form';
 import Collapsible from './Collapsible';
 import SubmitComponentsBuilder from './SubmitComponentsBuilder';
 
-export default function ActionRowBuilder({ control, i, getValues, setValue, resetField, register, errors, watch }: any) {
+export default function ActionRowBuilder({ control, i, getValues, setValue, resetField, register, errors, watch, premium }: any) {
   const { fields, remove: _remove, append } = useFieldArray({
     control,
     name: `forms.${i}.submit_components`
@@ -21,14 +21,18 @@ export default function ActionRowBuilder({ control, i, getValues, setValue, rese
   return (
     <>
       {fields.map((item, ii) =>
-        <Collapsible key={item.id} name={`Action Row ${ii + 1}`} deleteButton={<CloseButton onClick={() => { remove(ii); }} />}>
-          <SubmitComponentsBuilder i={i} ii={ii}  control={control} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} />
+        <Collapsible key={item.id} name={`Button Row ${ii + 1}`} deleteButton={<CloseButton onClick={() => { remove(ii); }} />}>
+          <SubmitComponentsBuilder i={i} ii={ii}  control={control} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} />
         </Collapsible>
       )}
       <Button isDisabled={fields.length >= 5} variant='primary' onClick={() => append({
         type: 1,
-        components: []
-      })}>Add Action Row</Button>
+        components: [{
+          type: 2,
+          label: 'Button',
+          style: 1
+        }]
+      })}>Add Button Row</Button>
     </>
   )
 }

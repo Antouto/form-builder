@@ -23,7 +23,6 @@ import Counter from "./Counter";
 import ButtonBuilder from "./ButtonBuilder";
 import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
-import SubmitComponentsBuilder from "./SubmitComponentsBuilder";
 import ActionRowBuilder from "./ActionRowBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 
@@ -396,8 +395,8 @@ export default function FormBuilder({
                     />
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                   </Box>}
-                  {/* <FormLabel>Submission Buttons</FormLabel> 
-                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch}/> */}
+                  <FormLabel>Submission Buttons</FormLabel> 
+                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium}/>
                 </VStack>
               </Collapsible>
             </Collapsible >

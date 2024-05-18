@@ -11,7 +11,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel ID</Text>
       </FormLabel>
       <input
-        {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /\d{10,20}/, onChange: () => fixMessage() })}
+        {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
         id={`forms[${index}].submit_channel_id`}
         style={{ marginBottom: '8px' }}
       />

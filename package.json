@@ -23,7 +23,6 @@
     "@chakra-ui/react": "^2.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.9.0",
-    "@hotjar/browser": "^1.0.9",
     "@testing-library/dom": "^8.20.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
@@ -48,6 +47,7 @@
     "react-dom": "^18.2.0",
     "react-highlight": "^0.15.0",
     "react-hook-form": "^7.31.2",
+    "react-hotjar": "^6.3.1",
     "react-icons": "^4.3.1",
     "typescript": "4.9.5",
     "uuid": "^9.0.0"

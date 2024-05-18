@@ -10,8 +10,8 @@ import { useModal } from '../components/SettingsModal';
 import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
 import { debounce } from 'lodash';
+import { hotjar } from 'react-hotjar';
 
-import Hotjar from '@hotjar/browser';
 
 
 
@@ -41,8 +41,10 @@ export default function App() {
   const hotjarVersion = 6;
 
   useEffect(() => {
-    Hotjar.init(siteId, hotjarVersion);
+    hotjar.initialize({ id: siteId, sv: hotjarVersion} );
   }, []);
+    
+
 
 
 

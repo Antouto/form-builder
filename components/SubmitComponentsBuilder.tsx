@@ -1,10 +1,11 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Link, Select, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Button, CloseButton, FormLabel, HStack, Input, Link, Select, Text, useColorMode } from '@chakra-ui/react';
 import React from 'react'
 import { useFieldArray } from 'react-hook-form';
 import Collapsible from './Collapsible';
 import Counter from './Counter';
 import ErrorMessage from './ErrorMessage';
 import ButtonBuilder from './ButtonBuilder';
+import PermissionOverwritesBuilder from './PermissionOverwritesBuilder';
 
 export default function SubmitComponentsBuilder({ i, ii, control, getValues, resetField, setValue, register, errors, watch, premium }: any) {
   const { fields, remove: _remove, append } = useFieldArray({
@@ -34,6 +35,26 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
           <HStack wrap='wrap'>
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, '')}>Add role to submitter</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, '')}>Remove role from submitter</Button>}
+            {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, {
+              name: '🔒-{ChannelName}',
+              permission_overwrites: [
+                {
+                  id: '{ServerID}',
+                  type: 0,
+                  deny: 1024
+                },
+                {
+                  id: '{ApplicationID}',
+                  type: 1,
+                  allow: 19456
+                },
+                {
+                  id: '{UserID}',
+                  type: 1,
+                  deny: 2048
+                }
+              ]
+            })}>Update this channel</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`, {})}>Send message to this channel</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`, {})}>Update button</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`, {
@@ -87,6 +108,24 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
           </Box>}
+          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) !== undefined && <Collapsible name='Update this channel' deleteButton={<CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, undefined) }} />
+}>
+            <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`} display='flex' alignItems='flex-end'>
+              <Text>Name</Text>
+              <Counter count={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`)?.length} max={100} />
+            </FormLabel>
+            <Input
+              {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`, { pattern: /^[^ _!"§$%&/()=]+$/, maxLength: 100, onChange: () => fixOverwrite(ii) })}
+              id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`}
+              isDisabled={!premium}
+              height='36px'
+              style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
+            />
+            <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`}>Permission Overwrites</FormLabel>
+            Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
+            <PermissionOverwritesBuilder control={control} i={i} forPermissionOverwrite={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
+            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.UPDATE_THIS_CHANNEL.name} />
+          </Collapsible>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`) !== undefined && <Box>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`} display='flex' alignItems='flex-end'>
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Content - Send message to this channel</Text>
@@ -103,7 +142,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) !== undefined && <Box>
             {/* @ts-expect-error */}
             <HStack><ButtonBuilder forButton={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`} error={errors.forms?.[i]?.submit_components?.[ii]?.components[iii]?.logic?.UPDATE_COMPONENT?.label} button={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`)} buttonLabel={'Update Button Label'} buttonLabelRequired={'no'} buttonColourRequired={'no'} buttonColour={'Update Button Colour'} register={register} setValue={setValue} watch={watch} allowColourDeselect={true} resetField={resetField} getValues={getValues} fix={() => {
-              if(getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`) === '') resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`)
+              if (getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`) === '') resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`)
             }} /> <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) }} /></HStack>
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`) !== undefined && <Box>

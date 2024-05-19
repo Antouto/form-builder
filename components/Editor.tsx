@@ -192,6 +192,29 @@ export function Editor({
           getValues(`forms.${index}.submit_components.${ii}.components`)?.forEach((component, iii) => {
             //@ts-expect-error
             resetField(`forms.${index}.submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`)
+            //@ts-expect-error
+            if (getValues(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`)) {
+              //@ts-expect-error
+              if (getValues(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`)) setValue(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`, '🔒-{ChannelName}')
+              //@ts-expect-error
+              if (getValues(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`)) setValue(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`, [
+                {
+                  id: '{ServerID}',
+                  type: 0,
+                  deny: 1024
+                },
+                {
+                  id: '{ApplicationID}',
+                  type: 1,
+                  allow: 19456
+                },
+                {
+                  id: '{UserID}',
+                  type: 1,
+                  deny: 2048
+                }
+              ]);
+            }
           })
         })
       })
@@ -272,6 +295,10 @@ export function Editor({
         if (form.submit_channel) {
           //@ts-expect-error
           if (form.submit_channel.name !== 'ticket') setPremium(true)
+          setTimeout(() => {
+            //@ts-expect-error
+            if (form.submit_channel?.parent_id === '') setValue(`forms.${i}.submit_channel.parent_id`, undefined)
+          }, 1);
           //@ts-expect-error
           if (form.submit_channel.permission_overwrites && (JSON.stringify(form.submit_channel.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"allow":52224}]')) setPremium(true)
         }
@@ -281,7 +308,10 @@ export function Editor({
             if (action_row.components) {
               //@ts-expect-error
               action_row.components.forEach((component, iii) => {
-                if (component.logic && component.logic.REQUIRED_PERMISSIONS) setPremium(true)
+                if (component?.logic && component?.logic?.REQUIRED_PERMISSIONS) setPremium(true)
+
+                if (component?.logic?.UPDATE_THIS_CHANNEL?.name !== '🔒-{ChannelName}') setPremium(true)
+                if (component?.logic?.UPDATE_THIS_CHANNEL?.permission_overwrites && (JSON.stringify(component.logic.UPDATE_THIS_CHANNEL.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"deny":2048}]')) setPremium(true)
               })
             }
           })

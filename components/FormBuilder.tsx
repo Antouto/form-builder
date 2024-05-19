@@ -354,7 +354,7 @@ export default function FormBuilder({
 
                   <FormLabel htmlFor={`forms[${index}].submit_channel.permission_overwrites`}>Permission Overwrites</FormLabel>
                   Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
-                  <PermissionOverwritesBuilder control={control} i={index} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
+                  <PermissionOverwritesBuilder control={control} i={index} forPermissionOverwrite={`forms.${index}.submit_channel.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
                 </Collapsible>}
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>
                   <Stack direction={isReallySmallScreen ? 'column' : 'row'}>

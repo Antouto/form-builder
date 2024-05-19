@@ -636,7 +636,7 @@ export function Editor({
             />
             <Text>Use premium features</Text>
             <Tooltip hasArrow label={
-              'When enabled forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile.'
+              'When enabled forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile. Premium includes custom branding.'
             } placement='right' shouldWrapChildren bg="#181414">
               <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
             </Tooltip>

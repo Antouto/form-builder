@@ -15,6 +15,12 @@ export const Button: ComponentTheme<ButtonProps> = {
             _disabled: { _hover: { bg: 'blurple!important' } },
             _hover: { bg: '#4752c4' }
         },
+        'primary-outline': {
+            bg: 'transparent',
+            border: '2px solid #5865F2',
+            _disabled: { _hover: { border: '2px solid #5865F2!important' }},
+            _hover: { bg: 'blurple' }
+        },
         secondary: {
             bg: 'grey.light',
             _disabled: { _hover: { bg: 'grey.light!important' } },

@@ -642,6 +642,11 @@ export function Editor({
       }
   }
 
+  function fixSubmitChannel(index: any) {
+    //@ts-expect-error
+    if (!getValues(`forms.${index}.submit_channel.parent_id`)) resetField(`forms.${index}.submit_channel.parent_id`)
+  }
+
   return (
     <>
       <VStack
@@ -734,7 +739,8 @@ export function Editor({
             setSubmissionType,
             submissionChannel,
             setSubmissionChannel,
-            onOpenWhereDoIFindSubmissionChannelID
+            onOpenWhereDoIFindSubmissionChannelID,
+            fixSubmitChannel
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -844,11 +850,138 @@ export function Editor({
         </VStack></>
         }
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' mt={20} width='100%'>
-          <Button variant='primary' onClick={() => setStage('openFormType')}>Start guided setup</Button>
+          <Button variant='primary' onClick={() => setStage('openFormType')}>Start quick setup</Button>
+          <Text fontSize={18}>or</Text>
+          <Button variant='primary-outline' onClick={() => {
+            setValue('forms.0.submit_components', [{
+              type: 1,
+              components: [
+                {
+                  type: 2,
+                  label: 'Accept',
+                  style: 3,
+                  logic: {
+                    DM_SUBMITTER: { content: 'Your submission to **{FormTitle}** has been accepted!' },
+                    REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
+                    UPDATE_COMPONENT: { label: 'Accepted' }
+                  }
+                },
+                {
+                  type: 2,
+                  label: 'Deny',
+                  style: 4,
+                  logic: {
+                    DM_SUBMITTER_WITH_MODAL_INPUT: {
+                      modal: {
+                        title: 'Deny Submission',
+                        components: [
+                          {
+                            type: 1,
+                            components: [
+                              {
+                                type: 4,
+                                style: 2,
+                                label: 'Reason for denial'
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      message: {
+                        content: 'Sorry! Your submission to **{FormTitle}** has been denied.\n\n**Reason:** {TextInputValue1}'
+                      }
+                    },
+                    REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
+                    UPDATE_COMPONENT: { label: 'Denied' }
+                  }
+                }
+              ]
+            }])
+            setStage('openFormType')
+          }}>Create Application</Button>
+          <Button variant='primary-outline' onClick={() => {
+            _setSubmissionChannel(['new'])
+            setValue('forms.0.submit_channel', {
+              name: 'ticket',
+              type: 0,
+              permission_overwrites: [
+                {
+                  id: '{ServerID}',
+                  type: 0,
+                  deny: 1024
+                },
+                {
+                  id: '{ApplicationID}',
+                  type: 1,
+                  allow: 19456
+                },
+                {
+                  id: '{UserID}',
+                  type: 1,
+                  allow: 52224
+                }
+              ]
+            })
+            setValue('forms.0.submit_components', [
+              {
+                type: 1,
+                components: [
+                  {
+                    type: 2,
+                    label: 'Close Ticket',
+                    emoji: {
+                      name: '🔒'
+                    },
+                    style: 2,
+                    logic: {
+                      UPDATE_COMPONENT: {
+                        label: 'Ticket Closed'
+                      },
+                      UPDATE_THIS_CHANNEL: {
+                        name: '🔒-{ChannelName}',
+                        permission_overwrites: [
+                          {
+                            id: '{ServerID}',
+                            type: 0,
+                            deny: 1024
+                          },
+                          {
+                            id: '{ApplicationID}',
+                            type: 1,
+                            allow: 19456
+                          },
+                          {
+                            id: '{UserID}',
+                            type: 1,
+                            deny: 2048
+                          }
+                        ]
+                      },
+                      SEND_MESSAGE_TO_THIS_CHANNEL: {
+                        content: '**{ChannelName}** closed by **{InteractionUserName}**'
+                      }
+                    }
+                  },
+                  {
+                    type: 2,
+                    label: 'Delete Ticket',
+                    emoji: {
+                      name: '🗑️'
+                    },
+                    style: 4,
+                    logic: {
+                      DELETE_THIS_CHANNEL: true
+                    }
+                  }
+                ]
+              }
+            ])
+            setStage('openFormType')
+          }}>Create Ticket</Button>
           <Text fontSize={18}>or</Text>
           <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
         </VStack></>}
-        {/* {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
+        {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>
             <VStack align='left'>
               <FormLabel fontSize={18}>Basic</FormLabel>
@@ -875,7 +1008,7 @@ export function Editor({
 
 
 
-                <Image height='100%' src='https://cdn.discordapp.com/attachments/943471614580903956/1241452276246118400/Screenshot_2024-05-18_at_19.57.40.png?ex=664a4007&is=6648ee87&hm=51ee3e0c269ede6a9f27617fc52c4f45129f4b944e7ebbef527c91212699a8ae&'></Image>
+                  <Image height='100%' src='https://cdn.discordapp.com/attachments/943471614580903956/1241452276246118400/Screenshot_2024-05-18_at_19.57.40.png?ex=664a4007&is=6648ee87&hm=51ee3e0c269ede6a9f27617fc52c4f45129f4b944e7ebbef527c91212699a8ae&'></Image>
 
 
 
@@ -895,7 +1028,7 @@ export function Editor({
                 }
               }}>Continue</Button>
             </HStack>
-          </VStack></>} */}
+          </VStack></>}
         {stage === 'openFormType' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>How should users open your form?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>
             <VStack align='left'>
@@ -982,7 +1115,13 @@ export function Editor({
               </Box>
             </VStack>
             <HStack>
-              <Button variant='secondary' onClick={() => setStage('welcome')}>Go back</Button>
+              <Button variant='secondary' onClick={() => {
+                _setSubmissionChannel(['existing'])
+                setValue('forms.0.submit_channel_id', undefined)
+                setValue('forms.0.submit_channel', undefined)
+                setValue('forms.0.submit_components', undefined)
+                setStage('welcome')
+              }}>Go back</Button>
               <Button variant='primary' onClick={() => {
                 switch (openFormType) {
                   case 'application_command': setStage('applicationCommand'); break;
@@ -1019,12 +1158,28 @@ export function Editor({
               <WebhookURLInput index={0} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>
               In the webhooks settings you can customise the name and avatar of your submissions. */}
-              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} fixMessage={fixMessage} />
-              <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
+              {getValues('forms.0.submit_channel') ? <>
+                <FormLabel htmlFor={`forms.0.submit_channel.parent_id`}>Category ID</FormLabel>
+                <input
+                  //@ts-expect-error
+                  {...register(`forms.0.submit_channel.parent_id`, { pattern: /^\d{10,20}$/, onChange: () => fixSubmitChannel(0) })}
+                  id={`forms.0.submit_channel.parent_id`}
+                />
+                {/* @ts-expect-error */}
+                <ErrorMessage error={formState.errors.forms?.[0]?.submit_channel?.parent_id} />
+                <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
+              </> : <><SubmissionChannelIDInput index={0} register={register} errors={formState.errors} fixMessage={fixMessage} />
+                <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text></>}
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>
-              <Button variant='primary' isDisabled={!getValues('forms.0')?.submit_channel_id || formState.errors.forms ? true : false} onClick={() => setStage('finishOrContinue')}>Continue</Button>
+              {/* @ts-expect-error */}
+              <Button variant='primary' isDisabled={(!getValues('forms.0.submit_channel.parent_id') && !getValues('forms.0')?.submit_channel_id) || formState.errors.forms ? true : false} onClick={() => {
+                //@ts-expect-error
+                if (submissionChannel[0] === 'new' && getValues('forms.0.submit_channel.parent_id') === '') setValue('forms.0.submit_channel.parent_id', undefined)
+                setStage('finishOrContinue')
+                //@ts-expect-error
+              }}>{getValues('forms.0.submit_channel') ? (getValues('forms.0.submit_channel.parent_id') ? 'Continue' : 'Continue') : 'Continue'}</Button>
             </HStack>
           </VStack></>}
         {stage === 'finishOrContinue' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Done</Text>
@@ -1054,7 +1209,7 @@ export function Editor({
                     {!loading && "Download Configuration File"}
                     {loading && <Spinner size="sm" />}
                   </Button>
-                  <Link href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309440&scope=bot+applications.commands' target='_blank' rel='noopener noreferrer'><Button variant='success-outline'>Invite Forms</Button></Link>
+                  <Link href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309456&scope=bot+applications.commands' target='_blank' rel='noopener noreferrer'><Button variant='success-outline'>Invite Forms</Button></Link>
                 </HStack>
               </HStack>
             </Box>

@@ -67,7 +67,9 @@ export default function FormBuilder({
   //@ts-expect-error
   setSubmissionChannel,
   //@ts-expect-error
-  onOpenWhereDoIFindSubmissionChannelID
+  onOpenWhereDoIFindSubmissionChannelID,
+  //@ts-expect-error
+  fixSubmitChannel
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -188,11 +190,6 @@ export default function FormBuilder({
       //@ts-expect-error
       if (typeof watch(`forms.${index}.button.style`) === 'string') setValue(`forms.${index}.button.style`, parseInt(watch(`forms.${index}.button.style`)))
     }, 1)
-  }
-
-  function fixSubmitChannel(index: any) {
-    //@ts-expect-error
-    if (!getValues(`forms.${index}.submit_channel.parent_id`)) resetField(`forms.${index}.submit_channel.parent_id`)
   }
 
   function fixServerSubmissionMessage(index: number) {

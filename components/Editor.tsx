@@ -263,6 +263,44 @@ export function Editor({
         setOpenFormType("application_command", false);
       }
 
+      let newSubmissionType = []
+      let newSubmissionChannel = []
+      json.forms.forEach((form, i) => {
+        if (form.webhook_url) setPremium(true)
+        if (form.submit_channel) {
+          //@ts-expect-error
+          if (form.submit_channel.name !== 'ticket') setPremium(true)
+          //@ts-expect-error
+          if (form.submit_channel.permission_overwrites && (JSON.stringify(form.submit_channel.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"allow":52224}]')) setPremium(true)
+        }
+        if (form.submit_components) {
+          form.submit_components.forEach((action_row, ii) => {
+            //@ts-expect-error
+            if (action_row.components) {
+              //@ts-expect-error
+              action_row.components.forEach((component, iii) => {
+                if (component.logic && component.logic.REQUIRED_PERMISSIONS) setPremium(true)
+              })
+            }
+          })
+        }
+
+
+
+        if(form.webhook_url) {
+          newSubmissionType.push('webhook_url')
+        } else {
+          newSubmissionType.push('bot')
+        }
+
+        if(form.submit_channel) {
+          newSubmissionChannel.push('new')
+        } else {
+          newSubmissionChannel.push('existing')
+        }
+      });
+      _setSubmissionType(newSubmissionType)
+      _setSubmissionChannel(newSubmissionChannel)
       if (!json.application_command) {
         // Check the number of button components and menu components
         // incase of a button modal and a select menu modal
@@ -271,18 +309,6 @@ export function Editor({
         json.forms.forEach((form, i) => {
           if (form.select_menu_option != null) menus++;
           if (form.button != null) buttons++;
-          if (form.webhook_url) setPremium(true)
-
-
-          if (i === 0) {
-            setSubmissionType('edit', form.webhook_url ? 'webhook_url' : 'bot', i)
-            setSubmissionType('edit', form.submit_channel ? 'new' : 'existing', i)
-          } else {
-            //@ts-expect-error
-            setSubmissionType('append', form.webhook_url ? 'webhook_url' : 'bot')
-            //@ts-expect-error
-            setSubmissionType('append', form.submit_channel ? 'new' : 'existing')
-          }
         });
 
         if (buttons < menus) {
@@ -416,7 +442,7 @@ export function Editor({
             ]);
             setTimeout(() => {
               //@ts-expect-error
-              if(getValues(`forms.${index}.submit_channel.parent_id`) === '') setValue(`forms.${index}.submit_channel.parent_id`, undefined)
+              if (getValues(`forms.${index}.submit_channel.parent_id`) === '') setValue(`forms.${index}.submit_channel.parent_id`, undefined)
               //@ts-expect-error
               getValues(`forms.${index}.submit_channel.permission_overwrites`).map((overwrite, i) => {
                 //@ts-expect-error
@@ -1010,7 +1036,7 @@ export function Editor({
           <ModalHeader>How to get your Submission Channel ID</ModalHeader>
           <ModalCloseButton />
           <ModalBody pt={5}>
-            <Text fontFamily='Whitney Bold'>1. Enable Developer Mode</Text> Go to your User Settings in discord and in the advanced section enable "Developer Mode".<br/><br/>
+            <Text fontFamily='Whitney Bold'>1. Enable Developer Mode</Text> Go to your User Settings in discord and in the advanced section enable "Developer Mode".<br /><br />
             <Text fontFamily='Whitney Bold'>2. Copy the Channel ID</Text> Go to the discord channel where you'd like to have submissions posted to, right click it and click "Copy Channel ID".
           </ModalBody>
 

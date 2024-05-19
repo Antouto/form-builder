@@ -18,7 +18,7 @@ export default function PermissionOverwritesBuilder({ control, i, register, erro
 
   return (
     <Box>
-      {fields.map((permission_overwrite, ii) => <Collapsible key={permission_overwrite.id} name={`Overwrite ${ii + 1}`} deleteButton={<CloseButton onClick={() => remove(ii)} />}>
+      {fields.map((permission_overwrite, ii) => <Collapsible key={permission_overwrite.id} name={`Overwrite ${ii + 1}`} deleteButton={<CloseButton isDisabled={!premium} onClick={() => remove(ii)} />}>
         <HStack>
           <Box>
             <FormLabel htmlFor={`forms.${i}.submit_channel.permission_overwrites.${ii}.type`} display='flex' alignItems='flex-end'>

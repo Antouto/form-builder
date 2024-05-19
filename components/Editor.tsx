@@ -465,8 +465,7 @@ export function Editor({
         break;
       }
       case 'delete': {
-        //@ts-expect-error
-        newSubmissionChannel.splice(value, 1)
+        newSubmissionChannel.splice(index, 1)
         break;
       }
     }

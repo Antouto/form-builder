@@ -260,8 +260,8 @@ export default function FormBuilder({
               newdmSubmissionMessage.splice(index, 1);
               __setdmSubmissionMessage(newdmSubmissionMessage)
 
-              setSubmissionType('delete')
-              setSubmissionChannel('delete')
+              setSubmissionType('delete', null, index)
+              setSubmissionChannel('delete', null, index)
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
               <Collapsible name="General">

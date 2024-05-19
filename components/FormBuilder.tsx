@@ -495,6 +495,10 @@ export default function FormBuilder({
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                   </Box>}
                   <FormLabel>Submission Buttons</FormLabel>
+                  <HStack>
+                    <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
+                    <Text>Buttons can be used once and are then automatically disabled</Text>
+                  </HStack>
                   <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} />
                 </VStack>
               </Collapsible>

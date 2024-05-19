@@ -57,7 +57,7 @@ export default function PermissionOverwritesBuilder({ control, i, register, erro
               isDisabled={!premium}
               height='36px'
               style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}            />
-            <ErrorMessage error={errors?.forms?.[i]?.submit_channel.permission_overwrites?.[ii]?.id} />
+            <ErrorMessage error={errors?.forms?.[i]?.submit_channel?.permission_overwrites?.[ii]?.id} />
           </Box>
         </HStack>
         <HStack>
@@ -70,7 +70,7 @@ export default function PermissionOverwritesBuilder({ control, i, register, erro
               height='36px'
               style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
             />
-            <ErrorMessage error={errors?.forms?.[i]?.submit_channel.permission_overwrites?.[ii]?.allow} />
+            <ErrorMessage error={errors?.forms?.[i]?.submit_channel?.permission_overwrites?.[ii]?.allow} />
           </Box>
           <Box width='100%'>
             <FormLabel htmlFor={`forms.${i}.submit_channel.permission_overwrites.${ii}.deny`}>Deny</FormLabel>
@@ -81,7 +81,7 @@ export default function PermissionOverwritesBuilder({ control, i, register, erro
               height='36px'
               style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
             />
-            <ErrorMessage error={errors?.forms?.[i]?.submit_channel.permission_overwrites?.[ii]?.deny} />
+            <ErrorMessage error={errors?.forms?.[i]?.submit_channel?.permission_overwrites?.[ii]?.deny} />
           </Box>
         </HStack>
       </Collapsible>)}

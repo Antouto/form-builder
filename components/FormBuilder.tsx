@@ -321,7 +321,7 @@ export default function FormBuilder({
                 {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
-                  <HStack wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
+                  <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
                     <Box width='100%'>
                       <FormLabel htmlFor={`forms[${index}].submit_channel.name`} display='flex' alignItems='flex-end'>
                         <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text>

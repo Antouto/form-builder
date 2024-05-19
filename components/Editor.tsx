@@ -176,6 +176,11 @@ export function Editor({
               deny: 1024
             },
             {
+              id: '{ApplicationID}',
+              type: 1,
+              allow: 19456
+            },
+            {
               id: '{UserID}',
               type: 1,
               allow: 52224
@@ -399,12 +404,19 @@ export function Editor({
                 deny: 1024
               },
               {
+                id: '{ApplicationID}',
+                type: 1,
+                allow: 19456
+              },
+              {
                 id: '{UserID}',
                 type: 1,
                 allow: 52224
               }
             ]);
             setTimeout(() => {
+              //@ts-expect-error
+              if(getValues(`forms.${index}.submit_channel.parent_id`) === '') setValue(`forms.${index}.submit_channel.parent_id`, undefined)
               //@ts-expect-error
               getValues(`forms.${index}.submit_channel.permission_overwrites`).map((overwrite, i) => {
                 //@ts-expect-error

@@ -243,8 +243,6 @@ export default function FormBuilder({
 
   return (
     <Box width='100%' pb={2}>
-      <Text>{submissionType}</Text>
-      <Text>{submissionChannel}</Text>
       <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)} /></FormLabel>
       {formsThatNeedSubmitChannelIDString && <Box mb={4}><ErrorMessage>
         <Text>Form{formsThatNeedSubmitChannelIDString} a Submission Channel ID.</Text>

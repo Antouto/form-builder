@@ -69,42 +69,42 @@ export default function TextInputBuilder({
     control,
     name: `forms.${nestIndex}.modal.components`
   });
-  const [textInputStyle, setTextInputStyle] = React.useState([1,1,1,1,1])
+  const [textInputStyle, setTextInputStyle] = React.useState([1, 1, 1, 1, 1])
   const isSmallScreen = !useScreenWidth(500);
   const isTinyScreen = !useScreenWidth(450);
-  
+
   const colorMode = useColorMode().colorMode
 
   useEffect(() => fixMessage(), [])
 
   if (compact) {
-    return  <VStack align='flex-start'  id={id}>
-    {fields.map((item, k) => {
-      let textInput = watch(`forms.${nestIndex}.modal.components.${k}.components.0`) as ModalComponentBuilder;
-      return (
-        <Box key={item.id} width='100%'>
+    return <VStack align='flex-start' id={id}>
+      {fields.map((item, k) => {
+        let textInput = watch(`forms.${nestIndex}.modal.components.${k}.components.0`) as ModalComponentBuilder;
+        return (
+          <Box key={item.id} width='100%'>
             <HStack gap={3} alignItems='flex-start'>
               <Box width='100%' >
-                {k === 0 && <FormLabel margin={0}         display="flex"
-        alignItems="flex-end"> 
-                  <Text           _after={{
-            content: '" *"',
-            color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
-          }}>Text Inputs</Text>
+                {k === 0 && <FormLabel margin={0} display="flex"
+                  alignItems="flex-end">
+                  <Text _after={{
+                    content: '" *"',
+                    color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
+                  }}>Text Inputs</Text>
                   <Counter
-          count={watch(`forms.${nestIndex}.modal.components`).length}
-          max={5}
-        />
+                    count={watch(`forms.${nestIndex}.modal.components`).length}
+                    max={5}
+                  />
                 </FormLabel>}
                 <input
                   {...register(`forms.${nestIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
                   id={`forms.${nestIndex}.modal.components.${k}.components.0.label`}
                   defaultValue={textInput.label}
                 />
-                <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label}/>
+                <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label} />
               </Box>
               <Box minWidth='62px'>
-                {k === 0 && <FormLabel margin={0}>Multiline</FormLabel> }
+                {k === 0 && <FormLabel margin={0}>Multiline</FormLabel>}
                 <Controller
                   control={control}
                   name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
@@ -132,7 +132,7 @@ export default function TextInputBuilder({
                 />
               </Box>
               <Box minWidth='62px'>
-              {k === 0 && <FormLabel margin={0}>Required</FormLabel> }
+                {k === 0 && <FormLabel margin={0}>Required</FormLabel>}
                 <Controller
                   control={control}
                   name={`forms.${nestIndex}.modal.components.${k}.components.0.required`}
@@ -146,26 +146,26 @@ export default function TextInputBuilder({
                 />
               </Box>
               {fields.length > 1 && <CloseButton my='auto' onClick={() => remove(k)} />}
-            </HStack>     
-        </Box>
+            </HStack>
+          </Box>
 
-      );
-    })}
-    <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => {
-      append({
-        type: 1,
-        components: [
-          {
-            type: 4,
-            label: '',
-            style: 1,
-            max_length: 1024
-          }
-        ]
-      })
-      fixMessage()
-    }}>Add Text Input</Button>
-  </VStack>
+        );
+      })}
+      <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => {
+        append({
+          type: 1,
+          components: [
+            {
+              type: 4,
+              label: '',
+              style: 1,
+              max_length: 1024
+            }
+          ]
+        })
+        fixMessage()
+      }}>Add Text Input</Button>
+    </VStack>
   }
 
   return (
@@ -186,7 +186,7 @@ export default function TextInputBuilder({
                 defaultValue={textInput.label}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
-              <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label}/>
+              <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label} />
 
               <HStack marginBottom='8px' gap={isTinyScreen ? 0 : 20} justifyContent={isTinyScreen ? 'space-between' : 'flex-start'}>
                 <HStack>
@@ -226,7 +226,7 @@ export default function TextInputBuilder({
               </HStack>
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text>
-              <Counter count={textInput?.placeholder?.length || 0} max={100}/>  
+                <Counter count={textInput?.placeholder?.length || 0} max={100} />
               </FormLabel>
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage() })}
@@ -243,11 +243,12 @@ export default function TextInputBuilder({
                     fontSize: '13px',
                     //@ts-expect-error
                     color: (textInput?.value?.length !== 0 && (textInput?.value?.length < (Number.isNaN(minimumLength) ? 1 : minimumLength) || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'),
-                    fontFamily: 'Whitney Bold Italic' }}
+                    fontFamily: 'Whitney Bold Italic'
+                  }}
                 >
                   {`Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
                 </span>
-                </FormLabel>
+              </FormLabel>
               <Box
                 as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage() })}
@@ -282,17 +283,17 @@ export default function TextInputBuilder({
                 <VStack width='100%' alignItems='flex-start' gap={8}>
                   <FormLabel>Minimum to Maximum Character Range</FormLabel>
                   <RangeSlider
-                  
-                  width='99%' ml='.5%' defaultValue={[1, 1024]} min={1} max={1024} onChange={(value) => {
-                    //@ts-expect-error
-                    setValue(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, value[0])
-                    if(value[0] === 1) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`)
-                    //@ts-expect-error
-                    value[1] ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, 1)
-                    fixMessage()
-                  }}>
+
+                    width='99%' ml='.5%' defaultValue={[1, 1024]} min={1} max={1024} onChange={(value) => {
+                      //@ts-expect-error
+                      setValue(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, value[0])
+                      if (value[0] === 1) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`)
+                      //@ts-expect-error
+                      value[1] ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, 1)
+                      fixMessage()
+                    }}>
                     <RangeSliderTrack height='8px'>
-                      <RangeSliderFilledTrack bg='blurple'/>
+                      <RangeSliderFilledTrack bg='blurple' />
                     </RangeSliderTrack>
                     <RangeSliderThumb {...register(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: 1024 })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
                     <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>

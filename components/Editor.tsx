@@ -31,7 +31,8 @@ import {
   Switch,
   Flex,
   Tooltip,
-  Stack
+  Stack,
+  Image
 } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
@@ -147,6 +148,7 @@ export function Editor({
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
   const [submissionType, _setSubmissionType] = useState(['bot'])
+  const [submissionChannel, _setSubmissionChannel] = useState(['existing'])
   const [premium, _setPremium] = useState(false);
 
   function setPremium(value: any) {
@@ -156,8 +158,29 @@ export function Editor({
         resetField(`forms.${i}.webhook_url`);
         return 'bot';
       }))
+      // _setSubmissionChannel(submissionChannel.map((value, i) => {
+      //   resetField(`forms.${i}.submit_channel`);
+      //   return 'existing';
+      // }))
       getValues('forms').forEach((form, index) => {
         resetField(`forms.${index}.cooldown`)
+        if (getValues(`forms.${index}.submit_channel`)) {
+          //@ts-expect-error
+          setValue(`forms.${index}.submit_channel.name`, 'ticket');
+          //@ts-expect-error
+          setValue(`forms.${index}.submit_channel.permission_overwrites`, [
+            {
+              id: '{ServerID}',
+              type: 0,
+              deny: 1024
+            },
+            {
+              id: '{UserID}',
+              type: 1,
+              allow: 52224
+            }
+          ]);
+        }
         getValues(`forms.${index}.submit_components`)?.forEach((action_row, ii) => {
           //@ts-expect-error
           getValues(`forms.${index}.submit_components.${ii}.components`)?.forEach((component, iii) => {
@@ -247,9 +270,12 @@ export function Editor({
 
           if (i === 0) {
             setSubmissionType('edit', form.webhook_url ? 'webhook_url' : 'bot', i)
+            setSubmissionType('edit', form.submit_channel ? 'new' : 'existing', i)
           } else {
             //@ts-expect-error
             setSubmissionType('append', form.webhook_url ? 'webhook_url' : 'bot')
+            //@ts-expect-error
+            setSubmissionType('append', form.submit_channel ? 'new' : 'existing')
           }
         });
 
@@ -335,7 +361,7 @@ export function Editor({
         _setSubmissionType(newSubmissionType)
         switch (value) {
           case 'bot': resetField(`forms.${index}.webhook_url`); break;
-          case 'webhook': resetField(`forms.${index}.submit_channel_id`); break;
+          case 'webhook': resetField(`forms.${index}.submit_channel_id`); setSubmissionChannel('edit', 'existing', index); break;
         }
         break;
       }
@@ -346,6 +372,58 @@ export function Editor({
       case 'delete': {
         //@ts-expect-error
         newSubmissionType.splice(value, 1)
+        break;
+      }
+    }
+  }
+  function setSubmissionChannel(type: string, value: string, index: number) {
+    let newSubmissionChannel = submissionChannel
+    switch (type) {
+      case 'edit': {
+        newSubmissionChannel[index] = value
+        _setSubmissionChannel(newSubmissionChannel)
+        switch (value) {
+          case 'existing': resetField(`forms.${index}.submit_channel`); break;
+          case 'new': {
+            resetField(`forms.${index}.submit_channel_id`);
+            //@ts-expect-error
+            setValue(`forms.${index}.submit_channel.type`, 0);
+            //@ts-expect-error
+            setValue(`forms.${index}.submit_channel.name`, 'ticket');
+            //@ts-expect-error
+            setValue(`forms.${index}.submit_channel.permission_overwrites`, [
+              {
+                id: '{ServerID}',
+                type: 0,
+                deny: 1024
+              },
+              {
+                id: '{UserID}',
+                type: 1,
+                allow: 52224
+              }
+            ]);
+            setTimeout(() => {
+              //@ts-expect-error
+              getValues(`forms.${index}.submit_channel.permission_overwrites`).map((overwrite, i) => {
+                //@ts-expect-error
+                if (overwrite.allow === '') setValue(`forms.${index}.submit_channel.permission_overwrites.${i}.allow`, undefined)
+                //@ts-expect-error
+                if (overwrite.deny === '') setValue(`forms.${index}.submit_channel.permission_overwrites.${i}.deny`, undefined)
+              })
+            }, 1);
+            break;
+          }
+        }
+        break;
+      }
+      case 'append': {
+        newSubmissionChannel.push(value)
+        break;
+      }
+      case 'delete': {
+        //@ts-expect-error
+        newSubmissionChannel.splice(value, 1)
         break;
       }
     }
@@ -532,6 +610,7 @@ export function Editor({
             <Button variant="danger-outline" onClick={() => {
               reset(ClearedValues)
               _setSubmissionType(['bot'])
+              _setSubmissionChannel(['existing'])
             }}>
               Clear All
             </Button>
@@ -544,7 +623,7 @@ export function Editor({
             />
             <Text>Use premium features</Text>
             <Tooltip hasArrow label={
-              'Forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile. Enables the use of webhook urls and cooldowns.'
+              'When enabled forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile.'
             } placement='right' shouldWrapChildren bg="#181414">
               <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
             </Tooltip>
@@ -580,7 +659,9 @@ export function Editor({
             webhookUrlSetFocused,
             premium,
             submissionType,
-            setSubmissionType
+            setSubmissionType,
+            submissionChannel,
+            setSubmissionChannel
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -690,11 +771,58 @@ export function Editor({
         </VStack></>
         }
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' mt={20} width='100%'>
-
           <Button variant='primary' onClick={() => setStage('openFormType')}>Start guided setup</Button>
           <Text fontSize={18}>or</Text>
           <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
         </VStack></>}
+        {/* {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
+          <VStack align='center' mt={10} width='100%' gap={10}>
+            <VStack align='left'>
+              <FormLabel fontSize={18}>Basic</FormLabel>
+              <Box>
+                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() => setOpenFormType('button')} border={openFormType === 'button' ? '2px solid #5865F2' : 'none'} background='#2B2D31' width='250px' height='105px' borderRadius='10px' display='flex' alignItems='center' justifyContent='center'>
+
+
+
+                </Box>
+                <Text fontSize={12} color='#DBDEE1'>Supports up to 5 different forms per message.</Text>
+              </Box>
+              <FormLabel fontSize={18}>Application</FormLabel>
+              <Box>
+                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() => setOpenFormType('select_menu')} border={openFormType === 'select_menu' ? '2px solid #5865F2' : 'none'} background='#2B2D31' width='250px' height='105px' borderRadius='10px' display='flex' alignItems='center' justifyContent='center'>
+
+
+
+                </Box>
+                <Text fontSize={12} color='#DBDEE1'>Supports up to 25 different forms per message.</Text>
+              </Box>
+              <FormLabel fontSize={18}>Ticket</FormLabel>
+              <Box>
+                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() => setOpenFormType('application_command')} border={openFormType === 'application_command' ? '2px solid #5865F2' : 'none'} background='#2B2D31' width='250px' height='105px' borderRadius='10px' display='flex' alignItems='center' justifyContent='center'>
+
+
+
+                <Image height='100%' src='https://cdn.discordapp.com/attachments/943471614580903956/1241452276246118400/Screenshot_2024-05-18_at_19.57.40.png?ex=664a4007&is=6648ee87&hm=51ee3e0c269ede6a9f27617fc52c4f45129f4b944e7ebbef527c91212699a8ae&'></Image>
+
+
+
+
+
+
+                </Box>
+                <Text fontSize={12} color='#DBDEE1'>Supports 1 form per command.</Text>
+              </Box>
+            </VStack>
+            <HStack>
+              <Button variant='secondary' onClick={() => setStage('welcome')}>Go back</Button>
+              <Button variant='primary' onClick={() => {
+                switch (openFormType) {
+                  case 'application_command': setStage('applicationCommand'); break;
+                  case 'button': case 'select_menu': setStage('form'); break;
+                }
+              }}>Continue</Button>
+            </HStack>
+          </VStack></>} */}
         {stage === 'openFormType' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>How should users open your form?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>
             <VStack align='left'>

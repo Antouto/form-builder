@@ -53,6 +53,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               }
             })}>DM response to submitter</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`, true)}>Remove other buttons in this row</Button>}
+            {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, true)}>Delete this channel</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <Button backgroundImage='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' isDisabled={!premium} onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')}>Require permissions to use</Button>}
           </HStack>
 
@@ -92,6 +93,12 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             <HStack>
               <FormLabel>Remove other buttons in this row</FormLabel>
               <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`, undefined) }} />
+            </HStack>
+          </Box>}
+          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) && <Box>
+            <HStack>
+              <FormLabel>Delete this channel</FormLabel>
+              <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, undefined) }} />
             </HStack>
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) !== undefined && <Box>

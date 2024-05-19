@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { Box, Button, CloseButton, FormLabel, HStack, Input, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   Control,
@@ -25,6 +25,7 @@ import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
 import ActionRowBuilder from "./ActionRowBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
+import PermissionOverwritesBuilder from "./PermissionOverwritesBuilder";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -60,7 +61,11 @@ export default function FormBuilder({
   //@ts-expect-error
   submissionType,
   //@ts-expect-error
-  setSubmissionType
+  setSubmissionType,
+  //@ts-expect-error
+  submissionChannel,
+  //@ts-expect-error
+  setSubmissionChannel
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -183,6 +188,11 @@ export default function FormBuilder({
     }, 1)
   }
 
+  function fixSubmitChannel(index: any) {
+    //@ts-expect-error
+    if (!getValues(`forms.${index}.submit_channel.parent_id`)) resetField(`forms.${index}.submit_channel.parent_id`)
+  }
+
   function fixServerSubmissionMessage(index: number) {
     if (!getValues(`forms.${index}.guild_submit_message`)) return;
     //@ts-expect-error
@@ -222,12 +232,13 @@ export default function FormBuilder({
               __setdmSubmissionMessage(newdmSubmissionMessage)
 
               setSubmissionType('delete')
+              setSubmissionChannel('delete')
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
               <Collapsible name="General">
 
 
-                <HStack>
+                <HStack wrap='wrap'>
                   <FormLabel whiteSpace="nowrap" m={0}>
                     Send submissions using
                   </FormLabel>
@@ -252,11 +263,70 @@ export default function FormBuilder({
                     <option value="bot">Bot</option>
                     <option value="webhook">Webhook</option>
                   </Select>
+                  {submissionType[index] === 'bot' && <>
+                    <FormLabel whiteSpace="nowrap" m={0}>
+                      to
+                    </FormLabel>
+                    <Select
+                      height="24px!important"
+                      width='fit-content'
+                      borderWidth="2px"
+                      borderColor="transparent"
+                      borderRadius="4px"
+                      border='1px solid rgba(255, 255, 255, 0.16)'
+                      bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
+                      _focus={{ outline: 'none' }}
+                      _focusVisible={{ outline: 'none' }}
+                      _hover={{ borderColor: "transparent" }}
+                      onChange={(event) => {
+                        setSubmissionChannel('edit', event.target.value, index)
+                      }}
+                      value={submissionChannel[index]}
+                    >
+                      <option value="existing">Existing Channel</option>
+                      <option value="new">New Channel (For tickets)</option>
+                    </Select>
+                  </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
+                {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
+                {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
+                  <HStack wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
+                    <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].submit_channel.name`} display='flex' alignItems='flex-end'>
+                        <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text>
+                        {/* @ts-expect-error */}
+                        <Counter count={getValues('forms')[index].submit_channel?.name?.length} max={100} />
+                      </FormLabel>
+                      <Input
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_channel.name`, { required: true, maxLength: 100, pattern: /^[^ _!"§$%&/()=]+$/, onChange: () => fixSubmitChannel(index) })}
+                        id={`forms[${index}].submit_channel.name`}
+                        isDisabled={!premium}
+                        height='36px'
+                        style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
+                      />
 
+                      {/* @ts-expect-error */}
+                      <ErrorMessage error={errors.forms?.[index]?.submit_channel?.name} />
+                    </Box>
+                    <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].submit_channel.parent_id`}>Category ID</FormLabel>
+                      <input
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_channel.parent_id`, { pattern: /^\d{10,20}$/, onChange: () => fixSubmitChannel(index) })}
+                        id={`forms[${index}].submit_channel.parent_id`}
+                      />
+                      {/* @ts-expect-error */}
+                      <ErrorMessage error={errors.forms?.[index]?.submit_channel?.parent_id} />
+                    </Box>
+                  </HStack>
+
+                  <FormLabel htmlFor={`forms[${index}].submit_channel.permission_overwrites`}>Permission Overwrites</FormLabel>
+                  Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
+                  <PermissionOverwritesBuilder control={control} i={index} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium}/>
+                </Collapsible>}
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>
                   <Stack direction={isReallySmallScreen ? 'column' : 'row'}>
                     {
@@ -395,8 +465,8 @@ export default function FormBuilder({
                     />
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                   </Box>}
-                  <FormLabel>Submission Buttons</FormLabel> 
-                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium}/>
+                  <FormLabel>Submission Buttons</FormLabel>
+                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} />
                 </VStack>
               </Collapsible>
             </Collapsible >
@@ -435,6 +505,7 @@ export default function FormBuilder({
             serverSubmissionMessage.push('default')
             dmSubmissionMessage.push('default')
             setSubmissionType('append', 'bot')
+            setSubmissionChannel('append', 'existing')
 
             fixMessage()
           }}

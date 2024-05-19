@@ -263,7 +263,9 @@ export function Editor({
         setOpenFormType("application_command", false);
       }
 
+      //@ts-expect-error
       let newSubmissionType = []
+      //@ts-expect-error
       let newSubmissionChannel = []
       json.forms.forEach((form, i) => {
         if (form.webhook_url) setPremium(true)
@@ -287,19 +289,21 @@ export function Editor({
 
 
 
-        if(form.webhook_url) {
+        if (form.webhook_url) {
           newSubmissionType.push('webhook_url')
         } else {
           newSubmissionType.push('bot')
         }
 
-        if(form.submit_channel) {
+        if (form.submit_channel) {
           newSubmissionChannel.push('new')
         } else {
           newSubmissionChannel.push('existing')
         }
       });
+      //@ts-expect-error
       _setSubmissionType(newSubmissionType)
+      //@ts-expect-error
       _setSubmissionChannel(newSubmissionChannel)
       if (!json.application_command) {
         // Check the number of button components and menu components

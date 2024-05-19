@@ -150,6 +150,7 @@ export function Editor({
   const [submissionType, _setSubmissionType] = useState(['bot'])
   const [submissionChannel, _setSubmissionChannel] = useState(['existing'])
   const [premium, _setPremium] = useState(false);
+  const { isOpen, onOpen: onOpenWhereDoIFindSubmissionChannelID, onClose } = useDisclosure()
 
   function setPremium(value: any) {
     _setPremium(value)
@@ -661,7 +662,8 @@ export function Editor({
             submissionType,
             setSubmissionType,
             submissionChannel,
-            setSubmissionChannel
+            setSubmissionChannel,
+            onOpenWhereDoIFindSubmissionChannelID
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -990,6 +992,21 @@ export function Editor({
             </HStack>
           </VStack></>}
       </VStack>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent bg='grey.dark'>
+          <ModalHeader>How to get your Submission Channel ID</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pt={5}>
+            <Text fontFamily='Whitney Bold'>1. Enable Developer Mode</Text> Go to your User Settings in discord and in the advanced section enable "Developer Mode".<br/><br/>
+            <Text fontFamily='Whitney Bold'>2. Copy the Channel ID</Text> Go to the discord channel where you'd like to have submissions posted to, right click it and click "Copy Channel ID".
+          </ModalBody>
+
+          <ModalFooter>
+            <Button variant='primary' onClick={onClose}>Okay</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

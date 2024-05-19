@@ -1,5 +1,5 @@
 import { Box, Button, CloseButton, FormLabel, HStack, Input, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Control,
   FieldValues,
@@ -65,7 +65,9 @@ export default function FormBuilder({
   //@ts-expect-error
   submissionChannel,
   //@ts-expect-error
-  setSubmissionChannel
+  setSubmissionChannel,
+  //@ts-expect-error
+  onOpenWhereDoIFindSubmissionChannelID
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -214,13 +216,40 @@ export default function FormBuilder({
     if (!content) resetField(`forms.${index}.submit_message`);
   }
 
+  const [formsThatNeedSubmitChannelIDString, setFormsThatNeedSubmitChannelIDString] = useState('');
+
+  useEffect(() => {
+    let formsThatNeedSubmitChannelID:number[] = [];
+    console.log(formsThatNeedSubmitChannelID)
+    fields.forEach((form, i) => {
+      if (submissionChannel[i] === 'existing' && (formState.errors.forms?.[i]?.submit_channel_id || !getValues(`forms.${i}.submit_channel_id`) || getValues(`forms.${i}.submit_channel`))) {
+        console.log('HELLO', form)
+        formsThatNeedSubmitChannelID.push(i + 1)
+      } 
+    })
+    console.log(formsThatNeedSubmitChannelID)
+
+    if (formsThatNeedSubmitChannelID.length) {
+      if (formsThatNeedSubmitChannelID.length === 1) {
+        setFormsThatNeedSubmitChannelIDString(` ${formsThatNeedSubmitChannelID[0]} requires`)
+      } else {
+        const lastElement = formsThatNeedSubmitChannelID.pop()
+        setFormsThatNeedSubmitChannelIDString(`s ${formsThatNeedSubmitChannelID.join(', ')}, and ${lastElement} require`)
+      }
+    } else {
+      setFormsThatNeedSubmitChannelIDString('')
+    }
+  }, [formState, fields, submissionChannel])
+
   return (
     <Box width='100%' pb={2}>
       <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)} /></FormLabel>
+      {formsThatNeedSubmitChannelIDString && <Box mb={4}><ErrorMessage>
+        <Text>Form{formsThatNeedSubmitChannelIDString} a Submission Channel ID.</Text>
+      </ErrorMessage></Box>}
       <ul>
         {fields.map((item, index) => {
-          return (
-
+          return (<>
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
               let newServerSubmissionMessage = serverSubmissionMessage;
@@ -289,7 +318,7 @@ export default function FormBuilder({
                   </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} />}
+                {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
@@ -325,7 +354,7 @@ export default function FormBuilder({
 
                   <FormLabel htmlFor={`forms[${index}].submit_channel.permission_overwrites`}>Permission Overwrites</FormLabel>
                   Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
-                  <PermissionOverwritesBuilder control={control} i={index} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium}/>
+                  <PermissionOverwritesBuilder control={control} i={index} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
                 </Collapsible>}
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>
                   <Stack direction={isReallySmallScreen ? 'column' : 'row'}>
@@ -470,7 +499,7 @@ export default function FormBuilder({
                 </VStack>
               </Collapsible>
             </Collapsible >
-          );
+          </>);
         })}
       </ul >
 

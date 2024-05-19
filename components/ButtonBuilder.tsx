@@ -5,7 +5,7 @@ import Counter from './Counter'
 import { useScreenWidth } from '../util/width';
 
 //@ts-expect-error
-export default function ButtonBuilder({ register, fix, setValue, watch, forButton, error, button, buttonLabel, buttonColour, buttonLabelRequired, buttonColourRequired, allowColourDeselect, resetField, getValues }) {
+export default function ButtonBuilder({ register, fix, setValue, watch, forButton, error, button, buttonLabel, buttonLabelPlaceholder, buttonColour, buttonLabelRequired, buttonColourRequired, allowColourDeselect, resetField, getValues }) {
   const colorMode = useColorMode().colorMode
   const isSmallScreen = !useScreenWidth(1070);
 
@@ -22,7 +22,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
             onChange: () => fix()
           })}
           id={`${forButton}.label`}
-          placeholder='Open Form'
+          placeholder={buttonLabelPlaceholder ? buttonLabelPlaceholder : ''}
         />
         <ErrorMessage error={error} />
       </Box>

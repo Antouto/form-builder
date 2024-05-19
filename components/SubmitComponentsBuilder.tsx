@@ -26,6 +26,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
       {fields.map((item, iii) => {
         const button = getValues(`forms[${i}].submit_components.${ii}.components.${iii}`)
         return <Collapsible key={item.id} name={`Button ${iii + 1}${button?.label && button?.label.match(/\S/) ? ` – ${button?.label}` : ''}`} deleteButton={getValues(`forms[${i}].submit_components.${ii}.components`)?.length > 1 ? <CloseButton onClick={() => { remove(iii) }} /> : null}>
+          {/* @ts-expect-error */}
           <HStack><ButtonBuilder forButton={`forms[${i}].submit_components.${ii}.components.${iii}`} error={errors.forms?.[i]?.submit_components?.[ii]?.components[iii]?.label} button={button} register={register} setValue={setValue} watch={watch} fix={() => { }} /></HStack>
           {/* <FormLabel>Button Logic</FormLabel> */}
           {/* <Collapsible name={'Logic'}> */}
@@ -86,7 +87,10 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) !== undefined && <Box>
-            <HStack><ButtonBuilder forButton={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`} error={errors.forms?.[i]?.submit_components?.[ii]?.components[iii]?.logic?.UPDATE_COMPONENT?.label} button={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`)} buttonLabel={'Update Label'} buttonLabelRequired={'no'} buttonColourRequired={'no'} buttonColour={'Update Colour'} register={register} setValue={setValue} watch={watch} allowColourDeselect={true} resetField={resetField} getValues={getValues} fix={() => { }} /> <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) }} /></HStack>
+            {/* @ts-expect-error */}
+            <HStack><ButtonBuilder forButton={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`} error={errors.forms?.[i]?.submit_components?.[ii]?.components[iii]?.logic?.UPDATE_COMPONENT?.label} button={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`)} buttonLabel={'Update Button Label'} buttonLabelRequired={'no'} buttonColourRequired={'no'} buttonColour={'Update Button Colour'} register={register} setValue={setValue} watch={watch} allowColourDeselect={true} resetField={resetField} getValues={getValues} fix={() => {
+              if(getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`) === '') resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`)
+            }} /> <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) }} /></HStack>
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`) !== undefined && <Box>
             <HStack>

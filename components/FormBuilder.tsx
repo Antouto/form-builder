@@ -387,7 +387,8 @@ export default function FormBuilder({
                     }
 
                     {
-                      watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} />
+                      //@ts-expect-error
+                      watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} buttonLabelPlaceholder={'Open Form'}/>
                     }
                   </Stack>
 

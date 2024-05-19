@@ -115,7 +115,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               <Counter count={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`)?.length} max={100} />
             </FormLabel>
             <Input
-              {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`, { pattern: /^[^ _!"§$%&/()=]+$/, maxLength: 100, onChange: () => fixOverwrite(ii) })}
+              {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`, { pattern: /^[^ _!"§$%&/()=]+$/, maxLength: 100 })}
               id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`}
               isDisabled={!premium}
               height='36px'

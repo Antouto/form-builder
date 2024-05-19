@@ -13,7 +13,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
     <>
       <Box width={isSmallScreen ? '100%' : '50%'}>
         {/* //@ts-expect-error */}
-        <FormLabel htmlFor={`${forButton}.label`} display='flex' alignItems='flex-end'><Text _after={buttonLabelRequired === 'no' ? 'unset' : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonLabel ? buttonLabel : 'Button Label'}</Text>
+        <FormLabel htmlFor={`${forButton}.label`} display='flex' alignItems='flex-end'><Text _after={buttonLabelRequired === 'no' ? {} : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonLabel ? buttonLabel : 'Button Label'}</Text>
           <Counter count={button?.label?.length} max={80}></Counter>
         </FormLabel>
         <input
@@ -30,7 +30,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
       <Box>
         <FormLabel htmlFor={`${forButton}.style`}>
           {/* //@ts-expect-error */}
-          <Text _after={buttonColourRequired === 'no' ? 'unset' : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonColour ? buttonColour : 'Button Colour'}</Text>
+          <Text _after={buttonColourRequired === 'no' ? {} : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonColour ? buttonColour : 'Button Colour'}</Text>
         </FormLabel>
         <HStack>
           <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'blurple' }} background={'blurple'} onClick={() => { fix(); allowColourDeselect ? (getValues(`${forButton}.style`) === 1 ? setValue(`${forButton}.style`, undefined) : setValue(`${forButton}.style`, 1)) : setValue(`${forButton}.style`, 1)}}>{watch(`${forButton}.style`) === 1 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>

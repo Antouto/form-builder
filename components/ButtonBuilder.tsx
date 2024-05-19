@@ -12,6 +12,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
   return (
     <>
       <Box width={isSmallScreen ? '100%' : '50%'}>
+        {/* //@ts-expect-error */}
         <FormLabel htmlFor={`${forButton}.label`} display='flex' alignItems='flex-end'><Text _after={buttonLabelRequired === 'no' ? 'unset' : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonLabel ? buttonLabel : 'Button Label'}</Text>
           <Counter count={button?.label?.length} max={80}></Counter>
         </FormLabel>
@@ -28,6 +29,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
       </Box>
       <Box>
         <FormLabel htmlFor={`${forButton}.style`}>
+          {/* //@ts-expect-error */}
           <Text _after={buttonColourRequired === 'no' ? 'unset' : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonColour ? buttonColour : 'Button Colour'}</Text>
         </FormLabel>
         <HStack>

@@ -470,7 +470,7 @@ export function Editor({
     _setOpenFormType(type);
     switch (type) {
       case "button":
-        resetField("application_command");
+        setValue('application_command', undefined)
         resetField("select_menu_placeholder");
         resetField("message");
         if (setContent) {
@@ -499,7 +499,7 @@ export function Editor({
         });
         break;
       case "select_menu":
-        resetField("application_command");
+        setValue('application_command', undefined)
         if (setContent) {
           setTimeout(
             () => setValue("message", { content: "Fill out the form below" }),

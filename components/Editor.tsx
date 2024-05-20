@@ -347,6 +347,8 @@ export function Editor({
         setValue("message", json.message);
       }
 
+      if(json.select_menu_placeholder) setValue("select_menu_placeholder", json.select_menu_placeholder);
+
       setReading(false);
       // Send a toast the the user notifying that the form has
       // been uploaded

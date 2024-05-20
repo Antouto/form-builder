@@ -525,7 +525,7 @@ export default function FormBuilder({
         <Button
           variant='primary'
           //@ts-expect-error
-          isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && !getValues('forms.0.select_menu_option') && getValues('message.components.0.components').length >= 5) || getValues('application_command') && getValues('forms').length >= 1}
+          isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && !getValues('forms.0.select_menu_option') && getValues('message.components.0.components')?.length >= 5) || getValues('application_command') && getValues('forms').length >= 1}
           onClick={() => {
             setDisplayForm(fields.length)
             formMessageComponentsAppend({

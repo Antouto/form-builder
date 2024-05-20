@@ -540,7 +540,6 @@ export function Editor({
     const message = getValues("message");
     if (!message) return;
     const { content, embeds } = message;
-    if (!content && !embeds?.length) setTimeout(() => resetField("message"), 1);
     if (!content) resetField(`message.content`);
     if (embeds?.length)
       for (let i = 0; i < embeds.length; i++) {

@@ -1,13 +1,10 @@
 {
   "message": {
-    "content": ""
+    "content": "",
+    "components": []
   },
   "forms": [
     {
-      "button": {
-        "label": "",
-        "style": 1
-      },
       "modal": {
         "title": "",
         "components": [

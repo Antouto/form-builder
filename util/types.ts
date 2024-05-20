@@ -23,6 +23,7 @@ export interface Embed {
 export interface FormOpenFormTypeBuilder {
     content?: string;
     embeds?: Embed[];
+    components?:[];
 }
 
 export interface ButtonBuilder {
@@ -66,7 +67,6 @@ export interface FormBuilder {
     submit_channel_id?: string;
     submit_channel?: object;
     cooldown?: number;
-    button: ButtonBuilder;
     application_command?: ApplicationCommandBuilder;
     select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;

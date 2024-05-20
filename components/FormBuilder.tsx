@@ -69,7 +69,13 @@ export default function FormBuilder({
   //@ts-expect-error
   onOpenWhereDoIFindSubmissionChannelID,
   //@ts-expect-error
-  fixSubmitChannel
+  fixSubmitChannel,
+  //@ts-expect-error
+  formMessageComponents,
+  //@ts-expect-error
+  formMessageComponentsAppend,
+  //@ts-expect-error
+  formMessageComponentsRemove,
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -216,13 +222,13 @@ export default function FormBuilder({
   const [formsThatNeedSubmitChannelIDString, setFormsThatNeedSubmitChannelIDString] = useState('');
 
   useEffect(() => {
-    let formsThatNeedSubmitChannelID:number[] = [];
+    let formsThatNeedSubmitChannelID: number[] = [];
     console.log(formsThatNeedSubmitChannelID)
     fields.forEach((form, i) => {
       if (submissionChannel[i] === 'existing' && (formState.errors.forms?.[i]?.submit_channel_id || !getValues(`forms.${i}.submit_channel_id`) || getValues(`forms.${i}.submit_channel`))) {
         console.log('HELLO', form)
         formsThatNeedSubmitChannelID.push(i + 1)
-      } 
+      }
     })
     console.log(formsThatNeedSubmitChannelID)
 
@@ -240,7 +246,8 @@ export default function FormBuilder({
 
   return (
     <Box width='100%' pb={2}>
-      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)} /></FormLabel>
+      {/* @ts-expect-error */}
+      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5 - (getValues('message.components.0.components')?.filter(component => component.style === 5))?.length)} /></FormLabel>
       {formsThatNeedSubmitChannelIDString && <Box mb={4}><ErrorMessage>
         <Text>Form{formsThatNeedSubmitChannelIDString} a Submission Channel ID.</Text>
       </ErrorMessage></Box>}
@@ -249,6 +256,16 @@ export default function FormBuilder({
           return (<>
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
+              //@ts-expect-error
+              const formToDeleteIndex = getValues('message.components[0].components')?.findIndex(component => (component.custom_id) && (component.custom_id === `{FormID${index + 1}}`))
+              formMessageComponentsRemove(formToDeleteIndex)
+              //@ts-expect-error
+              getValues('message.components[0].components').forEach((component, i) => {
+                if ((i >= formToDeleteIndex) && component.custom_id && component.custom_id.match(/\d+/)) {
+                  //@ts-expect-error
+                  setValue(`message.components[0].components.${i}.custom_id`, `{FormID${parseInt(component.custom_id.match(/\d+/)[0]) - 1}}`)
+                }
+              });
               let newServerSubmissionMessage = serverSubmissionMessage;
               newServerSubmissionMessage.splice(index, 1);
               __setServerSubmissionMessage(newServerSubmissionMessage)
@@ -385,7 +402,7 @@ export default function FormBuilder({
 
                     {
                       //@ts-expect-error
-                      watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} buttonLabelPlaceholder={'Open Form'}/>
+                      watch('forms.0.button') && <ButtonBuilder forButton={`forms[${index}].button`} error={errors.forms?.[index]?.button?.label} button={getValues('forms')[index].button} register={register} fix={fixMessage} setValue={setValue} watch={watch} buttonLabelPlaceholder={'Open Form'} />
                     }
                   </Stack>
 
@@ -508,14 +525,17 @@ export default function FormBuilder({
       <section>
         <Button
           variant='primary'
-          isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && getValues('forms.0.button') && getValues('forms').length >= 5) || getValues('application_command') && getValues('forms').length >= 1}
+          //@ts-expect-error
+          isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && !getValues('forms.0.select_menu_option') && getValues('message.components.0.components').length >= 5) || getValues('application_command') && getValues('forms').length >= 1}
           onClick={() => {
             setDisplayForm(fields.length)
+            formMessageComponentsAppend({
+              label: 'Open Form',
+              custom_id: `{FormID${fields.length + 1}}`,
+              style: 1,
+              type: 2
+            })
             append({
-              button: {
-                label: '',
-                style: 1
-              },
               modal: {
                 title: '',
                 components: [

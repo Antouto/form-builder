@@ -4,6 +4,7 @@ import {
   Control,
   FieldValues,
   FormState,
+  useFieldArray,
   useForm,
   UseFormGetValues,
   UseFormRegister,
@@ -38,7 +39,7 @@ import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
 import OpenFormTypeBuilder from "./OpenFormTypeBuilder";
 import { SlashCommand, UserMention } from "../components/Mention";
-import _ClearedValues from "../ClearedValues.json";
+import ClearedValues from "../ClearedValues.json";
 import { Footer } from "../components/Footer";
 import {
   Embed,
@@ -66,10 +67,6 @@ import TextInputBuilder from "./TextInputBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
-
-
-
-const ClearedValues = _ClearedValues as FormAndOpenFormTypeBuilder;
 
 const Defaults = {
   Embed: {
@@ -119,7 +116,15 @@ export function Editor({
   displaySection,
   resetField,
   stage,
-  setStage
+  setStage,
+  //@ts-expect-error
+  formMessageComponents,
+  //@ts-expect-error
+  formMessageComponentsAppend,
+  //@ts-expect-error
+  formMessageComponentsRemove,
+  //@ts-expect-error
+  formMessageComponentsMove
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
@@ -163,6 +168,8 @@ export function Editor({
       //   resetField(`forms.${i}.submit_channel`);
       //   return 'existing';
       // }))
+      //@ts-expect-error
+      setValue('message.components.0.components', getValues('message.components.0.components').filter(component => component.style !== 5)) 
       getValues('forms').forEach((form, index) => {
         resetField(`forms.${index}.cooldown`)
         if (getValues(`forms.${index}.submit_channel`)) {
@@ -278,7 +285,7 @@ export function Editor({
       // Add the json.forms array to the form hook
       setValue("forms", json.forms);
 
-      if (json.forms[0].button) {
+      if (!json.forms?.[0].select_menu_option) {
         setOpenFormType("button", false);
       } else if (json.forms[0].select_menu_option) {
         setOpenFormType("select_menu", false);
@@ -336,48 +343,6 @@ export function Editor({
       //@ts-expect-error
       _setSubmissionChannel(newSubmissionChannel)
       if (!json.application_command) {
-        // Check the number of button components and menu components
-        // incase of a button modal and a select menu modal
-        let buttons = 0;
-        let menus = 0;
-        json.forms.forEach((form, i) => {
-          if (form.select_menu_option != null) menus++;
-          if (form.button != null) buttons++;
-        });
-
-        if (buttons < menus) {
-          //setOpenFormType("select_menu");
-          json.forms.forEach((form, i) => {
-            if (form.select_menu_option == null) {
-              setValue(`forms.${i}.select_menu_option`, {
-                label: "Select Menu Option",
-                description: "",
-              });
-            }
-
-            if (form.button != null) resetField(`forms.${i}.button`);
-          });
-        } else {
-          //setOpenFormType("button",);
-          json.forms.forEach((form, i) => {
-            setValue(
-              `forms.${i}.button`,
-              form.button == null
-                ? {
-                  style: 1,
-                  label: "Open Form",
-                }
-                : {
-                  style: form?.button?.style ?? 1,
-                  label: form?.button?.label ?? "Unknown Label",
-                }
-            );
-
-            if (form.select_menu_option != null)
-              resetField(`forms.${i}.select_menu_option`);
-          });
-        }
-
         // Add the json.message object to the form hook
         setValue("message", json.message);
       }
@@ -510,19 +475,27 @@ export function Editor({
         resetField("message");
         if (setContent) {
           setTimeout(() => {
-            setValue("message", { content: "Fill out the form below" });
+            setValue("message", {
+              content: "Fill out the form below",
+              //@ts-expect-error
+              components: getValues('forms').map((form, i) => (
+                {
+                  type: 1,
+                  components: [{
+                    type: 2,
+                    label: 'Open form',
+                    style: 1,
+                    custom_id: `{FormID${i + 1}}`
+                  }]
+                }
+              ))
+            });
           }, 1);
         }
 
         getValues("forms").forEach((form, i) => {
           setValue(`forms.${i}.select_menu_option`, undefined);
           resetField(`forms.${i}.select_menu_option`);
-          if (setContent) {
-            setValue(`forms.${i}.button`, {
-              label: "Open Form",
-              style: 1,
-            });
-          }
         });
         break;
       case "select_menu":
@@ -534,9 +507,6 @@ export function Editor({
           );
         }
         getValues("forms").forEach((form, i) => {
-          //@ts-expect-error
-          setValue(`forms.${i}.button`, undefined);
-          resetField(`forms.${i}.button`);
           if (setContent) {
             setValue(`forms.${i}.select_menu_option`, {
               label: form.modal.title,
@@ -547,6 +517,7 @@ export function Editor({
         break;
       case "application_command":
         setValue('message', undefined)
+        setValue(`select_menu_placeholder`, undefined);
         setTimeout(() => {
           resetField("message");
         }, 1);
@@ -555,7 +526,6 @@ export function Editor({
           resetField(`forms.${i}.select_menu_option`);
           //@ts-expect-error
           setValue(`forms.${i}.button`, undefined);
-          resetField(`forms.${i}.button`);
           if (setContent) {
             setValue("application_command", {
               name: "",
@@ -685,6 +655,7 @@ export function Editor({
               }}
             />
             <Button variant="danger-outline" onClick={() => {
+              //@ts-expect-error
               reset(ClearedValues)
               _setSubmissionType(['bot'])
               _setSubmissionChannel(['existing'])
@@ -718,6 +689,12 @@ export function Editor({
             openFormType,
             setOpenFormType,
             fixMessage,
+            watch,
+            formMessageComponents,
+            formMessageComponentsAppend,
+            formMessageComponentsRemove,
+            formMessageComponentsMove,
+            premium
           }}
         />
         <FormBuilder
@@ -740,7 +717,10 @@ export function Editor({
             submissionChannel,
             setSubmissionChannel,
             onOpenWhereDoIFindSubmissionChannelID,
-            fixSubmitChannel
+            fixSubmitChannel,
+            formMessageComponents,
+            formMessageComponentsAppend,
+            formMessageComponentsRemove,
           }}
         />
         <VStack width="100%" align="flex-start">

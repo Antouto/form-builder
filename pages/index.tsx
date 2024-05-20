@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useForm, useWatch } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
 import _ClearedValues from '../ClearedValues.json';
@@ -41,23 +41,35 @@ export default function App() {
   const hotjarVersion = 6;
 
   useEffect(() => {
-    hotjar.initialize({ id: siteId, sv: hotjarVersion} );
+    hotjar.initialize({ id: siteId, sv: hotjarVersion });
   }, []);
-    
 
+  const { fields: formMessageComponents, append: formMessageComponentsAppend, remove: formMessageComponentsRemove, move: formMessageComponentsMove } = useFieldArray({
+    control,
+    //@ts-expect-error
+    name: "message.components.0.components",
+    rules: { minLength: 1 }
+  });
 
 
 
   useEffect(() => {
     setValue('message', {
-      content: 'Fill out the form below'
+      content: 'Fill out the form below',
+      //@ts-expect-error
+      components: [{
+        type: 1,
+        components: []
+      }]
+    })
+    formMessageComponentsAppend({
+      type: 2,
+      label: 'Open Form',
+      style: 1,
+      custom_id: '{FormID1}'
     })
     setValue('forms', [
       {
-        "button": {
-          "label": "Open Form",
-          "style": 1
-        },
         "modal": {
           "title": "Example Form",
           "components": [
@@ -92,7 +104,8 @@ export default function App() {
       <Meta>Home</Meta>
       <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler} />
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
-        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} />
+        {/* @ts-expect-error */}
+        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove}/>
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} />
       </Grid>

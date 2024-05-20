@@ -1,15 +1,17 @@
 import React, { CSSProperties } from 'react'
-import { Button, Collapse, Box, useDisclosure, useColorMode, Tooltip } from '@chakra-ui/react'
+import { Button, Collapse, Box, useDisclosure, useColorMode, Tooltip, HStack } from '@chakra-ui/react'
 
 export interface CollapsibleProperties {
   name: string;
   deleteButton?: React.ReactNode;
+  moveUpButton?: React.ReactNode;
+  moveDownButton?: React.ReactNode;
   children: React.ReactNode;
   variant?: string;
   style?: CSSProperties;
 }
 
-function Collapsible({ name, deleteButton, children, variant, style }: CollapsibleProperties) {
+function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, children, variant, style }: CollapsibleProperties) {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode } = useColorMode();
 
@@ -48,7 +50,7 @@ function Collapsible({ name, deleteButton, children, variant, style }: Collapsib
             />
           </svg> {name}
         </Box>
-        {deleteButton}
+        <HStack>{moveDownButton}{moveUpButton}{deleteButton}</HStack>
         </Button>
       <Collapse in={isOpen} animateOpacity style={{ margin: 0 }}>
         <Box

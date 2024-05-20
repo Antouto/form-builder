@@ -189,11 +189,11 @@ function Preview({
       display={displaySection ? "block" : "none"}
     >
       <VStack align="start" spacing={3}>
-        {(forms?.[0].button || forms?.[0].select_menu_option) && (
+        {(!application_command) && (
           <PreviewStep
             number={1}
             highlighted={stage === 'openFormType'}
-            title={`A message with ${forms?.[0].button ? "buttons" : "a select menu"
+            title={`A message with ${!forms?.[0].select_menu_option ? "buttons" : "a select menu"
               } to open forms is sent to a channel`}
           >
             <Box
@@ -314,11 +314,12 @@ function Preview({
                   )}
                   {MessageEmbed}
                   <Box p="4px 0">
-                    {forms?.[0].button &&
-                      forms.map((form, index) => (
+                    {!forms?.[0].select_menu_option &&
+                      // @ts-expect-error
+                      message?.components?.[0]?.components?.map((component, index) => (
                         <Button
                           key={Math.random()}
-                          onClick={() => setDisplayForm(index)}
+                          onClick={() => component.style !== 5 && setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)}
                           height="32px"
                           fontSize="14px"
                           paddingBlock={0}
@@ -326,16 +327,20 @@ function Preview({
                           padding="2px 16px"
                           m="4px 8px 4px 0"
                           variant={
-                            form.button?.style == 1
-                              ? "primary"
-                              : form.button?.style == 2
-                                ? "secondary"
-                                : form.button?.style == 3
-                                  ? "success"
-                                  : "danger"
+                            //@ts-expect-error
+                            message?.components[0].components[index]?.style == 1
+                              ? "primary"                             //@ts-expect-error
+                              : message?.components[0].components[index]?.style == 2
+                                ? "secondary"                            //@ts-expect-error
+                                : message?.components[0].components[index]?.style == 3
+                                  ? "success"                             //@ts-expect-error
+                                  : message?.components[0].components[index]?.style == 4
+                                    ? "danger"
+                                    : "secondary"
                           }
                         >
-                          {form.button?.label}
+                          {/* @ts-expect-error */}
+                          {message?.components?.[0]?.components?.[index]?.label}
                         </Button>
                       ))}
                     {forms?.[0].select_menu_option && (
@@ -431,9 +436,9 @@ function Preview({
         )}
 
         <PreviewStep
-          number={forms?.[0].button || forms?.[0].select_menu_option ? 2 : 1}
+          number={!application_command ? 2 : 1}
           title={
-            forms?.[0].button || forms?.[0].select_menu_option
+            !application_command
               ? "User opens a form"
               : `User opens the form with ${application_command?.name
                 ? `/${application_command?.name}`
@@ -561,7 +566,7 @@ function Preview({
         </PreviewStep>
 
         <PreviewStep
-          number={forms?.[0].button || forms?.[0].select_menu_option ? 3 : 2}
+          number={!application_command ? 3 : 2}
           title="The submission is sent to a channel"
           highlighted={stage === 'submissions'}
         >
@@ -730,11 +735,11 @@ function Preview({
                       {/* @ts-expect-error */}
                       {forms?.[displayForm]?.submit_components[i].components?.map(button =>
                         <Button key={Math.random()} height="32px"
-                        fontSize="14px"
-                        paddingBlock={0}
-                        paddingInline={0}
-                        padding="2px 16px"
-                        m="4px 8px 4px 0" variant={button.style === 1 ? 'primary' : (button.style === 2 ? 'secondary' : (button.style === 3 ? 'success' : 'danger'))}>{button.label}</Button>
+                          fontSize="14px"
+                          paddingBlock={0}
+                          paddingInline={0}
+                          padding="2px 16px"
+                          m="4px 8px 4px 0" variant={button.style === 1 ? 'primary' : (button.style === 2 ? 'secondary' : (button.style === 3 ? 'success' : 'danger'))}>{button.label}</Button>
                       )}
                     </HStack>
                   )}

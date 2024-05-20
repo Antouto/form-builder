@@ -20,7 +20,7 @@ import {
   UseFormWatch,
   UseFormSetValue,
   UseFormGetValues,
-  useFieldArray,
+  useFieldArray
 } from "react-hook-form";
 import { Embed, FormAndOpenFormTypeBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
@@ -58,10 +58,23 @@ export default function OpenFormTypeBuilder({
   setOpenFormType,
   //@ts-expect-error
   fixMessage,
+  //@ts-expect-error
+  watch,
+  //@ts-expect-error
+  formMessageComponents,
+  //@ts-expect-error
+  formMessageComponentsAppend,
+  //@ts-expect-error
+  formMessageComponentsRemove,
+  //@ts-expect-error
+  formMessageComponentsMove,
+  //@ts-expect-error
+  premium
 }: OpenFormTypeBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const colorMode = useColorMode().colorMode;
 
   return (
+    
     <>
       <HStack>
         <FormLabel whiteSpace="nowrap" m={0}>
@@ -92,7 +105,7 @@ export default function OpenFormTypeBuilder({
         }
       >
         {(openFormType === "button" || openFormType === "select_menu") && (
-          <MessageBuilder control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType}/>
+          <MessageBuilder control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} premium={premium}/>
         )}
 
         {openFormType === "application_command" && (

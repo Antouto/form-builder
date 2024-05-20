@@ -1,9 +1,13 @@
 import React from 'react'
 import { VStack, FormLabel, Box } from '@chakra-ui/react'
 import EmbedBuilder from './EmbedBuilder'
+import OpenFormComponentBuilder from './OpenFormComponentBuilder'
+import { useFieldArray } from 'react-hook-form';
 
   //@ts-expect-error
-export default function MessageBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage, openFormType }) {
+export default function MessageBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage, openFormType, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium }) {
+
+  
   return (
     <VStack align="flex-start" width="100%" marginBottom="8px">
       <FormLabel htmlFor="message.content">Message</FormLabel>
@@ -36,6 +40,7 @@ export default function MessageBuilder({ control, register, errors, setValue, ge
           />
         </Box>
       )}
+      {openFormType === "button" && <OpenFormComponentBuilder {...{ control, errors, getValues, register, fixMessage, setValue, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium  }}/>}
     </VStack>
   )
 }

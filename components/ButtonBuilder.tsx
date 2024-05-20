@@ -5,7 +5,7 @@ import Counter from './Counter'
 import { useScreenWidth } from '../util/width';
 
 //@ts-expect-error
-export default function ButtonBuilder({ register, fix, setValue, watch, forButton, error, button, buttonLabel, buttonLabelPlaceholder, buttonColour, buttonLabelRequired, buttonColourRequired, allowColourDeselect, resetField, getValues }) {
+export default function ButtonBuilder({ register, fix, setValue, watch, forButton, error, button, buttonLabel, buttonLabelPlaceholder, buttonColour, buttonLabelRequired, buttonColourRequired, allowColourDeselect, resetField, getValues, errorURL }) {
   const colorMode = useColorMode().colorMode
   const isSmallScreen = !useScreenWidth(1070);
 
@@ -27,7 +27,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
         />
         <ErrorMessage error={error} />
       </Box>
-      <Box>
+      {button?.style !== 5 && <Box>
         <FormLabel htmlFor={`${forButton}.style`}>
           {/* //@ts-expect-error */}
           <Text _after={buttonColourRequired === 'no' ? {} : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonColour ? buttonColour : 'Button Colour'}</Text>
@@ -38,7 +38,19 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
           <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'green' }} background={'green'} onClick={() => { fix(); allowColourDeselect ? (getValues(`${forButton}.style`) === 3 ? setValue(`${forButton}.style`, undefined) : setValue(`${forButton}.style`, 3)) : setValue(`${forButton}.style`, 3)}}>{watch(`${forButton}.style`) === 3 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
           <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'red' }} background={'red'} onClick={() => { fix(); allowColourDeselect ? (getValues(`${forButton}.style`) === 4 ? setValue(`${forButton}.style`, undefined) : setValue(`${forButton}.style`, 4)) : setValue(`${forButton}.style`, 4)}}>{watch(`${forButton}.style`) === 4 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
         </HStack>
-      </Box>
+      </Box>}
+      {button?.style === 5 && <Box>
+        <FormLabel htmlFor={`${forButton}.url`}><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>URL</Text></FormLabel>
+        <input
+          {...register(`${forButton}.url`, {
+            required: true,
+            onChange: () => fix()
+          })}
+          id={`${forButton}.url`}
+          placeholder='https://...'
+        />
+        <ErrorMessage error={errorURL} />
+      </Box>}
     </>
   )
 }

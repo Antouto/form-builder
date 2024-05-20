@@ -11,6 +11,7 @@ export default function OpenFormComponentBuilder({ control, premium, errors, get
     <Box width='100%'>
       <FormLabel htmlFor="message.components.0.components">Buttons</FormLabel>
       {/* @ts-expect-error */}
+      {formMessageComponents.map((component, i) => <Collapsible name={component.style === 5 ? 'Link Button' : `Button to open Form ${component.custom_id?.match(/\d+/)?.[0]}`} key={component.id} moveUpButton={component.style === 5 && (i !== 0) && <svg onClick={() => formMessageComponentsMove(i, i-1)} style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(0deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
               d="M12 10L8 6L4 10"
               stroke="#bcbcbc"

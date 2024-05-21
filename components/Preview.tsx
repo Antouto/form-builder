@@ -315,10 +315,10 @@ function Preview({
                   {MessageEmbed}
                   <Box p="4px 0">
                     {!forms?.[0].select_menu_option &&
-                      // @ts-expect-error
                       message?.components?.[0]?.components?.map((component, index) => (
                         <Button
                           key={Math.random()}
+                          //@ts-expect-error
                           onClick={() => component.style !== 5 && setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)}
                           height="32px"
                           fontSize="14px"
@@ -339,7 +339,6 @@ function Preview({
                                     : "secondary"
                           }
                         >
-                          {/* @ts-expect-error */}
                           {message?.components?.[0]?.components?.[index]?.label}
                         </Button>
                       ))}
@@ -730,6 +729,7 @@ function Preview({
                   </Box>
                 </Box>
                 <Box>
+                  {/* @ts-expect-error */}
                   {forms?.[displayForm]?.submit_components?.map((action_row, i) =>
                     <HStack key={Math.random()} gap={0}>
                       {/* @ts-expect-error */}

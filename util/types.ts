@@ -20,10 +20,23 @@ export interface Embed {
     footer?: EmbedFooter;
 }
 
+export interface ButtonComponent {
+    type: 2,
+    label: string;
+    url?: string;
+    style: 1|2|3|4|5;
+    custom_id?: string;
+}
+
+export interface ActionRow {
+    type: 1;
+    components: Array<ButtonComponent>
+}
+
 export interface FormOpenFormTypeBuilder {
     content?: string;
     embeds?: Embed[];
-    components?:[];
+    components?: Array<ActionRow>;
 }
 
 export interface ButtonBuilder {
@@ -62,6 +75,7 @@ export interface ApplicationCommandBuilder {
     description?: string;
 }
 
+
 export interface FormBuilder {
     webhook_url?: string;
     submit_channel_id?: string;
@@ -71,7 +85,7 @@ export interface FormBuilder {
     select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;
     submit_message?: FormOpenFormTypeBuilder;
-    submit_components?: Array<Object>;
+    submit_components?: ActionRow;
     guild_submit_message?: FormOpenFormTypeBuilder;
     dm_submit_message?: FormOpenFormTypeBuilder;
 }

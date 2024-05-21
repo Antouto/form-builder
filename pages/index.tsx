@@ -46,7 +46,6 @@ export default function App() {
 
   const { fields: formMessageComponents, append: formMessageComponentsAppend, remove: formMessageComponentsRemove, move: formMessageComponentsMove } = useFieldArray({
     control,
-    //@ts-expect-error
     name: "message.components.0.components",
     rules: { minLength: 1 }
   });
@@ -56,7 +55,6 @@ export default function App() {
   useEffect(() => {
     setValue('message', {
       content: 'Fill out the form below',
-      //@ts-expect-error
       components: [{
         type: 1,
         components: []

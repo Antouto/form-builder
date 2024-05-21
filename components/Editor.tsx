@@ -42,6 +42,7 @@ import { SlashCommand, UserMention } from "../components/Mention";
 import ClearedValues from "../ClearedValues.json";
 import { Footer } from "../components/Footer";
 import {
+  ActionRow,
   Embed,
   FormAndOpenFormTypeBuilder,
   ToastStyles,
@@ -168,8 +169,7 @@ export function Editor({
       //   resetField(`forms.${i}.submit_channel`);
       //   return 'existing';
       // }))
-      //@ts-expect-error
-      setValue('message.components.0.components', getValues('message.components.0.components').filter(component => component.style !== 5)) 
+      setValue('message.components.0.components', getValues('message.components.0.components').filter(component => component.style !== 5))
       getValues('forms').forEach((form, index) => {
         resetField(`forms.${index}.cooldown`)
         if (getValues(`forms.${index}.submit_channel`)) {
@@ -194,6 +194,7 @@ export function Editor({
             }
           ]);
         }
+        //@ts-expect-error
         getValues(`forms.${index}.submit_components`)?.forEach((action_row, ii) => {
           //@ts-expect-error
           getValues(`forms.${index}.submit_components.${ii}.components`)?.forEach((component, iii) => {
@@ -310,8 +311,8 @@ export function Editor({
           if (form.submit_channel.permission_overwrites && (JSON.stringify(form.submit_channel.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"allow":52224}]')) setPremium(true)
         }
         if (form.submit_components) {
+          //@ts-expect-error
           form.submit_components.forEach((action_row, ii) => {
-            //@ts-expect-error
             if (action_row.components) {
               //@ts-expect-error
               action_row.components.forEach((component, iii) => {
@@ -347,7 +348,7 @@ export function Editor({
         setValue("message", json.message);
       }
 
-      if(json.select_menu_placeholder) setValue("select_menu_placeholder", json.select_menu_placeholder);
+      if (json.select_menu_placeholder) setValue("select_menu_placeholder", json.select_menu_placeholder);
 
       setReading(false);
       // Send a toast the the user notifying that the form has
@@ -479,7 +480,6 @@ export function Editor({
           setTimeout(() => {
             setValue("message", {
               content: "Fill out the form below",
-              //@ts-expect-error
               components: getValues('forms').map((form, i) => (
                 {
                   type: 1,
@@ -656,7 +656,6 @@ export function Editor({
               }}
             />
             <Button variant="danger-outline" onClick={() => {
-              //@ts-expect-error
               reset(ClearedValues)
               _setSubmissionType(['bot'])
               _setSubmissionChannel(['existing'])
@@ -834,6 +833,7 @@ export function Editor({
           <Button variant='primary' onClick={() => setStage('openFormType')}>Start quick setup</Button>
           <Text fontSize={18}>or</Text>
           <Button variant='primary-outline' onClick={() => {
+            //@ts-expect-error
             setValue('forms.0.submit_components', [{
               type: 1,
               components: [
@@ -903,6 +903,7 @@ export function Editor({
                 }
               ]
             })
+            //@ts-expect-error
             setValue('forms.0.submit_components', [
               {
                 type: 1,

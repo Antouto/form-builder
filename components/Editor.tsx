@@ -783,6 +783,7 @@ export function Editor({
                 {!loading && "Download Configuration File"}
                 {loading && <Spinner size="sm" />}
               </Button>
+              <Link href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309456&scope=bot+applications.commands' target='_blank' rel='noopener noreferrer'><Button variant='success-outline'>Invite Bot</Button></Link>
             </HStack>
             {(!formState.isValid ||
               watch("forms").length >
@@ -1191,7 +1192,7 @@ export function Editor({
                     {!loading && "Download Configuration File"}
                     {loading && <Spinner size="sm" />}
                   </Button>
-                  <Link href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309456&scope=bot+applications.commands' target='_blank' rel='noopener noreferrer'><Button variant='success-outline'>Invite Forms</Button></Link>
+                  <Link href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309456&scope=bot+applications.commands' target='_blank' rel='noopener noreferrer'><Button variant='success-outline'>Invite Bot</Button></Link>
                 </HStack>
               </HStack>
             </Box>

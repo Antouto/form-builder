@@ -480,6 +480,7 @@ export function Editor({
           setTimeout(() => {
             setValue("message", {
               content: "Fill out the form below",
+              //@ts-expect-error
               components: getValues('forms').map((form, i) => (
                 {
                   type: 1,

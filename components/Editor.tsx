@@ -658,6 +658,7 @@ export function Editor({
             />
             <Button variant="danger-outline" onClick={() => {
               reset(ClearedValues)
+              setOpenFormType(openFormType)
               _setSubmissionType(['bot'])
               _setSubmissionChannel(['existing'])
             }}>

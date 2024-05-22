@@ -212,7 +212,7 @@ export function Navigation({
             >
               Documentation
             </a>
-            <NextLink href="/templates">Templates</NextLink>
+            {/* <NextLink href="/templates">Templates</NextLink> */}
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
           <ColorModeSwitcher
             placement="bottom"

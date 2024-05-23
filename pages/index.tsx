@@ -15,7 +15,6 @@ import { hotjar } from 'react-hotjar';
 
 
 
-
 export enum OpenFormType {
   button,
   select_menu,
@@ -50,8 +49,7 @@ export default function App() {
     rules: { minLength: 1 }
   });
 
-
-
+  
   useEffect(() => {
     setValue('message', {
       content: 'Fill out the form below',
@@ -88,8 +86,6 @@ export default function App() {
       }
     ])
   }, [])
-
-
 
   const [displayForm, setDisplayForm] = useState(0);
   const [displaySection, setDisplaySection] = useState(1);

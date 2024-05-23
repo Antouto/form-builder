@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Control,
   FieldValues,
@@ -49,6 +49,7 @@ import {
 } from "../util/types";
 import { createName } from "../util/form";
 import { useScreenWidth } from "../util/width";
+import { useRouter } from "next/router";
 
 import {
   Modal,
@@ -157,6 +158,152 @@ export function Editor({
   const [submissionChannel, _setSubmissionChannel] = useState(['existing'])
   const [premium, _setPremium] = useState(false);
   const { isOpen, onOpen: onOpenWhereDoIFindSubmissionChannelID, onClose } = useDisclosure()
+
+
+  function setPreset(preset?: string) {
+    switch (preset) {
+      case 'application': {
+        //@ts-expect-error
+        setValue('forms.0.submit_components', [{
+          type: 1,
+          components: [
+            {
+              type: 2,
+              label: 'Accept',
+              style: 3,
+              logic: {
+                DM_SUBMITTER: { content: 'Your submission to **{FormTitle}** has been accepted!' },
+                REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
+                UPDATE_COMPONENT: { label: 'Accepted' }
+              }
+            },
+            {
+              type: 2,
+              label: 'Deny',
+              style: 4,
+              logic: {
+                DM_SUBMITTER_WITH_MODAL_INPUT: {
+                  modal: {
+                    title: 'Deny Submission',
+                    components: [
+                      {
+                        type: 1,
+                        components: [
+                          {
+                            type: 4,
+                            style: 2,
+                            label: 'Reason for denial'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  message: {
+                    content: 'Sorry! Your submission to **{FormTitle}** has been denied.\n\n**Reason:** {TextInputValue1}'
+                  }
+                },
+                REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
+                UPDATE_COMPONENT: { label: 'Denied' }
+              }
+            }
+          ]
+        }])
+        setStage('openFormType')
+        break;
+      }
+      case 'ticket': {
+        _setSubmissionChannel(['new'])
+        setValue('forms.0.submit_channel', {
+          name: 'ticket',
+          type: 0,
+          permission_overwrites: [
+            {
+              id: '{ServerID}',
+              type: 0,
+              deny: 1024
+            },
+            {
+              id: '{ApplicationID}',
+              type: 1,
+              allow: 19456
+            },
+            {
+              id: '{UserID}',
+              type: 1,
+              allow: 52224
+            }
+          ]
+        })
+        //@ts-expect-error
+        setValue('forms.0.submit_components', [
+          {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                label: 'Close Ticket',
+                emoji: {
+                  name: '🔒'
+                },
+                style: 2,
+                logic: {
+                  UPDATE_COMPONENT: {
+                    label: 'Ticket Closed'
+                  },
+                  UPDATE_THIS_CHANNEL: {
+                    name: '🔒-{ChannelName}',
+                    permission_overwrites: [
+                      {
+                        id: '{ServerID}',
+                        type: 0,
+                        deny: 1024
+                      },
+                      {
+                        id: '{ApplicationID}',
+                        type: 1,
+                        allow: 19456
+                      },
+                      {
+                        id: '{UserID}',
+                        type: 1,
+                        deny: 2048
+                      }
+                    ]
+                  },
+                  SEND_MESSAGE_TO_THIS_CHANNEL: {
+                    content: '**{ChannelName}** closed by **{InteractionUserName}**'
+                  }
+                }
+              },
+              {
+                type: 2,
+                label: 'Delete Ticket',
+                emoji: {
+                  name: '🗑️'
+                },
+                style: 4,
+                logic: {
+                  DELETE_THIS_CHANNEL: true
+                }
+              }
+            ]
+          }
+        ])
+        setStage('openFormType')
+        break;
+      }
+      default: setStage('openFormType')
+    }
+  }
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const presetValue = router.query.preset;
+      if (typeof presetValue === 'string') setPreset(presetValue)
+    }
+  }, [router.isReady, router.query]);
 
   function setPremium(value: any) {
     _setPremium(value)
@@ -833,136 +980,10 @@ export function Editor({
         </VStack></>
         }
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' mt={20} width='100%'>
-          <Button variant='primary' onClick={() => setStage('openFormType')}>Start quick setup</Button>
+          <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
           <Text fontSize={18}>or</Text>
-          <Button variant='primary-outline' onClick={() => {
-            //@ts-expect-error
-            setValue('forms.0.submit_components', [{
-              type: 1,
-              components: [
-                {
-                  type: 2,
-                  label: 'Accept',
-                  style: 3,
-                  logic: {
-                    DM_SUBMITTER: { content: 'Your submission to **{FormTitle}** has been accepted!' },
-                    REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
-                    UPDATE_COMPONENT: { label: 'Accepted' }
-                  }
-                },
-                {
-                  type: 2,
-                  label: 'Deny',
-                  style: 4,
-                  logic: {
-                    DM_SUBMITTER_WITH_MODAL_INPUT: {
-                      modal: {
-                        title: 'Deny Submission',
-                        components: [
-                          {
-                            type: 1,
-                            components: [
-                              {
-                                type: 4,
-                                style: 2,
-                                label: 'Reason for denial'
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      message: {
-                        content: 'Sorry! Your submission to **{FormTitle}** has been denied.\n\n**Reason:** {TextInputValue1}'
-                      }
-                    },
-                    REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
-                    UPDATE_COMPONENT: { label: 'Denied' }
-                  }
-                }
-              ]
-            }])
-            setStage('openFormType')
-          }}>Create Application</Button>
-          <Button variant='primary-outline' onClick={() => {
-            _setSubmissionChannel(['new'])
-            setValue('forms.0.submit_channel', {
-              name: 'ticket',
-              type: 0,
-              permission_overwrites: [
-                {
-                  id: '{ServerID}',
-                  type: 0,
-                  deny: 1024
-                },
-                {
-                  id: '{ApplicationID}',
-                  type: 1,
-                  allow: 19456
-                },
-                {
-                  id: '{UserID}',
-                  type: 1,
-                  allow: 52224
-                }
-              ]
-            })
-            //@ts-expect-error
-            setValue('forms.0.submit_components', [
-              {
-                type: 1,
-                components: [
-                  {
-                    type: 2,
-                    label: 'Close Ticket',
-                    emoji: {
-                      name: '🔒'
-                    },
-                    style: 2,
-                    logic: {
-                      UPDATE_COMPONENT: {
-                        label: 'Ticket Closed'
-                      },
-                      UPDATE_THIS_CHANNEL: {
-                        name: '🔒-{ChannelName}',
-                        permission_overwrites: [
-                          {
-                            id: '{ServerID}',
-                            type: 0,
-                            deny: 1024
-                          },
-                          {
-                            id: '{ApplicationID}',
-                            type: 1,
-                            allow: 19456
-                          },
-                          {
-                            id: '{UserID}',
-                            type: 1,
-                            deny: 2048
-                          }
-                        ]
-                      },
-                      SEND_MESSAGE_TO_THIS_CHANNEL: {
-                        content: '**{ChannelName}** closed by **{InteractionUserName}**'
-                      }
-                    }
-                  },
-                  {
-                    type: 2,
-                    label: 'Delete Ticket',
-                    emoji: {
-                      name: '🗑️'
-                    },
-                    style: 4,
-                    logic: {
-                      DELETE_THIS_CHANNEL: true
-                    }
-                  }
-                ]
-              }
-            ])
-            setStage('openFormType')
-          }}>Create Ticket</Button>
+          <Button variant='primary-outline' onClick={() => setPreset('application')}>Create Application</Button>
+          <Button variant='primary-outline' onClick={() => setPreset('ticket')}>Create Ticket</Button>
           <Text fontSize={18}>or</Text>
           <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
         </VStack></>}
@@ -1019,8 +1040,8 @@ export function Editor({
             <VStack align='left'>
               <FormLabel fontSize={18}>Buttons</FormLabel>
               <Box>
-                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() =>  {
-                  if(openFormType === 'button') setStage('form')
+                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() => {
+                  if (openFormType === 'button') setStage('form')
                   setOpenFormType('button')
                 }} border={openFormType === 'button' ? '2px solid #5865F2' : 'none'} background='#2B2D31' width='250px' height='105px' borderRadius='10px' display='flex' alignItems='center' justifyContent='center'>
 
@@ -1049,8 +1070,8 @@ export function Editor({
               </Box>
               <FormLabel fontSize={18}>Select Menu</FormLabel>
               <Box>
-                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() =>  {
-                  if(openFormType === 'select_menu') setStage('form')
+                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() => {
+                  if (openFormType === 'select_menu') setStage('form')
                   setOpenFormType('select_menu')
                 }} border={openFormType === 'select_menu' ? '2px solid #5865F2' : 'none'} background='#2B2D31' width='250px' height='105px' borderRadius='10px' display='flex' alignItems='center' justifyContent='center'>
 
@@ -1078,8 +1099,8 @@ export function Editor({
               </Box>
               <FormLabel fontSize={18}>Slash Command</FormLabel>
               <Box>
-                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() =>  {
-                  if(openFormType === 'application_command') setStage('applicationCommand')
+                <Box transition='background 0.2s' _hover={{ cursor: 'pointer', background: '#1E1F22' }} onClick={() => {
+                  if (openFormType === 'application_command') setStage('applicationCommand')
                   setOpenFormType('application_command')
                 }} border={openFormType === 'application_command' ? '2px solid #5865F2' : 'none'} background='#2B2D31' width='250px' height='105px' borderRadius='10px' display='flex' alignItems='center' justifyContent='center'>
                   <svg width="225" height="100" viewBox="0 0 151 54" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -60,6 +60,7 @@ function Preview({
 
   const myRef = useRef(null)
 
+  //@ts-expect-error
   const executeScroll = () => myRef.current.scrollIntoView({ behavior: 'smooth' })  
 
   if (displayForm < 0) displayForm = 0;
@@ -580,6 +581,7 @@ function Preview({
                   _focus={{ border: "0px" }}
                   onClick={() => {
                     setTemporarySubmissionHighlight(true)
+                    //@ts-expect-error
                     executeScroll(myRef)
                     setTimeout(() => setTemporarySubmissionHighlight(false), 300);
                   }}

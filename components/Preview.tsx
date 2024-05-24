@@ -13,7 +13,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 //import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
@@ -57,6 +57,10 @@ function Preview({
   const textInputs = useForm({
     defaultValues,
   });
+
+  const myRef = useRef(null)
+
+  const executeScroll = () => myRef.current.scrollIntoView({ behavior: 'smooth' })  
 
   if (displayForm < 0) displayForm = 0;
 
@@ -576,6 +580,7 @@ function Preview({
                   _focus={{ border: "0px" }}
                   onClick={() => {
                     setTemporarySubmissionHighlight(true)
+                    executeScroll(myRef)
                     setTimeout(() => setTemporarySubmissionHighlight(false), 300);
                   }}
                 >
@@ -595,6 +600,7 @@ function Preview({
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
             p={4}
+            ref={myRef}
           >
             <Box display="flex">
               <FormProfile

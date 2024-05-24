@@ -181,6 +181,9 @@ function Preview({
   const HandleInteraction = () => setHidden(!FormsProfileHidden);
   const { isOpen, onToggle } = useDisclosure();
 
+  const [temporaryModalHighlight, setTemporaryModalHighlight] = useState(false)
+  const [temporarySubmissionHighlight, setTemporarySubmissionHighlight] = useState(false)
+
   return (
     <Box
       overflowY="scroll"
@@ -318,8 +321,17 @@ function Preview({
                       message?.components?.[0]?.components?.map((component, index) => (
                         <Button
                           key={Math.random()}
-                          //@ts-expect-error
-                          onClick={() => component.style !== 5 && setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)}
+                          onClick={() => {
+                            if(component.style !== 5) {
+                               //@ts-expect-error
+                               setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
+                               //@ts-expect-error
+                               if(displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {                                 
+                                 setTemporaryModalHighlight(true)
+                                 setTimeout(() => setTemporaryModalHighlight(false), 300);
+                               }
+                            }
+                          }}
                           height="32px"
                           fontSize="14px"
                           paddingBlock={0}
@@ -405,7 +417,13 @@ function Preview({
                               }}
                               px={4}
                               py={2}
-                              onClick={() => setDisplayForm(index)}
+                              onClick={() => {
+                                setDisplayForm(index)
+                                if(displayForm === index) {
+                                  setTemporaryModalHighlight(true)
+                                  setTimeout(() => setTemporaryModalHighlight(false), 300);
+                                }
+                              }}
                             >
                               <Text
                                 color={
@@ -444,7 +462,7 @@ function Preview({
                 : "the slash command"
               }`
           }
-          highlighted={stage === 'form'}
+          highlighted={stage === 'form' || temporaryModalHighlight}
         >
           <Box
             display="flex"
@@ -556,6 +574,10 @@ function Preview({
                   variant="primary"
                   border="0px"
                   _focus={{ border: "0px" }}
+                  onClick={() => {
+                    setTemporarySubmissionHighlight(true)
+                    setTimeout(() => setTemporarySubmissionHighlight(false), 300);
+                  }}
                 >
                   Submit
                 </Button>
@@ -567,7 +589,7 @@ function Preview({
         <PreviewStep
           number={!application_command ? 3 : 2}
           title="The submission is sent to a channel"
-          highlighted={stage === 'submissions'}
+          highlighted={stage === 'submissions' || temporarySubmissionHighlight}
         >
           <Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}

@@ -1,69 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from "react";
-import {
-  Control,
-  FieldValues,
-  FormState,
-  useFieldArray,
-  useForm,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormReset,
-  UseFormResetField,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { Control, FieldValues, FormState, UseFormGetValues, UseFormRegister, UseFormReset, UseFormResetField, UseFormSetValue, UseFormWatch, UseFieldArrayAppend, UseFieldArrayRemove, UseFieldArrayMove } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
-import {
-  Box,
-  VStack,
-  Button,
-  Heading,
-  useToast,
-  HStack,
-  Input,
-  cssVar,
-  Spinner,
-  Text,
-  FormLabel,
-  useDisclosure,
-  Link,
-  Divider,
-  Switch,
-  Flex,
-  Tooltip,
-  Stack,
-  Image
-} from "@chakra-ui/react";
+import { Box, VStack, Button, Heading, useToast, HStack, Input, cssVar, Spinner, Text, FormLabel, useDisclosure, Link, Divider, Switch, Tooltip, Stack, Image } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
 import OpenFormTypeBuilder from "./OpenFormTypeBuilder";
 import { SlashCommand, UserMention } from "../components/Mention";
 import ClearedValues from "../ClearedValues.json";
-import { Footer } from "../components/Footer";
-import {
-  ActionRow,
-  Embed,
-  FormAndOpenFormTypeBuilder,
-  ToastStyles,
-} from "../util/types";
+import { ActionRow, FormAndOpenFormTypeBuilder, ToastStyles} from "../util/types";
 import { createName } from "../util/form";
 import { useScreenWidth } from "../util/width";
 import { useRouter } from "next/router";
 
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton
-} from '@chakra-ui/react'
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
 import ApplicationCommandBuilder from "./ApplicationCommandBuilder";
-import MessageBuilder from "./MessageBuilder";
-import ButtonBuilder from "./ButtonBuilder";
-import WebhookURLInput from "./WebhookURLInput";
 import FormTitleInput from "./FormTitleInput";
 import TextInputBuilder from "./TextInputBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
@@ -102,7 +53,10 @@ export interface EditorProps<T extends FieldValues> {
   resetField: UseFormResetField<T>;
   stage: string;
   setStage: React.Dispatch<React.SetStateAction<string>>;
-
+  formMessageComponents: ActionRow[];
+  formMessageComponentsAppend: UseFieldArrayAppend<T>;
+  formMessageComponentsRemove: UseFieldArrayRemove;
+  formMessageComponentsMove: UseFieldArrayMove;
 }
 
 export function Editor({
@@ -119,13 +73,9 @@ export function Editor({
   resetField,
   stage,
   setStage,
-  //@ts-expect-error
   formMessageComponents,
-  //@ts-expect-error
   formMessageComponentsAppend,
-  //@ts-expect-error
   formMessageComponentsRemove,
-  //@ts-expect-error
   formMessageComponentsMove
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();

@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import React, { useEffect, useState } from 'react';
+import { useFieldArray, useForm } from "react-hook-form";
 import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { FormAndOpenFormTypeBuilder, FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
+import { FormAndOpenFormTypeBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
 import { useModal } from '../components/SettingsModal';
 import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
-import { debounce } from 'lodash';
 import { hotjar } from 'react-hotjar';
 
 
@@ -36,12 +35,13 @@ export default function App() {
     mode: 'onChange'
   });
 
+  //#region Hotjar
   const siteId = 4987367;
   const hotjarVersion = 6;
-
   useEffect(() => {
     hotjar.initialize({ id: siteId, sv: hotjarVersion });
   }, []);
+  //#endregion
 
   const { fields: formMessageComponents, append: formMessageComponentsAppend, remove: formMessageComponentsRemove, move: formMessageComponentsMove } = useFieldArray({
     control,

@@ -36,7 +36,7 @@ export interface ActionRow {
 export interface FormOpenFormTypeBuilder {
     content?: string;
     embeds?: Embed[];
-    components?: Array<ActionRow>;
+    components?: ActionRow[];
 }
 
 export interface ButtonBuilder {

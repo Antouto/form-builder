@@ -8,7 +8,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import OpenFormTypeBuilder from "./OpenFormTypeBuilder";
 import { SlashCommand, UserMention } from "../components/Mention";
 import ClearedValues from "../ClearedValues.json";
-import { ActionRow, FormAndOpenFormTypeBuilder, ToastStyles} from "../util/types";
+import { ActionRow, FormAndOpenFormTypeBuilder, ToastStyles } from "../util/types";
 import { createName } from "../util/form";
 import { useScreenWidth } from "../util/width";
 import { useRouter } from "next/router";
@@ -577,18 +577,17 @@ export function Editor({
           setTimeout(() => {
             setValue("message", {
               content: "Fill out the form below",
-              //@ts-expect-error
-              components: getValues('forms').map((form, i) => (
-                {
-                  type: 1,
-                  components: [{
+              components: [{
+                type: 1,
+                components: getValues('forms').map((form, i) => (
+                  {
                     type: 2,
                     label: 'Open form',
                     style: 1,
                     custom_id: `{FormID${i + 1}}`
-                  }]
-                }
-              ))
+                  }
+                ))
+              }]
             });
           }, 1);
         }
@@ -820,6 +819,7 @@ export function Editor({
             formMessageComponents,
             formMessageComponentsAppend,
             formMessageComponentsRemove,
+            openFormType
           }}
         />
         <VStack width="100%" align="flex-start">

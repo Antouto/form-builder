@@ -76,6 +76,8 @@ export default function FormBuilder({
   formMessageComponentsAppend,
   //@ts-expect-error
   formMessageComponentsRemove,
+  //@ts-expect-error
+  openFormType
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -526,7 +528,7 @@ export default function FormBuilder({
           isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && !getValues('forms.0.select_menu_option') && getValues('message.components.0.components')?.length >= 5) || getValues('application_command') && getValues('forms').length >= 1}
           onClick={() => {
             setDisplayForm(fields.length)
-            formMessageComponentsAppend({
+            if(openFormType === 'button') formMessageComponentsAppend({
               label: 'Open Form',
               custom_id: `{FormID${fields.length + 1}}`,
               style: 1,

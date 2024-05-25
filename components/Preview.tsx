@@ -58,10 +58,13 @@ function Preview({
     defaultValues,
   });
 
-  const myRef = useRef(null)
-
+  const applicationCommandRef = useRef(null)
+  const formRef = useRef(null)
+  
   //@ts-expect-error
-  const executeScroll = () => myRef.current.scrollIntoView({ behavior: 'smooth' })  
+  const executeApplicationCommandScroll = () => applicationCommandRef.current.scrollIntoView({ behavior: 'smooth' })
+  //@ts-expect-error  
+  const executeFormScroll = () => formRef.current.scrollIntoView({ behavior: 'smooth' })  
 
   if (displayForm < 0) displayForm = 0;
 
@@ -333,6 +336,7 @@ function Preview({
                                //@ts-expect-error
                                if(displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {                                 
                                  setTemporaryModalHighlight(true)
+                                 executeFormScroll()
                                  setTimeout(() => setTemporaryModalHighlight(false), 300);
                                }
                             }
@@ -423,10 +427,12 @@ function Preview({
                               px={4}
                               py={2}
                               onClick={() => {
+                                onToggle();
                                 setDisplayForm(index)
                                 if(displayForm === index) {
                                   setTemporaryModalHighlight(true)
-                                  setTimeout(() => setTemporaryModalHighlight(false), 300);
+                                  setTimeout(() => executeFormScroll(), 1);
+                                  setTimeout(() => setTemporaryModalHighlight(false), 800);
                                 }
                               }}
                             >
@@ -468,6 +474,7 @@ function Preview({
               }`
           }
           highlighted={stage === 'form' || temporaryModalHighlight}
+          reference={formRef}
         >
           <Box
             display="flex"
@@ -582,7 +589,7 @@ function Preview({
                   onClick={() => {
                     setTemporarySubmissionHighlight(true)
                     //@ts-expect-error
-                    executeScroll(myRef)
+                    executeApplicationCommandScroll(applicationCommandRef)
                     setTimeout(() => setTemporarySubmissionHighlight(false), 300);
                   }}
                 >
@@ -597,12 +604,12 @@ function Preview({
           number={!application_command ? 3 : 2}
           title="The submission is sent to a channel"
           highlighted={stage === 'submissions' || temporarySubmissionHighlight}
+          reference={applicationCommandRef}
         >
           <Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
             p={4}
-            ref={myRef}
           >
             <Box display="flex">
               <FormProfile

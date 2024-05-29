@@ -227,8 +227,7 @@ export default function FormBuilder({
     let formsThatNeedSubmitChannelID: number[] = [];
     console.log(formsThatNeedSubmitChannelID)
     fields.forEach((form, i) => {
-      if (submissionChannel[i] === 'existing' && (formState.errors.forms?.[i]?.submit_channel_id || !getValues(`forms.${i}.submit_channel_id`) || getValues(`forms.${i}.submit_channel`))) {
-        console.log('HELLO', form)
+      if (submissionChannel[i] === 'existing' && submissionType[i] === 'bot' && (formState.errors.forms?.[i]?.submit_channel_id || !getValues(`forms.${i}.submit_channel_id`) || getValues(`forms.${i}.submit_channel`))) {
         formsThatNeedSubmitChannelID.push(i + 1)
       }
     })

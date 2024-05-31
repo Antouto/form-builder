@@ -12,7 +12,7 @@ export default function PageBuilder({ index, control, premium, getValues, setVal
   });
 
   return (<>
-    {fields.map((page, i) => <Collapsible name={`Page ${i+1}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => {
+    {fields.map((page, i) => <Collapsible key={fields[i].id} name={`Page ${i+1}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => {
       setDisplayPage(i ? i-1 : 0)
       remove(i)
     }} /> : null}>

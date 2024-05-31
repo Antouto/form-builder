@@ -76,7 +76,11 @@ export function Editor({
   formMessageComponents,
   formMessageComponentsAppend,
   formMessageComponentsRemove,
-  formMessageComponentsMove
+  formMessageComponentsMove,
+  //@ts-expect-error
+  displayPage,
+  //@ts-expect-error
+  setDisplayPage
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
@@ -266,8 +270,9 @@ export function Editor({
       //   resetField(`forms.${i}.submit_channel`);
       //   return 'existing';
       // }))
-      setValue('message.components.0.components', getValues('message.components.0.components').filter(component => component.style !== 5))
       getValues('forms').forEach((form, index) => {
+        setDisplayPage(0)
+        setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)])
         resetField(`forms.${index}.cooldown`)
         if (getValues(`forms.${index}.submit_channel`)) {
           //@ts-expect-error
@@ -608,7 +613,7 @@ export function Editor({
         getValues("forms").forEach((form, i) => {
           if (setContent) {
             setValue(`forms.${i}.select_menu_option`, {
-              label: form.modal.title,
+              label: form.pages[0].modal.title,
               description: "",
             });
           }
@@ -672,40 +677,42 @@ export function Editor({
     // Also fix text inputs
     if (watch("forms")?.length)
       for (let i = 0; i < watch("forms")?.length; i++) {
-        for (
-          let ii = 0;
-          ii < watch(`forms.${i}.modal.components`).length;
-          ii++
-        ) {
-          setTimeout(() => {
-            if (
-              !watch(
-                `forms.${i}.modal.components.${ii}.components.0.placeholder`
-              )
-            )
-              resetField(
-                `forms.${i}.modal.components.${ii}.components.0.placeholder`
-              );
-            if (!watch(`forms.${i}.modal.components.${ii}.components.0.value`))
-              resetField(
-                `forms.${i}.modal.components.${ii}.components.0.value`
-              );
-
-            if (
-              typeof watch(
-                `forms.${ii}.modal.components.${i}.components.0.style`
-              ) === "string"
-            )
-              setValue(
-                `forms.${i}.modal.components.${ii}.components.0.style`,
-                //@ts-expect-error
-                parseInt(
-                  watch(
-                    `forms.${i}.modal.components.${ii}.components.0.style`
-                  ) as unknown as string
+        for (let ii = 0; ii < watch(`forms.${i}.pages`)?.length; ii++) {
+          for (
+            let iii = 0;
+            iii < watch(`forms.${i}.pages.${ii}.modal.components`).length;
+            iii++
+          ) {
+            setTimeout(() => {
+              if (
+                !watch(
+                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.placeholder`
                 )
-              );
-          }, 1);
+              )
+                resetField(
+                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.placeholder`
+                );
+              if (!watch(`forms.${i}.pages.${ii}.modal.components.${iii}.components.0.value`))
+                resetField(
+                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.value`
+                );
+  
+              if (
+                typeof watch(
+                  `forms.${ii}.pages.${ii}.modal.components.${iii}.components.0.style`
+                ) === "string"
+              )
+                setValue(
+                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.style`,
+                  //@ts-expect-error
+                  parseInt(
+                    watch(
+                      `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.style`
+                    ) as unknown as string
+                  )
+                );
+            }, 1);
+          }
         }
       }
   }
@@ -761,19 +768,21 @@ export function Editor({
               Clear All
             </Button>
           </HStack>
-          <HStack border='2px solid #1C5CBE' backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' borderRadius={8} p={2}>
-            <Switch
+          <HStack border='2px solid #1C5CBE' backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' borderRadius={8} p={2} justifyContent='space-between'>
+            <HStack><Switch
               variant='green'
               onChange={(event) => setPremium(event.target.checked)}
               isChecked={premium}
             />
             <Text>Use premium features</Text>
             <Tooltip hasArrow label={
-              'When enabled forms will only work in servers with an active premium subscription. Can be purchased on the bots discord profile. Premium includes custom branding.'
+              'When enabled forms will only work in servers with an active premium subscription. Premium includes custom branding.'
             } placement='right' shouldWrapChildren bg="#181414">
               <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
-            </Tooltip>
+            </Tooltip></HStack>
+             <Link href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b" target="_blank"><Button variant='link-outline'>Upgrade</Button></Link>
           </HStack>
+          
         </Stack>
         <OpenFormTypeBuilder
           {...{
@@ -819,7 +828,9 @@ export function Editor({
             formMessageComponents,
             formMessageComponentsAppend,
             formMessageComponentsRemove,
-            openFormType
+            openFormType,
+            displayPage,
+            setDisplayPage
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -1108,12 +1119,12 @@ export function Editor({
         {stage === 'form' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup form</Text>
           <VStack align='center' mt={5} width='100%' gap={5}>
             <Box width='100%' maxWidth='500px'>
-              <FormTitleInput index={0} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
-              <TextInputBuilder compact id={`forms.${0}.modal.components`} nestIndex={0} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
+              <FormTitleInput index={0} pageIndex={0} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
+              <TextInputBuilder compact id={`forms.0.pages.0.modal.components`} nestIndex={0} pageIndex={0} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
-              <Button variant='primary' isDisabled={!getValues('forms.0')?.modal?.title || (getValues('forms.0')?.modal?.components[0] ? !getValues('forms.0')?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[1] ? !getValues('forms.0')?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[2] ? !getValues('forms.0')?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[3] ? !getValues('forms.0')?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.modal?.components[4] ? !getValues('forms.0')?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms?.[0]?.modal ? true : false} onClick={() => setStage('submissions')}>Continue</Button>
+              <Button variant='primary' isDisabled={!getValues('forms.0')?.pages?.[0]?.modal?.title || (getValues('forms.0')?.pages?.[0]?.modal?.components[0] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[1] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[2] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[3] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[4] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms?.[0]?.pages?.[0]?.modal ? true : false} onClick={() => setStage('submissions')}>Continue</Button>
             </HStack>
           </VStack></>}
         {stage === 'submissions' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text>

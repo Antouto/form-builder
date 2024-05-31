@@ -33,6 +33,8 @@ export interface PreviewProperties {
   select_menu_placeholder: string;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
+  displayPage: number;
+  setDisplayPage: React.Dispatch<React.SetStateAction<number>>;
   displaySection: boolean;
   stage: string;
 }
@@ -45,12 +47,14 @@ function Preview({
   select_menu_placeholder,
   displayForm,
   setDisplayForm,
+  displayPage,
+  setDisplayPage,
   displaySection,
   stage
 }: PreviewProperties) {
   const { colorMode } = useColorMode();
   const defaultValues = {
-    ...forms?.[displayForm]?.modal.components
+    ...forms?.[displayForm]?.pages?.[displayPage]?.modal.components
       .map((e) => e.components[0])
       .map((e) => ({ [e.label]: e.value })),
   };
@@ -332,6 +336,7 @@ function Preview({
                           onClick={() => {
                             if(component.style !== 5) {
                                //@ts-expect-error
+                               setDisplayPage(0)
                                setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
                                //@ts-expect-error
                                if(displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {                                 
@@ -473,6 +478,27 @@ function Preview({
                 : "the slash command"
               }`
           }
+          controls={forms?.[displayForm]?.pages.length > 1 && <HStack>
+            <svg onClick={()=> displayPage > 0 && setDisplayPage(displayPage - 1)} style={{ cursor: displayPage > 0 ? 'pointer' : 'not-allowed', transform: `rotate(${270}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M12 10L8 6L4 10"
+              stroke={displayPage > 0 ? "#bcbcbc" : 'grey'}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+            <Text userSelect='none'>Page {displayPage+1}</Text>
+            <svg onClick={()=> ((displayPage+1) < forms[displayForm].pages.length && setDisplayPage(displayPage + 1))} style={{ cursor: (displayPage+1) < forms[displayForm].pages.length ? 'pointer' : 'not-allowed', transform: `rotate(${90}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M12 10L8 6L4 10"
+              stroke={(displayPage+1) < forms[displayForm].pages.length ? "#bcbcbc" : 'grey'}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          </HStack>}
           highlighted={stage === 'form' || temporaryModalHighlight}
           reference={formRef}
         >
@@ -514,7 +540,7 @@ function Preview({
                     overflow="hidden"
                     whiteSpace="nowrap"
                   >
-                    {forms?.[displayForm]?.modal.title}
+                    {forms?.[displayForm].pages?.[displayPage]?.modal.title}
                   </Text>
                 </Box>
                 <Box display="flex" p="4px" cursor="pointer">
@@ -527,7 +553,7 @@ function Preview({
                 </Box>
               </Box>
               <Box>
-                {forms?.[displayForm]?.modal.components.map((actionRow, i) => (
+                {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map((actionRow, i) => (
                   <Box key={Math.random()} m="0 1em 1em">
                     <Text
                       textTransform="uppercase"
@@ -587,10 +613,14 @@ function Preview({
                   border="0px"
                   _focus={{ border: "0px" }}
                   onClick={() => {
-                    setTemporarySubmissionHighlight(true)
-                    //@ts-expect-error
-                    executeApplicationCommandScroll(applicationCommandRef)
-                    setTimeout(() => setTemporarySubmissionHighlight(false), 300);
+                    if((displayPage+1) < forms[displayForm].pages.length) {
+                      setDisplayPage(displayPage + 1)
+                    } else {
+                      setTemporarySubmissionHighlight(true)
+                      //@ts-expect-error
+                      executeApplicationCommandScroll(applicationCommandRef)
+                      setTimeout(() => setTemporarySubmissionHighlight(false), 300);
+                    }
                   }}
                 >
                   Submit
@@ -721,7 +751,7 @@ function Preview({
                       </Box>
                     </Box>
                     <Box>
-                      {forms?.[displayForm]?.modal.components.map(
+                      {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map(
                         (actionRow) => (
                           <Box key={Math.random()}>
                             <Text

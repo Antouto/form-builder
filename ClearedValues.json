@@ -5,22 +5,26 @@
   },
   "forms": [
     {
-      "modal": {
-        "title": "",
-        "components": [
-          {
-            "type": 1,
+      "pages": [
+        {
+          "modal": {
+            "title": "",
             "components": [
               {
-                "type": 4,
-                "label": "",
-                "style": 1,
-                "max_length": 1024
+                "type": 1,
+                "components": [
+                  {
+                    "type": 4,
+                    "label": "",
+                    "style": 1,
+                    "max_length": 1024
+                  }
+                ]
               }
             ]
           }
-        ]
-      }
+        }
+      ]
     }
   ]
 }

@@ -75,6 +75,9 @@ export interface ApplicationCommandBuilder {
     description?: string;
 }
 
+export interface Page {
+    modal: ModalBuilder;
+}
 
 export interface FormBuilder {
     webhook_url?: string;
@@ -83,7 +86,7 @@ export interface FormBuilder {
     cooldown?: number;
     application_command?: ApplicationCommandBuilder;
     select_menu_option?: SelectMenuBuilder;
-    modal: ModalBuilder;
+    pages: Page[];
     submit_message?: FormOpenFormTypeBuilder;
     submit_components?: ActionRow;
     guild_submit_message?: FormOpenFormTypeBuilder;

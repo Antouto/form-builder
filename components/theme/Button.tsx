@@ -53,6 +53,15 @@ export const Button: ComponentTheme<ButtonProps> = {
             color: 'white',
             _hover: { textDecoration: 'underline' }
         },
+        'link-outline': {
+            bg: 'transparent',
+            border: '1px solid white',
+            fontSize: '14px',
+            height: '24px',
+            padding: '8px',
+            color: 'white',
+            _hover: { textDecoration: 'underline' }
+        },
         navigationDisplayMode: { height: '24px', marginY: '2px', fontSize: '15px', paddingInline: '7px',  paddingBlock: 0, borderRadius: 15 }
     },
     defaultProps: {

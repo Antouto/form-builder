@@ -26,6 +26,7 @@ import FormTitleInput from "./FormTitleInput";
 import ActionRowBuilder from "./ActionRowBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 import PermissionOverwritesBuilder from "./PermissionOverwritesBuilder";
+import PageBuilder from "./PageBuilder";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -77,7 +78,11 @@ export default function FormBuilder({
   //@ts-expect-error
   formMessageComponentsRemove,
   //@ts-expect-error
-  openFormType
+  openFormType,
+  //@ts-expect-error
+  displayPage,
+  //@ts-expect-error
+  setDisplayPage
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -254,7 +259,7 @@ export default function FormBuilder({
       <ul>
         {fields.map((item, index) => {
           return (<>
-            <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
+            <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.pages[0]?.modal.title && getValues('forms')[index]?.pages?.[0]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.pages?.[0]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
               //@ts-expect-error
               const formToDeleteIndex = getValues('message.components[0].components')?.findIndex(component => (component.custom_id) && (component.custom_id === `{FormID${index + 1}}`))
@@ -415,11 +420,10 @@ export default function FormBuilder({
                     }} />
                   </NumberInput>
                 </Box>
-                <FormTitleInput index={index} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
               </Collapsible >
               <hr />
-              <Collapsible name="Text Inputs">
-                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
+              <Collapsible name="Pages">
+                <PageBuilder {...{ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage }} />
               </Collapsible>
               <hr />
               <Collapsible name="Submission & Confirmation Messages">
@@ -526,31 +530,33 @@ export default function FormBuilder({
           variant='primary'
           isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && !getValues('forms.0.select_menu_option') && getValues('message.components.0.components')?.length >= 5) || getValues('application_command') && getValues('forms').length >= 1}
           onClick={() => {
-            setDisplayForm(fields.length)
-            if(openFormType === 'button') formMessageComponentsAppend({
+            if (openFormType === 'button') formMessageComponentsAppend({
               label: 'Open Form',
               custom_id: `{FormID${fields.length + 1}}`,
               style: 1,
               type: 2
             })
             append({
-              modal: {
-                title: '',
-                components: [
-                  {
-                    type: 1,
-                    components: [
-                      {
-                        type: 4,
-                        label: '',
-                        style: 1,
-                        max_length: 1024
-                      }
-                    ]
-                  }
-                ]
-              }
+              pages: [{
+                modal: {
+                  title: '',
+                  components: [
+                    {
+                      type: 1,
+                      components: [
+                        {
+                          type: 4,
+                          label: '',
+                          style: 1,
+                          max_length: 1024
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }]
             })
+            setDisplayForm(fields.length)
             serverSubmissionMessage.push('default')
             dmSubmissionMessage.push('default')
             setSubmissionType('append', 'bot')

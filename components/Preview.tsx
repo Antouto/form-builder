@@ -64,11 +64,11 @@ function Preview({
 
   const applicationCommandRef = useRef(null)
   const formRef = useRef(null)
-  
+
   //@ts-expect-error
   const executeApplicationCommandScroll = () => applicationCommandRef.current.scrollIntoView({ behavior: 'smooth' })
   //@ts-expect-error  
-  const executeFormScroll = () => formRef.current.scrollIntoView({ behavior: 'smooth' })  
+  const executeFormScroll = () => formRef.current.scrollIntoView({ behavior: 'smooth' })
 
   if (displayForm < 0) displayForm = 0;
 
@@ -334,16 +334,16 @@ function Preview({
                         <Button
                           key={Math.random()}
                           onClick={() => {
-                            if(component.style !== 5) {
-                               //@ts-expect-error
-                               setDisplayPage(0)
-                               setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
-                               //@ts-expect-error
-                               if(displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {                                 
-                                 setTemporaryModalHighlight(true)
-                                 executeFormScroll()
-                                 setTimeout(() => setTemporaryModalHighlight(false), 300);
-                               }
+                            if (component.style !== 5) {
+                              setDisplayPage(0)
+                              //@ts-expect-error
+                              setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
+                              //@ts-expect-error
+                              if (displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {
+                                setTemporaryModalHighlight(true)
+                                executeFormScroll()
+                                setTimeout(() => setTemporaryModalHighlight(false), 300);
+                              }
                             }
                           }}
                           height="32px"
@@ -434,7 +434,7 @@ function Preview({
                               onClick={() => {
                                 onToggle();
                                 setDisplayForm(index)
-                                if(displayForm === index) {
+                                if (displayForm === index) {
                                   setTemporaryModalHighlight(true)
                                   setTimeout(() => executeFormScroll(), 1);
                                   setTimeout(() => setTemporaryModalHighlight(false), 800);
@@ -479,25 +479,25 @@ function Preview({
               }`
           }
           controls={forms?.[displayForm]?.pages.length > 1 && <HStack>
-            <svg onClick={()=> displayPage > 0 && setDisplayPage(displayPage - 1)} style={{ cursor: displayPage > 0 ? 'pointer' : 'not-allowed', transform: `rotate(${270}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M12 10L8 6L4 10"
-              stroke={displayPage > 0 ? "#bcbcbc" : 'grey'}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-            <Text userSelect='none'>Page {displayPage+1}</Text>
-            <svg onClick={()=> ((displayPage+1) < forms[displayForm].pages.length && setDisplayPage(displayPage + 1))} style={{ cursor: (displayPage+1) < forms[displayForm].pages.length ? 'pointer' : 'not-allowed', transform: `rotate(${90}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M12 10L8 6L4 10"
-              stroke={(displayPage+1) < forms[displayForm].pages.length ? "#bcbcbc" : 'grey'}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+            <svg onClick={() => displayPage > 0 && setDisplayPage(displayPage - 1)} style={{ cursor: displayPage > 0 ? 'pointer' : 'not-allowed', transform: `rotate(${270}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M12 10L8 6L4 10"
+                stroke={displayPage > 0 ? "#bcbcbc" : 'grey'}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <Text userSelect='none'>Page {displayPage + 1}</Text>
+            <svg onClick={() => ((displayPage + 1) < forms[displayForm].pages.length && setDisplayPage(displayPage + 1))} style={{ cursor: (displayPage + 1) < forms[displayForm].pages.length ? 'pointer' : 'not-allowed', transform: `rotate(${90}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M12 10L8 6L4 10"
+                stroke={(displayPage + 1) < forms[displayForm].pages.length ? "#bcbcbc" : 'grey'}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </HStack>}
           highlighted={stage === 'form' || temporaryModalHighlight}
           reference={formRef}
@@ -613,7 +613,7 @@ function Preview({
                   border="0px"
                   _focus={{ border: "0px" }}
                   onClick={() => {
-                    if((displayPage+1) < forms[displayForm].pages.length) {
+                    if ((displayPage + 1) < forms[displayForm].pages.length) {
                       setDisplayPage(displayPage + 1)
                     } else {
                       setTemporarySubmissionHighlight(true)

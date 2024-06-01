@@ -5,7 +5,7 @@ import Collapsible from './Collapsible';
 import TextInputBuilder from './TextInputBuilder';
 import FormTitleInput from './FormTitleInput';
 
-export default function PageBuilder({ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage }: any) {
+export default function PageBuilder({ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage, isOpenPremium, onOpenPremium, onClosePremium, setPremiumFeatureTarget }: any) {
   const { fields, remove, append } = useFieldArray({
     control,
     name: `forms.${index}.pages`
@@ -22,7 +22,12 @@ export default function PageBuilder({ index, control, premium, getValues, setVal
       <TextInputBuilder id={`forms.${index}.pages.${i}.modal.components`} nestIndex={index} pageIndex={i} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
 
     </Collapsible>)}
-    <Button variant='primary' mt={4} style={{ backgroundImage: 'linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' }} isDisabled={!premium || getValues('forms')?.[index]?.pages?.length >= 5} onClick={() => {
+    <Button variant='primary' mt={4} style={{ backgroundImage: 'linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' }} isDisabled={getValues('forms')?.[index]?.pages?.length >= 5} onClick={() => {
+      if(!premium) {
+        setPremiumFeatureTarget('multiple_pages')
+        onOpenPremium()
+        return;
+      }
       append({
         modal: {
           title: '',

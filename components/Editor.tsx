@@ -112,6 +112,8 @@ export function Editor({
   const [submissionChannel, _setSubmissionChannel] = useState(['existing'])
   const [premium, _setPremium] = useState(false);
   const { isOpen, onOpen: onOpenWhereDoIFindSubmissionChannelID, onClose } = useDisclosure()
+  const { isOpen: isOpenPremium, onOpen: onOpenPremium, onClose: onClosePremium } = useDisclosure()
+  const [premiumFeatureTarget, setPremiumFeatureTarget] = useState('custom_branding')
 
 
   function setPreset(preset?: string) {
@@ -273,7 +275,7 @@ export function Editor({
       getValues('forms').forEach((form, index) => {
         setDisplayPage(0)
         setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)])
-        resetField(`forms.${index}.cooldown`)
+        setValue(`forms.${index}.cooldown`, undefined)
         if (getValues(`forms.${index}.submit_channel`)) {
           //@ts-expect-error
           setValue(`forms.${index}.submit_channel.name`, 'ticket');
@@ -696,7 +698,7 @@ export function Editor({
                 resetField(
                   `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.value`
                 );
-  
+
               if (
                 typeof watch(
                   `forms.${ii}.pages.${ii}.modal.components.${iii}.components.0.style`
@@ -774,15 +776,15 @@ export function Editor({
               onChange={(event) => setPremium(event.target.checked)}
               isChecked={premium}
             />
-            <Text>Use premium features</Text>
-            <Tooltip hasArrow label={
-              'When enabled forms will only work in servers with an active premium subscription. Premium includes custom branding.'
-            } placement='right' shouldWrapChildren bg="#181414">
-              <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
-            </Tooltip></HStack>
-             <Link href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b" target="_blank"><Button variant='link-outline'>Upgrade</Button></Link>
+              <Text>Use premium features</Text>
+              <Tooltip hasArrow label={
+                'When enabled forms will only work in servers with an active premium subscription. Premium includes custom branding.'
+              } placement='right' shouldWrapChildren bg="#181414">
+                <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
+              </Tooltip></HStack>
+            <Link href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b" target="_blank"><Button variant='link-outline'>Upgrade</Button></Link>
           </HStack>
-          
+
         </Stack>
         <OpenFormTypeBuilder
           {...{
@@ -830,7 +832,11 @@ export function Editor({
             formMessageComponentsRemove,
             openFormType,
             displayPage,
-            setDisplayPage
+            setDisplayPage,
+            isOpenPremium,
+            onOpenPremium,
+            onClosePremium,
+            setPremiumFeatureTarget
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -1206,6 +1212,120 @@ export function Editor({
 
           <ModalFooter>
             <Button variant='primary' onClick={onClose}>Okay</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isOpenPremium} onClose={onClosePremium}>
+        <ModalOverlay />
+        <ModalContent bg='grey.dark'>
+          <ModalHeader>You've discovered a premium feature!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pt={5} fontSize='18px' fontWeight='600'>
+            <VStack gap={4} align='flex-start'>
+              <Text fontWeight='400'>Premium Features</Text>
+              <HStack>
+                <Box width='32px'><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_733_18)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M37.4903 37.4903C61.495 13.4857 94.0523 0 128 0C161.948 0 194.505 13.4857 218.51 37.4903C242.514 61.495 256 94.0523 256 128C256 148.416 251.122 168.33 242.013 186.181L239.044 192H192C162.545 192 138.667 215.878 138.667 245.333V256H128C94.0523 256 61.495 242.514 37.4903 218.51C13.4857 194.505 0 161.948 0 128C0 94.0523 13.4857 61.495 37.4903 37.4903ZM94.6725 88.944C104.98 88.9377 113.333 80.5802 113.333 70.2715C113.333 59.9589 104.973 51.5989 94.6608 51.5989C84.3536 51.6053 76 59.9642 76 70.2727C76 80.5854 84.36 88.944 94.6725 88.944ZM161.339 88.944C171.646 88.9377 180 80.5802 180 70.2715C180 59.9589 171.641 51.5989 161.328 51.5989C151.021 51.6053 142.667 59.9642 142.667 70.2727C142.667 80.5854 151.026 88.944 161.339 88.944ZM213.355 128.005C213.355 138.315 205.001 146.672 194.693 146.678C184.381 146.678 176.021 138.32 176.021 128.007C176.021 117.698 184.374 109.34 194.682 109.333C204.994 109.333 213.355 117.693 213.355 128.005ZM61.36 146.678C71.6672 146.672 80.0208 138.315 80.0208 128.005C80.0208 117.693 71.6609 109.333 61.3483 109.333C51.0412 109.34 42.6875 117.698 42.6875 128.007C42.6875 138.32 51.0475 146.678 61.36 146.678Z" fill="url(#paint0_linear_733_18)" />
+                  </g>
+                  <defs>
+                    <linearGradient id="paint0_linear_733_18" x1="0" y1="128" x2="256" y2="128" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                    <clipPath id="clip0_733_18">
+                      <rect width="256" height="256" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg></Box>
+                <Text className={premiumFeatureTarget === 'custom_branding' ? 'highlighted-feature' : ''}>Custom Branding</Text>
+              </HStack>
+              <HStack>
+                <Box width='32px'><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M138.064 4.36718C141.624 9.15221 140.61 15.9022 135.8 19.4437L44.2921 86.8176C43.0392 88.0845 42.6897 89.6412 42.6709 91.3679V204.8C42.6709 210.754 37.8196 215.579 31.8354 215.579C25.8512 215.579 21 210.754 21 204.8L21.0221 90.1566C21.0429 89.4959 21.085 88.572 21.1717 87.5409C21.2566 86.534 21.3961 85.2772 21.6397 83.9922C21.8513 82.8751 22.2755 80.9746 23.2263 79.0933C24.9323 75.7176 27.6236 72.2699 30.7476 69.9698L122.908 2.11556C127.718 -1.42594 134.503 -0.417853 138.064 4.36718ZM227.232 47.4214C222.83 45.2743 218.043 45.2743 213.641 47.4214C213.252 47.6108 212.881 47.8306 212.527 48.0788L120.35 112.899C118.004 114.468 114.863 117.066 112.917 120.863C111.292 124.034 110.392 127.637 110.392 131.071V241.996C110.392 246.786 112.896 251.92 118.16 254.487C118.501 254.654 118.853 254.795 119.212 254.913C121.169 255.549 123.835 256.239 126.775 255.919C129.795 255.592 132.315 254.306 134.373 252.479L225.114 188.96C225.238 188.872 225.362 188.781 225.481 188.686C227.451 187.135 230.443 184.725 232.389 180.926C233.879 178.021 235 174.528 235 170.837V59.9124C235 55.1226 232.496 49.9886 227.232 47.4214ZM179.142 41.0019C183.952 37.4604 184.966 30.7104 181.406 25.9254C177.845 21.1403 171.06 20.1323 166.25 23.6738L74.0893 91.528C70.9654 93.828 68.2741 97.2758 66.568 100.652C65.6173 102.533 65.1931 104.433 64.9815 105.55C64.7379 106.835 64.5984 108.092 64.5135 109.1C64.4267 110.13 64.3847 111.054 64.3639 111.715L64.3418 226.358C64.3418 232.311 69.193 237.137 75.1772 237.137C81.1614 237.137 86.0127 232.311 86.0127 226.358V112.926C86.0315 111.199 86.381 109.643 87.6339 108.375L179.142 41.0019Z" fill="url(#paint0_linear_788_15)" />
+                  <defs>
+                    <linearGradient id="paint0_linear_788_15" x1="21" y1="128" x2="235" y2="128" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                </Box>
+                <Text className={premiumFeatureTarget === 'multiple_pages' ? 'highlighted-feature' : ''}>Multiple Pages</Text>
+              </HStack>
+              <HStack>
+                <Box width='32px'><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <mask id="mask0_764_24" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+                    <path d="M116.361 115.2V91.1045C102.802 86.3123 93.088 73.3815 93.088 58.1819C93.088 38.9021 108.717 23.2727 127.997 23.2727C147.277 23.2727 162.906 38.9021 162.906 58.1819H186.179C186.179 26.0489 160.129 0 127.997 0C95.8642 0 69.8154 26.0489 69.8154 58.1819C69.8154 79.069 80.8218 97.3855 97.3512 107.648L61.6107 174.797C60.4909 174.632 59.345 174.546 58.1791 174.546C45.3259 174.546 34.9064 184.965 34.9064 197.818C34.9064 210.672 45.3259 221.091 58.1791 221.091C67.7222 221.091 75.9239 215.347 79.5152 207.127H176.479C180.07 215.347 188.272 221.091 197.815 221.091C210.668 221.091 221.088 210.672 221.088 197.818C221.088 184.965 210.668 174.546 197.815 174.546C188.272 174.546 180.07 180.289 176.479 188.509H79.5153C79.4554 188.372 79.3942 188.236 79.3317 188.1L116.361 115.2Z" fill="url(#paint0_linear_764_24)" />
+                    <path d="M128 81.4545C115.147 81.4545 104.727 71.035 104.727 58.1818C104.727 45.3286 115.147 34.9091 128 34.9091C140.854 34.9091 151.273 45.3286 151.273 58.1818C151.273 63.247 149.654 67.9342 146.907 71.7548L197.818 139.636C229.951 139.636 256 165.686 256 197.818C256 229.951 229.951 256 197.818 256C173.96 256 153.456 241.64 144.477 221.091H171.798C178.19 228.233 187.479 232.727 197.818 232.727C217.097 232.727 232.727 217.098 232.727 197.818C232.727 178.538 217.097 162.909 197.818 162.909H186.182L128 81.4545Z" fill="url(#paint1_linear_764_24)" />
+                    <path d="M111.522 221.09C102.544 241.638 82.0397 255.999 58.1816 255.999C26.0488 255.999 0 229.95 0 197.817C0 165.684 26.0488 139.635 58.1816 139.635V162.908C38.9019 162.908 23.2726 178.537 23.2726 197.817C23.2726 217.097 38.9019 232.726 58.1816 232.726C68.5204 232.726 77.8096 228.232 84.2016 221.09H111.522Z" fill="url(#paint2_linear_764_24)" />
+                  </mask>
+                  <g mask="url(#mask0_764_24)">
+                    <rect x="-61.6441" y="-92.16" width="410.961" height="419.84" fill="url(#paint3_linear_764_24)" />
+                  </g>
+                  <defs>
+                    <linearGradient id="paint0_linear_764_24" x1="34.9064" y1="110.546" x2="221.088" y2="110.546" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                    <linearGradient id="paint1_linear_764_24" x1="104.727" y1="145.455" x2="256" y2="145.455" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                    <linearGradient id="paint2_linear_764_24" x1="0" y1="197.817" x2="111.522" y2="197.817" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                    <linearGradient id="paint3_linear_764_24" x1="-61.6441" y1="117.76" x2="349.317" y2="117.76" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                </Box>
+                <Text className={premiumFeatureTarget === 'webhook_submissions' ? 'highlighted-feature' : ''}>Webhook Submissions</Text>
+              </HStack>
+              <HStack>
+                <Box width='32px'><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M128 256C148.717 256.001 169.013 250.166 186.551 239.167C204.09 228.169 218.157 212.453 227.135 193.831C236.113 175.208 239.635 154.435 237.297 133.903C234.959 113.371 226.855 93.9152 213.919 77.7752L222.229 69.6076C224.531 67.3121 225.824 64.1987 225.824 60.9524C225.824 57.706 224.531 54.5927 222.229 52.2971C219.928 50.0016 216.807 48.712 213.552 48.712C210.297 48.712 207.176 50.0016 204.875 52.2971L196.686 60.5867C180.474 47.5954 160.889 39.477 140.222 37.181V24.381H164.665C167.906 24.381 171.015 23.0966 173.307 20.8104C175.599 18.5243 176.887 15.4236 176.887 12.1905C176.887 8.95736 175.599 5.85667 173.307 3.57051C171.015 1.28435 167.906 0 164.665 0H91.3349C88.0935 0 84.9848 1.28435 82.6928 3.57051C80.4008 5.85667 79.1132 8.95736 79.1132 12.1905C79.1132 15.4236 80.4008 18.5243 82.6928 20.8104C84.9848 23.0966 88.0935 24.381 91.3349 24.381H115.778V37.181C94.5125 39.619 75.2022 47.9086 59.314 60.5867L51.1255 52.2971C48.8241 50.0016 45.7027 48.712 42.4481 48.712C39.1934 48.712 36.0721 50.0016 33.7707 52.2971C31.4693 54.5927 30.1764 57.706 30.1764 60.9524C30.1764 64.1987 31.4693 67.3121 33.7707 69.6076L42.0814 77.7752C29.1449 93.9152 21.0411 113.371 18.7029 133.903C16.3647 154.435 19.8872 175.208 28.8649 193.831C37.8426 212.453 51.9104 228.169 69.4488 239.167C86.9872 250.166 107.283 256.001 128 256ZM173.22 118.248C174.985 115.9 175.842 112.996 175.634 110.069C175.425 107.142 174.165 104.388 172.085 102.313C170.005 100.238 167.244 98.9816 164.309 98.7735C161.375 98.5655 158.463 99.4203 156.11 101.181L119.445 137.752C117.68 140.1 116.823 143.004 117.031 145.931C117.24 148.858 118.5 151.612 120.58 153.687C122.66 155.762 125.421 157.018 128.356 157.226C131.29 157.434 134.202 156.58 136.555 154.819L173.22 118.248Z" fill="url(#paint0_linear_739_4)" />
+                  <defs>
+                    <linearGradient id="paint0_linear_739_4" x1="18" y1="128" x2="238" y2="128" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                </Box>
+                <Text className={premiumFeatureTarget === 'submission_cooldown' ? 'highlighted-feature' : ''}>Submission Cooldown</Text>
+              </HStack>
+              <HStack>
+                <Box width='32px'>
+                  <svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M192.8 64V96C210.032 96 224 109.969 224 127.2V224C224 241.673 209.674 256 192 256H64C46.3265 256 32 241.673 32 224V128C32 110.327 46.3265 96 64 96V64C64 28.16 94.4 0 128 0C161.6 0 192.8 28.16 192.8 64ZM96.0001 96H160V64C160 45.7142 145.066 32 128 32C110.934 32 96.0001 45.7142 96.0001 64V96Z" fill="url(#paint0_linear_754_3)" />
+                    <defs>
+                      <linearGradient id="paint0_linear_754_3" x1="32" y1="128" x2="224" y2="128" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#3442D9" />
+                        <stop offset="1" stop-color="#0176A4" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </Box>
+                <Text className={premiumFeatureTarget === 'require_permissions' ? 'highlighted-feature' : ''}>Require permissions to use buttons</Text>
+              </HStack>
+              <Text fontWeight='400'>Unlock all premium features for €4.99/month</Text>
+            </VStack>
+
+          </ModalBody>
+
+          <ModalFooter display='flex' justifyContent='space-between'>
+            <Button variant='link' onClick={() => {
+              setPremium(true)
+              onClosePremium()
+            }}>I already have premium</Button>
+            <HStack>
+              <Button variant='secondary' onClick={onClosePremium}>Not now</Button>
+              <Link href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b" target='_blank'><Button variant='success'>Upgrade</Button></Link>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -7,7 +7,7 @@ import ErrorMessage from './ErrorMessage';
 import ButtonBuilder from './ButtonBuilder';
 import PermissionOverwritesBuilder from './PermissionOverwritesBuilder';
 
-export default function SubmitComponentsBuilder({ i, ii, control, getValues, resetField, setValue, register, errors, watch, premium }: any) {
+export default function SubmitComponentsBuilder({ i, ii, control, getValues, resetField, setValue, register, errors, watch, premium, setPremiumFeatureTarget, onOpenPremium }: any) {
   const { fields, remove: _remove, append } = useFieldArray({
     control,
     name: `forms.${i}.submit_components.${ii}.components`
@@ -79,7 +79,14 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             })}>DM response to submitter</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`, true)}>Remove other buttons in this row</Button>}
             {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) === undefined && <Button onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, true)}>Delete this channel</Button>}
-            {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <Button backgroundImage='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' isDisabled={!premium} onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')}>Require permissions to use</Button>}
+            {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <Button backgroundImage='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' onClick={() => {
+                    if(!premium) {
+                      setPremiumFeatureTarget('require_permissions')
+                      onOpenPremium()
+                      return;
+                    }
+              setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')
+              }}>Require permissions to use</Button>}
           </HStack>
 
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) !== undefined && <Box>

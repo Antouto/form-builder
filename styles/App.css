@@ -92,3 +92,10 @@ select {
     background-repeat: no-repeat;
     background-position: right bottom;
 }
+
+.highlighted-feature {
+    background-image: linear-gradient(to right, #515ff5, #128cbc);
+    text-shadow: 0 0 20px rgba(68, 87, 255, 0.35);
+    color: transparent;
+    background-clip: text;
+}

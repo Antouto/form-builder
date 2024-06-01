@@ -82,7 +82,15 @@ export default function FormBuilder({
   //@ts-expect-error
   displayPage,
   //@ts-expect-error
-  setDisplayPage
+  setDisplayPage,
+  //@ts-expect-error
+  isOpenPremium,
+  //@ts-expect-error
+  onOpenPremium,
+  //@ts-expect-error
+  onClosePremium,
+  //@ts-expect-error
+  setPremiumFeatureTarget
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -95,6 +103,8 @@ export default function FormBuilder({
   const isSmallScreen = !useScreenWidth(1240);
   const isReallySmallScreen = !useScreenWidth(400);
   const colorMode = useColorMode().colorMode
+
+  const [cooldownDisabled, setCooldownDisabled] = useState(false)
 
   function _setServerSubmissionMessage(value: string, index: number) {
     const array = serverSubmissionMessage.slice();
@@ -297,12 +307,19 @@ export default function FormBuilder({
                     borderWidth="2px"
                     borderColor="transparent"
                     borderRadius="4px"
-                    isDisabled={!premium}
+                    // isDisabled={!premium}
                     border='1px solid rgba(255, 255, 255, 0.16)'
                     // bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
                     _focus={{ outline: 'none' }}
                     _focusVisible={{ outline: 'none' }}
                     _hover={{ borderColor: "transparent" }}
+                    onClick={() => {
+                      if(!premium) {
+                        setPremiumFeatureTarget('webhook_submissions')
+                        onOpenPremium()
+                        return;
+                      }
+                    }}
                     onChange={(event) => {
                       setSubmissionType('edit', event.target.value, index)
                     }}
@@ -414,7 +431,15 @@ export default function FormBuilder({
                 </Stack>
                 <Box>
                   <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (days)</Text></FormLabel>
-                  <NumberInput min={0} isDisabled={!premium}>
+                  <NumberInput min={0} isDisabled={!premium && cooldownDisabled} onClick={() => {
+                          if(!premium) {
+                            setPremiumFeatureTarget('submission_cooldown')
+                            setCooldownDisabled(true)
+                            setTimeout(() => setCooldownDisabled(false), 1);
+                            onOpenPremium()
+                            return;
+                          }
+                  }}>
                     <NumberInputField _focusVisible={{ boxShadow: 'inset 0 0 0 2px #5865F2', border: 'none' }} height='36px' placeholder="OFF, Use 0 for Infinity" backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
                       setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
                     }} />
@@ -423,7 +448,7 @@ export default function FormBuilder({
               </Collapsible >
               <hr />
               <Collapsible name="Pages">
-                <PageBuilder {...{ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage }} />
+                <PageBuilder {...{ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage, isOpenPremium, onOpenPremium, onClosePremium, setPremiumFeatureTarget }} />
               </Collapsible>
               <hr />
               <Collapsible name="Submission & Confirmation Messages">
@@ -517,7 +542,7 @@ export default function FormBuilder({
                     <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                     <Text>Buttons can be used once and are then automatically disabled</Text>
                   </HStack>
-                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} />
+                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} {...{setPremiumFeatureTarget, onOpenPremium}}/>
                 </VStack>
               </Collapsible>
             </Collapsible >

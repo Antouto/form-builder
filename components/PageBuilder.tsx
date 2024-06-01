@@ -38,7 +38,8 @@ export default function PageBuilder({ index, control, premium, getValues, setVal
                 {
                   type: 4,
                   label: '',
-                  style: 1
+                  style: 1,
+                  max_length: 1024
                 }
               ]
             }

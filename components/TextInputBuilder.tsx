@@ -248,7 +248,7 @@ export default function TextInputBuilder({
                     fontFamily: 'Whitney Bold Italic'
                   }}
                 >
-                  {`Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
+                  {!Number.isNaN(minimumLength) && minimumLength === maximumLength ? `Must be ${minimumLength} characters` : `Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
                 </span>
               </FormLabel>
               <Box

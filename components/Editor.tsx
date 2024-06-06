@@ -410,6 +410,15 @@ export function Editor({
           setTimeout(() => {
             //@ts-expect-error
             if (form.submit_channel?.parent_id === '') setValue(`forms.${i}.submit_channel.parent_id`, undefined)
+
+            //@ts-expect-error
+            if (getValues(`forms.${i}.submit_channel.permission_overwrites`)) getValues(`forms.${i}.submit_channel.permission_overwrites`).forEach((overwrite, ii) => {
+              console.log('overwrite', overwrite)
+              //@ts-expect-error
+              if (overwrite.allow === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.allow`, undefined)
+              //@ts-expect-error
+              if (overwrite.deny === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.deny`, undefined)
+            })
           }, 1);
           //@ts-expect-error
           if (form.submit_channel.permission_overwrites && (JSON.stringify(form.submit_channel.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"allow":52224}]')) setPremium(true)

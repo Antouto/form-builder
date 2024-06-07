@@ -150,12 +150,12 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`) !== undefined && <Box>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.content`} display='flex' alignItems='flex-end'>
-              <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>ID - Send message to differnt channel</Text>
+              <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Channel ID - Send message to differnt channel</Text>
             </FormLabel>
             <HStack>
               <input
-                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.id`, { required: true })}
-                id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.id`}
+                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`, { required: true })}
+                id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`}
               />
               <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`, undefined) }} />
             </HStack>

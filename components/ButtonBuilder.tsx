@@ -13,7 +13,7 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
     <>
       <Box width={isSmallScreen ? '100%' : '50%'}>
         {/* //@ts-expect-error */}
-        <FormLabel htmlFor={`${forButton}.label`} display='flex' alignItems='flex-end'><Text _after={buttonLabelRequired === 'no' ? {} : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonLabel ? buttonLabel : 'Button Label'}</Text>
+        <FormLabel htmlFor={`${forButton}.label`} display='flex' alignItems='center'><Text _after={buttonLabelRequired === 'no' ? {} : { content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>{buttonLabel ? buttonLabel : 'Button Label'}</Text>
           <Counter count={button?.label?.length} max={80}></Counter>
         </FormLabel>
         <input

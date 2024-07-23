@@ -9,7 +9,7 @@ export default function FormTitleInput({ index, pageIndex, register, getValues, 
 
   return (
     <>
-      <FormLabel htmlFor={`forms[${index}].pages.${pageIndex}.modal.title`} display='flex' alignItems='flex-end'>
+      <FormLabel htmlFor={`forms[${index}].pages.${pageIndex}.modal.title`} display='flex' alignItems='center'>
         <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text>
         <Counter count={getValues('forms')[index]?.pages?.[pageIndex]?.modal.title?.length} max={45} />
       </FormLabel>

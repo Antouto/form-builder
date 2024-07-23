@@ -1,8 +1,9 @@
 import React from 'react'
-import { VStack, FormLabel, Box } from '@chakra-ui/react'
+import { VStack, FormLabel, Box, Text } from '@chakra-ui/react'
 import EmbedBuilder from './EmbedBuilder'
 import OpenFormComponentBuilder from './OpenFormComponentBuilder'
 import { useFieldArray } from 'react-hook-form';
+import Counter from './Counter';
 
   //@ts-expect-error
 export default function MessageBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage, openFormType, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium }) {
@@ -10,7 +11,17 @@ export default function MessageBuilder({ control, register, errors, setValue, ge
   
   return (
     <VStack align="flex-start" width="100%" marginBottom="8px">
-      <FormLabel htmlFor="message.content">Message</FormLabel>
+      <FormLabel
+        htmlFor="message.content"
+        display="flex"
+        alignItems="center"
+      >
+        <Text>Content</Text>
+        <Counter
+          count={getValues(`message.content`)?.length}
+          max={2000}
+        />
+      </FormLabel>
       <textarea
         style={{ height: "99px" }}
         {...register("message.content", { onChange: () => fixMessage() })}

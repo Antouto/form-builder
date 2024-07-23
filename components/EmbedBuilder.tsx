@@ -6,6 +6,7 @@ import { IconContext } from "react-icons";
 import { useEffect } from "react";
 import ErrorMessage from "./ErrorMessage";
 import { useScreenWidth } from "../util/width";
+import Counter from "./Counter";
 
 //@ts-expect-error
 export default function EmbedBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage }) {
@@ -26,7 +27,17 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
 
 
   return <>
-      <FormLabel pb={2}>Embeds</FormLabel>
+      <FormLabel
+        htmlFor="message.embeds"
+        display="flex"
+        alignItems="center"
+      >
+        <Text>Embeds</Text>
+        <Counter
+          count={getValues(`message.embeds`)?.length}
+          max={10}
+        />
+      </FormLabel>
 
       {Array.isArray(getValues('message.embeds')) ? fields.map((item, index) =>
       

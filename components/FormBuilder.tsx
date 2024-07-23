@@ -262,7 +262,7 @@ export default function FormBuilder({
 
   return (
     <Box width='100%' pb={2}>
-      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5 - (getValues('message.components.0.components')?.filter(component => component.style === 5))?.length)} /></FormLabel>
+      <FormLabel display='flex' alignItems='center' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5 - (getValues('message.components.0.components')?.filter(component => component.style === 5))?.length)} /></FormLabel>
       {formsThatNeedSubmitChannelIDString && <Box mb={4}><ErrorMessage>
         <Text>Form{formsThatNeedSubmitChannelIDString} a Submission Channel ID.</Text>
       </ErrorMessage></Box>}
@@ -359,7 +359,7 @@ export default function FormBuilder({
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
                     <Box width='100%'>
-                      <FormLabel htmlFor={`forms[${index}].submit_channel.name`} display='flex' alignItems='flex-end'>
+                      <FormLabel htmlFor={`forms[${index}].submit_channel.name`} display='flex' alignItems='center'>
                         <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text>
                         {/* @ts-expect-error */}
                         <Counter count={getValues('forms')[index].submit_channel?.name?.length} max={100} />
@@ -398,7 +398,7 @@ export default function FormBuilder({
                     {
                       watch('forms.0.select_menu_option') && <>
                         <Box width='100%'>
-                          <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
+                          <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='center'>
                             <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
                             <Counter count={getValues('forms')[index].select_menu_option?.label?.length} max={100} />
                           </FormLabel>
@@ -410,7 +410,7 @@ export default function FormBuilder({
                           <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.label} />
                         </Box>
                         <Box width='100%'>
-                          <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
+                          <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='center'>
                             <Text>Select Menu Option Description</Text>
                             <Counter count={getValues('forms')[index].select_menu_option?.description?.length} max={100}></Counter>
                           </FormLabel>
@@ -430,7 +430,7 @@ export default function FormBuilder({
                   </Stack>
                 </Stack>
                 <Box>
-                  <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='flex-end'><Text>Cooldown (days)</Text></FormLabel>
+                  <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='center'><Text>Cooldown (days)</Text></FormLabel>
                   <NumberInput min={0} isDisabled={!premium && cooldownDisabled} onClick={() => {
                           if(!premium) {
                             setPremiumFeatureTarget('submission_cooldown')
@@ -478,7 +478,7 @@ export default function FormBuilder({
                     </Select>
                   </HStack>
                   {serverSubmissionMessage[index] === 'custom' && dmSubmissionMessage[index] !== 'same_as_server' && <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].guild_submit_message.content`} display='flex' alignItems='flex-end'><Text>Content</Text>
+                    <FormLabel htmlFor={`forms[${index}].guild_submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].guild_submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
                     <input
@@ -488,7 +488,7 @@ export default function FormBuilder({
                     <ErrorMessage error={errors.forms?.[index]?.guild_submit_message?.content} />
                   </Box>}
                   {serverSubmissionMessage[index] === 'custom' && dmSubmissionMessage[index] === 'same_as_server' && <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='flex-end'><Text>Content</Text>
+                    <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
                     <input
@@ -518,7 +518,7 @@ export default function FormBuilder({
                     </Select>
                   </HStack>
                   {dmSubmissionMessage[index] === 'custom' && serverSubmissionMessage[index] !== 'same_as_dm' && <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].dm_submit_message.content`} display='flex' alignItems='flex-end'><Text>Content</Text>
+                    <FormLabel htmlFor={`forms[${index}].dm_submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].dm_submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
                     <input
@@ -528,7 +528,7 @@ export default function FormBuilder({
                     <ErrorMessage error={errors.forms?.[index]?.dm_submit_message?.content} />
                   </Box>}
                   {dmSubmissionMessage[index] === 'custom' && serverSubmissionMessage[index] === 'same_as_dm' && <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='flex-end'><Text>Content</Text>
+                    <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
                     <input

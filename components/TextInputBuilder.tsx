@@ -88,7 +88,7 @@ export default function TextInputBuilder({
             <HStack gap={3} alignItems='flex-start'>
               <Box width='100%' >
                 {k === 0 && <FormLabel margin={0} display="flex"
-                  alignItems="flex-end">
+                  alignItems="center">
                   <Text _after={{
                     content: '" *"',
                     color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
@@ -181,7 +181,7 @@ export default function TextInputBuilder({
         return (
           <Box key={item.id} width='100%'>
             <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ padding: 0 }}>
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='center'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
                 id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
@@ -227,7 +227,7 @@ export default function TextInputBuilder({
                 </HStack>
               </HStack>
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='center'><Text>Placeholder</Text>
                 <Counter count={textInput?.placeholder?.length || 0} max={100} />
               </FormLabel>
               <input
@@ -236,7 +236,7 @@ export default function TextInputBuilder({
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='center'>
                 <Text>Preset Value</Text>
                 <span
                   style={{
@@ -259,7 +259,7 @@ export default function TextInputBuilder({
               />
               <HStack marginBottom='8px' alignItems='flex-start'>
                 {/* <Box width='100%'>
-                  <FormLabel display='flex' alignItems='flex-end'><Text>Minimum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (minimumLength > maximumLength || minimumLength < 0 || minimumLength > 1024) ? (colorMode === 'dark' ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 1 and {maximumLength > 1024 ? 1024 : (maximumLength < 1 ? 0 : maximumLength || 1024)}</span></FormLabel>
+                  <FormLabel display='flex' alignItems='center'><Text>Minimum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (minimumLength > maximumLength || minimumLength < 0 || minimumLength > 1024) ? (colorMode === 'dark' ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 1 and {maximumLength > 1024 ? 1024 : (maximumLength < 1 ? 0 : maximumLength || 1024)}</span></FormLabel>
                   <input
                     {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 0, max: 1024 })}
                     id={`forms[${nestIndex}].modal.components[${k}].components[0].min_length`}
@@ -271,7 +271,7 @@ export default function TextInputBuilder({
                   />
                 </Box>
                 <Box width='100%'>
-                  <FormLabel display='flex' alignItems='flex-end'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (maximumLength > 1024 || maximumLength < minimumLength || maximumLength < 1) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>Must be betweeen {minimumLength > 1024 ? 1024 : (minimumLength < 0 ? 1 : minimumLength || 1)} and 1024</span></FormLabel>
+                  <FormLabel display='flex' alignItems='center'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (maximumLength > 1024 || maximumLength < minimumLength || maximumLength < 1) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>Must be betweeen {minimumLength > 1024 ? 1024 : (minimumLength < 0 ? 1 : minimumLength || 1)} and 1024</span></FormLabel>
                   <input
                     {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, { min: 1, max: 1024 })}
                     id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`}

@@ -21,7 +21,7 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
       {fields.map((permission_overwrite, ii) => <Collapsible key={permission_overwrite.id} name={`Overwrite ${ii + 1}`} deleteButton={<CloseButton isDisabled={!premium} onClick={() => remove(ii)} />}>
         <HStack>
           <Box>
-            <FormLabel htmlFor={`${forPermissionOverwrite}.${ii}.type`} display='flex' alignItems='flex-end'>
+            <FormLabel htmlFor={`${forPermissionOverwrite}.${ii}.type`} display='flex' alignItems='center'>
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Type</Text>
             </FormLabel>
             <Select
@@ -48,7 +48,7 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
             </Select>
           </Box>
           <Box width='calc(100% - 120px);'>
-            <FormLabel htmlFor={`${forPermissionOverwrite}.${ii}.id`} display='flex' alignItems='flex-end'>
+            <FormLabel htmlFor={`${forPermissionOverwrite}.${ii}.id`} display='flex' alignItems='center'>
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>ID</Text>
             </FormLabel>
             <Input

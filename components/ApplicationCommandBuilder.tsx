@@ -11,7 +11,7 @@ export default function ApplicationCommandBuilder({ register, getValues, errors 
       <FormLabel
         htmlFor={"application_command.name"}
         display="flex"
-        alignItems="flex-end"
+        alignItems="center"
       >
         <Text
           _after={{
@@ -38,7 +38,7 @@ export default function ApplicationCommandBuilder({ register, getValues, errors 
       <FormLabel
         htmlFor={"application_command.description"}
         display="flex"
-        alignItems="flex-end"
+        alignItems="center"
       >
         <Text>Description</Text>
         <Counter

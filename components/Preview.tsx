@@ -747,7 +747,7 @@ function Preview({
                         fontSize="0.875rem"
                         fontWeight="500"
                       >
-                        User#0000
+                        User
                       </Box>
                     </Box>
                     <Box>
@@ -776,7 +776,7 @@ function Preview({
                         )
                       )}
                     </Box>
-                    <Box display="flex" alignItems="center" mt="8px">
+                    {/* <Box display="flex" alignItems="center" mt="8px">
                       <Image
                         alt="ID"
                         src="https://cdn.discordapp.com/emojis/882601305871360040.png"
@@ -792,7 +792,7 @@ function Preview({
                       >
                         643945264868098049
                       </Text>
-                    </Box>
+                    </Box> */}
                   </Box>
                 </Box>
                 <Box>

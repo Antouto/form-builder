@@ -9,10 +9,11 @@ export interface CollapsibleProperties {
   children: React.ReactNode;
   variant?: string;
   style?: CSSProperties;
+  defaultIsOpen?: boolean;
 }
 
-function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, children, variant, style }: CollapsibleProperties) {
-  const { isOpen, onToggle } = useDisclosure();
+function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, children, variant, style, defaultIsOpen }: CollapsibleProperties) {
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen });
   const { colorMode } = useColorMode();
 
   return (

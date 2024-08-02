@@ -430,7 +430,7 @@ export default function FormBuilder({
                   </Stack>
                 </Stack>
                 <Box>
-                  <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='center'><Text>Cooldown (days)</Text></FormLabel>
+                  <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='center'><Text>Cooldown (seconds)</Text></FormLabel>
                   <NumberInput min={0} isDisabled={!premium && cooldownDisabled} onClick={() => {
                           if(!premium) {
                             setPremiumFeatureTarget('submission_cooldown')

@@ -201,11 +201,12 @@ function Preview({
 
   //@ts-expect-error
   const discohookMessage = message => {
-    if (message) message.author = {
+    let msg = { ...message }
+    if (msg) msg.author = {
       name: 'Forms',
       icon_url: 'https://cdn.discordapp.com/avatars/942858850850205717/a_437f281f490a388866b7be0b3cd7cc33.gif'
     }
-    return message
+    return msg
   }
 
   return (

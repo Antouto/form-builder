@@ -11,6 +11,7 @@ import {
   useColorMode,
   useDisclosure,
   HStack,
+  Switch,
 } from "@chakra-ui/react";
 //import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -196,6 +197,17 @@ function Preview({
   const [temporaryModalHighlight, setTemporaryModalHighlight] = useState(false)
   const [temporarySubmissionHighlight, setTemporarySubmissionHighlight] = useState(false)
 
+  const [discohook, setDiscohook] = useState(false)
+
+  //@ts-expect-error
+  const discohookMessage = message => {
+    if (message) message.author = {
+      name: 'Forms',
+      icon_url: 'https://cdn.discordapp.com/avatars/942858850850205717/a_437f281f490a388866b7be0b3cd7cc33.gif'
+    }
+    return message
+  }
+
   return (
     <Box
       overflowY="scroll"
@@ -211,260 +223,282 @@ function Preview({
             title={`A message with ${!forms?.[0].select_menu_option ? "buttons" : "a select menu"
               } to open forms is sent to a channel`}
           >
-            <Box
-              display="flex"
-              bg={colorMode === "dark" ? "grey.dark" : "white"}
-              borderRadius="8px"
-              p={4}
-            >
-              <FormProfile
-                {...{
-                  avatar: AVATAR_URL,
-                  hidden: FormsProfileHidden,
-                  HandleInteraction,
-                }}
+
+     
+              <Box display={discohook ? 'block' : 'none'} ><iframe
+                src={`https://preview.discohook.app/viewer?data=${btoa(JSON.stringify({ version: 'd2', messages: [{ data: discohookMessage(message) }] }))}&header=false`}
+                style={{ width: '100%', height: '200px', border: 'none', padding: '20px', background: 'white', borderRadius: '8px', resize: 'vertical', overflow: 'auto' }}
+                title="Content"
+              /></Box>
+            
+              <Box
+                display={discohook ? "none" : "flex"}
+                bg={colorMode === "dark" ? "grey.dark" : "white"}
+                borderRadius="8px"
+                p={4}
               >
-                <Image
-                  alt="Form's Avatar"
-                  src={AVATAR_URL}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    clipPath: "circle(50%)",
-                    marginTop: "5px",
-                    marginRight: "16px",
+                <FormProfile
+                  {...{
+                    avatar: AVATAR_URL,
+                    hidden: FormsProfileHidden,
+                    HandleInteraction,
                   }}
-                  width="40px"
-                  height="40px"
-                  clipPath="circle(50%)"
-                  mt="5px"
-                  mr="16px"
-                />
-              </FormProfile>
-              <Box>
-                <Box display="flex" alignItems="center">
-                  <Text
-                    fontFamily="Whitney Bold"
-                    _hover={{ textDecoration: "underline" }}
-                    cursor="pointer"
-                  >
-                    Forms
-                  </Text>
-                  <Box
-                    display="flex"
-                    backgroundColor="#5865F2"
-                    borderRadius=".1875rem"
-                    ml="4px"
-                    height=".9375rem"
-                    width="39px"
-                  >
-                    <Tooltip
-                      hasArrow
-                      label={<Box>Verified App</Box>}
-                      placement="top"
-                      bg="#181414"
-                    >
-                      <svg
-                        color="white"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 15.2"
-                      >
-                        <path
-                          d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </Tooltip>
+                >
+                  <Image
+                    alt="Form's Avatar"
+                    src={AVATAR_URL}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      clipPath: "circle(50%)",
+                      marginTop: "5px",
+                      marginRight: "16px",
+                    }}
+                    width="40px"
+                    height="40px"
+                    clipPath="circle(50%)"
+                    mt="5px"
+                    mr="16px"
+                  />
+                </FormProfile>
+                <Box>
+                  <Box display="flex" alignItems="center">
                     <Text
                       fontFamily="Whitney Bold"
-                      fontSize=".625rem"
-                      textColor="white"
+                      _hover={{ textDecoration: "underline" }}
+                      cursor="pointer"
                     >
-                      APP
+                      Forms
                     </Text>
-                  </Box>
-                  <Box pl={2} display="inline-block">
-                    <Tooltip
-                      hasArrow
-                      label={"You can use the components below to switch forms"}
-                      placement="right"
-                      shouldWrapChildren
-                      bg="#181414"
+                    <Box
+                      display="flex"
+                      backgroundColor="#5865F2"
+                      borderRadius=".1875rem"
+                      ml="4px"
+                      height=".9375rem"
+                      width="39px"
                     >
-                      <IconContext.Provider
-                        value={{
-                          color: "#b9bbbe",
-                          size: "20px",
-                          style: {
-                            display: "inline-block",
-                          },
-                        }}
+                      <Tooltip
+                        hasArrow
+                        label={<Box>Verified App</Box>}
+                        placement="top"
+                        bg="#181414"
                       >
-                        <Box>
-                          <IoInformationCircle />
-                        </Box>
-                      </IconContext.Provider>
-                    </Tooltip>
-                  </Box>
-                  <Text
-                    fontFamily="Whitney Bold"
-                    fontSize="0.75rem"
-                    color="#a3a6aa"
-                    ml=".5rem"
-                    alignSelf="flex-end"
-                    mb="1px"
-                  >
-                    Today at {new Date().getHours() < 10 ? "0" : ""}
-                    {new Date().getHours()}:
-                    {new Date().getMinutes() < 10 ? "0" : ""}
-                    {new Date().getMinutes()}
-                  </Text>
-                </Box>
-                <Box>
-                  {message?.content && (
-                    <Text fontFamily="Whitney" whiteSpace="pre-wrap">
-                      {message.content}
-                    </Text>
-                  )}
-                  {MessageEmbed}
-                  <Box p="4px 0">
-                    {!forms?.[0].select_menu_option &&
-                      message?.components?.[0]?.components?.map((component, index) => (
-                        <Button
-                          key={Math.random()}
-                          onClick={() => {
-                            if (component.style !== 5) {
-                              setDisplayPage(0)
-                              //@ts-expect-error
-                              setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
-                              //@ts-expect-error
-                              if (displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {
-                                setTemporaryModalHighlight(true)
-                                executeFormScroll()
-                                setTimeout(() => setTemporaryModalHighlight(false), 300);
-                              }
-                            }
+                        <svg
+                          color="white"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 15.2"
+                        >
+                          <path
+                            d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z"
+                            fill="currentColor"
+                          ></path>
+                        </svg>
+                      </Tooltip>
+                      <Text
+                        fontFamily="Whitney Bold"
+                        fontSize=".625rem"
+                        textColor="white"
+                      >
+                        APP
+                      </Text>
+                    </Box>
+                    <Box pl={2} display="inline-block">
+                      <Tooltip
+                        hasArrow
+                        label={"You can use the components below to switch forms"}
+                        placement="right"
+                        shouldWrapChildren
+                        bg="#181414"
+                      >
+                        <IconContext.Provider
+                          value={{
+                            color: "#b9bbbe",
+                            size: "20px",
+                            style: {
+                              display: "inline-block",
+                            },
                           }}
-                          height="32px"
-                          fontSize="14px"
-                          paddingBlock={0}
-                          paddingInline={0}
-                          padding="2px 16px"
-                          m="4px 8px 4px 0"
-                          variant={
-                            //@ts-expect-error
-                            message?.components[0].components[index]?.style == 1
-                              ? "primary"                             //@ts-expect-error
-                              : message?.components[0].components[index]?.style == 2
-                                ? "secondary"                            //@ts-expect-error
-                                : message?.components[0].components[index]?.style == 3
-                                  ? "success"                             //@ts-expect-error
-                                  : message?.components[0].components[index]?.style == 4
-                                    ? "danger"
-                                    : "secondary"
-                          }
                         >
-                          {message?.components?.[0]?.components?.[index]?.label}
-                        </Button>
-                      ))}
-                    {forms?.[0].select_menu_option && (
-                      <Box>
-                        <Box
-                          width={
-                            forms.find(
-                              (e) =>
-                                (e?.select_menu_option?.description?.length ??
-                                  0) > 40
-                            ) != null
-                              ? 450
-                              : "auto"
-                          }
-                          onClick={onToggle}
-                          cursor="pointer"
-                          backgroundColor={
-                            colorMode == "light" ? "#e9eaed" : "#1e1f22"
-                          }
-                          borderRadius={3.5}
-                          borderBottomRadius={isOpen ? 0 : 3.5}
-                          pl={3.5}
-                          pr={2}
-                          py={2}
-                        >
-                          <Text
-                            color={colorMode == "light" ? "#5c5e66" : "#949a96"}
-                            display="inline-block"
+                          <Box>
+                            <IoInformationCircle />
+                          </Box>
+                        </IconContext.Provider>
+                      </Tooltip>
+                    </Box>
+                    <Text
+                      fontFamily="Whitney Bold"
+                      fontSize="0.75rem"
+                      color="#a3a6aa"
+                      ml=".5rem"
+                      alignSelf="flex-end"
+                      mb="1px"
+                    >
+                      Today at {new Date().getHours() < 10 ? "0" : ""}
+                      {new Date().getHours()}:
+                      {new Date().getMinutes() < 10 ? "0" : ""}
+                      {new Date().getMinutes()}
+                    </Text>
+                  </Box>
+                  <Box>
+                    {message?.content && (
+                      <Text fontFamily="Whitney" whiteSpace="pre-wrap">
+                        {message.content}
+                      </Text>
+                    )}
+                    {MessageEmbed}
+                    <Box p="4px 0">
+                      {!forms?.[0].select_menu_option &&
+                        message?.components?.[0]?.components?.map((component, index) => (
+                          <Button
+                            key={Math.random()}
+                            onClick={() => {
+                              if (component.style !== 5) {
+                                setDisplayPage(0)
+                                //@ts-expect-error
+                                setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
+                                //@ts-expect-error
+                                if (displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {
+                                  setTemporaryModalHighlight(true)
+                                  executeFormScroll()
+                                  setTimeout(() => setTemporaryModalHighlight(false), 300);
+                                }
+                              }
+                            }}
+                            height="32px"
+                            fontSize="14px"
+                            paddingBlock={0}
+                            paddingInline={0}
+                            padding="2px 16px"
+                            m="4px 8px 4px 0"
+                            variant={
+                              //@ts-expect-error
+                              message?.components[0].components[index]?.style == 1
+                                ? "primary"                             //@ts-expect-error
+                                : message?.components[0].components[index]?.style == 2
+                                  ? "secondary"                            //@ts-expect-error
+                                  : message?.components[0].components[index]?.style == 3
+                                    ? "success"                             //@ts-expect-error
+                                    : message?.components[0].components[index]?.style == 4
+                                      ? "danger"
+                                      : "secondary"
+                            }
                           >
-                            {select_menu_placeholder ||
-                              "Select a form to preview"}
-                          </Text>
-                          <Box float="right" display="inline-block" pr={1}>
-                            <IconContext.Provider
-                              value={{
-                                color:
-                                  colorMode == "light" ? "#313338" : "#e0e1e5",
-                                size: "25px",
-                              }}
+                            {message?.components?.[0]?.components?.[index]?.label}
+                          </Button>
+                        ))}
+                      {forms?.[0].select_menu_option && (
+                        <Box>
+                          <Box
+                            width={
+                              forms.find(
+                                (e) =>
+                                  (e?.select_menu_option?.description?.length ??
+                                    0) > 40
+                              ) != null
+                                ? 450
+                                : "auto"
+                            }
+                            onClick={onToggle}
+                            cursor="pointer"
+                            backgroundColor={
+                              colorMode == "light" ? "#e9eaed" : "#1e1f22"
+                            }
+                            borderRadius={3.5}
+                            borderBottomRadius={isOpen ? 0 : 3.5}
+                            pl={3.5}
+                            pr={2}
+                            py={2}
+                          >
+                            <Text
+                              color={colorMode == "light" ? "#5c5e66" : "#949a96"}
+                              display="inline-block"
                             >
-                              {isOpen ? <MdExpandLess /> : <MdExpandMore />}
-                            </IconContext.Provider>
+                              {select_menu_placeholder ||
+                                "Select a form to preview"}
+                            </Text>
+                            <Box float="right" display="inline-block" pr={1}>
+                              <IconContext.Provider
+                                value={{
+                                  color:
+                                    colorMode == "light" ? "#313338" : "#e0e1e5",
+                                  size: "25px",
+                                }}
+                              >
+                                {isOpen ? <MdExpandLess /> : <MdExpandMore />}
+                              </IconContext.Provider>
+                            </Box>
+                          </Box>
+                          <Box
+                            hidden={!isOpen}
+                            backgroundColor={
+                              colorMode == "light" ? "#eeeff1" : "#2b2d31"
+                            }
+                            borderColor={
+                              colorMode == "light" ? "#e0e1e5" : "#1e1f22"
+                            }
+                            borderWidth="1.22px"
+                            borderBottomRadius={3.5}
+                          >
+                            {forms.map((form, index) => (
+                              <Box
+                                key={index}
+                                cursor="pointer"
+                                _hover={{
+                                  backgroundColor:
+                                    colorMode == "light" ? "#dddee1" : "#36373d",
+                                }}
+                                px={4}
+                                py={2}
+                                onClick={() => {
+                                  onToggle();
+                                  setDisplayForm(index)
+                                  if (displayForm === index) {
+                                    setTemporaryModalHighlight(true)
+                                    setTimeout(() => executeFormScroll(), 1);
+                                    setTimeout(() => setTemporaryModalHighlight(false), 800);
+                                  }
+                                }}
+                              >
+                                <Text
+                                  color={
+                                    colorMode == "light" ? "#424244" : "#eeeff0"
+                                  }
+                                >
+                                  {form?.select_menu_option?.label}
+                                </Text>
+                                <Text
+                                  color={
+                                    colorMode == "light" ? "#64666d" : "#9fa0a6"
+                                  }
+                                  maxWidth={400}
+                                >
+                                  {form?.select_menu_option?.description}
+                                </Text>
+                              </Box>
+                            ))}
                           </Box>
                         </Box>
-                        <Box
-                          hidden={!isOpen}
-                          backgroundColor={
-                            colorMode == "light" ? "#eeeff1" : "#2b2d31"
-                          }
-                          borderColor={
-                            colorMode == "light" ? "#e0e1e5" : "#1e1f22"
-                          }
-                          borderWidth="1.22px"
-                          borderBottomRadius={3.5}
-                        >
-                          {forms.map((form, index) => (
-                            <Box
-                              key={index}
-                              cursor="pointer"
-                              _hover={{
-                                backgroundColor:
-                                  colorMode == "light" ? "#dddee1" : "#36373d",
-                              }}
-                              px={4}
-                              py={2}
-                              onClick={() => {
-                                onToggle();
-                                setDisplayForm(index)
-                                if (displayForm === index) {
-                                  setTemporaryModalHighlight(true)
-                                  setTimeout(() => executeFormScroll(), 1);
-                                  setTimeout(() => setTemporaryModalHighlight(false), 800);
-                                }
-                              }}
-                            >
-                              <Text
-                                color={
-                                  colorMode == "light" ? "#424244" : "#eeeff0"
-                                }
-                              >
-                                {form?.select_menu_option?.label}
-                              </Text>
-                              <Text
-                                color={
-                                  colorMode == "light" ? "#64666d" : "#9fa0a6"
-                                }
-                                maxWidth={400}
-                              >
-                                {form?.select_menu_option?.description}
-                              </Text>
-                            </Box>
-                          ))}
-                        </Box>
-                      </Box>
-                    )}
+                      )}
+                    </Box>
                   </Box>
                 </Box>
               </Box>
-            </Box>
+
+
+            
+
+            {<Box mt={2} display='flex' alignItems='center' justifyContent='right' fontSize='12px'>
+              <Switch
+                onChange={event => { setDiscohook(event.target.checked) }}
+                colorScheme='blurple'
+                size='sm'
+                mr={2}
+              />
+              Use discohook for message rendering
+            </Box>}
+
           </PreviewStep>
         )}
 

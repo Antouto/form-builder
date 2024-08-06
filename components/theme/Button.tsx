@@ -7,7 +7,7 @@ export const Button: ComponentTheme<ButtonProps> = {
         fontFamily: 'Whitney Bold',
         fontWeight: '500',
         borderRadius: '3px',
-        _focus: { boxShadow: 'none' },
+        _focus: { boxShadow: 'none' }
     },
     variants: {
         primary: {

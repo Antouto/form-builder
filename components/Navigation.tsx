@@ -60,14 +60,14 @@ export function Navigation({
               _focusVisible={{ border: "none" }}
             />
           </Tooltip>
-          <ColorModeSwitcher
+          {/* <ColorModeSwitcher
             placement="bottom"
             position="absolute"
             height="32px"
             width="32px"
             top={2}
             right={12}
-          />
+          /> */}
           <DrawerHeader height="48px">Pages</DrawerHeader>
           <DrawerBody display="flex" flexDirection="column">
             <Link
@@ -210,14 +210,14 @@ export function Navigation({
               Documentation
             </a>
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
-          <ColorModeSwitcher
+          {/* <ColorModeSwitcher
             placement="bottom"
             position="absolute"
             height="32px"
             width="32px"
             top={2}
             right={12}
-          />
+          /> */}
           </nav>
         )}
       </Box>

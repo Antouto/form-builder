@@ -94,9 +94,6 @@ export function Navigation({
             >
               Documentation
             </Link>
-            <Link>
-              <NextLink href="/templates">Templates</NextLink>
-            </Link>
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
           </DrawerBody>
           <DrawerFooter>
@@ -212,7 +209,6 @@ export function Navigation({
             >
               Documentation
             </a>
-            {/* <NextLink href="/templates">Templates</NextLink> */}
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
           <ColorModeSwitcher
             placement="bottom"

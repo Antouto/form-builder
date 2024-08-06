@@ -82,7 +82,6 @@ export default function App() {
                     "type": 4,
                     "label": "Example Text Input",
                     "style": 1,
-                    "placeholder": "Write text here",
                     "max_length": 1024
                   }
                 ]

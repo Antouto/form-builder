@@ -45,7 +45,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             <MenuButton as={Button} variant='primary' mt={1} pr='8px' rightIcon={<svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M12 10L8 6L4 10"
-                stroke="#bcbcbc"
+                stroke="white"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"

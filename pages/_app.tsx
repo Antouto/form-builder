@@ -6,6 +6,7 @@ import theme from "../components/theme";
 import { AppProps } from "next/app";
 import ColorModeCSS from "../styles/ColorModeCSS";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/react"
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -15,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ColorModeCSS />
         <Component {...pageProps} />
       </ChakraProvider>
+      <Analytics/>
     </>
   );
 }

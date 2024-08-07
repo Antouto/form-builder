@@ -400,6 +400,7 @@ export default function FormBuilder({
                     <Box>
                       <FormLabel htmlFor={`forms[${index}].submit_channel.nsfw`}>NSFW</FormLabel>
                       <Switch
+                      //@ts-expect-error
                        {...register(`forms[${index}].submit_channel.nsfw`)}
                         colorScheme='blurple'
                       />

@@ -25,9 +25,7 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Type</Text>
             </FormLabel>
             <Select
-              isDisabled={!premium}
               height='36px'
-              backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'
               width='120px'
               borderWidth="2px"
               borderColor="transparent"
@@ -36,7 +34,6 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
               // bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
               _focus={{ outline: 'none' }}
               _focusVisible={{ outline: 'none' }}
-              _hover={{ borderColor: "transparent" }}
               onChange={(event) => {
                 setValue(`${forPermissionOverwrite}.${ii}.type`, parseInt(event.target.value))
                 fixOverwrite(ii)
@@ -54,9 +51,8 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
             <Input
               {...register(`${forPermissionOverwrite}.${ii}.id`, { required: true, pattern: /^(\d{10,20})|{.+}$/, onChange: () => fixOverwrite(ii) })}
               id={`${forPermissionOverwrite}.${ii}.id`}
-              isDisabled={!premium}
               height='36px'
-              style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}            />
+            />
             <ErrorMessage error={errors?.forms?.[i]?.submit_channel?.permission_overwrites?.[ii]?.id} />
           </Box>
         </HStack>
@@ -66,9 +62,7 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
             <Input
               {...register(`${forPermissionOverwrite}.${ii}.allow`, { pattern: /^\d+$/, onChange: () => fixOverwrite(ii) })}
               id={`${forPermissionOverwrite}.${ii}.allow`}
-              isDisabled={!premium}
               height='36px'
-              style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
             />
             <ErrorMessage error={errors?.forms?.[i]?.submit_channel?.permission_overwrites?.[ii]?.allow} />
           </Box>
@@ -77,15 +71,13 @@ export default function PermissionOverwritesBuilder({ control, i, forPermissionO
             <Input
               {...register(`${forPermissionOverwrite}.${ii}.deny`, { pattern: /^\d+$/, onChange: () => fixOverwrite(ii) })}
               id={`${forPermissionOverwrite}.${ii}.deny`}
-              isDisabled={!premium}
               height='36px'
-              style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
             />
             <ErrorMessage error={errors?.forms?.[i]?.submit_channel?.permission_overwrites?.[ii]?.deny} />
           </Box>
         </HStack>
       </Collapsible>)}
-      <Button style={{ backgroundImage: 'linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' }} isDisabled={!premium}
+      <Button
         onClick={() => append({
           type: 0
         })}>Add Permission Overwrite</Button>

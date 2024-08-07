@@ -268,65 +268,16 @@ export function Editor({
         resetField(`forms.${i}.webhook_url`);
         return 'bot';
       }))
-      // _setSubmissionChannel(submissionChannel.map((value, i) => {
-      //   resetField(`forms.${i}.submit_channel`);
-      //   return 'existing';
-      // }))
       getValues('forms').forEach((form, index) => {
         setDisplayPage(0)
         setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)])
         setValue(`forms.${index}.cooldown`, undefined)
-        if (getValues(`forms.${index}.submit_channel`)) {
-          //@ts-expect-error
-          setValue(`forms.${index}.submit_channel.name`, 'ticket');
-          //@ts-expect-error
-          setValue(`forms.${index}.submit_channel.permission_overwrites`, [
-            {
-              id: '{ServerID}',
-              type: 0,
-              deny: 1024
-            },
-            {
-              id: '{ApplicationID}',
-              type: 1,
-              allow: 19456
-            },
-            {
-              id: '{UserID}',
-              type: 1,
-              allow: 52224
-            }
-          ]);
-        }
         //@ts-expect-error
         getValues(`forms.${index}.submit_components`)?.forEach((action_row, ii) => {
           //@ts-expect-error
           getValues(`forms.${index}.submit_components.${ii}.components`)?.forEach((component, iii) => {
             //@ts-expect-error
             resetField(`forms.${index}.submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`)
-            //@ts-expect-error
-            if (getValues(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`)) {
-              //@ts-expect-error
-              if (getValues(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`)) setValue(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`, '🔒-{ChannelName}')
-              //@ts-expect-error
-              if (getValues(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`)) setValue(`forms.${index}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`, [
-                {
-                  id: '{ServerID}',
-                  type: 0,
-                  deny: 1024
-                },
-                {
-                  id: '{ApplicationID}',
-                  type: 1,
-                  allow: 19456
-                },
-                {
-                  id: '{UserID}',
-                  type: 1,
-                  deny: 2048
-                }
-              ]);
-            }
           })
         })
       })
@@ -430,10 +381,6 @@ export function Editor({
               //@ts-expect-error
               action_row.components.forEach((component, iii) => {
                 if (component?.logic && component?.logic?.REQUIRED_PERMISSIONS) setPremium(true)
-
-                if (component?.logic?.UPDATE_THIS_CHANNEL?.name !== '🔒-{ChannelName}') setPremium(true)
-                if (component?.logic?.UPDATE_THIS_CHANNEL?.permission_overwrites && (JSON.stringify(component.logic.UPDATE_THIS_CHANNEL.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"deny":2048}]')) setPremium(true)
-
                 setTimeout(() => {
                   if (component?.logic?.UPDATE_THIS_CHANNEL?.permission_overwrites) {
                     //@ts-expect-error

@@ -83,9 +83,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`)}>Remove other buttons in this row</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`)}>Delete this channel</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`)}>Delete this message</MenuItem>}
-              
-              {(getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) === undefined) && <><MenuDivider /><MenuGroup title='Premium'>
-              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) === undefined && <MenuItem background='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' backgroundClip='text' border='2px solid transparent' _hover={{ border: '2px solid #5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, {
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, {
                 name: '🔒-{ChannelName}',
                 permission_overwrites: [
                   {
@@ -105,6 +103,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                   }
                 ]
               })} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`)}>Update this channel</MenuItem>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <><MenuDivider /><MenuGroup title='Premium'>
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <MenuItem background='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' backgroundClip='text' border='2px solid transparent' _hover={{ border: '2px solid #5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => {
                 if (!premium) {
                   setPremiumFeatureTarget('require_permissions')
@@ -151,9 +150,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             <Input
               {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`, { pattern: /^[^ _!"§$%&/()=]+$/, maxLength: 100 })}
               id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`}
-              isDisabled={!premium}
               height='36px'
-              style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
             />
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`}>Permission Overwrites</FormLabel>
             Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.

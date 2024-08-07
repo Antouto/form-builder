@@ -379,9 +379,7 @@ export default function FormBuilder({
                         //@ts-expect-error
                         {...register(`forms[${index}].submit_channel.name`, { required: true, maxLength: 100, pattern: /^[^ _!"§$%&/()=]+$/, onChange: () => fixSubmitChannel(index) })}
                         id={`forms[${index}].submit_channel.name`}
-                        isDisabled={!premium}
                         height='36px'
-                        style={{ backgroundImage: 'linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' }}
                       />
 
                       {/* @ts-expect-error */}

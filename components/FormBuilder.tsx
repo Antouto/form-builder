@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Input, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { Box, Button, CloseButton, FormLabel, HStack, Input, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Switch, Text, Tooltip, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   Control,
@@ -260,6 +260,17 @@ export default function FormBuilder({
     }
   }, [formState, fields, submissionChannel])
 
+  // function handleCooldownChange(unit, e, index) {
+  //     if(Number.isInteger(parseInt(e.target.value))) {
+  //       setValue(`forms.${index}.cooldown.${unit}`, parseInt(e.target.value))
+  //     } else {  
+  //       setValue(`forms.${index}.cooldown.${unit}`, undefined)
+  //       if(Object.keys(getValues(`forms.${index}.cooldown`)).length < 2) {
+  //         setValue(`forms.${index}.cooldown`, undefined)
+  //       }
+  //     }
+  // }
+
   return (
     <Box width='100%' pb={2}>
       <FormLabel display='flex' alignItems='center' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5 - (getValues('message.components.0.components')?.filter(component => component.style === 5))?.length)} /></FormLabel>
@@ -314,7 +325,7 @@ export default function FormBuilder({
                     _focusVisible={{ outline: 'none' }}
                     _hover={{ borderColor: "transparent" }}
                     onClick={() => {
-                      if(!premium) {
+                      if (!premium) {
                         setPremiumFeatureTarget('webhook_submissions')
                         onOpenPremium()
                         return;
@@ -386,6 +397,13 @@ export default function FormBuilder({
                       {/* @ts-expect-error */}
                       <ErrorMessage error={errors.forms?.[index]?.submit_channel?.parent_id} />
                     </Box>
+                    <Box>
+                      <FormLabel htmlFor={`forms[${index}].submit_channel.nsfw`}>NSFW</FormLabel>
+                      <Switch
+                       {...register(`forms[${index}].submit_channel.nsfw`)}
+                        colorScheme='blurple'
+                      />
+                    </Box>
                   </HStack>
 
                   <FormLabel htmlFor={`forms[${index}].submit_channel.permission_overwrites`}>Permission Overwrites</FormLabel>
@@ -432,18 +450,40 @@ export default function FormBuilder({
                 <Box>
                   <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='center'><Text>Cooldown (seconds)</Text></FormLabel>
                   <NumberInput min={0} isDisabled={!premium && cooldownDisabled} onClick={() => {
-                          if(!premium) {
-                            setPremiumFeatureTarget('submission_cooldown')
-                            setCooldownDisabled(true)
-                            setTimeout(() => setCooldownDisabled(false), 1);
-                            onOpenPremium()
-                            return;
-                          }
+                    if (!premium) {
+                      setPremiumFeatureTarget('submission_cooldown')
+                      setCooldownDisabled(true)
+                      setTimeout(() => setCooldownDisabled(false), 1);
+                      onOpenPremium()
+                      return;
+                    }
                   }}>
                     <NumberInputField _focusVisible={{ boxShadow: 'inset 0 0 0 2px #5865F2', border: 'none' }} height='36px' placeholder="OFF, Use 0 for Infinity" backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' {...register(`forms.${index}.cooldown`)} id={`forms.${index}.cooldown`} onChange={(event) => {
                       setValue(`forms.${index}.cooldown`, event.target.value === '' ? undefined : (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)));
                     }} />
                   </NumberInput>
+                  {/* <HStack><Text width='60px'>Days</Text><Text width='60px'>Hours</Text><Text width='60px'>Minutes</Text><Text width='60px'>Seconds</Text><Text width='60px'>Infinite</Text></HStack>
+                  <HStack>
+                    <NumberInput width='60px' min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
+                      <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.days`, { onChange: e => handleCooldownChange('days', e, index) })} /> 
+                    </NumberInput>
+                    <NumberInput width='60px' min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
+                    <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.hours`, { onChange: e => handleCooldownChange('hours', e, index) })} /> 
+
+                    </NumberInput>{/* */}
+                  {/* <NumberInput width='60px' defaultValue={0} min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
+                    <NumberInputField paddingInlineEnd='16px' onChange={e => updateCooldown('minutes', Number.isInteger(parseInt(e.target.value)) ? parseInt(e.target.value) : 0, index)} /> 
+
+                    </NumberInput>
+                    <NumberInput width='60px' defaultValue={0} min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
+                    <NumberInputField paddingInlineEnd='16px' onChange={e => updateCooldown('seconds', Number.isInteger(parseInt(e.target.value)) ? parseInt(e.target.value) : 0, index)} /> 
+
+                    </NumberInput>
+                    <Switch
+                onChange={e => setValue(`forms.${index}.cooldown`, e.target.checked ? 0 : undefined )}
+                colorScheme='blurple'
+              />
+                  </HStack> */}
                 </Box>
               </Collapsible >
               <hr />
@@ -542,7 +582,7 @@ export default function FormBuilder({
                     <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                     <Text>Buttons can be used once and are then automatically disabled</Text>
                   </HStack>
-                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} {...{setPremiumFeatureTarget, onOpenPremium}}/>
+                  <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} {...{ setPremiumFeatureTarget, onOpenPremium }} />
                 </VStack>
               </Collapsible>
             </Collapsible >

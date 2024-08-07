@@ -170,7 +170,7 @@ export function Editor({
       case 'ticket': {
         _setSubmissionChannel(['new'])
         setValue('forms.0.submit_channel', {
-          name: 'ticket',
+          name: '{RandomUUID}',
           type: 0,
           permission_overwrites: [
             {

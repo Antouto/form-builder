@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, 
+  // useLayoutEffect
+ } from 'react';
 import { useFieldArray, useForm } from "react-hook-form";
 import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
@@ -21,9 +23,9 @@ export enum OpenFormType {
 }
 
 export default function App() {
-  useLayoutEffect(() => {
-    if(window.location.href.startsWith('https://form-builder.pages.dev')) window.location.replace('https://create.discordforms.com');
-  }, []);
+  // useLayoutEffect(() => {
+  //   if(window.location.href.startsWith('https://form-builder.pages.dev')) window.location.replace('https://create.discordforms.com');
+  // }, []);
 
 
   const {

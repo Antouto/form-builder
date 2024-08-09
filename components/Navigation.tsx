@@ -26,12 +26,14 @@ export interface NavigationProps {
   modalHandler: () => void;
   displaySection?: number;
   setDisplaySection?: any;
+  setStage?: any;
 }
 
 export function Navigation({
   modalHandler,
   displaySection,
   setDisplaySection,
+  setStage
 }: NavigationProps) {
   const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode;
@@ -107,6 +109,9 @@ export function Navigation({
             <Image
               src="/forms.svg"
               alt="Forms Logo"
+              onClick={() => {
+                setStage('welcome')
+              }}
               width={28}
               height={28}
               style={{

@@ -80,7 +80,27 @@ export function Editor({
   //@ts-expect-error
   displayPage,
   //@ts-expect-error
-  setDisplayPage
+  setDisplayPage,
+  //@ts-expect-error
+  openFormType,
+  //@ts-expect-error
+  setOpenFormType,
+  //@ts-expect-error
+  setPremium,
+  //@ts-expect-error
+  premium,
+  //@ts-expect-error
+  _setPremium,
+  //@ts-expect-error
+  submissionType,
+  //@ts-expect-error
+  _setSubmissionType,
+  //@ts-expect-error
+  submissionChannel,
+  //@ts-expect-error
+  _setSubmissionChannel,
+  //@ts-expect-error
+  setPreset
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
@@ -108,181 +128,9 @@ export function Editor({
   }
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
-  const [submissionType, _setSubmissionType] = useState(['bot'])
-  const [submissionChannel, _setSubmissionChannel] = useState(['existing'])
-  const [premium, _setPremium] = useState(false);
   const { isOpen, onOpen: onOpenWhereDoIFindSubmissionChannelID, onClose } = useDisclosure()
   const { isOpen: isOpenPremium, onOpen: onOpenPremium, onClose: onClosePremium } = useDisclosure()
   const [premiumFeatureTarget, setPremiumFeatureTarget] = useState('custom_branding')
-
-
-  function setPreset(preset?: string) {
-    switch (preset) {
-      case 'application': {
-        //@ts-expect-error
-        setValue('forms.0.submit_components', [{
-          type: 1,
-          components: [
-            {
-              type: 2,
-              label: 'Accept',
-              style: 3,
-              logic: {
-                DM_SUBMITTER: { content: 'Your submission to **{FormTitle}** has been accepted!' },
-                REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
-                UPDATE_COMPONENT: { label: 'Accepted' }
-              }
-            },
-            {
-              type: 2,
-              label: 'Deny',
-              style: 4,
-              logic: {
-                DM_SUBMITTER_WITH_MODAL_INPUT: {
-                  modal: {
-                    title: 'Deny Submission',
-                    components: [
-                      {
-                        type: 1,
-                        components: [
-                          {
-                            type: 4,
-                            style: 2,
-                            label: 'Reason for denial'
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  message: {
-                    content: 'Sorry! Your submission to **{FormTitle}** has been denied.\n\n**Reason:** {TextInputValue1}'
-                  }
-                },
-                REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
-                UPDATE_COMPONENT: { label: 'Denied' }
-              }
-            }
-          ]
-        }])
-        setStage('openFormType')
-        break;
-      }
-      case 'ticket': {
-        _setSubmissionChannel(['new'])
-        setValue('forms.0.submit_channel', {
-          name: '{RandomUUID}',
-          type: 0,
-          permission_overwrites: [
-            {
-              id: '{ServerID}',
-              type: 0,
-              deny: 1024
-            },
-            {
-              id: '{ApplicationID}',
-              type: 1,
-              allow: 19456
-            },
-            {
-              id: '{UserID}',
-              type: 1,
-              allow: 52224
-            }
-          ]
-        })
-        //@ts-expect-error
-        setValue('forms.0.submit_components', [
-          {
-            type: 1,
-            components: [
-              {
-                type: 2,
-                label: 'Close Ticket',
-                emoji: {
-                  name: '🔒'
-                },
-                style: 2,
-                logic: {
-                  UPDATE_COMPONENT: {
-                    label: 'Ticket Closed'
-                  },
-                  UPDATE_THIS_CHANNEL: {
-                    name: '🔒-{ChannelName}',
-                    permission_overwrites: [
-                      {
-                        id: '{ServerID}',
-                        type: 0,
-                        deny: 1024
-                      },
-                      {
-                        id: '{ApplicationID}',
-                        type: 1,
-                        allow: 19456
-                      },
-                      {
-                        id: '{UserID}',
-                        type: 1,
-                        deny: 2048
-                      }
-                    ]
-                  },
-                  SEND_MESSAGE_TO_THIS_CHANNEL: {
-                    content: '**{ChannelName}** closed by **{InteractionUserName}**'
-                  }
-                }
-              },
-              {
-                type: 2,
-                label: 'Delete Ticket',
-                emoji: {
-                  name: '🗑️'
-                },
-                style: 4,
-                logic: {
-                  DELETE_THIS_CHANNEL: true
-                }
-              }
-            ]
-          }
-        ])
-        setStage('openFormType')
-        break;
-      }
-      default: setStage('openFormType')
-    }
-  }
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (router.isReady) {
-      const presetValue = router.query.preset;
-      if (typeof presetValue === 'string') setPreset(presetValue)
-    }
-  }, [router.isReady, router.query]);
-
-  function setPremium(value: any) {
-    _setPremium(value)
-    if (!value) {
-      _setSubmissionType(submissionType.map((value, i) => {
-        resetField(`forms.${i}.webhook_url`);
-        return 'bot';
-      }))
-      getValues('forms').forEach((form, index) => {
-        setDisplayPage(0)
-        setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)])
-        setValue(`forms.${index}.cooldown`, undefined)
-        //@ts-expect-error
-        getValues(`forms.${index}.submit_components`)?.forEach((action_row, ii) => {
-          //@ts-expect-error
-          getValues(`forms.${index}.submit_components.${ii}.components`)?.forEach((component, iii) => {
-            //@ts-expect-error
-            resetField(`forms.${index}.submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`)
-          })
-        })
-      })
-    }
-  }
 
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [isReading, setReading] = useState(false);
@@ -356,8 +204,6 @@ export function Editor({
       json.forms.forEach((form, i) => {
         if (form.webhook_url) setPremium(true)
         if (form.submit_channel) {
-          //@ts-expect-error
-          if (form.submit_channel.name !== 'ticket') setPremium(true)
           setTimeout(() => {
             //@ts-expect-error
             if (form.submit_channel?.parent_id === '') setValue(`forms.${i}.submit_channel.parent_id`, undefined)
@@ -371,8 +217,6 @@ export function Editor({
               if (overwrite.deny === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.deny`, undefined)
             })
           }, 1);
-          //@ts-expect-error
-          if (form.submit_channel.permission_overwrites && (JSON.stringify(form.submit_channel.permission_overwrites) !== '[{"id":"{ServerID}","type":0,"deny":1024},{"id":"{ApplicationID}","type":1,"allow":19456},{"id":"{UserID}","type":1,"allow":52224}]')) setPremium(true)
         }
         if (form.submit_components) {
           //@ts-expect-error
@@ -456,7 +300,6 @@ export function Editor({
   const isSmallScreen = !useScreenWidth(1070);
   const isReallySmallScreen = !useScreenWidth(500);
 
-  const [openFormType, _setOpenFormType] = useState("button");
 
 
   function setSubmissionType(type: string, value: string, index: number) {
@@ -466,8 +309,8 @@ export function Editor({
         newSubmissionType[index] = value
         _setSubmissionType(newSubmissionType)
         switch (value) {
-          case 'bot': resetField(`forms.${index}.webhook_url`); break;
-          case 'webhook': resetField(`forms.${index}.submit_channel_id`); setSubmissionChannel('edit', 'existing', index); break;
+          case 'bot': setValue(`forms.${index}.webhook_url`, undefined); break;
+          case 'webhook': setValue(`forms.${index}.submit_channel_id`, undefined); setSubmissionChannel('edit', 'existing', index); break;
         }
         break;
       }
@@ -476,7 +319,6 @@ export function Editor({
         break;
       }
       case 'delete': {
-        //@ts-expect-error
         newSubmissionType.splice(value, 1)
         break;
       }
@@ -489,9 +331,9 @@ export function Editor({
         newSubmissionChannel[index] = value
         _setSubmissionChannel(newSubmissionChannel)
         switch (value) {
-          case 'existing': resetField(`forms.${index}.submit_channel`); break;
+          case 'existing': setValue(`forms.${index}.submit_channel`, undefined); break;
           case 'new': {
-            resetField(`forms.${index}.submit_channel_id`);
+            setValue(`forms.${index}.submit_channel_id`, undefined);
             //@ts-expect-error
             setValue(`forms.${index}.submit_channel.type`, 0);
             //@ts-expect-error
@@ -541,112 +383,74 @@ export function Editor({
     }
   }
 
-  const setOpenFormType = (type: string, setContent = true) => {
-    _setOpenFormType(type);
-    switch (type) {
-      case "button":
-        setValue('application_command', undefined)
-        resetField("select_menu_placeholder");
-        resetField("message");
-        if (setContent) {
-          setTimeout(() => {
-            setValue("message", {
-              content: "Fill out the form below",
-              components: [{
-                type: 1,
-                components: getValues('forms').map((form, i) => (
-                  {
-                    type: 2,
-                    label: 'Open form',
-                    style: 1,
-                    custom_id: `{FormID${i + 1}}`
-                  }
-                ))
-              }]
-            });
-          }, 1);
-        }
+  // function handleCooldownChange(unit, e, index) {
+  //   let prev = getValues(`forms.${index}.cooldown`)
+  //   if (typeof prev !== 'object') prev = {}
 
-        getValues("forms").forEach((form, i) => {
-          setValue(`forms.${i}.select_menu_option`, undefined);
-          resetField(`forms.${i}.select_menu_option`);
-        });
-        break;
-      case "select_menu":
-        setValue('application_command', undefined)
-        if (setContent) {
-          setTimeout(
-            () => setValue("message", { content: "Fill out the form below" }),
-            0.0001
-          );
-        }
-        getValues("forms").forEach((form, i) => {
-          if (setContent) {
-            setValue(`forms.${i}.select_menu_option`, {
-              label: form.pages[0].modal.title,
-              description: "",
-            });
-          }
-        });
-        break;
-      case "application_command":
-        setValue('message', undefined)
-        setValue(`select_menu_placeholder`, undefined);
-        setTimeout(() => {
-          resetField("message");
-        }, 1);
-        getValues("forms").forEach((form, i) => {
-          setValue(`forms.${i}.select_menu_option`, undefined);
-          resetField(`forms.${i}.select_menu_option`);
-          //@ts-expect-error
-          setValue(`forms.${i}.button`, undefined);
-          if (setContent) {
-            setValue("application_command", {
-              name: "",
-            });
-          }
-        });
-        break;
-    }
-  };
+  //   const updated = {
+  //     days: parseInt(prev.days) || undefined,
+  //     hours: parseInt(prev.hours) || undefined,
+  //     minutes: parseInt(prev.minutes) || undefined,
+  //     seconds: parseInt(prev.seconds) || undefined,
+  //     ...unit && { [unit]: Number.isInteger(parseInt(e.target.value)) ? parseInt(e.target.value) : undefined }
+  //   }
+
+  //   let numKeys = 0;
+  //   if (updated.days) numKeys++
+  //   if (updated.hours) numKeys++
+  //   if (updated.minutes) numKeys++
+  //   if (updated.seconds) numKeys++
+
+  //   setValue(`forms.${index}.cooldown`, numKeys ? updated : undefined)
+
+  // }
 
   function fixMessage() {
     const message = getValues("message");
     if (!message) return;
     const { content, embeds } = message;
-    if (!content) resetField(`message.content`);
-    if (embeds?.length)
+    if (!content) setValue(`message.content`, undefined);
+    if (embeds?.length) {
       for (let i = 0; i < embeds.length; i++) {
         const { title, description, color, image, author, footer } = embeds[i];
         if (!author?.name && !author?.icon_url && !author?.url) {
-          resetField(`message.embeds.${i}.author`);
+          setValue(`message.embeds.${i}.author`, undefined);
         } else {
-          if (!author?.name) resetField(`message.embeds.${i}.author.name`);
+          //@ts-expect-error
+          if (!author?.name) setValue(`message.embeds.${i}.author.name`, undefined);
           if (!author?.icon_url)
-            resetField(`message.embeds.${i}.author.icon_url`);
-          if (!author?.url) resetField(`message.embeds.${i}.author.url`);
+            //@ts-expect-error
+            setValue(`message.embeds.${i}.author.icon_url`, undefined);
+          //@ts-expect-error
+          if (!author?.url) setValue(`message.embeds.${i}.author.url`, undefined);
         }
-        if (!title) resetField(`message.embeds.${i}.title`);
-        if (!description) resetField(`message.embeds.${i}.description`);
+        if (!title) setValue(`message.embeds.${i}.title`, undefined);
+        if (!description) setValue(`message.embeds.${i}.description`, undefined);
         if (typeof color === "string" && color.length) {
           setValue(`message.embeds.${i}.color`, parseInt(color));
         }
         if (typeof color === "string" && !color.length) {
-          resetField(`message.embeds.${i}.color`);
+          setValue(`message.embeds.${i}.color`, undefined);
         }
-        if (!image?.url) resetField(`message.embeds.${i}.image`);
+        if (!image?.url) setValue(`message.embeds.${i}.image`, undefined);
         if (!footer?.text && !footer?.icon_url) {
-          resetField(`message.embeds.${i}.footer`);
+          setValue(`message.embeds.${i}.footer`, undefined);
         } else {
-          if (!footer?.text) resetField(`message.embeds.${i}.footer.text`);
+          //@ts-expect-error
+          if (!footer?.text) setValue(`message.embeds.${i}.footer.text`, undefined);
           if (!footer?.icon_url)
-            resetField(`message.embeds.${i}.footer.icon_url`);
+            //@ts-expect-error
+            setValue(`message.embeds.${i}.footer.icon_url`, undefined);
         }
       }
+    } else {
+      setValue(`message.embeds`, undefined);
+    }
 
     // Also fix text inputs
     if (watch("forms")?.length)
       for (let i = 0; i < watch("forms")?.length; i++) {
+        // handleCooldownChange(null, null, i)
         for (let ii = 0; ii < watch(`forms.${i}.pages`)?.length; ii++) {
           for (
             let iii = 0;
@@ -659,12 +463,14 @@ export function Editor({
                   `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.placeholder`
                 )
               )
-                resetField(
-                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.placeholder`
+                setValue(
+                  //@ts-expect-error
+                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.placeholder`, undefined
                 );
               if (!watch(`forms.${i}.pages.${ii}.modal.components.${iii}.components.0.value`))
-                resetField(
-                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.value`
+                setValue(
+                  //@ts-expect-error
+                  `forms.${i}.pages.${ii}.modal.components.${iii}.components.0.value`, undefined
                 );
 
               if (
@@ -689,7 +495,7 @@ export function Editor({
 
   function fixSubmitChannel(index: any) {
     //@ts-expect-error
-    if (!getValues(`forms.${index}.submit_channel.parent_id`)) resetField(`forms.${index}.submit_channel.parent_id`)
+    if (!getValues(`forms.${index}.submit_channel.parent_id`)) setValue(`forms.${index}.submit_channel.parent_id`, undefined)
   }
 
   return (
@@ -730,8 +536,9 @@ export function Editor({
               }}
             />
             <Button variant="danger-outline" onClick={() => {
+              //@ts-expect-error
               reset(ClearedValues)
-              setOpenFormType(openFormType)
+              setOpenFormType('button', false)
               _setSubmissionType(['bot'])
               _setSubmissionChannel(['existing'])
             }}>
@@ -786,6 +593,7 @@ export function Editor({
             displayForm,
             setDisplayForm,
             fixMessage,
+            // handleCooldownChange,
             webhookUrlFocused,
             webhookUrlSetFocused,
             premium,

@@ -54,6 +54,7 @@ export default function FormBuilder({
   setDisplayForm,
   //@ts-expect-error
   fixMessage,
+  // handleCooldownChange,
   //@ts-expect-error
   webhookUrlFocused,
   //@ts-expect-error
@@ -260,15 +261,15 @@ export default function FormBuilder({
     }
   }, [formState, fields, submissionChannel])
 
-  // function handleCooldownChange(unit, e, index) {
-  //     if(Number.isInteger(parseInt(e.target.value))) {
-  //       setValue(`forms.${index}.cooldown.${unit}`, parseInt(e.target.value))
-  //     } else {  
-  //       setValue(`forms.${index}.cooldown.${unit}`, undefined)
-  //       if(Object.keys(getValues(`forms.${index}.cooldown`)).length < 2) {
-  //         setValue(`forms.${index}.cooldown`, undefined)
-  //       }
-  //     }
+  // function handleCooldownClick(index) {
+  //   if (!premium) {
+  //     setPremiumFeatureTarget('submission_cooldown')
+  //     setCooldownDisabled(true)
+  //     setTimeout(() => setCooldownDisabled(false), 1);
+  //     onOpenPremium()
+  //     handleCooldownChange(null, null, index)
+  //     return;
+  //   }
   // }
 
   return (
@@ -398,8 +399,8 @@ export default function FormBuilder({
                     <Box>
                       <FormLabel htmlFor={`forms[${index}].submit_channel.nsfw`}>NSFW</FormLabel>
                       <Switch
-                      //@ts-expect-error
-                       {...register(`forms[${index}].submit_channel.nsfw`)}
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_channel.nsfw`)}
                         colorScheme='blurple'
                       />
                     </Box>
@@ -463,25 +464,26 @@ export default function FormBuilder({
                   </NumberInput>
                   {/* <HStack><Text width='60px'>Days</Text><Text width='60px'>Hours</Text><Text width='60px'>Minutes</Text><Text width='60px'>Seconds</Text><Text width='60px'>Infinite</Text></HStack>
                   <HStack>
-                    <NumberInput width='60px' min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
-                      <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.days`, { onChange: e => handleCooldownChange('days', e, index) })} /> 
+                    <NumberInput width='60px' min={0} isDisabled={cooldownDisabled}>
+                      <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.days`, { onChange: e => handleCooldownChange('days', e, index) })} onClick={() => handleCooldownClick(index)} />
                     </NumberInput>
-                    <NumberInput width='60px' min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
-                    <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.hours`, { onChange: e => handleCooldownChange('hours', e, index) })} /> 
-
-                    </NumberInput>{/* */}
-                  {/* <NumberInput width='60px' defaultValue={0} min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
-                    <NumberInputField paddingInlineEnd='16px' onChange={e => updateCooldown('minutes', Number.isInteger(parseInt(e.target.value)) ? parseInt(e.target.value) : 0, index)} /> 
-
+                    <NumberInput width='60px' min={0} isDisabled={cooldownDisabled}>
+                      <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.hours`, { onChange: e => handleCooldownChange('hours', e, index) })} onClick={() => handleCooldownClick(index)}  />
                     </NumberInput>
-                    <NumberInput width='60px' defaultValue={0} min={0} isDisabled={getValues(`forms.${index}.cooldown`) === 0}>
-                    <NumberInputField paddingInlineEnd='16px' onChange={e => updateCooldown('seconds', Number.isInteger(parseInt(e.target.value)) ? parseInt(e.target.value) : 0, index)} /> 
-
+                    <NumberInput width='60px' min={0} isDisabled={cooldownDisabled}>
+                      <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.minutes`, { onChange: e => handleCooldownChange('minutes', e, index) })} onClick={() => handleCooldownClick(index)}  />
+                    </NumberInput>
+                    <NumberInput width='60px' min={0} isDisabled={cooldownDisabled}>
+                      <NumberInputField paddingInlineEnd='16px' {...register(`forms.${index}.cooldown.seconds`, { onChange: e => handleCooldownChange('seconds', e, index) })} onClick={() => handleCooldownClick(index)}  />
                     </NumberInput>
                     <Switch
-                onChange={e => setValue(`forms.${index}.cooldown`, e.target.checked ? 0 : undefined )}
-                colorScheme='blurple'
-              />
+                      onChange={e => {
+                        setValue(`forms.${index}.cooldown`, e.target.checked ? 0 : undefined );
+                        setCooldownDisabled(e.target.checked)
+                      }}
+                      isDisabled={!premium}
+                      colorScheme='blurple'
+                    />
                   </HStack> */}
                 </Box>
               </Collapsible >

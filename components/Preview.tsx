@@ -524,10 +524,10 @@ function Preview({
               />
             </svg>
             <Text userSelect='none'>Page {displayPage + 1}</Text>
-            <svg onClick={() => ((displayPage + 1) < forms[displayForm].pages.length && setDisplayPage(displayPage + 1))} style={{ cursor: (displayPage + 1) < forms[displayForm].pages.length ? 'pointer' : 'not-allowed', transform: `rotate(${90}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg onClick={() => ((displayPage + 1) < forms?.[displayForm]?.pages.length && setDisplayPage(displayPage + 1))} style={{ cursor: (displayPage + 1) < forms?.[displayForm]?.pages.length ? 'pointer' : 'not-allowed', transform: `rotate(${90}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M12 10L8 6L4 10"
-                stroke={(displayPage + 1) < forms[displayForm].pages.length ? "#bcbcbc" : 'grey'}
+                stroke={(displayPage + 1) < forms?.[displayForm]?.pages.length ? "#bcbcbc" : 'grey'}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -575,7 +575,7 @@ function Preview({
                     overflow="hidden"
                     whiteSpace="nowrap"
                   >
-                    {forms?.[displayForm].pages?.[displayPage]?.modal.title}
+                    {forms?.[displayForm]?.pages?.[displayPage]?.modal.title}
                   </Text>
                 </Box>
                 <Box display="flex" p="4px" cursor="pointer">
@@ -648,7 +648,7 @@ function Preview({
                   border="0px"
                   _focus={{ border: "0px" }}
                   onClick={() => {
-                    if ((displayPage + 1) < forms[displayForm].pages.length) {
+                    if ((displayPage + 1) < forms?.[displayForm]?.pages.length) {
                       setDisplayPage(displayPage + 1)
                     } else {
                       setTemporarySubmissionHighlight(true)

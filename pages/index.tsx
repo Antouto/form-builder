@@ -56,8 +56,13 @@ export default function App() {
     rules: { minLength: 1 }
   });
 
-  
   useEffect(() => {
+    const urlData = new URLSearchParams(window.location.search).get('data')
+
+    if(urlData) {
+      reset(JSON.parse(atob(urlData)).data)
+    } else {
+      
     setValue('message', {
       content: 'Fill out the form below',
       components: [{
@@ -93,6 +98,8 @@ export default function App() {
         }]
       }
     ])
+    }
+
   }, [])
 
   const [displayForm, setDisplayForm] = useState(0);
@@ -101,6 +108,15 @@ export default function App() {
   const [stage, setStage] = useState('welcome')
   const SettingsModal = useModal();
   const isNotSmallScreen = useScreenWidth(1070);
+
+
+  useEffect(() => {
+    console.log('watch here')
+    window.history.pushState(null, '', `?data=${btoa(JSON.stringify({
+      version: '1',
+      data: watch()
+    }))}`)
+  }, [watch()])
 
   return (
     <>

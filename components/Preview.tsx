@@ -225,9 +225,9 @@ function Preview({
               } to open forms is sent to a channel`}
           >
 
-     
+
               <Box display={discohook ? 'block' : 'none'} ><iframe
-                src={`https://preview.discohook.app/viewer?data=${btoa(JSON.stringify({ version: 'd2', messages: [{ data: discohookMessage(message) }] }))}&header=false`}
+                src={`https://preview.discohook.app/viewer?data=${Buffer.from(JSON.stringify({ version: 'd2', messages: [{ data: discohookMessage(message) }] })).toString('base64')}&header=false`}
                 style={{ width: '100%', height: '200px', border: 'none', padding: '20px', background: 'white', borderRadius: '8px', resize: 'vertical', overflow: 'auto' }}
                 title="Content"
               /></Box>

@@ -332,7 +332,7 @@ export default function App() {
 
       if (urlPreset) setPreset(urlPreset)
       if (urlData) {
-        const { data } = JSON.parse(decodeURIComponent(urlData))
+        const { data } = JSON.parse(Buffer.from(decodeURIComponent(urlData), 'base64').toString('utf-8'))
         reset(data)
         if (data.application_command) {
           setOpenFormType("application_command", false);
@@ -422,11 +422,13 @@ export default function App() {
 
 
   useEffect(() => {
+
+
     try {
-    window.history.pushState(null, '', `?data=${encodeURIComponent(JSON.stringify({
+    window.history.pushState(null, '', `?data=${encodeURIComponent(Buffer.from(JSON.stringify({
       version: '1',
       data: watch()
-    }))}`)
+    })).toString('base64'))}`)
   }catch(e){console.error(e)}
   }, [watch()])
 

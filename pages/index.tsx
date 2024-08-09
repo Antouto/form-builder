@@ -436,13 +436,10 @@ export default function App() {
       <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler}  setStage={setStage}/>
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
         {/* @ts-expect-error */}
-        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} openFormType={openFormType} setOpenFormType={setOpenFormType} setPremium={setPremium} premium={premium} setPremium={setPremium} submissionType={submissionType} _setSubmissionType={_setSubmissionType} submissionChannel={submissionChannel} _setSubmissionChannel={_setSubmissionChannel} setPreset={setPreset}/>
+        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} openFormType={openFormType} setOpenFormType={setOpenFormType} setPremium={setPremium} premium={premium} submissionType={submissionType} _setSubmissionType={_setSubmissionType} submissionChannel={submissionChannel} _setSubmissionChannel={_setSubmissionChannel} setPreset={setPreset}/>
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} />
       </Grid>
-
-
-
     </>
   );
 }

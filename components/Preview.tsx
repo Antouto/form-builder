@@ -95,6 +95,7 @@ function Preview({
           <Box
             key={Math.random()}
             borderLeftColor={
+              //@ts-expect-error
               parseInt(embed?.color) ? decimalToHexColor(embed?.color) : "#202225"
             }
             borderLeftWidth="4px"

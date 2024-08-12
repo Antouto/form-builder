@@ -80,7 +80,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
           /> */}
           <input
             {...register(`message.embeds.${index}.color`, {
-              onChange: (e) => {
+              onChange: (e: any) => {
                 if (!e.target.value.length) {
                   setValue(`message.embeds.${index}.color`, undefined, { shouldValidate: true })
                 } else if (e.target.value.startsWith('#') && e.target.value.length === 7) {

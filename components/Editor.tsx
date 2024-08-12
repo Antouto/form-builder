@@ -926,7 +926,7 @@ export function Editor({
                 {/* @ts-expect-error */}
                 <ErrorMessage error={formState.errors.forms?.[0]?.submit_channel?.parent_id} />
                 <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
-              </> : <><SubmissionChannelIDInput index={0} register={register} errors={formState.errors} fixMessage={fixMessage} />
+              </> : <><SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} />
                 <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text></>}
             </Box>
             <HStack>

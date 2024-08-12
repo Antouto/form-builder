@@ -27,6 +27,7 @@ import ActionRowBuilder from "./ActionRowBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 import PermissionOverwritesBuilder from "./PermissionOverwritesBuilder";
 import PageBuilder from "./PageBuilder";
+import { AiFillExclamationCircle } from "react-icons/ai";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -305,10 +306,10 @@ export default function FormBuilder({
               setSubmissionChannel('delete', null, index)
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
-              <Collapsible name="General">
+              <Collapsible name={<>General{(!(watch(`forms.${index}.submit_channel_id`) || watch(`forms.${index}.webhook_url`)) || formState?.errors?.forms?.[index]?.submit_channel_id || formState?.errors?.forms?.[index]?.webhook_url) && <AiFillExclamationCircle style={{ marginLeft: '4px' }} color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} />}</>}>
 
 
-                <HStack wrap='wrap'>
+                <HStack wrap='wrap' mb='8px'>
                   <FormLabel whiteSpace="nowrap" m={0}>
                     Send submissions using
                   </FormLabel>
@@ -366,7 +367,7 @@ export default function FormBuilder({
                   </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} />}
+                {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>

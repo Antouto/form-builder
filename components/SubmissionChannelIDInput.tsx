@@ -2,7 +2,7 @@ import { FormLabel, HStack, Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import ErrorMessage from './ErrorMessage'
 
-export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, onOpenWhereDoIFindSubmissionChannelID }:any) {
+export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID }:any) {
   const colorMode = useColorMode().colorMode
 
   return (
@@ -16,9 +16,9 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       <input
         {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
         id={`forms[${index}].submit_channel_id`}
-        style={{ marginBottom: '8px' }}
+        style={{ marginBottom: '2px' }}
       />
-      <ErrorMessage error={errors.forms?.[index]?.submit_channel_id} />
+      <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (!watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />
     </>
   )
 }

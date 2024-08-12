@@ -34,6 +34,7 @@ export default function MessageBuilder({ control, register, errors, setValue, ge
           errors,
           setValue,
           getValues,
+          watch,
           resetField,
           fixMessage,
         }}

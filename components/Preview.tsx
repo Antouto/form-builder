@@ -73,6 +73,21 @@ function Preview({
 
   if (displayForm < 0) displayForm = 0;
 
+  function decimalToHexColor(decimal: number) {
+    // Extract the red, green, and blue components
+    let r = (decimal >> 16) & 0xFF;
+    let g = (decimal >> 8) & 0xFF;
+    let b = decimal & 0xFF;
+
+    // Convert each component to a hexadecimal string and pad with zeros if needed
+    let rHex = r.toString(16).padStart(2, '0');
+    let gHex = g.toString(16).padStart(2, '0');
+    let bHex = b.toString(16).padStart(2, '0');
+
+    // Concatenate the hexadecimal values and prepend with a '#'
+    return `#${rHex}${gHex}${bHex}`;
+}
+
   const MessageEmbed = (
     <>
       {message?.embeds &&
@@ -80,7 +95,7 @@ function Preview({
           <Box
             key={Math.random()}
             borderLeftColor={
-              embed?.color ? `#${embed?.color.toString(16)}` : "#202225"
+              parseInt(embed?.color) ? decimalToHexColor(embed?.color) : "#202225"
             }
             borderLeftWidth="4px"
             mt="0.2rem"

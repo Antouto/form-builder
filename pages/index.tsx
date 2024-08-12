@@ -338,77 +338,81 @@ export default function App() {
           setOpenFormType("application_command", false);
         } else if (data.forms[0].select_menu_option) {
           setOpenFormType("select_menu", false);
+          setTimeout(() => {
+            setValue('message.components', undefined)
+          }, 1);
         } else {
           setOpenFormType("button", false);
         }
 
-            //@ts-expect-error
-      let newSubmissionType = []
-      //@ts-expect-error
-      let newSubmissionChannel = []
-            //@ts-expect-error
-      data.forms.forEach((form, i) => {
-        if (form.webhook_url || Number.isInteger(form.cooldown) || form.pages.length > 1) setPremium(true)
-        if (form.submit_channel) {
-          setTimeout(() => {
-            //@ts-expect-error
-            if (form.submit_channel?.parent_id === '') setValue(`forms.${i}.submit_channel.parent_id`, undefined)
+        //@ts-expect-error
+        let newSubmissionType = []
+        //@ts-expect-error
+        let newSubmissionChannel = []
+        //@ts-expect-error
+        data.forms.forEach((form, i) => {
+          if (form.webhook_url || Number.isInteger(form.cooldown) || form.pages.length > 1) setPremium(true)
+          if (form.submit_channel) {
+            setTimeout(() => {
+              //@ts-expect-error
+              if (form.submit_channel?.parent_id === '') setValue(`forms.${i}.submit_channel.parent_id`, undefined)
 
-            //@ts-expect-error
-            if (getValues(`forms.${i}.submit_channel.permission_overwrites`)) getValues(`forms.${i}.submit_channel.permission_overwrites`).forEach((overwrite, ii) => {
-              console.log('overwrite', overwrite)
               //@ts-expect-error
-              if (overwrite.allow === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.allow`, undefined)
-              //@ts-expect-error
-              if (overwrite.deny === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.deny`, undefined)
-            })
-          }, 1);
-        }
-        if (form.submit_components) {
-          //@ts-expect-error
-          form.submit_components.forEach((action_row, ii) => {
-            if (action_row.components) {
-              //@ts-expect-error
-              action_row.components.forEach((component, iii) => {
-                if (component?.logic && component?.logic?.REQUIRED_PERMISSIONS) setPremium(true)
-                setTimeout(() => {
-                  if (component?.logic?.UPDATE_THIS_CHANNEL?.permission_overwrites) {
-                    //@ts-expect-error
-                    getValues(`forms.${i}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`).forEach((overwrite, iiii) => {
-                      //@ts-expect-error
-                      if (overwrite.allow === '') setValue(`forms.${i}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites.${iiii}.allow`, undefined)
-                      //@ts-expect-error
-                      if (overwrite.deny === '') setValue(`forms.${i}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites.${iiii}.deny`, undefined)
-                    })
-                  }
-                }, 1)
+              if (getValues(`forms.${i}.submit_channel.permission_overwrites`)) getValues(`forms.${i}.submit_channel.permission_overwrites`).forEach((overwrite, ii) => {
+                console.log('overwrite', overwrite)
+                //@ts-expect-error
+                if (overwrite.allow === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.allow`, undefined)
+                //@ts-expect-error
+                if (overwrite.deny === '') setValue(`forms.${i}.submit_channel.permission_overwrites.${ii}.deny`, undefined)
               })
-            }
-          })
-        }
+            }, 1);
+          }
+          if (form.submit_components) {
+            //@ts-expect-error
+            form.submit_components.forEach((action_row, ii) => {
+              if (action_row.components) {
+                //@ts-expect-error
+                action_row.components.forEach((component, iii) => {
+                  if (component?.logic && component?.logic?.REQUIRED_PERMISSIONS) setPremium(true)
+                  setTimeout(() => {
+                    if (component?.logic?.UPDATE_THIS_CHANNEL?.permission_overwrites) {
+                      //@ts-expect-error
+                      getValues(`forms.${i}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`).forEach((overwrite, iiii) => {
+                        //@ts-expect-error
+                        if (overwrite.allow === '') setValue(`forms.${i}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites.${iiii}.allow`, undefined)
+                        //@ts-expect-error
+                        if (overwrite.deny === '') setValue(`forms.${i}.submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites.${iiii}.deny`, undefined)
+                      })
+                    }
+                  }, 1)
+                })
+              }
+            })
+          }
 
 
 
-        if (form.webhook_url) {
-          newSubmissionType.push('webhook_url')
-        } else {
-          newSubmissionType.push('bot')
-        }
+          if (form.webhook_url) {
+            newSubmissionType.push('webhook_url')
+          } else {
+            newSubmissionType.push('bot')
+          }
 
-        if (form.submit_channel) {
-          newSubmissionChannel.push('new')
-        } else {
-          newSubmissionChannel.push('existing')
-        }
-      });
-      //@ts-expect-error
-      _setSubmissionType(newSubmissionType)
-      //@ts-expect-error
-      _setSubmissionChannel(newSubmissionChannel)
+          if (form.submit_channel) {
+            newSubmissionChannel.push('new')
+          } else {
+            newSubmissionChannel.push('existing')
+          }
+        });
+        //@ts-expect-error
+        _setSubmissionType(newSubmissionType)
+        //@ts-expect-error
+        _setSubmissionChannel(newSubmissionChannel)
 
         setStage('editor')
-        
-      } 
+
+      }
+
     }
 
   }, [])
@@ -425,20 +429,20 @@ export default function App() {
 
 
     try {
-    window.history.pushState(null, '', `?data=${encodeURIComponent(Buffer.from(JSON.stringify({
-      version: '1',
-      data: watch()
-    })).toString('base64'))}`)
-  }catch(e){console.error(e)}
+      window.history.pushState(null, '', `?data=${encodeURIComponent(Buffer.from(JSON.stringify({
+        version: '1',
+        data: watch()
+      })).toString('base64'))}`)
+    } catch (e) { console.error(e) }
   }, [watch()])
 
   return (
     <>
       <Meta>Home</Meta>
-      <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler}  setStage={setStage}/>
+      <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler} setStage={setStage} />
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
         {/* @ts-expect-error */}
-        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} openFormType={openFormType} setOpenFormType={setOpenFormType} setPremium={setPremium} premium={premium} submissionType={submissionType} _setSubmissionType={_setSubmissionType} submissionChannel={submissionChannel} _setSubmissionChannel={_setSubmissionChannel} setPreset={setPreset}/>
+        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} openFormType={openFormType} setOpenFormType={setOpenFormType} setPremium={setPremium} premium={premium} submissionType={submissionType} _setSubmissionType={_setSubmissionType} submissionChannel={submissionChannel} _setSubmissionChannel={_setSubmissionChannel} setPreset={setPreset} />
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} />
       </Grid>

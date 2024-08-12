@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react'
 import { Button, Collapse, Box, useDisclosure, useColorMode, Tooltip, HStack } from '@chakra-ui/react'
 
 export interface CollapsibleProperties {
-  name: string;
+  name: any;
   deleteButton?: React.ReactNode;
   moveUpButton?: React.ReactNode;
   moveDownButton?: React.ReactNode;

@@ -98,7 +98,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
             })}
             id={`message.embeds.${index}.color`}
           />
-          <ErrorMessage error={errors?.message?.embeds[index].color} />
+          <ErrorMessage error={errors?.message?.embeds?.[index]?.color} />
           <hr />
           {/* Embed Image */}
           <FormLabel htmlFor={`message.embeds.${index}.image.url`}>Image URL</FormLabel>

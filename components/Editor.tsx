@@ -746,16 +746,16 @@ export function Editor({
           <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
           <Text fontSize={18} my={4}>or start from a template</Text>
           <VStack>
-            <Text fontSize={19} fontWeight='Bold'>Free templates</Text>
+            <Text fontSize={19}  fontFamily='Whitney Bold'>Free templates</Text>
             <Button variant='primary-outline' onClick={() => setPreset('application')}>Application</Button>
           </VStack>
           <VStack>
-            <Text fontSize={19} fontWeight='Bold'>Premium templates</Text>
+            <Text fontSize={19}  fontFamily='Whitney Bold'>Premium templates</Text>
             <Button variant='primary-outline' onClick={() => setPreset('thread_ticket')}>Thread Ticket System</Button>
             <Button variant='primary-outline' onClick={() => setPreset('ticket')}>Channel Ticket System</Button>
           </VStack>
           <VStack>
-            <Text fontSize={19} fontWeight='Bold'>Advanced</Text>
+            <Text fontSize={19}  fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
         </VStack></>}

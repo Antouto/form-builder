@@ -166,6 +166,11 @@ export default function App() {
         setValue(`forms.${i}.webhook_url`, undefined);
         return 'bot';
       }))
+      _setSubmissionChannel(submissionChannel.map((value, i) => {
+        setValue(`forms.${i}.submit_channel`, undefined);
+        setValue(`forms.${i}.submit_thread`, undefined);
+        return 'existing';
+      }))
       getValues('forms').forEach((form, index) => {
         setDisplayPage(0)
         setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)])
@@ -185,6 +190,10 @@ export default function App() {
   function setPreset(preset?: string) {
     switch (preset) {
       case 'application': {
+        _setSubmissionChannel(['existing'])
+        setValue('forms.0.submit_channel', undefined)
+        setValue('forms.0.submit_thread', undefined)
+
         //@ts-expect-error
         setValue('forms.0.submit_components', [{
           type: 1,
@@ -234,9 +243,12 @@ export default function App() {
         break;
       }
       case 'ticket': {
+        setValue('forms.0.submit_thread', undefined)
+
+        setPremium(true)
         _setSubmissionChannel(['new'])
         setValue('forms.0.submit_channel', {
-          name: '{RandomUUID}',
+          name: 'ticket-{SubmissionNumber}',
           type: 0,
           permission_overwrites: [
             {
@@ -291,6 +303,59 @@ export default function App() {
                         deny: 2048
                       }
                     ]
+                  },
+                  SEND_MESSAGE_TO_THIS_CHANNEL: {
+                    content: '**{ChannelName}** closed by **{InteractionUserName}**'
+                  }
+                }
+              },
+              {
+                type: 2,
+                label: 'Delete Ticket',
+                emoji: {
+                  name: '🗑️'
+                },
+                style: 4,
+                logic: {
+                  DELETE_THIS_CHANNEL: true
+                }
+              }
+            ]
+          }
+        ])
+        setStage('openFormType')
+        break;
+      }
+      case 'thread_ticket': {
+        setValue('forms.0.submit_channel', undefined)
+
+        setPremium(true)
+        _setSubmissionChannel(['new_thread'])
+        setValue('forms.0.submit_thread', {
+          name: 'ticket-{SubmissionNumber}',
+          type: 12,
+          add_submitter: true
+        })
+        //@ts-expect-error
+        setValue('forms.0.submit_components', [
+          {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                label: 'Close Ticket',
+                emoji: {
+                  name: '🔒'
+                },
+                style: 2,
+                logic: {
+                  UPDATE_COMPONENT: {
+                    label: 'Ticket Closed'
+                  },
+                  UPDATE_THIS_CHANNEL: {
+                    name: '🔒-{ChannelName}',
+                    locked: true,
+                    archived: true
                   },
                   SEND_MESSAGE_TO_THIS_CHANNEL: {
                     content: '**{ChannelName}** closed by **{InteractionUserName}**'
@@ -400,6 +465,8 @@ export default function App() {
 
           if (form.submit_channel) {
             newSubmissionChannel.push('new')
+          } else if (form.submit_thread) {
+            newSubmissionChannel.push('new_thread')
           } else {
             newSubmissionChannel.push('existing')
           }

@@ -683,7 +683,8 @@ function Preview({
 
         <PreviewStep
           number={!application_command ? 3 : 2}
-          title="The submission is sent to a channel"
+          //@ts-expect-error
+          title={forms[displayForm].submit_channel ? 'A channel is created for the submission' : (forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : 'The submission is sent to a channel')}
           highlighted={stage === 'submissions' || temporarySubmissionHighlight}
           reference={applicationCommandRef}
         >

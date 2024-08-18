@@ -251,6 +251,8 @@ export function Editor({
 
         if (form.submit_channel) {
           newSubmissionChannel.push('new')
+        } else if (form.submit_thread) {
+          newSubmissionChannel.push('new_thread')
         } else {
           newSubmissionChannel.push('existing')
         }
@@ -331,8 +333,14 @@ export function Editor({
         newSubmissionChannel[index] = value
         _setSubmissionChannel(newSubmissionChannel)
         switch (value) {
-          case 'existing': setValue(`forms.${index}.submit_channel`, undefined); break;
+          case 'existing': {
+            setValue(`forms.${index}.submit_channel`, undefined);
+            setValue(`forms.${index}.submit_thread`, undefined);
+            break;
+          }
           case 'new': {
+            setValue(`forms.${index}.submit_thread`, undefined);
+            setValue(`forms.${index}.webhook_url`, undefined);
             setValue(`forms.${index}.submit_channel_id`, undefined);
             //@ts-expect-error
             setValue(`forms.${index}.submit_channel.type`, 0);
@@ -367,6 +375,18 @@ export function Editor({
                 if (overwrite.deny === '') setValue(`forms.${index}.submit_channel.permission_overwrites.${i}.deny`, undefined)
               })
             }, 1);
+            break;
+          }
+          case 'new_thread': {
+            setValue(`forms.${index}.submit_channel`, undefined);
+            setValue(`forms.${index}.submit_thread`, undefined);
+            setValue(`forms.${index}.webhook_url`, undefined);
+
+            setValue(`forms.${index}.submit_thread`, {
+              name: 'ticket',
+              type: 12,
+              add_submitter: true
+            });
             break;
           }
         }
@@ -722,13 +742,22 @@ export function Editor({
           </Box>
         </VStack></>
         }
-        {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' mt={20} width='100%'>
+        {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' gap={4} mt={20} width='100%'>
           <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
-          <Text fontSize={18}>or</Text>
-          <Button variant='primary-outline' onClick={() => setPreset('application')}>Create Application</Button>
-          <Button variant='primary-outline' onClick={() => setPreset('ticket')}>Create Ticket</Button>
-          <Text fontSize={18}>or</Text>
-          <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
+          <Text fontSize={18}>or start from a template</Text>
+          <VStack>
+            <Text fontSize={19} fontWeight='Bold'>Free templates</Text>
+            <Button variant='primary-outline' onClick={() => setPreset('application')}>Application</Button>
+          </VStack>
+          <VStack>
+            <Text fontSize={19} fontWeight='Bold'>Premium templates</Text>
+            <Button variant='primary-outline' onClick={() => setPreset('thread_ticket')}>Thread Ticket System</Button>
+            <Button variant='primary-outline' onClick={() => setPreset('ticket')}>Channel Ticket System</Button>
+          </VStack>
+          <VStack>
+            <Text fontSize={19} fontWeight='Bold'>Advanced</Text>
+            <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
+          </VStack>
         </VStack></>}
         {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>
@@ -877,7 +906,9 @@ export function Editor({
                 _setSubmissionChannel(['existing'])
                 setValue('forms.0.submit_channel_id', undefined)
                 setValue('forms.0.submit_channel', undefined)
+                setValue('forms.0.submit_thread', undefined)
                 setValue('forms.0.submit_components', undefined)
+                setPremium(false)
                 setStage('welcome')
               }}>Go back</Button>
               <Button variant='primary' onClick={() => {
@@ -1028,6 +1059,19 @@ export function Editor({
                 </svg>
                 </Box>
                 <Text className={premiumFeatureTarget === 'multiple_pages' ? 'highlighted-feature' : ''}>Multiple Pages</Text>
+              </HStack>
+              <HStack>
+                <Box width='32px'><svg viewBox="0 0 256 201" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M157.595 0H27.6488C12.3788 0 0 12.379 0 27.6489V64.4883C0 68.6791 2.82737 72.3422 6.88144 73.404C18.878 76.5456 27.7181 87.4704 27.7181 100.437C27.7181 113.403 18.8779 124.328 6.88144 127.47C2.82737 128.531 0 132.194 0 136.385V173.224C0 188.494 12.3789 200.873 27.6488 200.873H157.595V169.261C157.595 162.898 162.753 157.741 169.116 157.741C175.478 157.741 180.636 162.898 180.636 169.261V200.873H228.351C243.623 200.873 256 188.494 256 173.224V136.303C256 132.142 253.213 128.497 249.197 127.408C237.317 124.187 228.591 113.319 228.591 100.437C228.591 87.5545 237.317 76.6866 249.197 73.4655C253.213 72.3765 256 68.7317 256 64.5705V27.6489C256 12.3788 243.623 0 228.351 0H180.636V31.7649C180.636 38.1273 175.478 43.2853 169.116 43.2853C162.753 43.2853 157.595 38.1273 157.595 31.7649V0ZM169.116 70.3233C175.478 70.3233 180.636 75.4811 180.636 81.8437V119.005C180.636 125.367 175.478 130.525 169.116 130.525C162.753 130.525 157.595 125.367 157.595 119.005V81.8437C157.595 75.4811 162.753 70.3233 169.116 70.3233Z" fill="url(#paint0_linear_845_3)" />
+                  <defs>
+                    <linearGradient id="paint0_linear_845_3" x1="0" y1="100.436" x2="256" y2="100.436" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3442D9" />
+                      <stop offset="1" stop-color="#0176A4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                </Box>
+                <Text className={premiumFeatureTarget === 'tickets' ? 'highlighted-feature' : ''}>Ticket System</Text>
               </HStack>
               <HStack>
                 <Box width='32px'><svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -306,7 +306,7 @@ export default function FormBuilder({
               setSubmissionChannel('delete', null, index)
               setDisplayForm(displayForm - 1)
             }} /> : null} key={item.id}>
-              <Collapsible name={<>General{(!(watch(`forms.${index}.submit_channel_id`) || watch(`forms.${index}.webhook_url`)) || formState?.errors?.forms?.[index]?.submit_channel_id || formState?.errors?.forms?.[index]?.webhook_url) && <AiFillExclamationCircle style={{ marginLeft: '4px' }} color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} />}</>}>
+              <Collapsible name={<>General{(!(watch(`forms.${index}.submit_channel_id`) || watch(`forms.${index}.webhook_url`)) || formState?.errors?.forms?.[index]?.submit_channel_id || formState?.errors?.forms?.[index]?.webhook_url) && !watch(`forms.${index}.submit_channel`) && <AiFillExclamationCircle style={{ marginLeft: '4px' }} color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} />}</>}>
 
 
                 <HStack wrap='wrap' mb='8px'>
@@ -346,16 +346,24 @@ export default function FormBuilder({
                       to
                     </FormLabel>
                     <Select
+                      backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))'
                       height="24px!important"
                       width='fit-content'
                       borderWidth="2px"
                       borderColor="transparent"
                       borderRadius="4px"
                       border='1px solid rgba(255, 255, 255, 0.16)'
-                      bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
+                      // bg={colorMode === "dark" ? "grey.extradark" : "grey.extralight"}
                       _focus={{ outline: 'none' }}
                       _focusVisible={{ outline: 'none' }}
                       _hover={{ borderColor: "transparent" }}
+                      onClick={() => {
+                        if (!premium) {
+                          setPremiumFeatureTarget('tickets')
+                          onOpenPremium()
+                          return;
+                        }
+                      }}
                       onChange={(event) => {
                         setSubmissionChannel('edit', event.target.value, index)
                       }}
@@ -363,11 +371,12 @@ export default function FormBuilder({
                     >
                       <option value="existing">Existing Channel</option>
                       <option value="new">New Channel (For tickets)</option>
+                      <option value="new_thread">New Thread (For tickets)</option>
                     </Select>
                   </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && submissionChannel[index] === 'existing' && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} />}
+                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
@@ -410,6 +419,62 @@ export default function FormBuilder({
                   <FormLabel htmlFor={`forms[${index}].submit_channel.permission_overwrites`}>Permission Overwrites</FormLabel>
                   Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
                   <PermissionOverwritesBuilder control={control} i={index} forPermissionOverwrite={`forms.${index}.submit_channel.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
+                </Collapsible>}
+                {submissionChannel[index] === 'new_thread' && <Collapsible name='New Thread'>
+                  <HStack mb={2} wrap={isSmallScreen ? 'wrap' : 'nowrap'}>
+                    <Box width='60%'>
+                      <FormLabel htmlFor={`forms[${index}].submit_thread.name`} display='flex' alignItems='center'>
+                        <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text>
+                        {/* @ts-expect-error */}
+                        <Counter count={getValues('forms')[index].submit_thread?.name?.length} max={100} />
+                      </FormLabel>
+                      <Input
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_thread.name`, { required: true, maxLength: 100, pattern: /^[^ _!"§$%&/()=]+$/ })}
+                        id={`forms[${index}].submit_thread.name`}
+                        height='36px'
+                      />
+
+                      {/* @ts-expect-error */}
+                      <ErrorMessage error={errors.forms?.[index]?.submit_thread?.name} />
+                    </Box>
+                    {/* <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].submit_channel.parent_id`}>Category ID</FormLabel>
+                      <input
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_channel.parent_id`, { pattern: /^\d{10,20}$/, onChange: () => fixSubmitChannel(index) })}
+                        id={`forms[${index}].submit_channel.parent_id`}
+                      /> */}
+                    {/* @ ts-expect-error */}
+                    {/* <ErrorMessage error={errors.forms?.[index]?.submit_channel?.parent_id} />
+                    </Box> */}
+                    <Box>
+                      <FormLabel htmlFor={`forms[${index}].submit_thread.add_submitter`}>Add submitter</FormLabel>
+                      <Switch
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_thread.add_submitter`, {
+                          onChange: (e) => {
+                            //@ts-expect-error
+                            setValue(`forms[${index}].submit_thread.add_submitter`, e.target.checked ? true : undefined)
+                          }
+                        })}
+                        colorScheme='blurple'
+                      />
+                    </Box>
+                    <Box>
+                      <FormLabel htmlFor={`forms[${index}].submit_thread.type`}>Private</FormLabel>
+                      <Switch
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_thread.type`, {
+                          onChange: (e) => {
+                            //@ts-expect-error
+                            setValue(`forms[${index}].submit_thread.type`, e.target.checked ? 12 : 11)
+                          }
+                        })}
+                        colorScheme='blurple'
+                      />
+                    </Box>
+                  </HStack>
                 </Collapsible>}
 
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>

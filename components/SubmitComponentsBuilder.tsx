@@ -81,7 +81,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 }
               })}>DM response to submitter</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`)}>Remove other buttons in this row</MenuItem>}
-              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`)}>Delete this channel</MenuItem>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`)}>Delete this {getValues('forms')[i].submit_thread ? 'thread' : 'channel'}</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`)}>Delete this message</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, {
                 name: '🔒-{ChannelName}',
@@ -102,7 +102,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                     deny: 2048
                   }
                 ]
-              })} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`)}>Update this channel</MenuItem>}
+              })} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`)}>Update this {getValues('forms')[i].submit_thread ? 'thread' : 'channel'}</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <><MenuDivider /><MenuGroup title='Premium'>
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <MenuItem background='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' backgroundClip='text' border='2px solid transparent' _hover={{ border: '2px solid #5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => {
                 if (!premium) {
@@ -141,7 +141,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
           </Box>}
-          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) !== undefined && <Collapsible name='Update this channel' deleteButton={<CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, undefined) }} />
+          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) !== undefined && <Collapsible name={`Update this ${getValues('forms')[i].submit_thread ? 'thread' : 'channel'}`} deleteButton={<CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`, undefined) }} />
           }>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`} display='flex' alignItems='flex-end'>
               <Text>Name</Text>
@@ -152,10 +152,12 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.name`}
               height='36px'
             />
+            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.UPDATE_THIS_CHANNEL?.name} />
+            {!getValues('forms')[i].submit_thread && <>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`}>Permission Overwrites</FormLabel>
             Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
-            <PermissionOverwritesBuilder control={control} i={i} forPermissionOverwrite={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
-            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.UPDATE_THIS_CHANNEL?.name} />
+            <PermissionOverwritesBuilder control={control} i={i} forPermissionOverwrite={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} /> 
+            </>}
           </Collapsible>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`) !== undefined && <Box>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`} display='flex' alignItems='flex-end'>
@@ -214,7 +216,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) && <Box>
             <HStack>
-              <FormLabel>Delete this channel</FormLabel>
+              <FormLabel>Delete this {getValues('forms')[i].submit_thread ? 'thread' : 'channel'}</FormLabel>
               <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, undefined) }} />
             </HStack>
           </Box>}

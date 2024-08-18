@@ -284,16 +284,20 @@ export default function FormBuilder({
           return (<>
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.pages[0]?.modal.title && getValues('forms')[index]?.pages?.[0]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.pages?.[0]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
-              //@ts-expect-error
-              const formToDeleteIndex = getValues('message.components[0].components')?.findIndex(component => (component.custom_id) && (component.custom_id === `{FormID${index + 1}}`))
-              formMessageComponentsRemove(formToDeleteIndex)
-              //@ts-expect-error
-              getValues('message.components[0].components').forEach((component, i) => {
-                if ((i >= formToDeleteIndex) && component.custom_id && component.custom_id.match(/\d+/)) {
-                  //@ts-expect-error
-                  setValue(`message.components[0].components.${i}.custom_id`, `{FormID${parseInt(component.custom_id.match(/\d+/)[0]) - 1}}`)
-                }
-              });
+
+              if(openFormType === 'button') {
+                //@ts-expect-error
+                const formToDeleteIndex = getValues('message.components[0].components')?.findIndex(component => (component.custom_id) && (component.custom_id === `{FormID${index + 1}}`))
+                formMessageComponentsRemove(formToDeleteIndex)
+                //@ts-expect-error
+                getValues('message.components[0].components').forEach((component, i) => {
+                  if ((i >= formToDeleteIndex) && component.custom_id && component.custom_id.match(/\d+/)) {
+                    //@ts-expect-error
+                    setValue(`message.components[0].components.${i}.custom_id`, `{FormID${parseInt(component.custom_id.match(/\d+/)[0]) - 1}}`)
+                  }
+                });
+              }
+
               let newServerSubmissionMessage = serverSubmissionMessage;
               newServerSubmissionMessage.splice(index, 1);
               __setServerSubmissionMessage(newServerSubmissionMessage)

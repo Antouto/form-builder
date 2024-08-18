@@ -742,9 +742,9 @@ export function Editor({
           </Box>
         </VStack></>
         }
-        {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Welcome to the form builder</Text><VStack align='center' gap={4} mt={20} width='100%'>
+        {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>
           <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
-          <Text fontSize={18}>or start from a template</Text>
+          <Text fontSize={18} my={4}>or start from a template</Text>
           <VStack>
             <Text fontSize={19} fontWeight='Bold'>Free templates</Text>
             <Button variant='primary-outline' onClick={() => setPreset('application')}>Application</Button>

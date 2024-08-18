@@ -282,7 +282,7 @@ export default function FormBuilder({
       <ul>
         {fields.map((item, index) => {
           return (<>
-            <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.pages[0]?.modal.title && getValues('forms')[index]?.pages?.[0]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.pages?.[0]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
+            <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.pages[0]?.modal.title && getValues('forms')[index]?.pages?.[0]?.modal.title?.match(/\S/) ? ` – ${getValues('forms')[index]?.pages?.[0]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
 
               if(openFormType === 'button') {
@@ -291,9 +291,9 @@ export default function FormBuilder({
                 formMessageComponentsRemove(formToDeleteIndex)
                 //@ts-expect-error
                 getValues('message.components[0].components').forEach((component, i) => {
-                  if ((i >= formToDeleteIndex) && component.custom_id && component.custom_id.match(/\d+/)) {
+                  if ((i >= formToDeleteIndex) && component.custom_id && component.custom_id?.match(/\d+/)) {
                     //@ts-expect-error
-                    setValue(`message.components[0].components.${i}.custom_id`, `{FormID${parseInt(component.custom_id.match(/\d+/)[0]) - 1}}`)
+                    setValue(`message.components[0].components.${i}.custom_id`, `{FormID${parseInt(component.custom_id?.match(/\d+/)[0]) - 1}}`)
                   }
                 });
               }

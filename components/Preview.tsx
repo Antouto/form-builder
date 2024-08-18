@@ -374,9 +374,9 @@ function Preview({
                               if (component.style !== 5) {
                                 setDisplayPage(0)
                                 //@ts-expect-error
-                                setDisplayForm(parseInt(component.custom_id.match(/\d+/)[0]) - 1)
+                                setDisplayForm(parseInt(component.custom_id?.match(/\d+/)[0]) - 1)
                                 //@ts-expect-error
-                                if (displayForm === parseInt(component.custom_id.match(/\d+/)[0]) - 1) {
+                                if (displayForm === parseInt(component.custom_id?.match(/\d+/)[0]) - 1) {
                                   setTemporaryModalHighlight(true)
                                   executeFormScroll()
                                   setTimeout(() => setTemporaryModalHighlight(false), 300);

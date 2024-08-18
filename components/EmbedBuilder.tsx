@@ -42,7 +42,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
     {Array.isArray(getValues('message.embeds')) ? fields.map((item, index) =>
 
       <>
-        <Collapsible key={item.id} name={`Embed ${index + 1}${getValues('message.embeds')[index]?.title && getValues('message.embeds')[index]?.title.match(/\S/) ? ` – ${getValues('message.embeds')[index]?.title}` : ''}`} deleteButton={<CloseButton onClick={() => { remove(index); fixMessage(); }} />} style={{ padding: 0 }}>
+        <Collapsible key={item.id} name={`Embed ${index + 1}${getValues('message.embeds')[index]?.title && getValues('message.embeds')[index]?.title?.match(/\S/) ? ` – ${getValues('message.embeds')[index]?.title}` : ''}`} deleteButton={<CloseButton onClick={() => { remove(index); fixMessage(); }} />} style={{ padding: 0 }}>
           {/* Embed Author */}
           <Collapsible name="Author">
             {/* Embed Author Name */}

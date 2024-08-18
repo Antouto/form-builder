@@ -469,6 +469,8 @@ export default function FormBuilder({
                           onChange: (e) => {
                             //@ts-expect-error
                             setValue(`forms[${index}].submit_thread.type`, e.target.checked ? 12 : 11)
+                            //@ts-expect-error
+                            if(!e.target.checked) setValue(`forms[${index}].submit_thread.invitable`, undefined)
                           }
                         })}
                         colorScheme='blurple'

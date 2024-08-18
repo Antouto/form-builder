@@ -475,6 +475,21 @@ export default function FormBuilder({
                       />
                     </Box>
                   </HStack>
+                  {/* @ts-expect-error */}
+                  {(watch(`forms[${index}].submit_thread.type`) === 12) && <Box>
+                      <FormLabel htmlFor={`forms[${index}].submit_thread.invitable`}>Anyone can add people to the thread</FormLabel>
+                      <Switch
+                        //@ts-expect-error
+                        {...register(`forms[${index}].submit_thread.invitable`, {
+                          onChange: (e) => {
+                            //@ts-expect-error
+                            setValue(`forms[${index}].submit_thread.invitable`, e.target.checked ? undefined : false)
+                          }
+                        })}
+                        colorScheme='blurple'
+                        defaultChecked
+                      />
+                    </Box>}
                 </Collapsible>}
 
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>

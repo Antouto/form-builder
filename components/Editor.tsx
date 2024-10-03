@@ -758,9 +758,9 @@ export function Editor({
             <Text fontSize={19}  fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
-          <a href='https://discord.com/oauth2/authorize?client_id=1237079649259880508&response_type=code&redirect_uri=https%3A%2F%2Fforms.antouto.workers.dev%2Fredirect&scope=identify+guilds'>
+          {/* <a href='https://discord.com/oauth2/authorize?client_id=1237079649259880508&response_type=code&redirect_uri=https%3A%2F%2Fforms.antouto.workers.dev%2Fredirect&scope=identify+guilds'>
       <button>.</button>
-    </a>
+    </a> */}
         </VStack></>}
         {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>

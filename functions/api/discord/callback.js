@@ -33,8 +33,9 @@ export async function onRequest(context) { console.log('callback 1');
     console.log(tokenResponse.status)
     console.log(tokenResponse)
     console.log(await tokenResponse.json())
+    tokenResponse = await tokenResponse.json()
 
-    const { access_token } = tokenResponse.data;console.log('callback 7');
+    const { access_token } = tokenResponse;console.log('callback 7');
 
     // Redirect to the frontend with the access token
     console.log('callback 8');

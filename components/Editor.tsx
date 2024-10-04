@@ -758,7 +758,7 @@ export function Editor({
             <Text fontSize={19}  fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
-          <a href='https://discord.com/oauth2/authorize?client_id=1237079649259880508&response_type=code&redirect_uri=https%3A%2F%2Fforms.antouto.workers.dev%2Fredirect&scope=identify+guilds'>
+          <a href='https://discord.com/oauth2/authorize?client_id=807156860573974539&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds'>
       <button>.</button>
     </a>
         </VStack></>}

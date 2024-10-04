@@ -21,13 +21,14 @@ export async function onRequest(context) { console.log('callback 1');
 
   try {
     // Exchange code for access token
-    const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
+    let tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
       method: 'POST',
       body: body,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });console.log('callback 6');
+    tokenResponse = await tokenResponse.json()
 
     const { access_token } = tokenResponse.data;console.log('callback 7');
 

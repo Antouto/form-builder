@@ -8,18 +8,18 @@ export async function onRequest(context) {console.log('user 1');
   }console.log('user 3');
 
   try {
-    // Fetch user details from Discord using the access token
-    let userResponse = await fetch('https://discord.com/api/users/@me', {
+    // Fetch guild details from Discord using the access token
+    let guildResponse = await fetch('https://discord.com/api/users/@me/guilds', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });console.log('user 4');
-    userResponse = await userResponse.json()
+    guildResponse = await guildResponse.json()
 
     console.log('user 5');
     
     // Return user data to frontend
-    return new Response(JSON.stringify(userResponse), {
+    return new Response(JSON.stringify(guildResponse), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {

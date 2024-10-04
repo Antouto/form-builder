@@ -28,7 +28,11 @@ export async function onRequest(context) { console.log('callback 1');
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });console.log('callback 6');
-    tokenResponse = await tokenResponse.json()
+
+    console.log(tokenResponse.ok)
+    console.log(tokenResponse.status)
+    console.log(tokenResponse)
+    console.log(await tokenResponse.json())
 
     const { access_token } = tokenResponse.data;console.log('callback 7');
 

@@ -16,6 +16,7 @@ export async function onRequest(context) {console.log('user 1');
     });console.log('user 4');
     guildResponse = await guildResponse.json()
 
+    guildResponse = guildResponse.filter(guild => (guild.permissions & 1 << 3) === 1 << 3)
     console.log('user 5');
     
     // Return user data to frontend

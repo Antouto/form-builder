@@ -29,10 +29,6 @@ export async function onRequest(context) { console.log('callback 1');
       },
     });console.log('callback 6');
 
-    console.log(tokenResponse.ok)
-    console.log(tokenResponse.status)
-    console.log(tokenResponse)
-    console.log(await tokenResponse.json())
     tokenResponse = await tokenResponse.json()
 
     const { access_token } = tokenResponse;console.log('callback 7');

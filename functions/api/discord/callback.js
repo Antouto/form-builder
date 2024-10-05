@@ -7,8 +7,8 @@ export async function onRequest(context) { console.log('callback 1');
     return new Response("No authorization code provided", { status: 400 });
   }console.log('callback 3');
 
-  const client_id = '807156860573974539';
-  const client_secret = 'i4nLPL1rP15775yS2XsVMc8fhxnnVCP0'; //should be secret
+  const client_id = '942858850850205717';
+  const client_secret = process.env.DISCORD_CLIENT_SECRET;
   const redirect_uri = "https://form-builder.pages.dev/api/discord/callback";console.log('callback 4');
 
   const body = new URLSearchParams({

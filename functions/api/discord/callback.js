@@ -31,11 +31,24 @@ export async function onRequest(context) { console.log('callback 1');
 
     tokenResponse = await tokenResponse.json()
 
-    const { access_token } = tokenResponse;console.log('callback 7');
+    const { access_token, expires_in } = tokenResponse;console.log('callback 7');
 
     // Redirect to the frontend with the access token
     console.log('callback 8');
-    return Response.redirect(`https://form-builder.pages.dev/api/discord/user?access_token=${access_token}`);
+
+        // Set the access token as a cookie
+        const cookieHeader = `discord_token=${access_token}; HttpOnly=false; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
+
+        // Redirect user to a protected page, setting the cookie in the response
+        return new Response(null, {
+          status: 302,  // Redirect status
+          headers: {
+            'Set-Cookie': cookieHeader,
+            'Location': 'https://form-builder.pages.dev',  // Redirect to a page after login
+          },
+        });
+
+    //return Response.redirect(`https://form-builder.pages.dev/api/discord/user?access_token=${access_token}`);
   } catch (error) {
     return new Response(`Error fetching access token: ${error.message}`, { status: 500 });
   }

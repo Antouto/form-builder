@@ -1,17 +1,18 @@
-export async function onRequest(context) {console.log('user 1');
-  const { request } = context;
+export async function onRequest({ request, env }) {console.log('user 1');
   const url = new URL(request.url);
-  const access_token = url.searchParams.get('access_token');console.log('user 2');
+  const sessionID = request.headers.get('sessionID');console.log('user 2');
 
-  if (!access_token) {
-    return new Response("Access token not provided", { status: 400 });
+  if (!sessionID) {
+    return new Response("Session ID not provided", { status: 400 });
   }console.log('user 3');
+
+  const { token } = await env.SESSIONS.get(sessionID, 'json')
 
   try {
     // Fetch guild details from Discord using the access token
     let guildResponse = await fetch('https://discord.com/api/users/@me/guilds', {
       headers: {
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${token}`,
       },
     });console.log('user 4');
     guildResponse = await guildResponse.json()

@@ -1,14 +1,15 @@
-export async function onRequest({ request, env }) { console.log('callback 1');
+export async function onRequest({ request, env }) {
+  console.log('callback 1');
   const url = new URL(request.url);
   const code = url.searchParams.get('code'); console.log('callback 2');
 
   if (!code) {
     return new Response("No authorization code provided", { status: 400 });
-  }console.log('callback 3');
+  } console.log('callback 3');
 
   const client_id = '942858850850205717';
   const client_secret = env.DISCORD_CLIENT_SECRET;
-  const redirect_uri = "https://form-builder.pages.dev/api/discord/callback";console.log('callback 4');
+  const redirect_uri = "https://form-builder.pages.dev/api/discord/callback"; console.log('callback 4');
 
   const body = new URLSearchParams({
     client_id,
@@ -16,7 +17,7 @@ export async function onRequest({ request, env }) { console.log('callback 1');
     grant_type: 'authorization_code',
     code,
     redirect_uri,
-  });console.log('callback 5');
+  }); console.log('callback 5');
 
   try {
     // Exchange code for access token
@@ -26,26 +27,30 @@ export async function onRequest({ request, env }) { console.log('callback 1');
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-    });console.log('callback 6');
+    }); console.log('callback 6');
 
     tokenResponse = await tokenResponse.json()
 
-    const { access_token, expires_in } = tokenResponse;console.log('callback 7');
+    const { access_token, expires_in } = tokenResponse; console.log('callback 7');
 
     // Redirect to the frontend with the access token
     console.log('callback 8');
 
-        // Set the access token as a cookie
-        const cookieHeader = `discord_token=${access_token}; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
+    const sessionID = crypto.randomUUID()
 
-        // Redirect user to a protected page, setting the cookie in the response
-        return new Response(null, {
-          status: 302,  // Redirect status
-          headers: {
-            'Set-Cookie': cookieHeader,
-            'Location': 'https://form-builder.pages.dev',  // Redirect to a page after login
-          },
-        });
+    await env.SESSIONS.put(sessionID, JSON.stringify({ token: access_token }), { expirationTtl: expires_in })
+
+    // Set the access token as a cookie
+    const cookieHeader = `session=${sessionID}; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
+
+    // Redirect user to a protected page, setting the cookie in the response
+    return new Response(null, {
+      status: 302,  // Redirect status
+      headers: {
+        'Set-Cookie': cookieHeader,
+        'Location': 'https://form-builder.pages.dev',  // Redirect to a page after login
+      },
+    });
 
     //return Response.redirect(`https://form-builder.pages.dev/api/discord/user?access_token=${access_token}`);
   } catch (error) {

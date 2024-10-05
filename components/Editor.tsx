@@ -130,11 +130,27 @@ export function Editor({
     });
   }
 
-  const [cookieValue, setCookieValue] = useState(Cookies.get('discord_token') || ''); // Initialize state with existing cookie value
+  const [cookieValue, setCookieValue] = useState(Cookies.get('session') || ''); // Initialize state with existing cookie value
 
-  // useEffect(()=> {
-  //   if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
-  // }, [cookieValue])
+  const [guilds, setGuilds] = useState()
+
+  useEffect(() => {
+    // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
+
+    (async () => {
+      // Fetch guild details from Discord using the access token
+      let guildResponse = await fetch('https://form-builder.pages.dev/api/discord/session');
+      guildResponse = await guildResponse.json()
+
+      //@ts-expect-error
+      guildResponse = guildResponse.filter(guild => (guild.permissions & 1 << 3) === 1 << 3)
+      //@ts-expect-error
+      setGuilds(guildResponse)
+    })()
+
+  }, [cookieValue])
+
+  const [currentGuild, setCurrentGuild] = useState()
 
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
@@ -752,25 +768,51 @@ export function Editor({
           </Box>
         </VStack></>
         }
+        {stage === 'server_selection' && <>
+          <Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Choose a server</Text><VStack align='center' gap={4} mt='30px' width='100%'>
+            {/* @ts-expect-error */}
+            {guilds && guilds.map(guild => <>
+              <Button onClick={async () => {
+                // // Fetch guild details from Discord using the access token
+                // let guildResponse = await fetch(`https://discord.com/api/users/@me/guilds/${guild.id}`, {
+                //   headers: {
+                //     Authorization: `Bearer ${cookieValue}`,
+                //   },
+                // }); console.log('user 4');
+                // guildResponse = await guildResponse.json()
+
+                // //@ts-expect-error
+                // setCurrentGuild(guildResponse)
+
+                // TODO: USE FORMS BOT TO FETCH GUILD NOT BEARER TOKEN
+              }}>{guild.name}</Button>
+            </>)}
+
+            <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text>
+          </VStack>
+
+
+
+        </>}
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>
           <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
           <Text fontSize={18} my={4}>or start from a template</Text>
           <VStack>
-            <Text fontSize={19}  fontFamily='Whitney Bold'>Free templates</Text>
+            <Text fontSize={19} fontFamily='Whitney Bold'>Free templates</Text>
             <Button variant='primary-outline' onClick={() => setPreset('application')}>Application</Button>
           </VStack>
           <VStack>
-            <Text fontSize={19}  fontFamily='Whitney Bold'>Premium templates</Text>
+            <Text fontSize={19} fontFamily='Whitney Bold'>Premium templates</Text>
             <Button variant='primary-outline' onClick={() => setPreset('thread_ticket')}>Thread Ticket System</Button>
             <Button variant='primary-outline' onClick={() => setPreset('ticket')}>Channel Ticket System</Button>
           </VStack>
           <VStack>
-            <Text fontSize={19}  fontFamily='Whitney Bold'>Advanced</Text>
+            <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
           <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds'>
-      <button style={{color: 'darkgray'}}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
-    </a>
+            <button style={{ color: 'darkgray' }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
+          </a>
         </VStack></>}
         {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>

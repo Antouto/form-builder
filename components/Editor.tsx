@@ -21,6 +21,8 @@ import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
 
+import Cookies from 'js-cookie'
+
 const Defaults = {
   Embed: {
     color: 5793266,
@@ -38,6 +40,7 @@ const Defaults = {
   },
   Message: "Fill out the form below!",
 };
+
 
 export interface EditorProps<T extends FieldValues> {
   control: Control<T>;
@@ -126,6 +129,9 @@ export function Editor({
       isClosable: true,
     });
   }
+
+  const [cookieValue, setCookieValue] = useState(Cookies.get('discord_token') || ''); // Initialize state with existing cookie value
+
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
   const { isOpen, onOpen: onOpenWhereDoIFindSubmissionChannelID, onClose } = useDisclosure()
@@ -759,7 +765,7 @@ export function Editor({
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
           <a href='https://discord.com/oauth2/authorize?client_id=807156860573974539&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds'>
-      <button>.</button>
+      <button>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
     </a>
         </VStack></>}
         {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>

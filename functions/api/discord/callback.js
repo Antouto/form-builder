@@ -37,7 +37,7 @@ export async function onRequest(context) { console.log('callback 1');
     console.log('callback 8');
 
         // Set the access token as a cookie
-        const cookieHeader = `discord_token=${access_token}; HttpOnly=false; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
+        const cookieHeader = `discord_token=${access_token}; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
 
         // Redirect user to a protected page, setting the cookie in the response
         return new Response(null, {

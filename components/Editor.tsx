@@ -141,6 +141,8 @@ export function Editor({
       // Fetch guild details from Discord using the access token
       let guildResponse = await fetch('https://form-builder.pages.dev/api/discord/session');
       guildResponse = await guildResponse.json()
+      console.log('guildResponse')
+      console.log('guildResponse here', guildResponse)
 
       //@ts-expect-error
       guildResponse = guildResponse.filter(guild => (guild.permissions & 1 << 3) === 1 << 3)

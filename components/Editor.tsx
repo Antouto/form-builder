@@ -132,9 +132,9 @@ export function Editor({
 
   const [cookieValue, setCookieValue] = useState(Cookies.get('discord_token') || ''); // Initialize state with existing cookie value
 
-  useEffect(()=> {
-    if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
-  }, [cookieValue])
+  // useEffect(()=> {
+  //   if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
+  // }, [cookieValue])
 
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);

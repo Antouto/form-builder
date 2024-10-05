@@ -133,7 +133,7 @@ export function Editor({
   const [cookieValue, setCookieValue] = useState(Cookies.get('discord_token') || ''); // Initialize state with existing cookie value
 
   useEffect(()=> {
-    if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=807156860573974539&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
+    if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
   }, [cookieValue])
 
 
@@ -768,7 +768,7 @@ export function Editor({
             <Text fontSize={19}  fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
-          <a href='https://discord.com/oauth2/authorize?client_id=807156860573974539&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds'>
+          <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds'>
       <button style={{color: 'darkgray'}}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
     </a>
         </VStack></>}

@@ -1,5 +1,4 @@
-export async function onRequest(context) { console.log('callback 1');
-  const { request } = context;
+export async function onRequest({ request, env }) { console.log('callback 1');
   const url = new URL(request.url);
   const code = url.searchParams.get('code'); console.log('callback 2');
 
@@ -8,7 +7,7 @@ export async function onRequest(context) { console.log('callback 1');
   }console.log('callback 3');
 
   const client_id = '942858850850205717';
-  const client_secret = process.env.DISCORD_CLIENT_SECRET;
+  const client_secret = env.DISCORD_CLIENT_SECRET;
   const redirect_uri = "https://form-builder.pages.dev/api/discord/callback";console.log('callback 4');
 
   const body = new URLSearchParams({

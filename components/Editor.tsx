@@ -778,9 +778,9 @@ export function Editor({
 
                 async function getGuild(id: string) {
                   let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`);
-
-                  if(!guildResponse.ok) return null
                   guildResponse = await guildResponse.json()
+                  //@ts-expect-error
+                  if(guildResponse.code && guildResponse.code === 10004) return null
                   return guildResponse
                 }
 

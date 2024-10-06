@@ -790,20 +790,21 @@ export function Editor({
                 } else {
                   const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${guild.id}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true')
                   
-                  const checkPopup = setInterval(() => {
-                    //@ts-expect-error
-                    if (popup.window.location.href === "https://discord.com/oauth2/authorized") {
-                      //@ts-expect-error
-                      popup.close()
-                      (async ()=>{
-                        guildResponse = await getGuild(guild.id)
+                  window.addEventListener('message', (event) => {
+                    if (event.data === 'authorized') {
+                      // Close the popup if it hasn't been closed already
+                      if (popup && !popup.closed) {
+                        popup.close();
+                      }
+                  
+                      // Perform actions after authorization, such as fetching the guild data
+                      (async () => {
+                        guildResponse = await getGuild(guild.id);
                         //@ts-expect-error
-                        setCurrentGuild(guildResponse)
-                      })()
+                        setCurrentGuild(guildResponse);
+                      })();
                     }
-                    if (!popup || !popup.closed) return;
-                    clearInterval(checkPopup);
-                  }, 1000);
+                  });
                 }
               }}>{guild.name}</Button>
             </>)}

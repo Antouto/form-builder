@@ -135,7 +135,7 @@ export function Editor({
   const [guilds, setGuilds] = useState()
 
   useEffect(() => {
-    // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds');
+    // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none');
 
     (async () => {
       // Fetch guild details from Discord using the access token
@@ -812,7 +812,7 @@ export function Editor({
             <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
-          <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds'>
+          <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
             <button style={{ color: 'darkgray' }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
           </a>
           <button onClick={() => setStage('server_selection')} style={{ color: 'darkgray' }}>.</button>

@@ -1,6 +1,9 @@
+import { parse } from "cookie";
+
 export async function onRequest({ request, env }) {console.log('user 1');
   const url = new URL(request.url);
-  const sessionID = request.headers.get('sessionID');console.log('user 2');
+  const cookie = parse(request.headers.get("Cookie") || "");
+  const sessionID = cookie['session']
 
   if (!sessionID) {
     return new Response("Session ID not provided", { status: 400 });

@@ -777,14 +777,16 @@ export function Editor({
               <Button onClick={async () => {
 
                 async function getGuild(id: string) {
-                  let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`); console.log('user 4');
+                  let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`);
+
+                  if(!guildResponse.ok) return null
                   guildResponse = await guildResponse.json()
                   return guildResponse
                 }
 
                 let guildResponse = await getGuild(guild.id)
 
-                if (guildResponse.ok) {
+                if (guildResponse) {
                   //@ts-expect-error
                   setCurrentGuild(guildResponse)
                 } else {

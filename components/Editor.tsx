@@ -775,15 +775,35 @@ export function Editor({
             {/* @ts-expect-error */}
             {guilds && guilds.map(guild => <>
               <Button onClick={async () => {
-                // Fetch guild details from Discord using the access token
-                let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${guild.id}`); console.log('user 4');
-                guildResponse = await guildResponse.json()
+
+                async function getGuild(id: string) {
+                  let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`); console.log('user 4');
+                  guildResponse = await guildResponse.json()
+                  return guildResponse
+                }
+
+                let guildResponse = await getGuild(guild.id)
 
                 if (guildResponse.ok) {
                   //@ts-expect-error
                   setCurrentGuild(guildResponse)
                 } else {
                   const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${guild.id}&disable_guild_select=true`, 'popup', 'popup=true')
+                  
+                  const checkPopup = setInterval(() => {
+                    //@ts-expect-error
+                    if (popup.window.location.href === "https://discord.com/oauth2/authorized") {
+                      //@ts-expect-error
+                      popup.close()
+                      (async ()=>{
+                        guildResponse = await getGuild(guild.id)
+                        //@ts-expect-error
+                        setCurrentGuild(guildResponse)
+                      })()
+                    }
+                    if (!popup || !popup.closed) return;
+                    clearInterval(checkPopup);
+                  }, 1000);
                 }
               }}>{guild.name}</Button>
             </>)}

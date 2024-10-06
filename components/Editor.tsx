@@ -134,6 +134,23 @@ export function Editor({
 
   const [guilds, setGuilds] = useState()
 
+  async function getGuild(id: string) {
+    let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`);
+    guildResponse = await guildResponse.json()
+    //@ts-expect-error
+    setCurrentGuild(guildResponse);
+    //@ts-expect-error
+    if (guildResponse.code && guildResponse.code === 10004) {
+      //@ts-expect-error
+      setCurrentGuild(id);
+      return false
+    } else {
+      //@ts-expect-error
+      setCurrentGuild(guildResponse);
+      return guildResponse
+    }
+  }
+
   useEffect(() => {
     // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none');
 
@@ -158,6 +175,7 @@ export function Editor({
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
   const { isOpen, onOpen: onOpenWhereDoIFindSubmissionChannelID, onClose } = useDisclosure()
   const { isOpen: isOpenPremium, onOpen: onOpenPremium, onClose: onClosePremium } = useDisclosure()
+  const { isOpen: isOpenAddToServer, onOpen: onOpenAddToServer, onClose: onCloseAddToServer } = useDisclosure()
   const [premiumFeatureTarget, setPremiumFeatureTarget] = useState('custom_branding')
 
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
@@ -774,32 +792,12 @@ export function Editor({
           <Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Choose a server</Text><VStack align='center' gap={4} mt='30px' width='100%'>
             {/* @ts-expect-error */}
             {guilds && guilds.map(guild => <>
-              <Button onClick={() => {
+              <Button onClick={async () => {
 
-                async function getGuild(id: string) {
-                  let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`);
-                  guildResponse = await guildResponse.json()
-                  //@ts-expect-error
-                  if(guildResponse.code && guildResponse.code === 10004) return null
-                  //@ts-expect-error
-                  setCurrentGuild(guildResponse);
-                }
+                let guildResponse = await getGuild(guild.id)
 
-                let guildResponse = null //getGuild(guild.id)
-
-                if (!guildResponse) {
-                  const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${guild.id}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true,width=485,height=700')
-                  
-                  window.addEventListener('message', (event) => {
-                    if (event.data === 'authorized') {
-                      // Close the popup if it hasn't been closed already
-                      if (popup && !popup.closed) {
-                        popup.close();
-                      }
-                      getGuild(guild.id);
-
-                    }
-                  });
+                if (guildResponse === false) {
+                  onOpenAddToServer()
                 }
               }}>{guild.name}</Button>
             </>)}
@@ -1091,6 +1089,36 @@ export function Editor({
 
           <ModalFooter>
             <Button variant='primary' onClick={onClose}>Okay</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isOpenAddToServer} onClose={onCloseAddToServer}>
+        <ModalOverlay />
+        <ModalContent bg='grey.dark'>
+          <ModalHeader>Add Forms to your server</ModalHeader>
+          {/* <ModalCloseButton /> */}
+          {/* <ModalBody pt={5}>
+            <Text fontFamily='Whitney Bold'>1. Enable Developer Mode</Text>
+          </ModalBody> */}
+
+          <ModalFooter>
+            <Button variant='primary' onClick={() => {
+              onCloseAddToServer()
+
+              const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${currentGuild}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true,width=485,height=700')
+
+              window.addEventListener('message', (event) => {
+                if (event.data === 'authorized') {
+                  // Close the popup if it hasn't been closed already
+                  if (popup && !popup.closed) {
+                    popup.close();
+                  }
+                  //@ts-expect-error
+                  getGuild(currentGuild);
+
+                }
+              });
+            }}>Add to server</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

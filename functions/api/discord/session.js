@@ -35,6 +35,7 @@ export async function onRequest({ request, env }) {console.log('user 1');
       //return specific guild to frontend
       return new Response(JSON.stringify(specificGuildResponse), {
         headers: { 'Content-Type': 'application/json' },
+        status: specificGuildResponse.status
       });
     }
     

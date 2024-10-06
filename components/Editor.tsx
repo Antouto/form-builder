@@ -779,9 +779,12 @@ export function Editor({
                 let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${guild.id}`); console.log('user 4');
                 guildResponse = await guildResponse.json()
 
-                //@ts-expect-error
-                setCurrentGuild(guildResponse)
-
+                if (guildResponse.ok) {
+                  //@ts-expect-error
+                  setCurrentGuild(guildResponse)
+                } else {
+                  const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${guild.id}&disable_guild_select=true`, 'popup', 'popup=true')
+                }
               }}>{guild.name}</Button>
             </>)}
 
@@ -807,10 +810,10 @@ export function Editor({
             <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
-          {/* <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
+          <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
             <button style={{ color: 'darkgray' }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
           </a>
-          <button onClick={() => setStage('server_selection')} style={{ color: 'darkgray' }}>.</button> */}
+          <button onClick={() => setStage('server_selection')} style={{ color: 'darkgray' }}>.</button>
         </VStack></>}
         {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>

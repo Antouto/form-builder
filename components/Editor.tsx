@@ -788,7 +788,7 @@ export function Editor({
                   //@ts-expect-error
                   setCurrentGuild(guildResponse)
                 } else {
-                  const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${guild.id}&disable_guild_select=true&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true')
+                  const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands+identify&guild_id=${guild.id}&disable_guild_select=true&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true')
                   
                   const checkPopup = setInterval(() => {
                     //@ts-expect-error

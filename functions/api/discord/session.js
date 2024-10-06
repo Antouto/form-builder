@@ -22,8 +22,23 @@ export async function onRequest({ request, env }) {console.log('user 1');
 
     guildResponse = guildResponse.filter(guild => (guild.permissions & 1 << 3) === 1 << 3)
     console.log('user 5');
+
+    const guild_id = url.searchParams.get('guild_id');
+    if(guild_id && guildResponse.some(guild => guild.id === guild_id)) {
+      let specificGuildResponse = await fetch(`https://discord.com/api/guilds/${guild_id}`, {
+        headers: {
+          Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+        },
+      });
+      specificGuildResponse = await specificGuildResponse.json()
+
+      //return specific guild to frontend
+      return new Response(JSON.stringify(specificGuildResponse), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
     
-    // Return user data to frontend
+    // Return guild list to frontend
     return new Response(JSON.stringify(guildResponse), {
       headers: { 'Content-Type': 'application/json' },
     });

@@ -775,18 +775,13 @@ export function Editor({
             {/* @ts-expect-error */}
             {guilds && guilds.map(guild => <>
               <Button onClick={async () => {
-                // // Fetch guild details from Discord using the access token
-                // let guildResponse = await fetch(`https://discord.com/api/users/@me/guilds/${guild.id}`, {
-                //   headers: {
-                //     Authorization: `Bearer ${cookieValue}`,
-                //   },
-                // }); console.log('user 4');
-                // guildResponse = await guildResponse.json()
+                // Fetch guild details from Discord using the access token
+                let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${guild.id}`); console.log('user 4');
+                guildResponse = await guildResponse.json()
 
-                // //@ts-expect-error
-                // setCurrentGuild(guildResponse)
+                //@ts-expect-error
+                setCurrentGuild(guildResponse)
 
-                // TODO: USE FORMS BOT TO FETCH GUILD NOT BEARER TOKEN
               }}>{guild.name}</Button>
             </>)}
 

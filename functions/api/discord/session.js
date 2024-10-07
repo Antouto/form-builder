@@ -25,7 +25,7 @@ export async function onRequest({ request, env }) {console.log('user 1');
 
     const guild_id = url.searchParams.get('guild_id');
     if(guild_id && guildResponse.some(guild => guild.id === guild_id)) {
-      let specificGuildResponse = await fetch(`https://discord.com/api/guilds/${guild_id}`, {
+      let specificGuildResponse = await fetch(`https://discord.com/api/guilds/${guild_id}/channels`, { // Specific Guild Channels
         headers: {
           Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
         },

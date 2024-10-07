@@ -68,6 +68,7 @@ export async function onRequest({ request, env }) {
       status: 200,
       headers: {
         'Set-Cookie': cookieHeader,
+        'Content-Type': 'text/html'
         // 'Location': 'https://form-builder.pages.dev',  // Redirect to a page after login
       },
     });

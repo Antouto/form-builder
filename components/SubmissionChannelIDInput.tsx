@@ -1,4 +1,4 @@
-import { FormLabel, HStack, Text, useColorMode } from '@chakra-ui/react'
+import { FormLabel, HStack, Select, Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import ErrorMessage from './ErrorMessage'
 
@@ -19,7 +19,20 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         style={{ marginBottom: '2px' }}
       />
       <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (onOpenWhereDoIFindSubmissionChannelID && !watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />
-      {Array.isArray(currentGuild) ? JSON.stringify(currentGuild) : ''}
+      {Array.isArray(currentGuild) ? <Select
+        height='24px!important'
+        maxWidth='155px'
+        borderWidth='2px'
+        borderColor='transparent'
+        borderRadius='4px'
+        bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
+        _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
+        _hover={{ borderColor: 'transparent' }}
+      // onChange={(event) => setServerSubmissionMessage(event.target.value, index)}
+      // value={serverSubmissionMessage[index]}
+      >
+        {currentGuild.map(channel => <option value={channel.id}>{channel.name}</option>)}
+      </Select> : ''}
     </>
   )
 }

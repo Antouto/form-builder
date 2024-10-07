@@ -31,7 +31,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       // onChange={(event) => setServerSubmissionMessage(event.target.value, index)}
       // value={serverSubmissionMessage[index]}
       >
-        {currentGuild.map(channel => <option value={channel.id}>{channel.name}</option>)}
+        {currentGuild.map(channel => <option key={channel.id} value={channel.id}>{channel.name}</option>)}
       </Select> : ''}
     </>
   )

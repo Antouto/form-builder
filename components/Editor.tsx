@@ -834,13 +834,14 @@ export function Editor({
             const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none`, 'popup', 'popup=true,width=485,height=700')
 
             window.addEventListener('message', (event) => {
-              if (event.data.startsWith('authorized ')) {
+              if (event.data === 'authorized') {
                 // Close the popup if it hasn't been closed already
                 if (popup && !popup.closed) {
                   popup.close();
                 }
 
                 // GET DATA
+                console.log('GET DATA')
                 getGuilds()
 
               }

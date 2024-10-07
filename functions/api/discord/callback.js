@@ -44,11 +44,31 @@ export async function onRequest({ request, env }) {
     const cookieHeader = `session=${sessionID}; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
 
     // Redirect user to a protected page, setting the cookie in the response
-    return new Response(null, {
-      status: 302,  // Redirect status
+    return new Response(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth2 Callback</title>
+  <script>
+    window.onload = function () {
+      if (window.opener) {
+        window.opener.postMessage("authorized", "*");
+        window.close();
+      }
+    };
+  </script>
+</head>
+<body>
+  <noscript>Authorization successful. You may close this window.</noscript>
+</body>
+</html>
+`, {
+      // status: 302,  // Redirect status
+      status: 200,
       headers: {
         'Set-Cookie': cookieHeader,
-        'Location': 'https://form-builder.pages.dev',  // Redirect to a page after login
+        // 'Location': 'https://form-builder.pages.dev',  // Redirect to a page after login
       },
     });
 

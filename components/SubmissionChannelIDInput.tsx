@@ -19,7 +19,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         style={{ marginBottom: '2px' }}
       />
       <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (onOpenWhereDoIFindSubmissionChannelID && !watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />
-      <Text>{JSON.stringify(currentGuild)}</Text>
+      {Array.isArray(currentGuild) ? JSON.stringify(currentGuild) : ''}
     </>
   )
 }

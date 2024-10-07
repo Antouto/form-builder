@@ -7,9 +7,13 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
 
   return (
     <>
+      <FormLabel htmlFor={`forms[${index}].submit_channel_id`} display='flex' alignItems='center'>
+        <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel {Array.isArray(currentGuild) ? 'ID':''}</Text>
+        {onOpenWhereDoIFindSubmissionChannelID && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
+      </FormLabel>
       {Array.isArray(currentGuild) ? <Select
-        height='24px!important'
-        maxWidth='155px'
+        height='36px!important'
+        // maxWidth='155px'
         borderWidth='2px'
         borderColor='transparent'
         borderRadius='4px'
@@ -22,12 +26,6 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         <option disabled selected value="">Select an option</option>
         {currentGuild.map(channel => <option key={channel.id} value={channel.id}>{channel.name}</option>)}
       </Select> : <>
-        <HStack>
-          <FormLabel htmlFor={`forms[${index}].submit_channel_id`} display='flex' alignItems='center'>
-            <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel ID</Text>
-            {onOpenWhereDoIFindSubmissionChannelID && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
-          </FormLabel>
-        </HStack>
         <input
           {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
           id={`forms[${index}].submit_channel_id`}

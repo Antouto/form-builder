@@ -23,8 +23,8 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         onChange={(event) => setValue(`forms.${index}.submit_channel_id`, event.target.value)}
       // value={serverSubmissionMessage[index]}
       >
-        <option disabled selected value="">Select an option</option>
-        {currentGuild.map(channel => <option key={channel.id} value={channel.id}>{channel.name}</option>)}
+        <option disabled selected value="">Select a channel</option>
+        {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={channel.id} value={channel.id}>{channel.name}</option>)}
       </Select> : <>
         <input
           {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
@@ -33,6 +33,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         />
       </>}
       <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (onOpenWhereDoIFindSubmissionChannelID && !watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />
+      {!onOpenWhereDoIFindSubmissionChannelID && <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>}
     </>
   )
 }

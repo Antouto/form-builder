@@ -140,7 +140,7 @@ export function Editor({
     guildResponse = await guildResponse.json()
     console.log('getGuild 2')
     //@ts-expect-error
-    if (guildResponse.code && guildResponse.code === 10004) {
+    if (guildResponse.code && guildResponse.code === 50001) {
       //@ts-expect-error
       setCurrentGuild(id);
       return false

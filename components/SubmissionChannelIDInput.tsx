@@ -33,7 +33,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         />
       </>}
       <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (onOpenWhereDoIFindSubmissionChannelID && !watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />
-      {!onOpenWhereDoIFindSubmissionChannelID && <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>}
+      {!Array.isArray(currentGuild) && !onOpenWhereDoIFindSubmissionChannelID && <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>}
     </>
   )
 }

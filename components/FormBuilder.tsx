@@ -382,7 +382,7 @@ export default function FormBuilder({
                   </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} currentGuild={currentGuild}/>}
+                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} currentGuild={currentGuild} setValue={setValue}/>}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>

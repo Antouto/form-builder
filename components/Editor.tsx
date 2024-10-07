@@ -135,10 +135,10 @@ export function Editor({
   const [guilds, setGuilds] = useState()
 
   async function getGuild(id: string) {
+    console.log('getGuild 1')
     let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`);
     guildResponse = await guildResponse.json()
-    //@ts-expect-error
-    setCurrentGuild(guildResponse);
+    console.log('getGuild 2')
     //@ts-expect-error
     if (guildResponse.code && guildResponse.code === 10004) {
       //@ts-expect-error

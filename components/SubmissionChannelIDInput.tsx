@@ -8,7 +8,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
   return (
     <>
       <FormLabel htmlFor={`forms[${index}].submit_channel_id`} display='flex' alignItems='center'>
-        <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel {Array.isArray(currentGuild) ? 'ID':''}</Text>
+        <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel {Array.isArray(currentGuild) ? '':'ID'}</Text>
         {onOpenWhereDoIFindSubmissionChannelID && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
       </FormLabel>
       {Array.isArray(currentGuild) ? <Select

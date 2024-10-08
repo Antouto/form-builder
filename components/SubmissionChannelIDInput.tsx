@@ -46,7 +46,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       }
 
       {/* Logged In or Input method chosen */}
-      {cookieValue || (inputMethod === 'manual') && (Array.isArray(currentGuild) ? <Select
+      {(cookieValue || (inputMethod === 'manual')) && (Array.isArray(currentGuild) ? <Select
       height='36px!important'
       // maxWidth='155px'
       borderWidth='2px'

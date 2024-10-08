@@ -2,7 +2,7 @@ import { Button, FormLabel, HStack, Select, Text, textDecoration, useColorMode }
 import React, { useState } from 'react'
 import ErrorMessage from './ErrorMessage'
 
-export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, setValue, cookieValue, getGuilds, setStage }: any) {
+export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, setValue, cookieValue, setCookieValue, getGuilds, setStage }: any) {
   const colorMode = useColorMode().colorMode
 
   const [inputMethod, _setInputMethod] = useState() // login or manual
@@ -24,6 +24,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           // GET DATA
           console.log('GET DATA')
           getGuilds()
+          setCookieValue(true)
           setStage('server_selection')
         }
       });
@@ -45,7 +46,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         </HStack>
       }
 
-      {/* Logged In or Input method chosen */}
+      {/* Logged In or Input method manual */}
       {(cookieValue || (inputMethod === 'manual')) && (Array.isArray(currentGuild) ? <Select
       height='36px!important'
       // maxWidth='155px'

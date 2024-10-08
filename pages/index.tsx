@@ -488,7 +488,7 @@ export default function App() {
   const [displayForm, setDisplayForm] = useState(0);
   const [displayPage, setDisplayPage] = useState(0);
   const [displaySection, setDisplaySection] = useState(1);
-  const [stage, setStage] = useState('welcome') //server_selection
+  const [stage, setStage] = useState('welcome') //ion
   const SettingsModal = useModal();
   const isNotSmallScreen = useScreenWidth(1070);
   const [cookieValue, setCookieValue] = useState(Cookies.get('session') || ''); // Initialize state with existing cookie value

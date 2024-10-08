@@ -103,7 +103,11 @@ export function Editor({
   //@ts-expect-error
   _setSubmissionChannel,
   //@ts-expect-error
-  setPreset
+  setPreset,
+  //@ts-expect-error
+  cookieValue,
+  //@ts-expect-error
+  setCookieValue,
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
@@ -130,7 +134,6 @@ export function Editor({
     });
   }
 
-  const [cookieValue, setCookieValue] = useState(Cookies.get('session') || ''); // Initialize state with existing cookie value
 
   const [guilds, setGuilds] = useState()
 
@@ -167,6 +170,7 @@ export function Editor({
   useEffect(() => {
     // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none');
 
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
     getGuilds()
 
   }, [cookieValue])
@@ -681,7 +685,10 @@ export function Editor({
             onOpenPremium,
             onClosePremium,
             setPremiumFeatureTarget,
-            currentGuild
+            currentGuild,
+            cookieValue,
+            getGuilds,
+            setStage
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -801,11 +808,14 @@ export function Editor({
 
                 if (guildResponse === false) {
                   onOpenAddToServer()
+                } else {
+                  setStage('submissions')
                 }
               }}>{guild.name}</Button>
             </>)}
 
-            <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text>
+            {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
+            {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
           </VStack>
 
 
@@ -1049,7 +1059,7 @@ export function Editor({
                 {/* @ts-expect-error */}
                 <ErrorMessage error={formState.errors.forms?.[0]?.submit_channel?.parent_id} />
                 <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
-              </> : <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} setValue={setValue} />}
+              </> : <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} />}
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>

@@ -94,7 +94,13 @@ export default function FormBuilder({
   //@ts-expect-error
   setPremiumFeatureTarget,
   //@ts-expect-error
-  currentGuild
+  currentGuild,
+  //@ts-expect-error
+  cookieValue,
+  //@ts-expect-error
+  getGuilds,
+  //@ts-expect-error
+  setStage
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -287,7 +293,7 @@ export default function FormBuilder({
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.pages[0]?.modal.title && getValues('forms')[index]?.pages?.[0]?.modal.title?.match(/\S/) ? ` – ${getValues('forms')[index]?.pages?.[0]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
 
-              if(openFormType === 'button') {
+              if (openFormType === 'button') {
                 //@ts-expect-error
                 const formToDeleteIndex = getValues('message.components[0].components')?.findIndex(component => (component.custom_id) && (component.custom_id === `{FormID${index + 1}}`))
                 formMessageComponentsRemove(formToDeleteIndex)
@@ -382,7 +388,7 @@ export default function FormBuilder({
                   </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} currentGuild={currentGuild} setValue={setValue}/>}
+                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} currentGuild={currentGuild} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
@@ -476,7 +482,7 @@ export default function FormBuilder({
                             //@ts-expect-error
                             setValue(`forms[${index}].submit_thread.type`, e.target.checked ? 12 : 11)
                             //@ts-expect-error
-                            if(!e.target.checked) setValue(`forms[${index}].submit_thread.invitable`, undefined)
+                            if (!e.target.checked) setValue(`forms[${index}].submit_thread.invitable`, undefined)
                           }
                         })}
                         colorScheme='blurple'
@@ -485,19 +491,19 @@ export default function FormBuilder({
                   </HStack>
                   {/* @ts-expect-error */}
                   {(watch(`forms[${index}].submit_thread.type`) === 12) && <Box>
-                      <FormLabel htmlFor={`forms[${index}].submit_thread.invitable`}>Anyone can add people to the thread</FormLabel>
-                      <Switch
-                        //@ts-expect-error
-                        {...register(`forms[${index}].submit_thread.invitable`, {
-                          onChange: (e) => {
-                            //@ts-expect-error
-                            setValue(`forms[${index}].submit_thread.invitable`, e.target.checked ? undefined : false)
-                          }
-                        })}
-                        colorScheme='blurple'
-                        defaultChecked
-                      />
-                    </Box>}
+                    <FormLabel htmlFor={`forms[${index}].submit_thread.invitable`}>Anyone can add people to the thread</FormLabel>
+                    <Switch
+                      //@ts-expect-error
+                      {...register(`forms[${index}].submit_thread.invitable`, {
+                        onChange: (e) => {
+                          //@ts-expect-error
+                          setValue(`forms[${index}].submit_thread.invitable`, e.target.checked ? undefined : false)
+                        }
+                      })}
+                      colorScheme='blurple'
+                      defaultChecked
+                    />
+                  </Box>}
                 </Collapsible>}
 
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>

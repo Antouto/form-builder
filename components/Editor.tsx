@@ -842,7 +842,7 @@ export function Editor({
             <button style={{ color: 'darkgray' }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
           </a> */}
 
-          <button style={{ color: 'darkgray' }} onClick={() => {
+          {/* <button style={{ color: 'darkgray' }} onClick={() => {
             const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none`, 'popup', 'popup=true,width=485,height=700')
 
             window.addEventListener('message', (event) => {
@@ -860,7 +860,7 @@ export function Editor({
             });
           }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
 
-          <button onClick={() => setStage('server_selection')} style={{ color: 'darkgray' }}>.</button>
+          <button onClick={() => setStage('server_selection')} style={{ color: 'darkgray' }}>.</button> */}
         </VStack></>}
         {stage === 'useCase' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>What kind of form would you like to create?</Text>
           <VStack align='center' mt={10} width='100%' gap={10}>

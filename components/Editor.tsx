@@ -803,7 +803,7 @@ export function Editor({
           <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
             <VStack align='right' gap={4}>
               {/* @ts-expect-error */}
-              {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2} onClick={async () => {
+              {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2} cursor='pointer' onClick={async () => {
 
                 let guildResponse = await getGuild(guild.id)
 

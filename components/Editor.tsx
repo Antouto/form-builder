@@ -800,10 +800,11 @@ export function Editor({
         </VStack></>
         }
         {stage === 'server_selection' && <>
-          <Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Choose a server</Text><VStack align='center' gap={4} mt='30px' width='100%'>
+          <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
             {/* @ts-expect-error */}
-            {guilds && guilds.map(guild => <>
-              <Button onClick={async () => {
+            {guilds ? guilds.map(guild => <HStack gap={2}>
+              <img height='32px' width='32px' style={{ borderRadius: '50%' }} src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${guild.icon && guild.icon.startsWith('_a') ? 'gif' : 'png'}`}/>
+              <button onClick={async () => {
 
                 let guildResponse = await getGuild(guild.id)
 
@@ -812,8 +813,8 @@ export function Editor({
                 } else {
                   setStage('submissions')
                 }
-              }}>{guild.name}</Button>
-            </>)}
+              }}>{guild.name}</button>
+            </HStack>) : 'You don\'t have administrator permissions in any server. These are required to set up forms.'}
 
             {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
             {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}

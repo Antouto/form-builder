@@ -14,7 +14,7 @@ export function PreviewStep({ number, title, children, highlighted, reference, c
       </Box>}
       <Box p={3} pt={2} transition='border .3s' borderRadius='8px' border={highlighted ? `2px solid #5865F2` : `2px solid ${colorMode === 'dark' ? '#2f3136' : '#f2f3f5'}`} bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} width='100%'>
         <HStack justifyContent='space-between'>
-          <Text pb={2}>{isMediumScreen && `${number}. `}{title}</Text>
+          <Box pb={2}>{isMediumScreen && `${number}. `}{title}</Box>
           {controls}
         </HStack>
         {children}

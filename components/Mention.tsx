@@ -67,6 +67,10 @@ export function SlashCommand({ children }: MentionProperties) {
   return <Mention>/{children}</Mention>;
 }
 
+export function Channel({ children }: MentionProperties) {
+  return <Mention>#{children}</Mention>;
+}
+
 const Invite =
   "https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot";
 export function FormProfile({

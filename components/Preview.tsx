@@ -20,7 +20,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
-import { FormProfile } from "./Mention";
+import { Channel, FormProfile, SlashCommand } from "./Mention";
 import { PreviewStep } from "./PreviewStep";
 import { AVATAR_URL } from "../util/config";
 
@@ -38,6 +38,8 @@ export interface PreviewProperties {
   setDisplayPage: React.Dispatch<React.SetStateAction<number>>;
   displaySection: boolean;
   stage: string;
+  currentChannel: any;
+  setCurrentChannel: any;
 }
 
 function Preview({
@@ -684,7 +686,7 @@ function Preview({
         <PreviewStep
           number={!application_command ? 3 : 2}
           //@ts-expect-error
-          title={forms[displayForm].submit_channel ? 'A channel is created for the submission' : (forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : 'The submission is sent to a channel')}
+          title={forms[displayForm].submit_channel ? <>A channel is created for the submission</> : <>{forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : <>The submission is sent to a {forms[displayForm].submit_channel_id && currentChannel.find(channel => channel.id === forms[displayForm].submit_channel_id) ? <Channel>{currentChannel.find(channel => channel.id === forms[displayForm].submit_channel_id).name}</Channel> : 'channel'}</>}</>}
           highlighted={stage === 'server_selection' || stage === 'submissions' || temporarySubmissionHighlight}
           reference={applicationCommandRef}
         >

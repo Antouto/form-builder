@@ -108,6 +108,10 @@ export function Editor({
   cookieValue,
   //@ts-expect-error
   setCookieValue,
+  //@ts-expect-error
+  currentGuild,
+  //@ts-expect-error
+  setCurrentGuild
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
@@ -175,7 +179,6 @@ export function Editor({
 
   }, [cookieValue])
 
-  const [currentGuild, setCurrentGuild] = useState()
   const [loadingGuild, setLoadingGuild] = useState(false)
 
 

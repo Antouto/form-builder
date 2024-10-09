@@ -686,7 +686,7 @@ function Preview({
         <PreviewStep
           number={!application_command ? 3 : 2}
           //@ts-expect-error
-          title={forms[displayForm].submit_channel ? <>A channel is created for the submission</> : <>{forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : <>The submission is sent to a {forms[displayForm].submit_channel_id && currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id) ? <Channel>{currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id).name}</Channel> : 'channel'}</>}</>}
+          title={forms[displayForm].submit_channel ? <>A channel is created for the submission</> : <>{forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : <>The submission is sent to a {forms[displayForm].submit_channel_id && Array.isArray(currentGuild) && currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id) ? <Channel>{currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id).name}</Channel> : 'channel'}</>}</>}
           highlighted={stage === 'server_selection' || stage === 'submissions' || temporarySubmissionHighlight}
           reference={applicationCommandRef}
         >

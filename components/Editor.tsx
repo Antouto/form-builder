@@ -801,6 +801,7 @@ export function Editor({
         }
         {stage === 'server_selection' && <>
           <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
+          <VStack align='right' gap={4}>
             {/* @ts-expect-error */}
             {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2}>
               <Avatar name={guild.name} bg='#313338' src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${guild.icon && guild.icon.startsWith('a_') ? 'gif' : 'png'}`} />
@@ -818,6 +819,7 @@ export function Editor({
 
             {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
             {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
+            </VStack>
           </VStack>
 
 

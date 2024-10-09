@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Control, FieldValues, FormState, UseFormGetValues, UseFormRegister, UseFormReset, UseFormResetField, UseFormSetValue, UseFormWatch, UseFieldArrayAppend, UseFieldArrayRemove, UseFieldArrayMove } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
 import { Box, VStack, Button, Heading, useToast, HStack, Input, cssVar, Spinner, Text, FormLabel, useDisclosure, Link, Divider, Switch, Tooltip, Stack, Image, Avatar } from "@chakra-ui/react";
@@ -176,6 +176,7 @@ export function Editor({
   }, [cookieValue])
 
   const [currentGuild, setCurrentGuild] = useState()
+  const [loadingGuild, setLoadingGuild] = useState(false)
 
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
@@ -801,11 +802,13 @@ export function Editor({
         }
         {stage === 'server_selection' && <>
           <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
-            <VStack align='right' gap={4}>
+            {loadingGuild ? <Spinner color='blurple'/> : <VStack align='right' gap={4}>
               {/* @ts-expect-error */}
               {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2} cursor='pointer' onClick={async () => {
 
+                setLoadingGuild(true)
                 let guildResponse = await getGuild(guild.id)
+                setLoadingGuild(false)
 
                 if (guildResponse === false) {
                   onOpenAddToServer()
@@ -819,7 +822,7 @@ export function Editor({
 
               {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
               {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
-            </VStack>
+            </VStack>}
           </VStack>
 
 

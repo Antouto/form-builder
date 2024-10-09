@@ -148,11 +148,9 @@ export function Editor({
     console.log('getGuild 2')
     //@ts-expect-error
     if (guildResponse.code && guildResponse.code === 50001) {
-      //@ts-expect-error
       setCurrentGuild(id);
       return false
     } else {
-      //@ts-expect-error
       setCurrentGuild(guildResponse);
       return guildResponse
     }
@@ -1154,7 +1152,6 @@ export function Editor({
                   if (popup && !popup.closed) {
                     popup.close();
                   }
-                  //@ts-expect-error
                   getGuild(currentGuild);
 
                 }

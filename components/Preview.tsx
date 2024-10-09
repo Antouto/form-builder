@@ -53,7 +53,9 @@ function Preview({
   displayPage,
   setDisplayPage,
   displaySection,
-  stage
+  stage,
+  currentChannel,
+  setCurrentChannel
 }: PreviewProperties) {
   const { colorMode } = useColorMode();
   const defaultValues = {

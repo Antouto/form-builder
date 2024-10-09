@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Control, FieldValues, FormState, UseFormGetValues, UseFormRegister, UseFormReset, UseFormResetField, UseFormSetValue, UseFormWatch, UseFieldArrayAppend, UseFieldArrayRemove, UseFieldArrayMove } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
-import { Box, VStack, Button, Heading, useToast, HStack, Input, cssVar, Spinner, Text, FormLabel, useDisclosure, Link, Divider, Switch, Tooltip, Stack, Image } from "@chakra-ui/react";
+import { Box, VStack, Button, Heading, useToast, HStack, Input, cssVar, Spinner, Text, FormLabel, useDisclosure, Link, Divider, Switch, Tooltip, Stack, Image, Avatar } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
 import OpenFormTypeBuilder from "./OpenFormTypeBuilder";
@@ -803,7 +803,7 @@ export function Editor({
           <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
             {/* @ts-expect-error */}
             {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2}>
-              <img height='32px' width='32px' style={{ borderRadius: '50%' }} src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${guild.icon && guild.icon.startsWith('_a') ? 'gif' : 'png'}`}/>
+              <Avatar name={guild.name} src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${guild.icon && guild.icon.startsWith('a_') ? 'gif' : 'png'}`} />
               <button onClick={async () => {
 
                 let guildResponse = await getGuild(guild.id)

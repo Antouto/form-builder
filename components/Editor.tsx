@@ -802,7 +802,7 @@ export function Editor({
         {stage === 'server_selection' && <>
           <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
             {/* @ts-expect-error */}
-            {guilds ? guilds.map(guild => <HStack gap={2}>
+            {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2}>
               <img height='32px' width='32px' style={{ borderRadius: '50%' }} src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${guild.icon && guild.icon.startsWith('_a') ? 'gif' : 'png'}`}/>
               <button onClick={async () => {
 

@@ -42,6 +42,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       {!cookieValue && !inputMethod &&
         <HStack gap={3}>
           <Button variant='primary' onClick={() => setInputMethod('login')}>Login to choose channel</Button>
+          <Text>or</Text>
           <button onClick={() => setInputMethod('manual')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>Enter Channel ID Manually</button>
         </HStack>
       }

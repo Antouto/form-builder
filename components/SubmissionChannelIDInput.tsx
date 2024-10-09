@@ -68,8 +68,8 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           style={{ marginBottom: '2px' }}
         />
         <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (onOpenWhereDoIFindSubmissionChannelID && !watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />
-        {!Array.isArray(currentGuild) && !onOpenWhereDoIFindSubmissionChannelID && <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>}
-        <button onClick={() => setInputMethod('login')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>Login to choose channel</button>
+        {!Array.isArray(currentGuild) && !onOpenWhereDoIFindSubmissionChannelID && <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then go to the Submission Channel –&gt; Right Click –&gt; Copy Channel ID<br /></Text>}
+        <HStack><Text>or</Text><button onClick={() => setInputMethod('login')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>login to choose channel</button></HStack>
       </>)}
 
 

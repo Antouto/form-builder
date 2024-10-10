@@ -22,7 +22,7 @@ export interface MetaProperties {
 }
 
 export function Meta({ children: Title }: MetaProperties) {
-    const [WebsiteURL, SetWebURL] = useState("https://discordforms.app/");
+    const [WebsiteURL, SetWebURL] = useState("https://create.discordforms.app/");
     useEffect(() => {
         SetWebURL(Router.basePath)
     }, []);

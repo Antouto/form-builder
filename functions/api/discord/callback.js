@@ -9,7 +9,7 @@ export async function onRequest({ request, env }) {
 
   const client_id = '942858850850205717';
   const client_secret = env.DISCORD_CLIENT_SECRET;
-  const redirect_uri = "https://discordforms.app/api/discord/callback"; console.log('callback 4');
+  const redirect_uri = "https://create.discordforms.app/api/discord/callback"; console.log('callback 4');
 
   const body = new URLSearchParams({
     client_id,
@@ -69,11 +69,11 @@ export async function onRequest({ request, env }) {
       headers: {
         'Set-Cookie': cookieHeader,
         'Content-Type': 'text/html'
-        // 'Location': 'https://discordforms.app',  // Redirect to a page after login
+        // 'Location': 'https://create.discordforms.app',  // Redirect to a page after login
       },
     });
 
-    //return Response.redirect(`https://discordforms.app/api/discord/user?access_token=${access_token}`);
+    //return Response.redirect(`https://create.discordforms.app/api/discord/user?access_token=${access_token}`);
   } catch (error) {
     return new Response(`Error fetching access token: ${error.message}`, { status: 500 });
   }

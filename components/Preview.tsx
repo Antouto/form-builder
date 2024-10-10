@@ -609,10 +609,8 @@ function Preview({
                 {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map((actionRow, i) => (
                   <Box key={Math.random()} m="0 1em 1em">
                     <Text
-                      textTransform="uppercase"
-                      fontFamily="Sofia Sans"
-                      fontWeight="extrabold"
-                      fontSize="14px"
+                
+                      fontSize="16px"
                       mb="8px"
                       color={colorMode === "dark" ? "#b9bbbe" : "#4f5660"}
                     >

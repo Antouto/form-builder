@@ -44,5 +44,5 @@ This site is a form builder built for Forms, it creates form configuration files
 > [!TIP]
 > You can help make the Form JSON Builder better by contributing!
 
-[website]: https://form-builder.pages.dev/
+[website]: https://discordforms.app/
 [invite]: https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot

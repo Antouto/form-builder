@@ -41,7 +41,7 @@ export async function onRequest({ request, env }) {
     await env.SESSIONS.put(sessionID, JSON.stringify({ token: access_token }), { expirationTtl: expires_in })
 
     // Set the access token as a cookie
-    const cookieHeader = `session=${sessionID}; Secure; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
+    const cookieHeader = `session=${sessionID}; Secure; Domain=create.discordforms.app; Path=/; Max-Age=${expires_in}; SameSite=Lax`;
 
     // Redirect user to a protected page, setting the cookie in the response
     return new Response(`<!DOCTYPE html>

@@ -23,7 +23,7 @@ export enum OpenFormType {
 
 export default function App() {
   // useLayoutEffect(() => {
-  //   if(window.location.href.startsWith('https://create.discordforms.app')) window.location.replace('https://create.discordforms.com');
+  //   if(window.location.href.startsWith('https://form-builder.pages.dev')) window.location.replace('https://create.discordforms.com');
   // }, []);
 
 

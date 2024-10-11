@@ -20,6 +20,7 @@ import TextInputBuilder from "./TextInputBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
+import Select from 'react-select'
 
 import Cookies from 'js-cookie'
 
@@ -803,7 +804,7 @@ export function Editor({
         }
         {stage === 'server_selection' && <>
           <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
-            {loadingGuild ? <Spinner color='blurple'/> : <VStack align='right' gap={4}>
+            {loadingGuild ? <Spinner color='blurple' /> : <VStack align='right' gap={4}>
               {/* @ts-expect-error */}
               {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2} cursor='pointer' onClick={async () => {
 
@@ -821,9 +822,22 @@ export function Editor({
                 <Text>{guild.name}</Text>
               </HStack>) : 'You don\'t have administrator permissions in any server. These are required to set up forms.'}
 
+
+
               {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
               {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
             </VStack>}
+            <Select
+                isLoading={loadingGuild}
+                isClearable={false}
+                isSearchable={true}
+                name="Select server"
+                // @ts-expect-error
+                options={guilds ? guilds.map(guild => ({
+                  label: guild.name,
+                  value: guild.id
+                })) : []}
+            />
           </VStack>
 
 

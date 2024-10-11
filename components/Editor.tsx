@@ -827,7 +827,7 @@ export function Editor({
               {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
               {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
             </VStack>}
-            <Select
+            {/* <Select
                 isLoading={loadingGuild}
                 isClearable={false}
                 isSearchable={true}
@@ -837,7 +837,7 @@ export function Editor({
                   label: guild.name,
                   value: guild.id
                 })) : []}
-            />
+            /> */}
           </VStack>
 
 

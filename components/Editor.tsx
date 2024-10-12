@@ -872,7 +872,7 @@ export function Editor({
                   ':before': {
                     flexShrink: 0,
                     //@ts-expect-error
-                    backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => { console.log('STATE VAL', state); return guild.id === state.value })?.icon : ''}.webp?size=100")`,
+                    backgroundImage: `url("https://cdn.discordapp.com/icons/${guilds ? guilds[0].id : ''}/${guilds ? guilds[0].icon : ''}.webp?size=100")`,
                     backgroundSize: 'contain',
                     borderRadius: 10,
                     content: '" "',

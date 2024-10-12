@@ -860,7 +860,7 @@ export function Editor({
                     ':before': {
                       flexShrink: 0,
                       //@ts-expect-error
-                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => (guild.id === state.value)?.icon || 'https://cdn.discordapp.com/embed/avatars/1') : 'https://cdn.discordapp.com/embed/avatars/1'}.png?size=100")`,
                       backgroundSize: 'contain',
                       borderRadius: 10,
                       content: '" "',
@@ -884,7 +884,7 @@ export function Editor({
                     display: 'flex',
                     ':before': {
                       //@ts-expect-error
-                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => (guild.id === state.value)?.icon || 'https://cdn.discordapp.com/embed/avatars/1') : 'https://cdn.discordapp.com/embed/avatars/1'}.png?size=100")`,
                       backgroundSize: 'contain',
                       borderRadius: 10,
                       content: '" "',
@@ -900,8 +900,7 @@ export function Editor({
                     display: 'flex',
                     ':before': {
                       //@ts-expect-error
-                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
-                      backgroundSize: 'contain',
+                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => (guild.id === state.value)?.icon || 'https://cdn.discordapp.com/embed/avatars/1') : 'https://cdn.discordapp.com/embed/avatars/1'}.png?size=100")`,
                       borderRadius: 10,
                       content: '" "',
                       display: 'block',
@@ -918,8 +917,7 @@ export function Editor({
                     display: 'flex',
                     ':before': {
                       //@ts-expect-error
-                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
-                      backgroundSize: 'contain',
+                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => (guild.id === state.value)?.icon || 'https://cdn.discordapp.com/embed/avatars/1') : 'https://cdn.discordapp.com/embed/avatars/1'}.png?size=100")`,
                       borderRadius: 10,
                       content: '" "',
                       display: 'block',

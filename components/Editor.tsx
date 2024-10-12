@@ -859,8 +859,8 @@ export function Editor({
                     display: 'flex',
                     ':before': {
                       flexShrink: 0,
-                      //@ts-expect-error
-                      backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value ? state.value.value : ''}/${guilds ? guilds.find(guild => guild.id === (state.value ? state.value.value : ''))?.icon : ''}.webp?size=100")`,
+                      backgroundImage: `${JSON.stringify(state)}`,
+                      // backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
                       backgroundSize: 'contain',
                       borderRadius: 10,
                       content: '" "',

@@ -190,6 +190,8 @@ export function Editor({
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [isReading, setReading] = useState(false);
 
+  const [currentGuildID, setCurrentGuildID] = useState()
+
   const ReadFile = (targetFile: React.ChangeEvent<HTMLInputElement>) => {
     setReading(true);
     function CannotRead() {
@@ -831,6 +833,8 @@ export function Editor({
             <Select
               onChange={async (option) => {
                 if(!option) return;
+                setCurrentGuildID(option.value)
+
                 setLoadingGuild(true)
                 let guildResponse = await getGuild(option.value)
                 setLoadingGuild(false)
@@ -872,7 +876,7 @@ export function Editor({
                   ':before': {
                     flexShrink: 0,
                     //@ts-expect-error
-                    backgroundImage: `url("https://cdn.discordapp.com/icons/${guilds ? guilds[0].id : ''}/${guilds ? guilds[0].icon : ''}.webp?size=100")`,
+                    backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuild : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : (guilds ? guilds[0].icon : '')}.webp?size=100")`,
                     backgroundSize: 'contain',
                     borderRadius: 10,
                     content: '" "',

@@ -830,7 +830,7 @@ export function Editor({
               {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
             </VStack>}
 
-            <Select
+            {/* <Select
               onChange={async (option) => {
                 if(!option) return;
                 setCurrentGuildID(option.value)
@@ -970,7 +970,7 @@ export function Editor({
                   }
                 })
               }}
-            />
+            /> */}
           </VStack>
         </>}
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>

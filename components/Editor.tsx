@@ -859,7 +859,7 @@ export function Editor({
                     display: 'flex',
                     ':before': {
                       flexShrink: 0,
-                      backgroundImage: `${JSON.stringify(state)}`,
+                      backgroundImage: `url(${JSON.stringify(state)})`,
                       // backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
                       backgroundSize: 'contain',
                       borderRadius: 10,

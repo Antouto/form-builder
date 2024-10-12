@@ -829,6 +829,18 @@ export function Editor({
             </VStack>}
 
             <Select
+              onChange={async (option) => {
+                if(!option) return;
+                setLoadingGuild(true)
+                let guildResponse = await getGuild(option.value)
+                setLoadingGuild(false)
+
+                if (guildResponse === false) {
+                  onOpenAddToServer()
+                } else {
+                  setStage('submissions')
+                }
+              }}
               isLoading={loadingGuild}
               //@ts-expect-error
               defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}

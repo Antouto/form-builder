@@ -69,16 +69,16 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
           <FormLabel htmlFor={`message.embeds.${index}.description`}>Description</FormLabel>
           <textarea style={{ height: '99px' }} {...register(`message.embeds.${index}.description`, { minLength: 1, maxLength: 4096, onChange: () => fixMessage() })} id={`message.embeds.${index}.description`} />
           {/* Embed Color */}
-          <FormLabel htmlFor={`message.embeds.${index}.color`} display='flex' alignItems='center'>
+          {/* <FormLabel htmlFor={`message.embeds.${index}.color`} display='flex' alignItems='center'>
             <Text mr={1} >Color</Text>
             <Box ml='7px' fontSize='12px' color='#dcddde' mt='2px'>Hex or Decimal format</Box>
-          </FormLabel>
+          </FormLabel> */}
           {/* <input
               {...register(`message.embeds.${index}.color`, { onChange: () => fixMessage() })}
               type="number"
               id={`message.embeds.${index}.color`}
           /> */}
-          <input
+          {/* <input
             {...register(`message.embeds.${index}.color`, {
               onChange: (e: any) => {
                 if (!e.target.value.length) {
@@ -98,7 +98,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
             })}
             id={`message.embeds.${index}.color`}
           />
-          <ErrorMessage error={errors?.message?.embeds?.[index]?.color} />
+          <ErrorMessage error={errors?.message?.embeds?.[index]?.color} /> */}
           <hr />
           {/* Embed Image */}
           <FormLabel htmlFor={`message.embeds.${index}.image.url`}>Image URL</FormLabel>
@@ -128,7 +128,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
 
         setTimeout(() => {
           setValue(`message.embeds.${getValues('message.embeds')?.length - 1}`, {
-            color: 5793266
+            // color: 5793266
           })
         }, 1);
       }}

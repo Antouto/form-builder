@@ -1,6 +1,6 @@
 <div align="center">
 
-### [discordforms.app][website]
+### [create.discordforms.app][website]
 # Forms Discord Bot - JSON Builder
 
 </div>
@@ -34,7 +34,7 @@ This site is a form builder built for Forms, it creates form configuration files
 ### How do I use this?
 
 1. Create a webhook (on [Discord](https://discord.com/app)), you'll need this for later.
-2. Go to [discordforms.app][website]
+2. Go to [create.discordforms.app][website]
 3. Click and fill the text inputs (you'll need to use the same webhook you created in step 1 for the <kbd>Webhook URL</kbd> input)
 4. Click the <kbd>Download JSON</kbd> button
 5. Go back to Discord and run <kbd>/form create</kbd> with the <kbd>json</kbd> argument being the `.json` file you just downloaded
@@ -44,5 +44,5 @@ This site is a form builder built for Forms, it creates form configuration files
 > [!TIP]
 > You can help make the Form JSON Builder better by contributing!
 
-[website]: https://discordforms.app/
+[website]: https://create.discordforms.app/
 [invite]: https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot

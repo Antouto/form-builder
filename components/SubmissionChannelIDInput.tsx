@@ -12,7 +12,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
     //@ts-expect-error
     _setInputMethod(method)
     if (method === 'login') {
-      const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none`, 'popup', 'popup=true,width=485,height=700')
+      const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fdiscordforms.app%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none`, 'popup', 'popup=true,width=485,height=700')
 
       window.addEventListener('message', (event) => {
         if (event.data === 'authorized') {

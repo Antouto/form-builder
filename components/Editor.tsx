@@ -144,7 +144,7 @@ export function Editor({
 
   async function getGuild(id: string) {
     console.log('getGuild 1')
-    let guildResponse = await fetch(`https://create.discordforms.app/api/discord/session?guild_id=${id}`);
+    let guildResponse = await fetch(`https://discordforms.app/api/discord/session?guild_id=${id}`);
     guildResponse = await guildResponse.json()
     console.log('getGuild 2')
     //@ts-expect-error
@@ -159,7 +159,7 @@ export function Editor({
 
   async function getGuilds() {
     // Fetch guild details from Discord using the access token
-    let guildResponse = await fetch('https://create.discordforms.app/api/discord/session');
+    let guildResponse = await fetch('https://discordforms.app/api/discord/session');
     guildResponse = await guildResponse.json()
     console.log('guildResponse')
     console.log('guildResponse here', guildResponse)
@@ -171,7 +171,7 @@ export function Editor({
   }
 
   useEffect(() => {
-    // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none');
+    // if(!cookieValue) window.location.replace('https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fdiscordforms.app%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none');
 
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
     getGuilds()
@@ -989,12 +989,12 @@ export function Editor({
             <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
             <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
-          {/* <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
+          {/* <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fdiscordforms.app%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
             <button style={{ color: 'darkgray' }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
           </a> */}
 
           {/* <button style={{ color: 'darkgray' }} onClick={() => {
-            const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none`, 'popup', 'popup=true,width=485,height=700')
+            const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fdiscordforms.app%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none`, 'popup', 'popup=true,width=485,height=700')
 
             window.addEventListener('message', (event) => {
               if (event.data === 'authorized') {
@@ -1288,7 +1288,7 @@ export function Editor({
             <Button variant='primary' onClick={() => {
               onCloseAddToServer()
 
-              const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${currentGuild}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fform-builder.pages.dev%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true,width=485,height=700')
+              const popup = window.open(`https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${currentGuild}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fdiscordforms.app%2Fapi%2Fdiscord%2Fauthorized`, 'popup', 'popup=true,width=485,height=700')
 
               window.addEventListener('message', (event) => {
                 if (event.data === 'authorized') {

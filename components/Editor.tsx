@@ -144,7 +144,7 @@ export function Editor({
 
   async function getGuild(id: string) {
     console.log('getGuild 1')
-    let guildResponse = await fetch(`https://create.discordforms.com/api/discord/session?guild_id=${id}`);
+    let guildResponse = await fetch(`https://form-builder.pages.dev/api/discord/session?guild_id=${id}`);
     guildResponse = await guildResponse.json()
     console.log('getGuild 2')
     //@ts-expect-error
@@ -159,7 +159,7 @@ export function Editor({
 
   async function getGuilds() {
     // Fetch guild details from Discord using the access token
-    let guildResponse = await fetch('https://create.discordforms.com/api/discord/session');
+    let guildResponse = await fetch('https://form-builder.pages.dev/api/discord/session');
     guildResponse = await guildResponse.json()
     console.log('guildResponse')
     console.log('guildResponse here', guildResponse)

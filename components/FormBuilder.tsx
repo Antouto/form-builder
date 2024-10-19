@@ -591,10 +591,10 @@ export default function FormBuilder({
               <hr />
               <Collapsible name="Submission & Confirmation Messages">
                 <VStack align={'flex-start'}>
-                  <HStack>
+                  {/* <HStack>
                     <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                     <Text>This section is still in development and currently only supports the message content</Text>
-                  </HStack>
+                  </HStack> */}
                   <HStack><Text>Use variables to add the response content to your message:</Text><Link color='#00b0f4' href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940#variables" isExternal>Show Variables</Link></HStack>
                   <HStack justifyContent='space-between' width='100%'>
                     <FormLabel whiteSpace='nowrap' m={0}>Server Submission Message</FormLabel>
@@ -619,9 +619,10 @@ export default function FormBuilder({
                     <FormLabel htmlFor={`forms[${index}].guild_submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].guild_submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
-                    <input
+                    <textarea
                       {...register(`forms.${index}.guild_submit_message.content`, { maxLength: 2000, onChange: () => fixServerSubmissionMessage(index) })}
                       id={`forms.${index}.guild_submit_message.content`}
+                      style={{ height: "99px" }}
                     />
                     <ErrorMessage error={errors.forms?.[index]?.guild_submit_message?.content} />
                     {serverSubmissionMessage[index] === 'custom' && getValues(`forms.${index}.guild_submit_message`)?.content && !(JSON.stringify(getValues(`forms.${index}.guild_submit_message.content`)).match(/\{TextInputValue\d{1,2}\}/)) && <ErrorMessage severity={ErrorSeverity.Warning}>{'Don\'t forget to add variables such as {TextInputValue1}, {TextInputValue2} and so on, in order to see the submission contents.'}</ErrorMessage>}
@@ -630,9 +631,10 @@ export default function FormBuilder({
                     <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
-                    <input
+                    <textarea
                       {...register(`forms.${index}.submit_message.content`, { maxLength: 2000, onChange: () => fixSubmissionMessage(index) })}
                       id={`forms.${index}.submit_message.content`}
+                      style={{ height: "99px" }}
                     />
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                     {serverSubmissionMessage[index] === 'custom' && getValues(`forms.${index}.submit_message`)?.content && !(JSON.stringify(getValues(`forms.${index}.submit_message.content`)).match(/\{TextInputValue\d{1,2}\}/)) && <ErrorMessage severity={ErrorSeverity.Warning}>{'Don\'t forget to add variables such as {TextInputValue1}, {TextInputValue2} and so on, in order to see the submission contents.'}</ErrorMessage>}
@@ -661,9 +663,10 @@ export default function FormBuilder({
                     <FormLabel htmlFor={`forms[${index}].dm_submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].dm_submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
-                    <input
+                    <textarea
                       {...register(`forms.${index}.dm_submit_message.content`, { maxLength: 2000, onChange: () => fixdmSubmissionMessage(index) })}
                       id={`forms.${index}.dmSubmissionMessage.content`}
+                      style={{ height: "99px" }}
                     />
                     <ErrorMessage error={errors.forms?.[index]?.dm_submit_message?.content} />
                   </Box>}
@@ -671,9 +674,10 @@ export default function FormBuilder({
                     <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
                       <Counter count={getValues('forms')[index].submit_message?.content?.length} max={2000}></Counter>
                     </FormLabel>
-                    <input
+                    <textarea
                       {...register(`forms.${index}.submit_message.content`, { maxLength: 2000, onChange: () => fixSubmissionMessage(index) })}
                       id={`forms.${index}.dmSubmissionMessage.content`}
+                      style={{ height: "99px" }}
                     />
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                   </Box>}

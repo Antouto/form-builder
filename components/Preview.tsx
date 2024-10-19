@@ -394,14 +394,14 @@ function Preview({
                             variant={
                               //@ts-expect-error
                               message?.components[0].components[index]?.style == 1
-                                ? "primary"                             //@ts-expect-error
+                                ? "discord-primary"                             //@ts-expect-error
                                 : message?.components[0].components[index]?.style == 2
-                                  ? "secondary"                            //@ts-expect-error
+                                  ? "discord-secondary"                            //@ts-expect-error
                                   : message?.components[0].components[index]?.style == 3
-                                    ? "success"                             //@ts-expect-error
+                                    ? "discord-success"                             //@ts-expect-error
                                     : message?.components[0].components[index]?.style == 4
-                                      ? "danger"
-                                      : "secondary"
+                                      ? "discord-danger"
+                                      : "discord-secondary"
                             }
                           >
                             {message?.components?.[0]?.components?.[index]?.label}
@@ -660,7 +660,7 @@ function Preview({
                   Cancel
                 </Button>
                 <Button
-                  variant="primary"
+                  variant="discord-primary"
                   border="0px"
                   _focus={{ border: "0px" }}
                   onClick={() => {
@@ -858,7 +858,7 @@ function Preview({
                           paddingBlock={0}
                           paddingInline={0}
                           padding="2px 16px"
-                          m="4px 8px 4px 0" variant={button.style === 1 ? 'primary' : (button.style === 2 ? 'secondary' : (button.style === 3 ? 'success' : 'danger'))}>{button.label}</Button>
+                          m="4px 8px 4px 0" variant={button.style === 1 ? 'discord-primary' : (button.style === 2 ? 'discord-secondary' : (button.style === 3 ? 'discord-success' : 'discord-danger'))}>{button.label}</Button>
                       )}
                     </HStack>
                   )}

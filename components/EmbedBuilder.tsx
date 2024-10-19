@@ -119,7 +119,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
       </>
     ) : ''}
     <Button
-      variant='primary'
+      variant='primary-outline'
       isDisabled={getValues('message.embeds')?.length >= 10}
       onClick={() => {
         append({

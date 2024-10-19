@@ -42,7 +42,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
           {/* <Collapsible name={'Logic'}> */}
           <FormLabel>Actions on click</FormLabel>
           <Menu isLazy>
-            <MenuButton as={Button} variant='primary' mt={1} pr='8px' rightIcon={<svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <MenuButton as={Button} variant='primary' mt={1} pr='0px' rightIcon={<svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M12 10L8 6L4 10"
                 stroke="white"

@@ -622,9 +622,10 @@ export function Editor({
               Clear All
             </Button>
           </HStack>
-          <HStack border='2px solid #1C5CBE' backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' borderRadius={8} p={2} justifyContent='space-between'>
+          <HStack height='36px' border='2px solid #1C5CBE' backgroundImage='linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))' borderRadius={6} p={2} justifyContent='space-between'>
             <HStack><Switch
               variant='green'
+              size='sm'
               onChange={(event) => setPremium(event.target.checked)}
               isChecked={premium}
             />

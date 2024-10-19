@@ -699,9 +699,10 @@ export function Editor({
         />
         <VStack width="100%" align="flex-start">
           <Heading size="sm" marginBottom="5px">
-            Form Configuration File
+            Add the form to your server
           </Heading>
-          <Box>
+          <Text mb={2}>On the forms bot run <SlashCommand>form create</SlashCommand> and upload the configuration file.</Text>
+          {/* <Box>
             This is the configuration file you'll need to give to the{" "}
             <UserMention isFormsBot>Forms</UserMention> bot to create your form.
             The <UserMention isFormsBot>Forms</UserMention> bot needs to be in
@@ -709,7 +710,7 @@ export function Editor({
           </Box>
           <JSONViewer {...{ downloadForm, getValues }}>
             {JSON.stringify(watch(), null, 2)}
-          </JSONViewer>
+          </JSONViewer> */}
           <VStack alignItems="flex-start">
             <HStack alignItems="flex-start">
               <Button
@@ -797,11 +798,11 @@ export function Editor({
                 </ErrorMessage>
               )}
           </VStack>
-          <Box>
+          {/* <Box>
             Upload the configuration file using the{" "}
             <SlashCommand>form create</SlashCommand> command on the{" "}
             <UserMention isFormsBot>Forms</UserMention> bot.
-          </Box>
+          </Box> */}
         </VStack></>
         }
         {stage === 'server_selection' && <>
@@ -1236,7 +1237,7 @@ export function Editor({
                 <Divider bg='grey' />
               </Box>
               <Text fontSize={20} fontFamily='Whitney Bold'>Finish</Text>
-              <Text mb={2}>On the forms bot run <SlashCommand>form create</SlashCommand> and upload the JSON configuration file.</Text>
+              <Text mb={2}>On the forms bot run <SlashCommand>form create</SlashCommand> and upload the configuration file.</Text>
               <HStack alignItems="flex-start">
                 <HStack>
                   <Button

@@ -15,7 +15,7 @@ import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import TextInputBuilder from "./TextInputBuilder";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage, { ErrorSeverity } from "./ErrorMessage";
 import { FormAndOpenFormTypeBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
 import { useColorMode } from "@chakra-ui/react";
@@ -624,6 +624,7 @@ export default function FormBuilder({
                       id={`forms.${index}.guild_submit_message.content`}
                     />
                     <ErrorMessage error={errors.forms?.[index]?.guild_submit_message?.content} />
+                    {serverSubmissionMessage[index] === 'custom' && getValues(`forms.${index}.guild_submit_message`)?.content && !(JSON.stringify(getValues(`forms.${index}.guild_submit_message.content`)).match(/\{TextInputValue\d{1,2}\}/)) && <ErrorMessage severity={ErrorSeverity.Warning}>{'Don\'t forget to add variables such as {TextInputValue1}, {TextInputValue2} and so on, in order to see the submission contents.'}</ErrorMessage>}
                   </Box>}
                   {serverSubmissionMessage[index] === 'custom' && dmSubmissionMessage[index] === 'same_as_server' && <Box width='100%'>
                     <FormLabel htmlFor={`forms[${index}].submit_message.content`} display='flex' alignItems='center'><Text>Content</Text>
@@ -633,7 +634,8 @@ export default function FormBuilder({
                       {...register(`forms.${index}.submit_message.content`, { maxLength: 2000, onChange: () => fixSubmissionMessage(index) })}
                       id={`forms.${index}.submit_message.content`}
                     />
-                    <ErrorMessage error={errors.forms?.[index]?.guild_submit_message?.content} />
+                    <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
+                    {serverSubmissionMessage[index] === 'custom' && getValues(`forms.${index}.submit_message`)?.content && !(JSON.stringify(getValues(`forms.${index}.submit_message.content`)).match(/\{TextInputValue\d{1,2}\}/)) && <ErrorMessage severity={ErrorSeverity.Warning}>{'Don\'t forget to add variables such as {TextInputValue1}, {TextInputValue2} and so on, in order to see the submission contents.'}</ErrorMessage>}
                   </Box>}
                   <HStack justifyContent='space-between' width='100%'>
                     <FormLabel whiteSpace='nowrap' m={0}>DM Confirmation Message</FormLabel>

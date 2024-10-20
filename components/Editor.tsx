@@ -1128,7 +1128,7 @@ export function Editor({
               <FormLabel fontSize={18}>Slash Command</FormLabel>
               <Box>
                 <Box transition='border 0.2s' _hover={{ cursor: 'pointer', border: `2px solid ${openFormType === 'application_command' ? 'rgb(71, 82, 196)' : '#1E1F22'}` }} onClick={() => {
-                  if (openFormType === 'application_command') setStage('form')
+                  if (openFormType === 'application_command') setStage('applicationCommand');
                   setOpenFormType('application_command')
                 }} border={openFormType === 'application_command' ? '2px solid #5865F2' : '2px solid #2B2D31'} borderRadius='10px'>
                   <svg style={{ margin: '5px' }} viewBox="0 0 151 54" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1144,15 +1144,6 @@ export function Editor({
                     <rect x="16.219" y="28.3564" width="7.63927" height="1.58054" rx="0.79027" fill="white" />
                     <rect x="16.219" y="31.5175" width="8.42954" height="1.58054" rx="0.79027" fill="white" />
                   </svg>
-
-
-
-
-
-
-
-
-
                 </Box>
                 <Text fontSize={12} color='#DBDEE1'>Supports 1 form per command.</Text>
               </Box>
@@ -1182,7 +1173,7 @@ export function Editor({
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
-              <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || formState.errors.application_command?.description ? true : false} onClick={() => setStage('form')}>Continue</Button>
+              <Button variant='primary' isDisabled={(getValues('application_command')?.name ? (formState.errors.application_command?.name ? true : false) : true) || (getValues('application_command')?.description ? (formState.errors.application_command?.description ? true : false) : true)} onClick={() => setStage('form')}>Continue</Button>
             </HStack>
           </VStack></>}
         {stage === 'form' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup form</Text>
@@ -1192,7 +1183,12 @@ export function Editor({
               <TextInputBuilder compact id={`forms.0.pages.0.modal.components`} nestIndex={0} pageIndex={0} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
             </Box>
             <HStack>
-              <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>
+              <Button variant='secondary' onClick={() => {
+                switch (openFormType) {
+                  case 'application_command': setStage('applicationCommand'); break;
+                  case 'button': case 'select_menu': setStage('openFormType'); break;
+                }
+              }}>Go back</Button>
               <Button variant='primary' isDisabled={!getValues('forms.0')?.pages?.[0]?.modal?.title || (getValues('forms.0')?.pages?.[0]?.modal?.components[0] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[1] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[2] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[3] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[4] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms?.[0]?.pages?.[0]?.modal ? true : false} onClick={() => (cookieValue ? setStage('server_selection') : setStage('submissions'))}>Continue</Button>
             </HStack>
           </VStack></>}

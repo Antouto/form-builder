@@ -40,7 +40,14 @@ export default function ApplicationCommandBuilder({ register, getValues, errors 
         display="flex"
         alignItems="center"
       >
-        <Text>Description</Text>
+        <Text
+          _after={{
+            content: '" *"',
+            color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
+          }}
+        >
+          Description
+        </Text>
         <Counter
           count={getValues("application_command")?.description?.length}
           max={100}
@@ -49,6 +56,7 @@ export default function ApplicationCommandBuilder({ register, getValues, errors 
       <input
         {...register("application_command.description", {
           maxLength: 100,
+          required: true
         })}
         id="application_command.description"
       />

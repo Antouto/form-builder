@@ -509,7 +509,7 @@ export default function FormBuilder({
                 </Collapsible>}
 
                 <Stack direction={isSmallScreen ? 'column' : 'row'} marginBottom='8px' alignItems='flex-start'>
-                  <Stack direction={isReallySmallScreen ? 'column' : 'row'}>
+                  <Stack direction={isReallySmallScreen ? 'column' : 'row'} width='100%'>
                     {
                       watch('forms.0.select_menu_option') && <>
                         <Box width='100%'>
@@ -544,6 +544,20 @@ export default function FormBuilder({
                     }
                   </Stack>
                 </Stack>
+
+                {watch('forms.0.select_menu_option') &&
+                  <Box width='100%'>
+                    <FormLabel htmlFor={`forms[${index}].select_menu_option.emoji.id`} display='flex' alignItems='center'>Select Menu Option Emoji ID</FormLabel>
+                    <input
+                      //@ts-expect-error
+                      {...register(`forms[${index}].select_menu_option.emoji.id`, { maxLength: 100, onChange: () => fixMessage() })}
+                      id={`forms[${index}].select_menu_option.emoji.id`}
+                    />
+                    {/* @ts-expect-error */}
+                    <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.emoji?.id} />
+                  </Box>
+                }
+
                 <Box>
                   <FormLabel htmlFor={`forms[${index}].cooldown`} display='flex' alignItems='center'><Text>Cooldown (seconds)</Text></FormLabel>
                   <NumberInput min={0} isDisabled={!premium && cooldownDisabled} onClick={() => {

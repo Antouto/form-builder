@@ -352,8 +352,8 @@ export function Editor({
 
   const [loading, setLoading] = useState(false);
   const handleLoad = () => {
-    // setLoading(true);
-    // setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
+    setLoading(true);
+    setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   };
 
   const isSmallScreen = !useScreenWidth(1070);
@@ -527,14 +527,15 @@ export function Editor({
     // Also fix text inputs
     if (watch("forms")?.length)
       for (let i = 0; i < watch("forms")?.length; i++) {
-        if (watch(`forms.${i}`)?.select_menu_option) {
-
-        }
-        //@ts-expect-error
-        if (!watch(`forms.${i}`)?.select_menu_option?.emoji?.id) {
-          //@ts-expect-error
-          setValue(`forms.${i}.select_menu_option.emoji`, undefined)
-        }
+        setTimeout(() => {
+          if (watch(`forms.${i}`)?.select_menu_option) {
+            //@ts-expect-error
+            if (!watch(`forms.${i}`)?.select_menu_option?.emoji?.id) {
+              //@ts-expect-error
+              setValue(`forms.${i}.select_menu_option.emoji`, undefined)
+            }
+          }
+        }, 1)
         // handleCooldownChange(null, null, i)
         for (let ii = 0; ii < watch(`forms.${i}.pages`)?.length; ii++) {
           for (
@@ -717,9 +718,9 @@ export function Editor({
             The <UserMention isFormsBot>Forms</UserMention> bot needs to be in
             your server.
           </Box> */}
-          <JSONViewer {...{ downloadForm, getValues }}>
+          {/* <JSONViewer {...{ downloadForm, getValues }}>
             {JSON.stringify(watch(), null, 2)}
-          </JSONViewer>
+          </JSONViewer> */}
           <VStack alignItems="flex-start">
             <HStack alignItems="flex-start">
               <Button

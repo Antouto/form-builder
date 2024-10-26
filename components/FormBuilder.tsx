@@ -550,8 +550,10 @@ export default function FormBuilder({
                     <FormLabel htmlFor={`forms[${index}].select_menu_option.emoji.id`} display='flex' alignItems='center'>Select Menu Option Emoji ID</FormLabel>
                     <input
                       //@ts-expect-error
-                      {...register(`forms[${index}].select_menu_option.emoji.id`, { maxLength: 100, onChange: () => fixMessage() })}
+                      {...register(`forms[${index}].select_menu_option.emoji.id`, { maxLength: 100, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
                       id={`forms[${index}].select_menu_option.emoji.id`}
+                      type='number'
+                      inputMode='numeric'
                     />
                     {/* @ts-expect-error */}
                     <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.emoji?.id} />

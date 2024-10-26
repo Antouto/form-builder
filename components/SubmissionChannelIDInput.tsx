@@ -66,6 +66,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         <input
           {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
           id={`forms[${index}].submit_channel_id`}
+          type='number'
           style={{ marginBottom: '2px' }}
         />
         <ErrorMessage error={errors.forms?.[index]?.submit_channel_id || (onOpenWhereDoIFindSubmissionChannelID && !watch(`forms.${index}.submit_channel_id`) && { type: 'required' })} />

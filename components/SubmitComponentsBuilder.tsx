@@ -124,6 +124,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`}
                 type='number'
+                inputmode="numeric"
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) }} />
             </HStack>
@@ -138,6 +139,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`}
                 type='number'
+                inputmode="numeric"
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) }} />
             </HStack>
@@ -152,6 +154,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`}
                 type='number'
+                inputmode="numeric"
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`) }} />
             </HStack>
@@ -197,6 +200,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`, { required: true })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`}
                 type='number'
+                inputmode="numeric"
               />
               <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`, undefined) }} />
             </HStack>

@@ -24,6 +24,7 @@ export default function WebhookURLInput({ index, register, webhookUrlFocused, we
         onFocus={() => webhookUrlSetFocused(true)}
         onBlur={() => webhookUrlSetFocused(false)}
         type={webhookUrlFocused ? 'text' : 'password'}
+        inputmode="url"
         placeholder='https://discord.com/api/webhooks/ ...'
         style={{ marginBottom: '8px' }}
       />

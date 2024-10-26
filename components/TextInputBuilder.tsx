@@ -267,6 +267,7 @@ export default function TextInputBuilder({
                     //@ts-expect-error
                     onChange={(event) => event.target.valueAsNumber ? setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, event.target.valueAsNumber) : resetField(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`)}
                     type='number'
+                    inputmode="numeric"
                     style={{ marginRight: "25px" }}
                   />
                 </Box>
@@ -279,6 +280,7 @@ export default function TextInputBuilder({
                     //@ts-expect-error
                     onChange={(event) => setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, event.target.valueAsNumber || null)}
                     type='number'
+                    inputmode="numeric"
                     style={{ marginRight: "25px" }}
                   />
                 </Box> */}

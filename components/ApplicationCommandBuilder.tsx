@@ -33,6 +33,9 @@ export default function ApplicationCommandBuilder({ register, getValues, errors 
           maxLength: 32,
         })}
         id="application_command.name"
+        autoCapitalize='off'
+        autoCorrect='off'
+        autoComplete='off'
       />
       <ErrorMessage error={errors?.application_command?.name} />
       <FormLabel

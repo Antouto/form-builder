@@ -256,30 +256,32 @@ function Preview({
               borderRadius="8px"
               p={4}
             >
-              <FormProfile
-                {...{
-                  avatar: AVATAR_URL,
-                  hidden: FormsProfileHidden,
-                  HandleInteraction,
-                }}
-              >
-                <Image
-                  alt="Form's Avatar"
-                  src={AVATAR_URL}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    clipPath: "circle(50%)",
-                    marginTop: "5px",
-                    marginRight: "16px",
+              <Box flexShrink={0}>
+                <FormProfile
+                  {...{
+                    avatar: AVATAR_URL,
+                    hidden: FormsProfileHidden,
+                    HandleInteraction,
                   }}
-                  width="40px"
-                  height="40px"
-                  clipPath="circle(50%)"
-                  mt="5px"
-                  mr="16px"
-                />
-              </FormProfile>
+                >
+                  <Image
+                    alt="Form's Avatar"
+                    src={AVATAR_URL}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      clipPath: "circle(50%)",
+                      marginTop: "5px",
+                      marginRight: "16px",
+                    }}
+                    width="40px"
+                    height="40px"
+                    clipPath="circle(50%)"
+                    mt="5px"
+                    mr="16px"
+                  />
+                </FormProfile>
+              </Box>
               <Box>
                 <Box display="flex" alignItems="center">
                   <Text

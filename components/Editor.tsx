@@ -1030,8 +1030,8 @@ export function Editor({
             </VStack>
           </VStack>
           <VStack mt={1}>
-          <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
-          <Button variant='secondary-outline' onClick={() => setStage('editor')}>Open full editor</Button>
+            <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
+            <Button variant='secondary-outline' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
 
           {/* <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fcreate.discordforms.app%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
@@ -1277,6 +1277,8 @@ export function Editor({
                 //@ts-expect-error
                 {...register(`forms.0.submit_components.0.components.0.logic.FORWARD_SUBMISSION`, { pattern: /^\d{10,20}$/ })}
                 id={`forms.0.submit_components.0.components.0.logic.FORWARD_SUBMISSION`}
+                type='number'
+                inputMode='numeric'
               />
               {/* @ts-expect-error */}
               <ErrorMessage error={formState.errors.forms?.[0]?.submit_components?.[0]?.components?.[0]?.logic?.FORWARD_SUBMISSION} />

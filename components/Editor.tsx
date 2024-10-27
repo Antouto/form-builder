@@ -112,7 +112,11 @@ export function Editor({
   //@ts-expect-error
   currentGuild,
   //@ts-expect-error
-  setCurrentGuild
+  setCurrentGuild,
+  //@ts-expect-error
+  formCreationFeatures,
+  //@ts-expect-error
+  setFormCreationFeatures,
 }: EditorProps<FormAndOpenFormTypeBuilder>) {
   const toast = useToast();
 
@@ -986,20 +990,50 @@ export function Editor({
         </>}
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>
           <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
-          <Text fontSize={18} my={4}>or start from a template</Text>
-          <VStack>
+          <Text fontSize={18} my={2}>or start from a template</Text>
+          <VStack width='100%'>
             <Text fontSize={19} fontFamily='Whitney Bold'>Free templates</Text>
-            <Button variant='primary-outline' onClick={() => setPreset('application')}>Application</Button>
+            <VStack background='rgb(47, 49, 54)' width='100%' maxWidth='476px' borderRadius='8px' gap={2} padding={2}>
+
+              <Text width='100%' textTransform="uppercase"
+                fontFamily="Sofia Sans"
+                color='#DBDEE1'
+                fontWeight="extrabold"
+                fontSize="14px">Accept/Deny Buttons</Text>
+              <Box background='rgb(54, 57, 63)' p='4px 8px' width='100%' borderRadius={4} transition='filter .3s' _hover={{ cursor: 'pointer', filter: 'brightness(1.15)' }} onClick={() => setPreset('approval_dm')}>
+                <Text fontWeight='bold'>{'Approve Submissions → DM'}</Text>
+                <Text color='#DBDEE1' fontSize='14px'>Send forms to a private channel and DM users on approval or denial</Text>
+              </Box>
+              <Box background='rgb(54, 57, 63)' p='4px 8px' width='100%' borderRadius={4} transition='filter .3s' _hover={{ cursor: 'pointer', filter: 'brightness(1.15)' }} onClick={() => setPreset('approval_forward')}>
+                <Text fontWeight='bold'>{'Approve Submissions → Public channel'}</Text>
+                <Text color='#DBDEE1' fontSize='14px'>Send forms to a private channel and forward to a public channel on approval</Text>
+              </Box>
+            </VStack>
           </VStack>
-          <VStack>
+          <VStack width='100%'>
             <Text fontSize={19} fontFamily='Whitney Bold'>Premium templates</Text>
-            <Button variant='primary-outline' onClick={() => setPreset('thread_ticket')}>Thread Ticket System</Button>
-            <Button variant='primary-outline' onClick={() => setPreset('ticket')}>Channel Ticket System</Button>
+            <VStack background='rgb(47, 49, 54)' width='100%' maxWidth='476px' borderRadius='8px' gap={2} padding={2}>
+
+              <Text width='100%' textTransform="uppercase"
+                fontFamily="Sofia Sans"
+                color='#DBDEE1'
+                fontWeight="extrabold"
+                fontSize="14px">Ticket Systems</Text>
+              <Box background='rgb(54, 57, 63)' width='100%' p='4px 8px' borderRadius={4} transition='filter .3s' _hover={{ cursor: 'pointer', filter: 'brightness(1.15)' }} onClick={() => setPreset('thread_ticket')}>
+                <Text fontWeight='bold'>{'Threads'}</Text>
+                <Text color='#DBDEE1' fontSize='14px'>Send submissions to a new thread and add the submitter to it</Text>
+              </Box>
+              <Box background='rgb(54, 57, 63)' width='100%' p='4px 8px' borderRadius={4} transition='filter .3s' _hover={{ cursor: 'pointer', filter: 'brightness(1.15)' }} onClick={() => setPreset('ticket')}>
+                <Text fontWeight='bold'>{'Channels'}</Text>
+                <Text color='#DBDEE1' fontSize='14px'>Send submissions to a new channel and add the submitter to it</Text>
+              </Box>
+            </VStack>
           </VStack>
-          <VStack>
-            <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
-            <Button variant='secondary' onClick={() => setStage('editor')}>Open full editor</Button>
+          <VStack mt={1}>
+          <Text fontSize={19} fontFamily='Whitney Bold'>Advanced</Text>
+          <Button variant='secondary-outline' onClick={() => setStage('editor')}>Open full editor</Button>
           </VStack>
+
           {/* <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&response_type=code&redirect_uri=https%3A%2F%2Fcreate.discordforms.app%2Fapi%2Fdiscord%2Fcallback&scope=identify+guilds&prompt=none'>
             <button style={{ color: 'darkgray' }}>{cookieValue ? `Cookie Value: ${cookieValue}` : '-'}</button>
           </a> */}
@@ -1201,7 +1235,7 @@ export function Editor({
               <Button variant='primary' isDisabled={!getValues('forms.0')?.pages?.[0]?.modal?.title || (getValues('forms.0')?.pages?.[0]?.modal?.components[0] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[0].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[1] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[1].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[2] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[2].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[3] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[3].components?.[0]?.label : false) || (getValues('forms.0')?.pages?.[0]?.modal?.components[4] ? !getValues('forms.0')?.pages?.[0]?.modal?.components[4].components?.[0]?.label : false) || formState.errors.forms?.[0]?.pages?.[0]?.modal ? true : false} onClick={() => (cookieValue ? setStage('server_selection') : setStage('submissions'))}>Continue</Button>
             </HStack>
           </VStack></>}
-        {stage === 'submissions' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text>
+        {stage === 'submissions' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should {formCreationFeatures.includes('approval_forward_submission') ? 'to be approved ' : ''}submissions be sent?</Text>
           <VStack align='center' mt={5} width='100%' gap={5}>
             <Box width='100%' maxWidth='500px'>
               {/* Create a webhook in the channel you want submissions to be sent to.<br /><br />
@@ -1226,9 +1260,34 @@ export function Editor({
               <Button variant='primary' isDisabled={(!getValues('forms.0.submit_channel.parent_id') && !getValues('forms.0')?.submit_channel_id) || formState.errors.forms ? true : false} onClick={() => {
                 //@ts-expect-error
                 if (submissionChannel[0] === 'new' && getValues('forms.0.submit_channel.parent_id') === '') setValue('forms.0.submit_channel.parent_id', undefined)
-                setStage('finishOrContinue')
+                if (formCreationFeatures.includes('approval_forward_submission')) {
+                  setStage('forward_submission_on_accept')
+                } else {
+                  setStage('finishOrContinue')
+                }
                 //@ts-expect-error
               }}>{getValues('forms.0.submit_channel') ? (getValues('forms.0.submit_channel.parent_id') ? 'Continue' : 'Continue') : 'Continue'}</Button>
+            </HStack>
+          </VStack></>}
+        {stage === 'forward_submission_on_accept' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should approved submissions be sent?</Text>
+          <VStack align='center' mt={5} width='100%' gap={5}>
+            <Box width='100%' maxWidth='500px'>
+              <FormLabel htmlFor={`forms.0.submit_components.0.components.0.logic.FORWARD_SUBMISSION`}>Channel ID</FormLabel>
+              <input
+                //@ts-expect-error
+                {...register(`forms.0.submit_components.0.components.0.logic.FORWARD_SUBMISSION`, { pattern: /^\d{10,20}$/ })}
+                id={`forms.0.submit_components.0.components.0.logic.FORWARD_SUBMISSION`}
+              />
+              {/* @ts-expect-error */}
+              <ErrorMessage error={formState.errors.forms?.[0]?.submit_components?.[0]?.components?.[0]?.logic?.FORWARD_SUBMISSION} />
+              <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode –&gt;<br /> Right-click your channel  –&gt; Copy Channel ID<br /><br /></Text>
+            </Box>
+            <HStack>
+              <Button variant='secondary' onClick={() => setStage('submissions')}>Go back</Button>
+              {/* @ts-expect-error */}
+              <Button variant='primary' isDisabled={(!getValues('forms.0.submit_channel.parent_id') && !getValues('forms.0')?.submit_channel_id) || formState.errors.forms ? true : false} onClick={() => {
+                setStage('finishOrContinue')
+              }}>Continue</Button>
             </HStack>
           </VStack></>}
         {stage === 'finishOrContinue' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Done</Text>
@@ -1263,7 +1322,13 @@ export function Editor({
               </HStack>
             </Box>
             <HStack>
-              <Button variant='secondary' onClick={() => setStage('submissions')}>Go back</Button>
+              <Button variant='secondary' onClick={() => {
+                if (formCreationFeatures.includes('approval_forward_submission')) {
+                  setStage('forward_submission_on_accept')
+                } else {
+                  setStage('submissions')
+                }
+              }}>Go back</Button>
             </HStack>
           </VStack></>}
       </VStack>

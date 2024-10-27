@@ -38,6 +38,14 @@ export const Button: ComponentTheme<ButtonProps> = {
             height: '36px',
             padding: '0 14px'
         },
+        'secondary-outline': {
+            bg: 'transparent',
+            border: '2px solid #4f545c',
+            _disabled: { _hover: { border: '2px solid grey.light!important' } },
+            _hover: { bg: 'grey.light' },
+            height: '36px',
+            padding: '0 14px'
+        },
         'discord-secondary': {
             bg: 'grey.light',
             _disabled: { _hover: { bg: 'grey.light!important' } },

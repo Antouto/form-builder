@@ -156,6 +156,7 @@ export default function App() {
   const [premium, _setPremium] = useState(false);
   const [submissionType, _setSubmissionType] = useState(['bot'])
   const [submissionChannel, _setSubmissionChannel] = useState(['existing'])
+  const [formCreationFeatures, setFormCreationFeatures] = useState([])
   const [currentGuild, setCurrentGuild] = useState()
 
   function setPremium(value: any) {
@@ -188,7 +189,62 @@ export default function App() {
 
   function setPreset(preset?: string) {
     switch (preset) {
-      case 'application': {
+      case 'approval_dm': {
+        _setSubmissionChannel(['existing'])
+        setValue('forms.0.submit_channel', undefined)
+        setValue('forms.0.submit_thread', undefined)
+
+        //@ts-expect-error
+        setValue('forms.0.submit_components', [{
+          type: 1,
+          components: [
+            {
+              type: 2,
+              label: 'Accept',
+              style: 3,
+              logic: {
+                DM_SUBMITTER: { content: 'Your submission to **{FormTitle}** has been accepted!' },
+                REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
+                UPDATE_COMPONENT: { label: 'Accepted' }
+              }
+            },
+            {
+              type: 2,
+              label: 'Deny',
+              style: 4,
+              logic: {
+                DM_SUBMITTER_WITH_MODAL_INPUT: {
+                  modal: {
+                    title: 'Deny Submission',
+                    components: [
+                      {
+                        type: 1,
+                        components: [
+                          {
+                            type: 4,
+                            style: 2,
+                            label: 'Reason for denial'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  message: {
+                    content: 'Sorry! Your submission to **{FormTitle}** has been denied.\n\n**Reason:** {TextInputValue1}'
+                  }
+                },
+                REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW: true,
+                UPDATE_COMPONENT: { label: 'Denied' }
+              }
+            }
+          ]
+        }])
+        setStage('openFormType')
+        break;
+      }
+      case 'approval_forward': {
+        //@ts-expect-error
+        setFormCreationFeatures([...formCreationFeatures, 'approval_forward_submission'])
         _setSubmissionChannel(['existing'])
         setValue('forms.0.submit_channel', undefined)
         setValue('forms.0.submit_thread', undefined)
@@ -378,7 +434,10 @@ export default function App() {
         setStage('openFormType')
         break;
       }
-      default: setStage('openFormType')
+      default: {
+        setFormCreationFeatures([])
+        setStage('openFormType')
+      }
     }
   }
 
@@ -510,10 +569,11 @@ export default function App() {
       <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler} setStage={setStage} />
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
         {/* @ts-expect-error */}
-        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} openFormType={openFormType} setOpenFormType={setOpenFormType} setPremium={setPremium} premium={premium} submissionType={submissionType} _setSubmissionType={_setSubmissionType} submissionChannel={submissionChannel} _setSubmissionChannel={_setSubmissionChannel} setPreset={setPreset} cookieValue={cookieValue} setCookieValue={setCookieValue} currentGuild={currentGuild} setCurrentGuild={setCurrentGuild} />
+        <Editor resetField={resetField} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} stage={stage} setStage={setStage} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} openFormType={openFormType} setOpenFormType={setOpenFormType} setPremium={setPremium} premium={premium} submissionType={submissionType} _setSubmissionType={_setSubmissionType} submissionChannel={submissionChannel} _setSubmissionChannel={_setSubmissionChannel} setPreset={setPreset} cookieValue={cookieValue} setCookieValue={setCookieValue} currentGuild={currentGuild} setCurrentGuild={setCurrentGuild} formCreationFeatures={formCreationFeatures} setFormCreationFeatures={setFormCreationFeatures} />
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} currentGuild={currentGuild} />
       </Grid>
+      <script src="https://discordforms.statuspage.io/embed/script.js"></script>
     </>
   );
 }

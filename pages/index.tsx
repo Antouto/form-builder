@@ -573,7 +573,6 @@ export default function App() {
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} currentGuild={currentGuild} />
       </Grid>
-      <script src="https://discordforms.statuspage.io/embed/script.js"></script>
     </>
   );
 }

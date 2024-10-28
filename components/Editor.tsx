@@ -344,15 +344,20 @@ export function Editor({
 
   const downloadForm = () => {
     setTimeout(() => {
-      const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+      const jsonString = `data:application/json;charset=utf-8,${encodeURIComponent(
         JSON.stringify(watch(), null, 2)
       )}`;
       const link = document.createElement("a");
       link.href = jsonString;
-      link.download = createName({ getValues }) + ".json";
+      link.download = `${createName({ getValues })}.json`;
+  
+      // Append the link to the body to ensure compatibility on mobile
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link); // Clean up the link after download
+  
     }, 500);
-  };
+  };  
 
   const [loading, setLoading] = useState(false);
   const handleLoad = () => {

@@ -518,7 +518,7 @@ function Preview({
 
 
 
-            {!isTinyScreen && <Box mt={2} display='flex' alignItems='center' justifyContent='right' fontSize='12px'>
+            {!isTinyScreen && (/(:\w+:)|(<&\d+>)|(<@&?\d+>)|(<\/[\w ]+(:\d+)>)|(>(>>)? )|(#{1,3} )|(-# )/.test(JSON.stringify(message))) && <Box mt={2} display='flex' alignItems='center' justifyContent='right' fontSize='12px'>
               <Switch
                 onChange={event => { setDiscohook(event.target.checked) }}
                 colorScheme='blurple'

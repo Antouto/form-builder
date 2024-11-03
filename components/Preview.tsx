@@ -23,6 +23,7 @@ import { FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
 import { Channel, FormProfile, SlashCommand } from "./Mention";
 import { PreviewStep } from "./PreviewStep";
 import { AVATAR_URL } from "../util/config";
+import { useScreenWidth } from "../util/width";
 
 function isEmpty(value: any) {
   return value == null || value == "";
@@ -56,6 +57,7 @@ function Preview({
   currentGuild
 }: PreviewProperties) {
   const { colorMode } = useColorMode();
+  const isTinyScreen = !useScreenWidth(575);
   const defaultValues = {
     ...forms?.[displayForm]?.pages?.[displayPage]?.modal.components
       .map((e) => e.components[0])
@@ -230,17 +232,16 @@ function Preview({
   return (
     <Box
       overflowY="scroll"
-      p="16px 16px 16px 12px"
+      p={isTinyScreen ? 0 : '16px 16px 16px 12px'}
       maxHeight="calc(100vh - 48px);"
       display={displaySection ? "block" : "none"}
     >
-      <VStack align="start" spacing={3}>
+      <VStack align="start" spacing={isTinyScreen ? 0 : 3}>
         {(!application_command) && (
           <PreviewStep
             number={1}
-            highlighted={stage === 'openFormType'}
-            title={`A message with ${!forms?.[0].select_menu_option ? "buttons" : "a select menu"
-              } to open forms is sent to a channel`}
+            highlighted={!isTinyScreen && stage === 'openFormType'}
+            title={!forms?.[0].select_menu_option ? forms.length > 1 ? 'Buttons to open forms are sent to a channel' : 'A button to open forms is sent to a channel' : 'A select menu to open forms is sent to a channel'}
           >
 
 
@@ -254,7 +255,7 @@ function Preview({
               display={discohook ? "none" : "flex"}
               bg={colorMode === "dark" ? "grey.dark" : "white"}
               borderRadius="8px"
-              p={4}
+              p={isTinyScreen ? 0 : 4}
             >
               <Box flexShrink={0}>
                 <FormProfile
@@ -517,7 +518,7 @@ function Preview({
 
 
 
-            {<Box mt={2} display='flex' alignItems='center' justifyContent='right' fontSize='12px'>
+            {!isTinyScreen && <Box mt={2} display='flex' alignItems='center' justifyContent='right' fontSize='12px'>
               <Switch
                 onChange={event => { setDiscohook(event.target.checked) }}
                 colorScheme='blurple'
@@ -561,14 +562,14 @@ function Preview({
               />
             </svg>
           </HStack>}
-          highlighted={stage === 'form' || temporaryModalHighlight}
+          highlighted={(!isTinyScreen && stage === 'form') || temporaryModalHighlight}
           reference={formRef}
         >
           <Box
             display="flex"
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
-            p={4}
+            p={isTinyScreen ? 0 : 4}
             width='100%'
           >
             <Box
@@ -695,13 +696,13 @@ function Preview({
           number={!application_command ? 3 : 2}
           //@ts-expect-error
           title={forms[displayForm].submit_channel ? <>A channel is created for the submission</> : <>{forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : <>The submission is sent to {forms[displayForm].submit_channel_id && Array.isArray(currentGuild) && currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id) ? <Channel>{currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id).name}</Channel> : 'a channel'}</>}</>}
-          highlighted={stage === 'server_selection' || stage === 'submissions' || temporarySubmissionHighlight}
+          highlighted={(!isTinyScreen && (stage === 'server_selection' || stage === 'submissions')) || temporarySubmissionHighlight}
           reference={applicationCommandRef}
         >
           <Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
-            p={4}
+            p={isTinyScreen ? 0 : 4}
           >
             <Box display="flex">
               <FormProfile

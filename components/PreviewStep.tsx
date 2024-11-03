@@ -8,7 +8,7 @@ export function PreviewStep({ number, title, children, highlighted, reference, c
   const isTinyScreen = !useScreenWidth(575);
 
   return (
-    <HStack display='flex' spacing={2} align='start' minWidth={!isTinyScreen ? '540px' : 'unset'} ref={reference}>
+    <HStack display='flex' spacing={2} align='start' minWidth={!isTinyScreen ? '540px' : 'unset'} maxWidth={`calc(100% - ${isTinyScreen ? 0 : 44}px)`} ref={reference}>
       {(!isMediumScreen || isSmallScreen) && !isTinyScreen && <Box transition='background .4s' bg={(highlighted ? 'blurple' : false) || (colorMode === 'dark' ? '#2f3136' : '#f2f3f5')} height='36px' minWidth='36px' borderRadius='50%' display='flex' alignItems='center' justifyContent='center' mt={1}>
         <Text fontFamily='Whitney Bold' fontSize='18px'>{number.toString()}</Text>
       </Box>}

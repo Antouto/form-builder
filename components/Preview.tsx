@@ -282,7 +282,7 @@ function Preview({
                   />
                 </FormProfile>
               </Box>
-              <Box>
+              <Box width='calc(100% - 56px)'>
                 <Box display="flex" alignItems="center">
                   <Text
                     fontFamily="Whitney Bold"
@@ -569,6 +569,7 @@ function Preview({
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
             p={4}
+            width='100%'
           >
             <Box
               border={`1px solid ${colorMode === "dark" ? "#292b2f" : "#e3e5e8"

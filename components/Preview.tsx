@@ -199,6 +199,7 @@ function Preview({
                     fontFamily="Whitney Bold"
                     fontSize="0.80rem"
                     color="#fbfbfb"
+                    width={`calc(100% - ${embed?.footer?.icon_url != undefined ? '32' : '0'}px)`}
                   >
                     {embed?.footer?.text}
                   </Text>

@@ -577,6 +577,7 @@ function Preview({
                 }`}
               borderRadius="3px"
               width="440px"
+              maxWidth='100%'
               height="fit-content"
               maxHeight="720px"
             >
@@ -589,7 +590,7 @@ function Preview({
                 alignItems="center"
                 p="16px"
               >
-                <Box display="flex" alignItems="center" height="24px">
+                <Box display="flex" alignItems="center" height="24px" width='calc(100% - 32px)'>
                   <Image
                     src={AVATAR_URL}
                     alt="Forms Logo"
@@ -705,6 +706,7 @@ function Preview({
             p={isTinyScreen ? 0 : 4}
           >
             <Box display="flex">
+            <Box flexShrink={0}>
               <FormProfile
                 {...{
                   avatar: AVATAR_URL,
@@ -729,7 +731,8 @@ function Preview({
                   mr="16px"
                 />
               </FormProfile>
-              <Box>
+              </Box>
+              <Box width='calc(100% - 56px)'>
                 <Box display="flex" alignItems="center">
                   <Text
                     fontFamily="Whitney Bold"

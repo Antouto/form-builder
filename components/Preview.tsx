@@ -466,7 +466,7 @@ function Preview({
                         >
                           {forms.map((form, index) => (
                             <Box
-                              key={index}
+                              key={Math.random()}
                               cursor="pointer"
                               _hover={{
                                 backgroundColor:

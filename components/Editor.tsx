@@ -1202,7 +1202,7 @@ export function Editor({
                       alignItems: 'center',
                       display: 'flex',
                       ':before': {
-                        backgroundImage: 'linear-gradient(rgba(0, 0, 0, .1), rgb(0, 0, 0, .1))'/*`url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`*/,
+                        backgroundImage: 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'/*`url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`*/,
                         backgroundSize: 'contain',
                         borderRadius: 10,
                         content: '" "',

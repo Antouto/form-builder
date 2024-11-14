@@ -1098,6 +1098,11 @@ export function Editor({
                 <Select
                   onChange={
                     async (option) => {
+
+                      for (let i = 0; i < getValues('forms').length; i++) {
+                        setValue(`forms.${i}.submit_channel_id`, undefined)
+                      }
+
                       if (!option) return;
                       //@ts-expect-error
                       setCurrentGuildID(option.value)

@@ -991,7 +991,7 @@ export function Editor({
               }}
             />
 
-            {JSON.stringify(currentGuildID, null, 2)}
+            <pre>{JSON.stringify(currentGuildID, null, 2)}</pre>
           </VStack>
         </>}
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>

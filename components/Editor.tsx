@@ -920,7 +920,7 @@ export function Editor({
                   display: 'flex',
                   ':before': {
                     //@ts-expect-error
-                    backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuild : (guilds ? guilds[0].id : '')}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                    backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
                     backgroundSize: 'contain',
                     borderRadius: 10,
                     content: '" "',

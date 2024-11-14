@@ -25,7 +25,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           console.log('GET DATA')
           getGuilds()
           setCookieValue(true)
-          setStage('server_selection')
+          setStage('submissions')
         }
       });
     }

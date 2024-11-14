@@ -1158,7 +1158,7 @@ export function Editor({
                     ':before': {
                       flexShrink: 0,
                       //@ts-expect-error
-                      backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : (guilds ? guilds[0].icon : '')}.webp?size=100")`,
+                      backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : 'linear-gradient(rgba(0, 0, 0, .1), rgb(0, 0, 0, .1))'}.webp?size=100")`,
                       backgroundSize: 'contain',
                       borderRadius: 10,
                       content: '" "',

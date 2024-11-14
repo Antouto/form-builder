@@ -48,7 +48,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       }
 
       {/* Logged In or Input method manual */}
-      {(cookieValue || (inputMethod === 'manual')) && (Array.isArray(currentGuild) ? <Select
+      {(cookieValue || (inputMethod === 'manual')) && Array.isArray(currentGuild) && <Select
         height='36px!important'
         // maxWidth='155px'
         borderWidth='2px'
@@ -62,7 +62,9 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       >
         <option disabled selected value="">Select a channel</option>
         {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={Math.random()} value={channel.id}>{channel.name}</option>)}
-      </Select> : <>
+      </Select>}
+
+      {inputMethod === 'manual' && <>
         <input
           {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
           id={`forms[${index}].submit_channel_id`}
@@ -82,9 +84,8 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           }
           <HStack><Text>or</Text><button onClick={() => setInputMethod('login')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>login to choose channel</button></HStack>
         </>}
-      </>)}
-
-
+        
+      </>}
 
     </>
   )

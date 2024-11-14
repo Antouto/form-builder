@@ -1109,6 +1109,18 @@ export function Editor({
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>
               In the webhooks settings you can customise the name and avatar of your submissions. */}
 
+              {getValues('forms.0.submit_channel') ? <>
+                <FormLabel htmlFor={`forms.0.submit_channel.parent_id`}>Category ID</FormLabel>
+                <input
+                  //@ts-expect-error
+                  {...register(`forms.0.submit_channel.parent_id`, { pattern: /^\d{10,20}$/, onChange: () => fixSubmitChannel(0) })}
+                  id={`forms.0.submit_channel.parent_id`}
+                />
+                {/* @ts-expect-error */}
+                <ErrorMessage error={formState.errors.forms?.[0]?.submit_channel?.parent_id} />
+                <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
+              </> : <>
+              
               {cookieValue && <Box mb={1}>
                 <FormLabel display='flex' alignItems='center'>
                   <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Server</Text>
@@ -1258,20 +1270,9 @@ export function Editor({
                   }}
                 />
               </Box>}
-
-
-
-              {getValues('forms.0.submit_channel') ? <>
-                <FormLabel htmlFor={`forms.0.submit_channel.parent_id`}>Category ID</FormLabel>
-                <input
-                  //@ts-expect-error
-                  {...register(`forms.0.submit_channel.parent_id`, { pattern: /^\d{10,20}$/, onChange: () => fixSubmitChannel(0) })}
-                  id={`forms.0.submit_channel.parent_id`}
-                />
-                {/* @ts-expect-error */}
-                <ErrorMessage error={formState.errors.forms?.[0]?.submit_channel?.parent_id} />
-                <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
-              </> : <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} />}
+              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} />
+              
+              </>}
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button>

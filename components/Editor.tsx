@@ -1129,7 +1129,6 @@ export function Editor({
                   }
                 }
                 isLoading={loadingGuild}
-                //@ts-expect-error
                 //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
                 isClearable={false}
                 isSearchable={true}

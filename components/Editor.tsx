@@ -896,7 +896,7 @@ export function Editor({
                   ':before': {
                     flexShrink: 0,
                     //@ts-expect-error
-                    backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuild : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : (guilds ? guilds[0].icon : '')}.webp?size=100")`,
+                    backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : (guilds ? guilds[0].icon : '')}.webp?size=100")`,
                     backgroundSize: 'contain',
                     borderRadius: 10,
                     content: '" "',
@@ -992,7 +992,7 @@ export function Editor({
             />
 
             {/* @ts-expect-error */}
-            <pre>{JSON.stringify(currentGuildID ? currentGuild : (guilds ? guilds[0].id : ''))}</pre>
+            <pre>{currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}</pre>
           </VStack>
         </>}
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>

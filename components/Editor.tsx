@@ -1113,9 +1113,11 @@ export function Editor({
                 onChange={
                   async (option) => {
                     if (!option) return;
+                    //@ts-expect-error
                     setCurrentGuildID(option.value)
 
                     setLoadingGuild(true)
+                    //@ts-expect-error
                     let guildResponse = await getGuild(option.value)
                     setLoadingGuild(false)
 

@@ -862,7 +862,7 @@ export function Editor({
                 if (guildResponse === false) {
                   onOpenAddToServer()
                 } else {
-                  setStage('submissions')
+                  //setStage('submissions')
                 }
               }}
               isLoading={loadingGuild}

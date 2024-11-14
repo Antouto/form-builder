@@ -824,36 +824,6 @@ export function Editor({
           </Box> */}
         </VStack></>
         }
-        {stage === 'server_selection' && <>
-          <Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Where should submissions be sent?</Text><VStack align='center' gap={4} mt='30px' width='100%'>
-            {loadingGuild ? <Spinner color='blurple' /> : <VStack align='right' gap={4}>
-              {/* @ts-expect-error */}
-              {guilds ? guilds.map(guild => <HStack key={guild.id} gap={2} cursor='pointer' onClick={async () => {
-
-                setLoadingGuild(true)
-                let guildResponse = await getGuild(guild.id)
-                setLoadingGuild(false)
-
-                if (guildResponse === false) {
-                  onOpenAddToServer()
-                } else {
-                  setStage('submissions')
-                }
-              }}>
-                <Avatar name={guild.name} bg='#313338' src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${guild.icon && guild.icon.startsWith('a_') ? 'gif' : 'png'}`} />
-                <Text>{guild.name}</Text>
-              </HStack>) : 'You don\'t have administrator permissions in any server. These are required to set up forms.'}
-
-
-
-              {/* <Button variant='secondary' onClick={() => setStage('form')}>Go back</Button> */}
-              {/* <Text>Current Guild: {currentGuild ? JSON.stringify(currentGuild, null, 2) : 'None'}</Text> */}
-            </VStack>}
-
-            {/* select was here */}
-
-          </VStack>
-        </>}
         {stage === 'welcome' && <><Text mt={5} align='center' width='100%' fontSize={30} fontFamily='Whitney Bold'>Create a form</Text><VStack align='center' gap={4} mt='30px' width='100%'>
           <Button variant='primary' onClick={() => setPreset()}>Start quick setup</Button>
           <Text fontSize={18} my={2}>or start from a template</Text>

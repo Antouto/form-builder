@@ -31,13 +31,13 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
     }
   }
 
+  const Label = () => <FormLabel htmlFor={`forms[${index}].submit_channel_id`} display='flex' alignItems='center'>
+    <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel</Text>
+    {onOpenWhereDoIFindSubmissionChannelID && !Array.isArray(currentGuild) && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
+  </FormLabel>
+
   return (
     <>
-      <FormLabel htmlFor={`forms[${index}].submit_channel_id`} display='flex' alignItems='center'>
-        <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel</Text>
-        {onOpenWhereDoIFindSubmissionChannelID && !Array.isArray(currentGuild) && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
-      </FormLabel>
-
       {/* Not Logged in and input method not chosen */}
       {!cookieValue && !inputMethod &&
         <HStack gap={3}>
@@ -48,23 +48,27 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       }
 
       {/* Logged In or Input method manual */}
-      {(cookieValue || (inputMethod === 'manual')) && Array.isArray(currentGuild) && <Select
-        height='36px!important'
-        // maxWidth='155px'
-        borderWidth='2px'
-        borderColor='transparent'
-        borderRadius='4px'
-        bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
-        _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
-        _hover={{ borderColor: 'transparent' }}
-        onChange={(event) => setValue(`forms.${index}.submit_channel_id`, event.target.value)}
-        value={watch(`forms.${index}.submit_channel_id`)}
-      >
-        <option disabled selected value="">Select a channel</option>
-        {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={Math.random()} value={channel.id}>{channel.name}</option>)}
-      </Select>}
+      {(cookieValue || (inputMethod === 'manual')) && Array.isArray(currentGuild) && <>
+        <Label />
+        <Select
+          height='36px!important'
+          // maxWidth='155px'
+          borderWidth='2px'
+          borderColor='transparent'
+          borderRadius='4px'
+          bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
+          _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
+          _hover={{ borderColor: 'transparent' }}
+          onChange={(event) => setValue(`forms.${index}.submit_channel_id`, event.target.value)}
+          value={watch(`forms.${index}.submit_channel_id`)}
+        >
+          <option disabled selected value="">Select a channel</option>
+          {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={Math.random()} value={channel.id}>{channel.name}</option>)}
+        </Select>
+      </>}
 
       {inputMethod === 'manual' && <>
+        <Label />
         <input
           {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}
           id={`forms[${index}].submit_channel_id`}
@@ -84,7 +88,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           }
           <HStack><Text>or</Text><button onClick={() => setInputMethod('login')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>login to choose channel</button></HStack>
         </>}
-        
+
       </>}
 
     </>

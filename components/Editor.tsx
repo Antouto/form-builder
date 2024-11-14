@@ -991,6 +991,7 @@ export function Editor({
               }}
             />
 
+            {/* @ts-expect-error */}
             <pre>{JSON.stringify(currentGuildID ? currentGuild : (guilds ? guilds[0].id : ''))}</pre>
           </VStack>
         </>}

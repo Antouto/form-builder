@@ -37,6 +37,8 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta name="title" content={EmbedTitle} />
             <meta name="description" content={Configuration.Description} />
             <meta name="theme-color" content={Configuration.Color} />
+            <meta name="google" content="notranslate"/>
+
             {/* <meta property="og:image" content={Thumbnail} />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="250" />

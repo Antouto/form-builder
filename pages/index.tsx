@@ -564,7 +564,7 @@ export default function App() {
   }, [watch()])
 
   return (
-    <>
+    <div className='notranslate'>
       <Meta>Home</Meta>
       <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler} setStage={setStage} />
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
@@ -573,6 +573,6 @@ export default function App() {
         {/* @ts-expect-error */}
         <Preview message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displayPage={displayPage} setDisplayPage={setDisplayPage} displaySection={isNotSmallScreen || displaySection !== 1} stage={stage} currentGuild={currentGuild} />
       </Grid>
-    </>
+    </div>
   );
 }

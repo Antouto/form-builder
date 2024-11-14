@@ -58,7 +58,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
         _hover={{ borderColor: 'transparent' }}
         onChange={(event) => setValue(`forms.${index}.submit_channel_id`, event.target.value)}
-      // value={serverSubmissionMessage[index]}
+        value={watch(`forms.${index}.submit_channel_id`)}
       >
         <option disabled selected value="">Select a channel</option>
         {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={Math.random()} value={channel.id}>{channel.name}</option>)}

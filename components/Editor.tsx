@@ -1109,9 +1109,9 @@ export function Editor({
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>
               In the webhooks settings you can customise the name and avatar of your submissions. */}
 
-              {cookieValue && <>
+              {cookieValue && <Box mb={1}>
                 <FormLabel display='flex' alignItems='center'>
-                  <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Serverl</Text>
+                  <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Server</Text>
                 </FormLabel>
                 <Select
                   onChange={
@@ -1136,6 +1136,7 @@ export function Editor({
                   //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
                   isClearable={false}
                   isSearchable={true}
+                  placeholder={'Select a server'}
                   noOptionsMessage={() => 'No results found'}
                   name="Select server"
                   //@ts-expect-error
@@ -1256,7 +1257,7 @@ export function Editor({
                     })
                   }}
                 />
-              </>}
+              </Box>}
 
 
 

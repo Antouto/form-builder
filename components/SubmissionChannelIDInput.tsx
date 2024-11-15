@@ -87,6 +87,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           name="Select server"
           //@ts-expect-error
           options={guilds ? guilds.map(guild => ({ label: guild.name, value: guild.id })) : []}
+          menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,
@@ -200,7 +201,8 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               '&:hover': {
                 color: 'oklab(0.786807 -0.0025776 -0.0110238)'
               }
-            })
+            }),
+            menuPortal: baseStyles => ({ ...baseStyles, zIndex: 9999 })
           }}
         />
       </Box>}

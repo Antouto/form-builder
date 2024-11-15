@@ -1,12 +1,14 @@
-import { Button, FormLabel, HStack, Select, Text, Box, useColorMode } from '@chakra-ui/react'
+import { Button, FormLabel, HStack, Stack, Select, Text, Box, useColorMode } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import ErrorMessage from './ErrorMessage'
 import ReactSelect from 'react-select'
+import { useScreenWidth } from "../util/width";
 
 export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, getValues, setValue, cookieValue, setCookieValue, getGuild, getGuilds, setStage, setLoadingGuild, onOpenAddToServer, loadingGuild, guilds, currentGuildID, setCurrentGuildID }: any) {
   const colorMode = useColorMode().colorMode
 
   const [inputMethod, _setInputMethod] = useState() // login or manual
+  const isReallySmallScreen = !useScreenWidth(450);
 
   function setInputMethod(method: string) {
 
@@ -41,11 +43,13 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
     <>
       {/* Not Logged in and input method not chosen */}
       {!cookieValue && !inputMethod &&
-        <HStack gap={3}>
+        <Stack direction={isReallySmallScreen ? 'column' : 'row'} justifyContent='center' alignItems='center' gap={3}>
           <Button variant='primary' onClick={() => setInputMethod('login')}>Login to choose channel</Button>
-          <Text>or</Text>
-          <button onClick={() => setInputMethod('manual')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>enter Channel ID manually</button>
-        </HStack>
+          <HStack gap={isReallySmallScreen ? 2 : 3}>
+            <Text>or</Text>
+            <button onClick={() => setInputMethod('manual')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>enter Channel ID manually</button>
+          </HStack>
+        </Stack>
       }
 
 

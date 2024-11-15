@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ErrorMessage from './ErrorMessage'
 import ReactSelect from 'react-select'
 
-export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, getValues, setValue, cookieValue, setCookieValue, getGuilds, setStage, setLoadingGuild, onOpenAddToServer, loadingGuild, guilds }: any) {
+export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, getValues, setValue, cookieValue, setCookieValue, getGuilds, setStage, setLoadingGuild, onOpenAddToServer, loadingGuild, guilds, currentGuildID, setCurrentGuildID }: any) {
   const colorMode = useColorMode().colorMode
 
   const [inputMethod, _setInputMethod] = useState() // login or manual

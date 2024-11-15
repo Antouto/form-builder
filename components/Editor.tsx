@@ -711,6 +711,7 @@ export function Editor({
             setPremiumFeatureTarget,
             currentGuild,
             cookieValue,
+            getGuild,
             getGuilds,
             setStage,
             setCookieValue,
@@ -1097,7 +1098,7 @@ export function Editor({
                 <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
               </> : <>
               
-              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} loadingGuild={loadingGuild} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} guilds={guilds} currentGuildID={currentGuildID} setCurrentGuildID={setCurrentGuildID} />
+              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuild={getGuild} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} loadingGuild={loadingGuild} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} guilds={guilds} currentGuildID={currentGuildID} setCurrentGuildID={setCurrentGuildID} />
               
               </>}
             </Box>

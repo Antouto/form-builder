@@ -167,7 +167,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               display: 'flex',
               ':before': {
                 //@ts-expect-error
-                backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                backgroundImage: guilds && guilds.find(guild => guild.id === state.value) ? (guilds.find(guild => guild.id === state.value)?.icon ? `url("https://cdn.discordapp.com/icons/${state.value}/${guilds.find(guild => guild.id === state.value)?.icon}.webp?size=100")` : `https://avatar.oxro.io/avatar.svg?name=${guilds.find(guild => guild.id === state.value)?.name.replace(' ', '+')}&background=313338`) : '',
                 backgroundSize: 'contain',
                 borderRadius: 10,
                 content: '" "',

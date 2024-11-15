@@ -1,8 +1,9 @@
-import { Button, FormLabel, HStack, Select, Text, textDecoration, useColorMode } from '@chakra-ui/react'
+import { Button, FormLabel, HStack, Select, Text, Box, useColorMode } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import ErrorMessage from './ErrorMessage'
+import ReactSelect from 'react-select'
 
-export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, setValue, cookieValue, setCookieValue, getGuilds, setStage }: any) {
+export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, getValues, setValue, cookieValue, setCookieValue, getGuilds, setStage, setLoadingGuild, onOpenAddToServer, loadingGuild }: any) {
   const colorMode = useColorMode().colorMode
 
   const [inputMethod, _setInputMethod] = useState() // login or manual
@@ -31,8 +32,9 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
     }
   }
 
+  //@ts-expect-error
   const Label = () => <FormLabel htmlFor={`forms[${index}].submit_channel_id`} display='flex' alignItems='center'>
-    <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel</Text>
+    <Text marginRight='5px' _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Submission Channel {inputMethod === 'manual' ? 'ID' : ''}</Text>
     {onOpenWhereDoIFindSubmissionChannelID && !Array.isArray(currentGuild) && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
   </FormLabel>
 
@@ -46,6 +48,163 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           <button onClick={() => setInputMethod('manual')} style={{ color: 'oklab(0.700834 -0.0780351 -0.1469)', fontSize: '15px' }}>enter Channel ID manually</button>
         </HStack>
       }
+
+
+      {/* Server Selection */}
+      {cookieValue && <Box mb={1}>
+        <FormLabel display='flex' alignItems='center'>
+          <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Server</Text>
+        </FormLabel>
+        <ReactSelect
+          onChange={
+            async (option) => {
+
+              for (let i = 0; i < getValues('forms').length; i++) {
+                setValue(`forms.${i}.submit_channel_id`, undefined)
+              }
+
+              if (!option) return;
+              //@ts-expect-error
+              setCurrentGuildID(option.value)
+
+              setLoadingGuild(true)
+              //@ts-expect-error
+              let guildResponse = await getGuild(option.value)
+              setLoadingGuild(false)
+
+              if (guildResponse === false) {
+                onOpenAddToServer()
+              } else {
+                //setStage('submissions')
+              }
+            }
+          }
+          isLoading={loadingGuild}
+          //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
+          isClearable={false}
+          isSearchable={true}
+          placeholder={'Select a server'}
+          noOptionsMessage={() => 'No results found'}
+          name="Select server"
+          //@ts-expect-error
+          options={guilds ? guilds.map(guild => ({ label: guild.name, value: guild.id })) : []}
+          styles={{
+            control: (baseStyles, state) => ({
+              ...baseStyles,
+              height: '43.5px',
+              background: 'oklab(0.23892 0.000131361 -0.00592163)',
+              border: '1px solid oklab(0.23892 0.000131361 -0.00592163)',
+              borderBottomLeftRadius: state.menuIsOpen ? 0 : '4px',
+              borderBottomRightRadius: state.menuIsOpen ? 0 : '4px',
+              '&:hover': {
+                borderColor: 'oklab(0.23892 0.000131361 -0.00592163)'
+              },
+              boxShadow: 'none',
+              boxSizing: 'content-box'
+            }),
+            input: (baseStyles, state) => ({
+              ...baseStyles,
+              margin: '0',
+              alignItems: 'center',
+              display: 'flex',
+              ':before': {
+                flexShrink: 0,
+                //@ts-expect-error
+                backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'}.webp?size=100")`,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+              color: 'oklab(0.899401 -0.00192499 -0.00481987)'
+            }),
+            valueContainer: (baseStyles) => ({
+              ...baseStyles,
+              height: '43.5px',
+              padding: '0 12px'
+            }),
+            singleValue: (baseStyles, state) => ({
+              ...baseStyles,
+              color: 'oklab(0.899401 -0.00192499 -0.00481987)',
+              margin: '0',
+              alignItems: 'center',
+              display: 'flex',
+              ':before': {
+                //@ts-expect-error
+                backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+            }),
+            placeholder: (baseStyles, state) => ({
+              ...baseStyles,
+              alignItems: 'center',
+              display: 'flex',
+              ':before': {
+                backgroundImage: 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'/*`url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`*/,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+            }),
+            option: (baseStyles, state) => ({
+              ...baseStyles,
+              background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
+              // height: '43.5px',
+              padding: '9.75px',
+              display: 'flex',
+              ':before': {
+                //@ts-expect-error
+                backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+              ':active': {
+                background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
+              },
+            }),
+            menu: baseStyles => ({
+              ...baseStyles,
+              color: 'oklab(0.786807 -0.0025776 -0.0110238)',
+              background: '#2b2d31',
+              marginTop: 0,
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0
+            }),
+            menuList: baseStyles => ({
+              ...baseStyles,
+              padding: 0,
+            }),
+            indicatorSeparator: () => ({
+              display: 'none'
+            }),
+            dropdownIndicator: baseStyles => ({
+              ...baseStyles,
+              color: 'oklab(0.786807 -0.0025776 -0.0110238)',
+              '&:hover': {
+                color: 'oklab(0.786807 -0.0025776 -0.0110238)'
+              }
+            })
+          }}
+        />
+      </Box>}
 
       {/* Logged In or Input method manual */}
       {(cookieValue || (inputMethod === 'manual')) && Array.isArray(currentGuild) && <>

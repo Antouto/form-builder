@@ -713,7 +713,10 @@ export function Editor({
             cookieValue,
             getGuilds,
             setStage,
-            setCookieValue
+            setCookieValue,
+            loadingGuild,
+            setLoadingGuild,
+            onOpenAddToServer
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -1091,161 +1094,7 @@ export function Editor({
                 <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
               </> : <>
               
-              {cookieValue && <Box mb={1}>
-                <FormLabel display='flex' alignItems='center'>
-                  <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Server</Text>
-                </FormLabel>
-                <Select
-                  onChange={
-                    async (option) => {
-
-                      for (let i = 0; i < getValues('forms').length; i++) {
-                        setValue(`forms.${i}.submit_channel_id`, undefined)
-                      }
-
-                      if (!option) return;
-                      //@ts-expect-error
-                      setCurrentGuildID(option.value)
-
-                      setLoadingGuild(true)
-                      //@ts-expect-error
-                      let guildResponse = await getGuild(option.value)
-                      setLoadingGuild(false)
-
-                      if (guildResponse === false) {
-                        onOpenAddToServer()
-                      } else {
-                        //setStage('submissions')
-                      }
-                    }
-                  }
-                  isLoading={loadingGuild}
-                  //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
-                  isClearable={false}
-                  isSearchable={true}
-                  placeholder={'Select a server'}
-                  noOptionsMessage={() => 'No results found'}
-                  name="Select server"
-                  //@ts-expect-error
-                  options={guilds ? guilds.map(guild => ({ label: guild.name, value: guild.id })) : []}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      height: '43.5px',
-                      background: 'oklab(0.23892 0.000131361 -0.00592163)',
-                      border: '1px solid oklab(0.23892 0.000131361 -0.00592163)',
-                      borderBottomLeftRadius: state.menuIsOpen ? 0 : '4px',
-                      borderBottomRightRadius: state.menuIsOpen ? 0 : '4px',
-                      '&:hover': {
-                        borderColor: 'oklab(0.23892 0.000131361 -0.00592163)'
-                      },
-                      boxShadow: 'none',
-                      boxSizing: 'content-box'
-                    }),
-                    input: (baseStyles, state) => ({
-                      ...baseStyles,
-                      margin: '0',
-                      alignItems: 'center',
-                      display: 'flex',
-                      ':before': {
-                        flexShrink: 0,
-                        //@ts-expect-error
-                        backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'}.webp?size=100")`,
-                        backgroundSize: 'contain',
-                        borderRadius: 10,
-                        content: '" "',
-                        display: 'block',
-                        marginRight: 8,
-                        height: '20px',
-                        width: '20px',
-                      },
-                      color: 'oklab(0.899401 -0.00192499 -0.00481987)'
-                    }),
-                    valueContainer: (baseStyles) => ({
-                      ...baseStyles,
-                      height: '43.5px',
-                      padding: '0 12px'
-                    }),
-                    singleValue: (baseStyles, state) => ({
-                      ...baseStyles,
-                      color: 'oklab(0.899401 -0.00192499 -0.00481987)',
-                      margin: '0',
-                      alignItems: 'center',
-                      display: 'flex',
-                      ':before': {
-                        //@ts-expect-error
-                        backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
-                        backgroundSize: 'contain',
-                        borderRadius: 10,
-                        content: '" "',
-                        display: 'block',
-                        marginRight: 8,
-                        height: '20px',
-                        width: '20px',
-                      },
-                    }),
-                    placeholder: (baseStyles, state) => ({
-                      ...baseStyles,
-                      alignItems: 'center',
-                      display: 'flex',
-                      ':before': {
-                        backgroundImage: 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'/*`url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`*/,
-                        backgroundSize: 'contain',
-                        borderRadius: 10,
-                        content: '" "',
-                        display: 'block',
-                        marginRight: 8,
-                        height: '20px',
-                        width: '20px',
-                      },
-                    }),
-                    option: (baseStyles, state) => ({
-                      ...baseStyles,
-                      background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
-                      // height: '43.5px',
-                      padding: '9.75px',
-                      display: 'flex',
-                      ':before': {
-                        //@ts-expect-error
-                        backgroundImage: `url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
-                        backgroundSize: 'contain',
-                        borderRadius: 10,
-                        content: '" "',
-                        display: 'block',
-                        marginRight: 8,
-                        height: '20px',
-                        width: '20px',
-                      },
-                      ':active': {
-                        background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
-                      },
-                    }),
-                    menu: baseStyles => ({
-                      ...baseStyles,
-                      color: 'oklab(0.786807 -0.0025776 -0.0110238)',
-                      background: '#2b2d31',
-                      marginTop: 0,
-                      borderTopLeftRadius: 0,
-                      borderTopRightRadius: 0
-                    }),
-                    menuList: baseStyles => ({
-                      ...baseStyles,
-                      padding: 0,
-                    }),
-                    indicatorSeparator: () => ({
-                      display: 'none'
-                    }),
-                    dropdownIndicator: baseStyles => ({
-                      ...baseStyles,
-                      color: 'oklab(0.786807 -0.0025776 -0.0110238)',
-                      '&:hover': {
-                        color: 'oklab(0.786807 -0.0025776 -0.0110238)'
-                      }
-                    })
-                  }}
-                />
-              </Box>}
-              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} />
+              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} loadingGuild={loadingGuild} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} />
               
               </>}
             </Box>

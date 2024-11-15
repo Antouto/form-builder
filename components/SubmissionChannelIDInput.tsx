@@ -167,7 +167,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               display: 'flex',
               ':before': {
                 //@ts-expect-error
-                backgroundImage: guilds && guilds.find(guild => guild.id === state.value) ? (guilds.find(guild => guild.id === state.value)?.icon ? `url("https://cdn.discordapp.com/icons/${state.value}/${guilds.find(guild => guild.id === state.value)?.icon}.webp?size=100")` : `linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))`) : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))', //${guilds.find(guild => guild.id === state.value)?.name.replace(' ', '+')}
+                backgroundImage: guilds && guilds.find(guild => guild.id === state.value) ? (guilds.find(guild => guild.id === state.value)?.icon ? `url("https://cdn.discordapp.com/icons/${state.value}/${guilds.find(guild => guild.id === state.value)?.icon}.webp?size=100")` : `https://avatar.oxro.io/avatar.svg?name=hello+world&background=313338`) : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))', //${guilds.find(guild => guild.id === state.value)?.name.replace(' ', '+')}
                 backgroundSize: 'contain',
                 borderRadius: 10,
                 content: '" "',

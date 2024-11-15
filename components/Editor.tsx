@@ -716,7 +716,8 @@ export function Editor({
             setCookieValue,
             loadingGuild,
             setLoadingGuild,
-            onOpenAddToServer
+            onOpenAddToServer,
+            guilds
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -1094,7 +1095,7 @@ export function Editor({
                 <Text fontSize={12}>User Settings –&gt; Advanced –&gt; Enable Developer Mode<br /> Then create a category for submissions in your server –&gt; Right Click –&gt; Copy Channel ID<br /><br /></Text>
               </> : <>
               
-              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} loadingGuild={loadingGuild} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} />
+              <SubmissionChannelIDInput index={0} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} loadingGuild={loadingGuild} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} guilds={guilds} />
               
               </>}
             </Box>

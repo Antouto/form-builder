@@ -537,10 +537,8 @@ function Preview({
           title={
             !application_command
               ? "User opens a form"
-              : `User opens the form with ${application_command?.name
-                ? `/${application_command?.name}`
-                : "the slash command"
-              }`
+              : <>User opens the form with {application_command?.name
+                ? <SlashCommand>{application_command?.name}</SlashCommand>:'the slash command'}</>
           }
           controls={forms?.[displayForm]?.pages.length > 1 && <HStack>
             <svg onClick={() => displayPage > 0 && setDisplayPage(displayPage - 1)} style={{ cursor: displayPage > 0 ? 'pointer' : 'not-allowed', transform: `rotate(${270}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">

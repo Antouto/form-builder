@@ -109,7 +109,7 @@ export default function OpenFormTypeBuilder({
         )}
 
         {openFormType === "application_command" && (
-          <ApplicationCommandBuilder register={register} getValues={getValues} errors={errors}/>
+          <ApplicationCommandBuilder register={register} getValues={getValues} setValue={setValue} errors={errors}/>
         )}
       </Collapsible>
     </>

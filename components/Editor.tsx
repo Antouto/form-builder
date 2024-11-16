@@ -1055,7 +1055,7 @@ export function Editor({
         {stage === 'applicationCommand' && <><Text mt={5} align='center' width='100%' fontSize={25} fontFamily='Whitney Bold'>Setup slash command</Text>
           <VStack align='center' mt={5} width='100%' gap={5}>
             <Box width='100%' maxWidth='350px'>
-              <ApplicationCommandBuilder register={register} getValues={getValues} errors={formState.errors} />
+              <ApplicationCommandBuilder register={register} getValues={getValues} setValue={setValue} errors={formState.errors} />
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => setStage('openFormType')}>Go back</Button>

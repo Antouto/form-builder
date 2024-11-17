@@ -204,9 +204,11 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
             indicatorSeparator: () => ({
               display: 'none'
             }),
-            dropdownIndicator: baseStyles => ({
+            dropdownIndicator: (baseStyles, state) => ({
               ...baseStyles,
               color: 'oklab(0.786807 -0.0025776 -0.0110238)',
+              transition: 'transform 0.2s ease',
+              transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'rotate(0)',
               '&:hover': {
                 color: 'oklab(0.786807 -0.0025776 -0.0110238)'
               }

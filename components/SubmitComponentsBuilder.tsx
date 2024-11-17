@@ -123,10 +123,10 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               <input
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`}
-                type='number'
+                type='string'
                 inputmode="numeric"
               />
-              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) }} />
+              <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, undefined) }} />
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.ADD_ROLE_TO_SUBMITTER} />
           </Box>}
@@ -138,10 +138,10 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               <input
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`}
-                type='number'
+                type='string'
                 inputmode="numeric"
               />
-              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) }} />
+              <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, undefined) }} />
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
           </Box>}
@@ -153,10 +153,10 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               <input
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`}
-                type='number'
+                type='string'
                 inputmode="numeric"
               />
-              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`) }} />
+              <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`, undefined) }} />
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.FORWARD_SUBMISSION} />
           </Box>}
@@ -199,7 +199,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               <input
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`, { required: true })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`}
-                type='number'
+                type='string'
                 inputmode="numeric"
               />
               <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`, undefined) }} />
@@ -216,8 +216,8 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) !== undefined && <Box>
             {/* @ts-expect-error */}
             <HStack><ButtonBuilder forButton={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`} error={errors.forms?.[i]?.submit_components?.[ii]?.components[iii]?.logic?.UPDATE_COMPONENT?.label} button={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`)} buttonLabel={'Update Button Label'} buttonLabelRequired={'no'} buttonColourRequired={'no'} buttonColour={'Update Button Colour'} register={register} setValue={setValue} watch={watch} allowColourDeselect={true} resetField={resetField} getValues={getValues} fix={() => {
-              if (getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`) === '') resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`)
-            }} /> <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) }} /></HStack>
+              if (getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`) === '') setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT.label`, undefined)
+            }} /> <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`, undefined) }} /></HStack>
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`) !== undefined && <Box>
             <HStack>
@@ -255,7 +255,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`}
                 placeholder='8 for administrator'
               />
-              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) }} />
+              <CloseButton onClick={() => { setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, undefined) }} />
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REQUIRED_PERMISSIONS} />
             <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>Discord Permissions Number Generator</Link>

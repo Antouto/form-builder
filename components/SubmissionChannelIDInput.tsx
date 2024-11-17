@@ -207,7 +207,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
             dropdownIndicator: (baseStyles, state) => ({
               ...baseStyles,
               color: 'oklab(0.786807 -0.0025776 -0.0110238)',
-              transition: 'transform 0.2s ease',
+              // transition: 'transform 0.2s ease',
               transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'rotate(0)',
               '&:hover': {
                 color: 'oklab(0.786807 -0.0025776 -0.0110238)'
@@ -236,6 +236,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           <option disabled selected value="">Select a channel</option>
           {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={Math.random()} value={channel.id}>{channel.name}</option>)}
         </Select>
+        <Text mt={1} fontSize='14px' color='oklab(0.686636 -0.00407365 -0.0149199)'>Only servers and channels you have admin permissions in are shown.</Text>
       </>}
 
       {inputMethod === 'manual' && <>

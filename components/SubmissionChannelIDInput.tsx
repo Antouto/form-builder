@@ -309,18 +309,6 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               margin: '0',
               alignItems: 'center',
               display: 'flex',
-              ':before': {
-                flexShrink: 0,
-                //// @ts-expect-error
-                // backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'}.webp?size=100")`,
-                backgroundSize: 'contain',
-                borderRadius: 10,
-                content: '" "',
-                display: 'block',
-                marginRight: 8,
-                height: '20px',
-                width: '20px',
-              },
               color: 'oklab(0.899401 -0.00192499 -0.00481987)'
             }),
             valueContainer: (baseStyles) => ({
@@ -333,33 +321,12 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               color: 'oklab(0.899401 -0.00192499 -0.00481987)',
               margin: '0',
               alignItems: 'center',
-              display: 'flex',
-              ':before': {
-                // //@ts-expect-error
-                // backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
-                backgroundSize: 'contain',
-                borderRadius: 10,
-                content: '" "',
-                display: 'block',
-                marginRight: 8,
-                height: '20px',
-                width: '20px',
-              },
+              display: 'flex'
             }),
             placeholder: (baseStyles, state) => ({
               ...baseStyles,
               alignItems: 'center',
-              display: 'flex',
-              ':before': {
-                backgroundImage: 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'/*`url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`*/,
-                backgroundSize: 'contain',
-                borderRadius: 10,
-                content: '" "',
-                display: 'block',
-                marginRight: 8,
-                height: '20px',
-                width: '20px',
-              },
+              display: 'flex'
             }),
             option: (baseStyles, state) => ({
               ...baseStyles,
@@ -367,17 +334,6 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               // height: '43.5px',
               padding: '9.75px',
               display: 'flex',
-              ':before': {
-                // //@ts-expect-error
-                // backgroundImage: guilds && guilds.find(guild => guild.id === state.value) ? (guilds.find(guild => guild.id === state.value)?.icon ? `url("https://cdn.discordapp.com/icons/${state.value}/${guilds.find(guild => guild.id === state.value)?.icon}.webp?size=100")` : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))') : '',
-                backgroundSize: 'contain',
-                borderRadius: 10,
-                content: '" "',
-                display: 'block',
-                marginRight: 8,
-                height: '20px',
-                width: '20px',
-              },
               ':active': {
                 background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
               },

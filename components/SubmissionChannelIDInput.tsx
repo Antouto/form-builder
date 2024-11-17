@@ -221,7 +221,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       {/* Logged In or Input method manual */}
       {(cookieValue || (inputMethod === 'manual')) && Array.isArray(currentGuild) && <>
         <Label />
-        <Select
+        {/* <Select
           height='36px!important'
           // maxWidth='155px'
           borderWidth='2px'
@@ -235,7 +235,137 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         >
           <option disabled selected value="">Select a channel</option>
           {currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => <option key={Math.random()} value={channel.id}>{channel.name}</option>)}
-        </Select>
+        </Select> */}
+        <ReactSelect
+          onChange={option => setValue(`forms.${index}.submit_channel_id`, option?.value)}
+          isLoading={loadingGuild}
+          value={watch(`forms.${index}.submit_channel_id`)}
+          isClearable={false}
+          isSearchable={true}
+          placeholder={'Select a channel'}
+          noOptionsMessage={() => 'No results found'}
+          name="Select channel"
+          options={currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => ({ name: channel.name, value: channel.id }))}
+          menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
+          styles={{
+            control: (baseStyles, state) => ({
+              ...baseStyles,
+              height: '43.5px',
+              background: 'oklab(0.23892 0.000131361 -0.00592163)',
+              border: '1px solid oklab(0.23892 0.000131361 -0.00592163)',
+              borderBottomLeftRadius: state.menuIsOpen ? 0 : '4px',
+              borderBottomRightRadius: state.menuIsOpen ? 0 : '4px',
+              '&:hover': {
+                borderColor: 'oklab(0.23892 0.000131361 -0.00592163)'
+              },
+              boxShadow: 'none',
+              boxSizing: 'content-box'
+            }),
+            input: (baseStyles, state) => ({
+              ...baseStyles,
+              margin: '0',
+              alignItems: 'center',
+              display: 'flex',
+              ':before': {
+                flexShrink: 0,
+                //// @ts-expect-error
+                // backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID ? currentGuildID : (guilds ? guilds[0].id : '')}/${currentGuildID ? (guilds ? guilds.find(guild => guild.id === currentGuildID)?.icon : '') : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'}.webp?size=100")`,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+              color: 'oklab(0.899401 -0.00192499 -0.00481987)'
+            }),
+            valueContainer: (baseStyles) => ({
+              ...baseStyles,
+              height: '43.5px',
+              padding: '0 12px'
+            }),
+            singleValue: (baseStyles, state) => ({
+              ...baseStyles,
+              color: 'oklab(0.899401 -0.00192499 -0.00481987)',
+              margin: '0',
+              alignItems: 'center',
+              display: 'flex',
+              ':before': {
+                // //@ts-expect-error
+                // backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+            }),
+            placeholder: (baseStyles, state) => ({
+              ...baseStyles,
+              alignItems: 'center',
+              display: 'flex',
+              ':before': {
+                backgroundImage: 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))'/*`url("https://cdn.discordapp.com/icons/${state.value}/${guilds ? guilds.find(guild => guild.id === state.value)?.icon : ''}.webp?size=100")`*/,
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+            }),
+            option: (baseStyles, state) => ({
+              ...baseStyles,
+              background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
+              // height: '43.5px',
+              padding: '9.75px',
+              display: 'flex',
+              ':before': {
+                // //@ts-expect-error
+                // backgroundImage: guilds && guilds.find(guild => guild.id === state.value) ? (guilds.find(guild => guild.id === state.value)?.icon ? `url("https://cdn.discordapp.com/icons/${state.value}/${guilds.find(guild => guild.id === state.value)?.icon}.webp?size=100")` : 'linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))') : '',
+                backgroundSize: 'contain',
+                borderRadius: 10,
+                content: '" "',
+                display: 'block',
+                marginRight: 8,
+                height: '20px',
+                width: '20px',
+              },
+              ':active': {
+                background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
+              },
+            }),
+            menu: baseStyles => ({
+              ...baseStyles,
+              color: 'oklab(0.786807 -0.0025776 -0.0110238)',
+              background: '#2b2d31',
+              marginTop: 0,
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0
+            }),
+            menuList: baseStyles => ({
+              ...baseStyles,
+              padding: 0,
+            }),
+            indicatorSeparator: () => ({
+              display: 'none'
+            }),
+            dropdownIndicator: (baseStyles, state) => ({
+              ...baseStyles,
+              color: 'oklab(0.786807 -0.0025776 -0.0110238)',
+              // transition: 'transform 0.2s ease',
+              transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'rotate(0)',
+              '&:hover': {
+                color: 'oklab(0.786807 -0.0025776 -0.0110238)'
+              }
+            }),
+            menuPortal: baseStyles => ({ ...baseStyles, zIndex: 9999 })
+          }}
+        />
       </>}
         
       {cookieValue && <Text mt={1} fontSize='14px' color='oklab(0.686636 -0.00407365 -0.0149199)'>Only servers and channels you have admin permissions in are shown.</Text>}

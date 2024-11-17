@@ -239,12 +239,13 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         <ReactSelect
           onChange={option => setValue(`forms.${index}.submit_channel_id`, option?.value)}
           isLoading={loadingGuild}
-          value={{ name: currentGuild[watch(`forms.${index}.submit_channel_id`)].name, value: watch(`forms.${index}.submit_channel_id`) }}
+          value={{ label: currentGuild[watch(`forms.${index}.submit_channel_id`)]?.name || 'Channel Name Unknown', value: watch(`forms.${index}.submit_channel_id`) }}
           isClearable={false}
           isSearchable={true}
           placeholder={'Select a channel'}
           noOptionsMessage={() => 'No results found'}
           name="Select channel"
+          //@ts-expect-error
           options={currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => ({ name: channel.name, value: channel.id }))}
           menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
           styles={{

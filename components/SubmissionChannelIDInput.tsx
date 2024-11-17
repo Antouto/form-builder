@@ -39,6 +39,33 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
     {onOpenWhereDoIFindSubmissionChannelID && !Array.isArray(currentGuild) && <Text color='#00b0f4' fontFamily='Whitney' textDecoration='underline' onClick={onOpenWhereDoIFindSubmissionChannelID} _hover={{ cursor: 'pointer' }}>Where do I find this?</Text>}
   </FormLabel>
 
+  const getChannelIcon = (type: number) => (
+    <svg
+      aria-hidden="true"
+      role="img"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      style={{ color: 'currentColor' }}
+    >
+      {type === 15 ? (
+        // Forum channel icon
+        <path
+          fill="currentColor"
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"
+        />
+      ) : (
+        // Default text channel icon
+        <path
+          fill="currentColor"
+          fillRule="evenodd"
+          d="M10.99 3.16A1 1 0 1 0 9 2.84L8.15 8H4a1 1 0 0 0 0 2h3.82l-.67 4H3a1 1 0 1 0 0 2h3.82l-.8 4.84a1 1 0 0 0 1.97.32L8.85 16h4.97l-.8 4.84a1 1 0 0 0 1.97.32l.86-5.16H20a1 1 0 1 0 0-2h-3.82l.67-4H21a1 1 0 1 0 0-2h-3.82l.8-4.84a1 1 0 1 0-1.97-.32L15.15 8h-4.97l.8-4.84ZM14.15 14l.67-4H9.85l-.67 4h4.97Z"
+          clipRule="evenodd"
+        />
+      )}
+    </svg>
+  );
+
   return (
     <>
       {/* Not Logged in and input method not chosen */}
@@ -82,11 +109,11 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           }
           isLoading={loadingGuild}
           //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
-          value={currentGuildID && guilds ? 
-            { 
+          value={currentGuildID && guilds ?
+            {
               //@ts-expect-error
-              label: guilds.find(guild => guild.id === currentGuildID)?.name || 'Server Name Unknown', 
-              value: currentGuildID 
+              label: guilds.find(guild => guild.id === currentGuildID)?.name || 'Server Name Unknown',
+              value: currentGuildID
             } : null
           }
           isClearable={false}
@@ -239,13 +266,29 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         <ReactSelect
           onChange={option => setValue(`forms.${index}.submit_channel_id`, option?.value)}
           isLoading={loadingGuild}
-          value={watch(`forms.${index}.submit_channel_id`) ? { label: currentGuild.find(channel => channel.id === watch(`forms.${index}.submit_channel_id`))?.name || 'Channel Name Unknown', value: watch(`forms.${index}.submit_channel_id`) } : null}
+          value={watch(`forms.${index}.submit_channel_id`) ? {
+            label: currentGuild.find(channel => channel.id === watch(`forms.${index}.submit_channel_id`))?.name || 'Channel Name Unknown',
+            value: watch(`forms.${index}.submit_channel_id`),
+            type: currentGuild.find(channel => channel.id === watch(`forms.${index}.submit_channel_id`))?.type || '1'
+          } : null}
           isClearable={false}
           isSearchable={true}
           placeholder={'Select a channel'}
           noOptionsMessage={() => 'No results found'}
           name="Select channel"
-          options={currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => ({ label: channel.name, value: channel.id }))}
+          formatOptionLabel={({ label, type }) => (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {getChannelIcon(type)}
+              <span>{label}</span>
+            </div>
+          )}
+          options={currentGuild
+            .filter(channel => ![2, 4, 13, 14].includes(channel.type))
+            .map(channel => ({
+              label: channel.name,
+              value: channel.id,
+              type: channel.type // Make sure to include the type
+            }))}
           menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
           styles={{
             control: (baseStyles, state) => ({
@@ -367,7 +410,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           }}
         />
       </>}
-        
+
       {cookieValue && <Text mt={1} fontSize='14px' color='oklab(0.686636 -0.00407365 -0.0149199)'>Only servers and channels you have admin permissions in are shown.</Text>}
 
       {inputMethod === 'manual' && <>

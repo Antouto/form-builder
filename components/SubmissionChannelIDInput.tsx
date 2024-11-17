@@ -239,7 +239,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
         <ReactSelect
           onChange={option => setValue(`forms.${index}.submit_channel_id`, option?.value)}
           isLoading={loadingGuild}
-          value={{ label: currentGuild.find(channel => channel.id === watch(`forms.${index}.submit_channel_id`))?.name || 'Channel Name Unknown', value: watch(`forms.${index}.submit_channel_id`) }}
+          value={watch(`forms.${index}.submit_channel_id`) ? { label: currentGuild.find(channel => channel.id === watch(`forms.${index}.submit_channel_id`))?.name || 'Channel Name Unknown', value: watch(`forms.${index}.submit_channel_id`) } : null}
           isClearable={false}
           isSearchable={true}
           placeholder={'Select a channel'}

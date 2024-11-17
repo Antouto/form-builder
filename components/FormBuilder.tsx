@@ -301,7 +301,7 @@ export default function FormBuilder({
     <Box width='100%' pb={2}>
       <FormLabel display='flex' alignItems='center' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5 - (getValues('message.components.0.components')?.filter(component => component.style === 5))?.length)} /></FormLabel>
       {formsThatNeedSubmitChannelIDString && <Box mb={4}><ErrorMessage>
-        <Text>Form{formsThatNeedSubmitChannelIDString} a Submission Channel ID.</Text>
+        <Text>Form{formsThatNeedSubmitChannelIDString} a Submission Channel.</Text>
       </ErrorMessage></Box>}
       <ul>
         {fields.map((item, index) => {

@@ -245,8 +245,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           placeholder={'Select a channel'}
           noOptionsMessage={() => 'No results found'}
           name="Select channel"
-          //@ts-expect-error
-          options={currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => ({ name: channel.name, value: channel.id }))}
+          options={currentGuild.filter(channel => ![2, 4, 13, 14].includes(channel.type)).map(channel => ({ label: channel.name, value: channel.id }))}
           menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
           styles={{
             control: (baseStyles, state) => ({

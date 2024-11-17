@@ -67,11 +67,10 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               }
 
               if (!option) return;
-              //@ts-expect-error
               setCurrentGuildID(option.value)
 
               setLoadingGuild(true)
-              //@ts-expect-error
+
               let guildResponse = await getGuild(option.value)
               setLoadingGuild(false)
 

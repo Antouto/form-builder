@@ -84,6 +84,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           }
           isLoading={loadingGuild}
           //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
+          value={currentGuildID}
           isClearable={false}
           isSearchable={true}
           placeholder={'Select a server'}

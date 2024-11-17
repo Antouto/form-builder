@@ -70,7 +70,6 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               setCurrentGuildID(option.value)
 
               setLoadingGuild(true)
-
               let guildResponse = await getGuild(option.value)
               setLoadingGuild(false)
 
@@ -83,7 +82,13 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           }
           isLoading={loadingGuild}
           //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
-          value={currentGuildID}
+          value={currentGuildID && guilds ? 
+            { 
+              //@ts-expect-error
+              label: guilds.find(guild => guild.id === currentGuildID)?.name || 'Server Name Unknown', 
+              value: currentGuildID 
+            } : null
+          }
           isClearable={false}
           isSearchable={true}
           placeholder={'Select a server'}

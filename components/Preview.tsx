@@ -538,7 +538,7 @@ function Preview({
             !application_command
               ? "User opens a form"
               : <>User opens the form with {application_command?.name
-                ? <SlashCommand>{application_command?.name}</SlashCommand>:'the slash command'}</>
+                ? <SlashCommand>{application_command?.name}</SlashCommand> : 'the slash command'}</>
           }
           controls={forms?.[displayForm]?.pages.length > 1 && <HStack>
             <svg onClick={() => displayPage > 0 && setDisplayPage(displayPage - 1)} style={{ cursor: displayPage > 0 ? 'pointer' : 'not-allowed', transform: `rotate(${270}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -618,7 +618,7 @@ function Preview({
               </Box>
               <Box>
                 {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map((actionRow, i) => (
-                  <Box key={Math.random()} m="0 1em 1em">
+                  <><Box key={Math.random()} m="0 1em 1em">
                     <Text
 
                       fontSize="16px"
@@ -626,7 +626,7 @@ function Preview({
                       color={colorMode === "dark" ? "#b9bbbe" : "#4f5660"}
                     >
                       {actionRow.components[0]?.label}
-                      {actionRow.components[0]?.required && (
+                      {actionRow.components[0]?.required !== false && (
                         <span style={{ color: "#ed4245", paddingLeft: "4px" }}>
                           *
                         </span>
@@ -652,6 +652,7 @@ function Preview({
                       defaultValue={actionRow.components[0].value}
                     />
                   </Box>
+                  </>
                 ))}
               </Box>
               <Box
@@ -705,31 +706,31 @@ function Preview({
             p={isTinyScreen ? 0 : 4}
           >
             <Box display="flex">
-            <Box flexShrink={0}>
-              <FormProfile
-                {...{
-                  avatar: AVATAR_URL,
-                  hidden: FormsProfileHidden,
-                  HandleInteraction,
-                }}
-              >
-                <Image
-                  alt="Form's Avatar"
-                  src={AVATAR_URL}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    clipPath: "circle(50%)",
-                    marginTop: "5px",
-                    marginRight: "16px",
+              <Box flexShrink={0}>
+                <FormProfile
+                  {...{
+                    avatar: AVATAR_URL,
+                    hidden: FormsProfileHidden,
+                    HandleInteraction,
                   }}
-                  width="40px"
-                  height="40px"
-                  clipPath="circle(50%)"
-                  mt="5px"
-                  mr="16px"
-                />
-              </FormProfile>
+                >
+                  <Image
+                    alt="Form's Avatar"
+                    src={AVATAR_URL}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      clipPath: "circle(50%)",
+                      marginTop: "5px",
+                      marginRight: "16px",
+                    }}
+                    width="40px"
+                    height="40px"
+                    clipPath="circle(50%)"
+                    mt="5px"
+                    mr="16px"
+                  />
+                </FormProfile>
               </Box>
               <Box width='calc(100% - 56px)'>
                 <Box display="flex" alignItems="center">
@@ -787,6 +788,7 @@ function Preview({
                     {new Date().getMinutes()}
                   </Text>
                 </Box>
+                {forms?.[displayForm]?.submit_message?.content || forms?.[displayForm]?.guild_submit_message?.content || <>
                 <Box
                   bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
                   borderLeft={
@@ -875,7 +877,7 @@ function Preview({
                       )}
                     </HStack>
                   )}
-                </Box>
+                </Box></>}
               </Box>
             </Box>
           </Box>

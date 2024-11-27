@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Input, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Switch, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { background, Box, Button, CloseButton, FormLabel, HStack, Input, Link, Menu, MenuButton, MenuItem, MenuList, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Switch, Text, Tooltip, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   Control,
@@ -404,7 +404,7 @@ export default function FormBuilder({
                   </>}
                 </HStack>
 
-                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuild={getGuild} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} loadingGuild={loadingGuild} guilds={guilds} currentGuildID={currentGuildID} setCurrentGuildID={setCurrentGuildID}/>}
+                {submissionType[index] === 'bot' && (submissionChannel[index] === 'existing' || submissionChannel[index] === 'new_thread') && <SubmissionChannelIDInput index={index} register={register} errors={formState.errors} watch={watch} fixMessage={fixMessage} onOpenWhereDoIFindSubmissionChannelID={onOpenWhereDoIFindSubmissionChannelID} currentGuild={currentGuild} getValues={getValues} setValue={setValue} cookieValue={cookieValue} getGuild={getGuild} getGuilds={getGuilds} setStage={setStage} setCookieValue={setCookieValue} setLoadingGuild={setLoadingGuild} onOpenAddToServer={onOpenAddToServer} loadingGuild={loadingGuild} guilds={guilds} currentGuildID={currentGuildID} setCurrentGuildID={setCurrentGuildID} />}
                 {submissionType[index] === 'webhook' && <WebhookURLInput index={index} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />}
                 {submissionChannel[index] === 'new' && <Collapsible name='New Channel'>
                   <HStack mb={2} wrap={isReallySmallScreen ? 'wrap' : 'nowrap'}>
@@ -719,7 +719,65 @@ export default function FormBuilder({
                   <ActionRowBuilder control={control} i={index} getValues={getValues} resetField={resetField} setValue={setValue} register={register} errors={errors} watch={watch} premium={premium} {...{ setPremiumFeatureTarget, onOpenPremium }} />
                 </VStack>
               </Collapsible>
-            </Collapsible >
+              <hr />
+              <Collapsible name="Aditional actions on submission">
+                <Menu isLazy>
+                  <MenuButton as={Button} variant='primary' mt={1} pr='0px' rightIcon={<svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M12 10L8 6L4 10"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>}>
+                    Add
+                  </MenuButton>
+                  <MenuList bg='#181414' p='4px'>
+                    {/* @ts-expect-error */}
+                    {getValues(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`, '')}>Add role to submitter</MenuItem>}
+                    {/* @ts-expect-error */}
+                    {getValues(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`, '')}>Remove role from submitter</MenuItem>}
+                  </MenuList>
+                </Menu>
+                {/* @ts-expect-error */}
+                {getValues(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`) !== undefined && <Box>
+                  <FormLabel htmlFor={`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`} display='flex' alignItems='flex-end'>
+                    <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Role ID - Add role to submitter</Text>
+                  </FormLabel>
+                  <HStack>
+                    <input
+                      // @ts-expect-error
+                      {...register(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`, { required: true, pattern: /^\d{10,20}$/ })}
+                      id={`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`}
+                      type='string'
+                    />
+                    {/* @ts-expect-error */}
+                    <CloseButton onClick={() => { Object.keys(watch(`forms[${index}].on_submit`)).length === 1 ? setValue(`forms[${index}].on_submit`, undefined) : setValue(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`, undefined) }} />
+                  </HStack>
+                  {/* @ts-expect-error */}
+                  <ErrorMessage error={errors.forms?.[index]?.on_submit?.ADD_ROLE_TO_SUBMITTER} />
+                </Box>}
+                {/* @ts-expect-error */}
+                {getValues(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`) !== undefined && <Box>
+                  <FormLabel htmlFor={`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`} display='flex' alignItems='flex-end'>
+                    <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Role ID - Remove role from submitter</Text>
+                  </FormLabel>
+                  <HStack>
+                    <input
+                      // @ts-expect-error
+                      {...register(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`, { required: true, pattern: /^\d{10,20}$/ })}
+                      id={`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`}
+                      type='string'
+                    />
+                    {/* @ts-expect-error */}
+                    <CloseButton onClick={() => { Object.keys(watch(`forms[${index}].on_submit`)).length === 1 ? setValue(`forms[${index}].on_submit`, undefined) : setValue(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`, undefined) }} />
+                  </HStack>
+                  {/* @ts-expect-error */}
+                  <ErrorMessage error={errors.forms?.[index]?.on_submit?.REMOVE_ROLE_FROM_SUBMITTER} />
+                </Box>}
+              </Collapsible>
+            </Collapsible>
           </>);
         })}
       </ul >

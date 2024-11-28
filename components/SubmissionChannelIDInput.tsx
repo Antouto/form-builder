@@ -215,13 +215,15 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
                 background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
               },
             }),
-            menu: baseStyles => ({
+            menu: (baseStyles, state) => ({
               ...baseStyles,
               color: 'oklab(0.786807 -0.0025776 -0.0110238)',
               background: '#2b2d31',
               marginTop: 0,
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0
+              borderTopLeftRadius: state.menuPlacement === 'top' ? 0 : '4px',
+              borderTopRightRadius: state.menuPlacement === 'top' ? 0 : '4px',
+              borderBottomLeftRadius: state.menuPlacement === 'bottom' ? 0 : '4px',
+              borderBottomRightRadius: state.menuPlacement === 'bottom' ? 0 : '4px'
             }),
             menuList: baseStyles => ({
               ...baseStyles,
@@ -338,13 +340,15 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
                 background: state.isSelected ? '#404249' : (state.isFocused ? '#35373c' : 'transparent'),
               },
             }),
-            menu: baseStyles => ({
+            menu: (baseStyles, state) => ({
               ...baseStyles,
               color: 'oklab(0.786807 -0.0025776 -0.0110238)',
               background: '#2b2d31',
               marginTop: 0,
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0
+              borderTopLeftRadius: state.menuPlacement === 'top' ? 0 : '4px',
+              borderTopRightRadius: state.menuPlacement === 'top' ? 0 : '4px',
+              borderBottomLeftRadius: state.menuPlacement === 'bottom' ? 0 : '4px',
+              borderBottomRightRadius: state.menuPlacement === 'bottom' ? 0 : '4px'
             }),
             menuList: baseStyles => ({
               ...baseStyles,

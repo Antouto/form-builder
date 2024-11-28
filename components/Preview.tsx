@@ -67,6 +67,8 @@ function Preview({
     defaultValues,
   });
 
+  // const [displayTextInputContent, setDisplayTextInputContent]= useState(['','','','',''])
+
   const applicationCommandRef = useRef(null)
   const formRef = useRef(null)
 
@@ -632,25 +634,34 @@ function Preview({
                         </span>
                       )}
                     </Text>
-                    <Box
-                      as={
-                        actionRow.components[0]?.style == 1
-                          ? "input"
-                          : "textarea"
-                      }
-                      bg={colorMode === "dark" ? "#202225" : "#e3e5e8"}
-                      height={
-                        actionRow.components[0]?.style == 2 ? "16" : "2.2rem"
-                      }
-                      fontSize="16px"
-                      resize="none"
-                      border="0px"
-                      _focus={{ border: "0px" }}
-                      placeholder={actionRow.components[0]?.placeholder}
-                      //@ts-ignore
-                      //{...textInputs.register(`${actionRow.components[0].label}`)}
-                      defaultValue={actionRow.components[0].value}
-                    />
+                    <Box position='relative'>
+                      <Box
+                        as={
+                          actionRow.components[0]?.style == 1
+                            ? "input"
+                            : "textarea"
+                        }
+                        bg={colorMode === "dark" ? "#202225" : "#e3e5e8"}
+                        height={
+                          actionRow.components[0]?.style == 2 ? "16" : "2.2rem"
+                        }
+                        fontSize="16px"
+                        resize="none"
+                        border="0px"
+                        _focus={{ border: "0px" }}
+                        placeholder={actionRow.components[0]?.placeholder}
+                        //@ts-ignore
+                        //{...textInputs.register(`${actionRow.components[0].label}`)}
+                        // onChange={event => setDisplayTextInputContent(prev => {
+                        //   let newValue = [...prev]
+                        //   newValue[i] = event.target.value
+                        //   return newValue
+                        // })}
+                        // value={displayTextInputContent[i]}
+                        defaultValue={actionRow.components[0].value}
+                      />
+                    {/* {actionRow.components[0]?.style == 2 && <Box position='absolute' bottom='12px' right='14px'>{(actionRow.components[0]?.max_length || 4000) - displayTextInputContent[i].length}</Box>} */}
+                    </Box>
                   </Box>
                   </>
                 ))}
@@ -789,61 +800,61 @@ function Preview({
                   </Text>
                 </Box>
                 {forms?.[displayForm]?.submit_message?.content || forms?.[displayForm]?.guild_submit_message?.content || <>
-                <Box
-                  bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
-                  borderLeft={
-                    colorMode === "dark"
-                      ? "4px solid #202225"
-                      : "4px solid #e3e5e8"
-                  }
-                  maxWidth="520px"
-                  borderRadius="4px"
-                >
-                  <Box padding="0.5rem 1rem 1rem 0.75rem">
-                    <Box display="flex" alignItems="center" m="8px 0px 0px">
-                      <Image
-                        alt="Test User's Avatar"
-                        src="https://cdn.discordapp.com/embed/avatars/5.png"
-                        width="24px"
-                        height="24px"
-                        borderRadius="50%"
-                        mr="8px"
-                      />
-                      <Box
-                        fontFamily="Whitney Bold"
-                        fontSize="0.875rem"
-                        fontWeight="500"
-                      >
-                        User
+                  <Box
+                    bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
+                    borderLeft={
+                      colorMode === "dark"
+                        ? "4px solid #202225"
+                        : "4px solid #e3e5e8"
+                    }
+                    maxWidth="520px"
+                    borderRadius="4px"
+                  >
+                    <Box padding="0.5rem 1rem 1rem 0.75rem">
+                      <Box display="flex" alignItems="center" m="8px 0px 0px">
+                        <Image
+                          alt="Test User's Avatar"
+                          src="https://cdn.discordapp.com/embed/avatars/5.png"
+                          width="24px"
+                          height="24px"
+                          borderRadius="50%"
+                          mr="8px"
+                        />
+                        <Box
+                          fontFamily="Whitney Bold"
+                          fontSize="0.875rem"
+                          fontWeight="500"
+                        >
+                          User
+                        </Box>
                       </Box>
-                    </Box>
-                    <Box>
-                      {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map(
-                        (actionRow) => (
-                          <Box key={Math.random()}>
-                            <Text
-                              fontFamily="Whitney Black"
-                              fontSize="0.875rem"
-                              mt="8px"
-                            >
-                              {actionRow.components[0]?.label}
-                            </Text>
-                            <Text
-                              fontSize="0.875rem"
-                              color={
-                                actionRow.components[0]?.value
-                                  ? "white"
-                                  : "#a3a6aa"
-                              }
-                            >
-                              {actionRow.components[0]?.value ||
-                                "(Answer will be displayed here)"}
-                            </Text>
-                          </Box>
-                        )
-                      )}
-                    </Box>
-                    {/* <Box display="flex" alignItems="center" mt="8px">
+                      <Box>
+                        {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map(
+                          (actionRow) => (
+                            <Box key={Math.random()}>
+                              <Text
+                                fontFamily="Whitney Black"
+                                fontSize="0.875rem"
+                                mt="8px"
+                              >
+                                {actionRow.components[0]?.label}
+                              </Text>
+                              <Text
+                                fontSize="0.875rem"
+                                color={
+                                  actionRow.components[0]?.value
+                                    ? "white"
+                                    : "#a3a6aa"
+                                }
+                              >
+                                {actionRow.components[0]?.value ||
+                                  "(Answer will be displayed here)"}
+                              </Text>
+                            </Box>
+                          )
+                        )}
+                      </Box>
+                      {/* <Box display="flex" alignItems="center" mt="8px">
                       <Image
                         alt="ID"
                         src="https://cdn.discordapp.com/emojis/882601305871360040.png"
@@ -860,24 +871,24 @@ function Preview({
                         643945264868098049
                       </Text>
                     </Box> */}
+                    </Box>
                   </Box>
-                </Box>
-                <Box>
-                  {/* @ts-expect-error */}
-                  {forms?.[displayForm]?.submit_components?.map((action_row, i) =>
-                    <HStack key={Math.random()} gap={0}>
-                      {/* @ts-expect-error */}
-                      {forms?.[displayForm]?.submit_components[i].components?.map(button =>
-                        <Button key={Math.random()} height="32px"
-                          fontSize="14px"
-                          paddingBlock={0}
-                          paddingInline={0}
-                          padding="2px 16px"
-                          m="4px 8px 4px 0" variant={button.style === 1 ? 'discord-primary' : (button.style === 2 ? 'discord-secondary' : (button.style === 3 ? 'discord-success' : 'discord-danger'))}>{button.label}</Button>
-                      )}
-                    </HStack>
-                  )}
-                </Box></>}
+                  <Box>
+                    {/* @ts-expect-error */}
+                    {forms?.[displayForm]?.submit_components?.map((action_row, i) =>
+                      <HStack key={Math.random()} gap={0}>
+                        {/* @ts-expect-error */}
+                        {forms?.[displayForm]?.submit_components[i].components?.map(button =>
+                          <Button key={Math.random()} height="32px"
+                            fontSize="14px"
+                            paddingBlock={0}
+                            paddingInline={0}
+                            padding="2px 16px"
+                            m="4px 8px 4px 0" variant={button.style === 1 ? 'discord-primary' : (button.style === 2 ? 'discord-secondary' : (button.style === 3 ? 'discord-success' : 'discord-danger'))}>{button.label}</Button>
+                        )}
+                      </HStack>
+                    )}
+                  </Box></>}
               </Box>
             </Box>
           </Box>

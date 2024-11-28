@@ -4,7 +4,7 @@ import ErrorMessage from './ErrorMessage'
 import ReactSelect from 'react-select'
 import { useScreenWidth } from "../util/width";
 
-export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, getValues, setValue, cookieValue, setCookieValue, getGuild, getGuilds, setStage, setLoadingGuild, onOpenAddToServer, loadingGuild, guilds, currentGuildID, setCurrentGuildID }: any) {
+export default function SubmissionChannelIDInput({ register, index, errors, fixMessage, watch, onOpenWhereDoIFindSubmissionChannelID, currentGuild, getValues, setValue, cookieValue, setCookieValue, getGuild, getGuilds, stage, setLoadingGuild, onOpenAddToServer, loadingGuild, guilds, currentGuildID, setCurrentGuildID }: any) {
   const colorMode = useColorMode().colorMode
 
   const [inputMethod, _setInputMethod] = useState() // login or manual
@@ -65,8 +65,9 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
 
   return (
     <>
-      {/* Not Logged in and input method not chosen */}
-      {!cookieValue && !inputMethod &&
+      {/* Not Logged in and input method not chosen and stage not editor */}
+      
+      {!cookieValue && !inputMethod && stage !== 'editor' &&
         <Stack direction={isReallySmallScreen ? 'column' : 'row'} justifyContent='center' alignItems='center' gap={3}>
           <Button variant='primary' onClick={() => setInputMethod('login')}>Login to choose channel</Button>
           <HStack gap={isReallySmallScreen ? 2 : 3}>
@@ -77,7 +78,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
       }
 
 
-      {/* Server Selection */}
+      {/* Logged in so Server Selection */}
       {cookieValue && <Box mb={1}>
         <FormLabel display='flex' alignItems='center'>
           <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Server</Text>
@@ -366,7 +367,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
 
       {cookieValue && <Text mt={1} fontSize='14px' color='oklab(0.686636 -0.00407365 -0.0149199)'>Only servers and channels you have admin permissions in are shown.</Text>}
 
-      {inputMethod === 'manual' && <>
+      {(inputMethod === 'manual' || (stage === 'editor' && !cookieValue)) && <>
         <Label />
         <input
           {...register(`forms.${index}.submit_channel_id`, { required: true, pattern: /^\d{10,20}$/, onChange: () => fixMessage() })}

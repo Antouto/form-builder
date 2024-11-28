@@ -122,6 +122,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
           //@ts-expect-error
           options={guilds ? guilds.map(guild => ({ label: guild.name, value: guild.id })) : []}
           menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
+          menuPosition='fixed'
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,

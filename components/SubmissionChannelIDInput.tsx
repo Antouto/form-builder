@@ -289,6 +289,7 @@ export default function SubmissionChannelIDInput({ register, index, errors, fixM
               type: channel.type // Make sure to include the type
             }))}
           menuPortalTarget={document.body}  // Renders dropdown at the top of the DOM
+          menuPosition='fixed'
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,

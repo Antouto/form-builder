@@ -720,7 +720,10 @@ export default function FormBuilder({
                 </VStack>
               </Collapsible>
               <hr />
-              <Collapsible name="Aditional actions on submission">
+              <Collapsible name={<>Aditional actions on submission{(
+                (watch(`forms.${index}.on_submit`)?.ADD_ROLE_TO_SUBMITTER !== undefined && (formState?.errors?.forms?.[index]?.on_submit?.ADD_ROLE_TO_SUBMITTER || watch(`forms.${index}.on_submit`)?.ADD_ROLE_TO_SUBMITTER === ''))
+                || (watch(`forms.${index}.on_submit`)?.REMOVE_ROLE_FROM_SUBMITTER !== undefined && (formState?.errors?.forms?.[index]?.REMOVE_ROLE_FROM_SUBMITTER) || watch(`forms.${index}.on_submit`)?.REMOVE_ROLE_FROM_SUBMITTER === ''))            
+                && <AiFillExclamationCircle style={{ marginLeft: '4px' }} color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} />}</>}>
                 <Menu isLazy>
                   <MenuButton as={Button} variant='primary' mt={1} pr='0px' rightIcon={<svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path

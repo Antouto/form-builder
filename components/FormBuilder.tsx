@@ -721,8 +721,10 @@ export default function FormBuilder({
               </Collapsible>
               <hr />
               <Collapsible name={<>Aditional actions on submission{(
+                //@ts-expect-error
                 (watch(`forms.${index}.on_submit`)?.ADD_ROLE_TO_SUBMITTER !== undefined && (formState?.errors?.forms?.[index]?.on_submit?.ADD_ROLE_TO_SUBMITTER || watch(`forms.${index}.on_submit`)?.ADD_ROLE_TO_SUBMITTER === ''))
-                || (watch(`forms.${index}.on_submit`)?.REMOVE_ROLE_FROM_SUBMITTER !== undefined && (formState?.errors?.forms?.[index]?.REMOVE_ROLE_FROM_SUBMITTER) || watch(`forms.${index}.on_submit`)?.REMOVE_ROLE_FROM_SUBMITTER === ''))            
+                //@ts-expect-error
+                || (watch(`forms.${index}.on_submit`)?.REMOVE_ROLE_FROM_SUBMITTER !== undefined && (formState?.errors?.forms?.[index]?.REMOVE_ROLE_FROM_SUBMITTER) || watch(`forms.${index}.on_submit`)?.REMOVE_ROLE_FROM_SUBMITTER === ''))
                 && <AiFillExclamationCircle style={{ marginLeft: '4px' }} color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} />}</>}>
                 <Menu isLazy>
                   <MenuButton as={Button} variant='primary' mt={1} pr='0px' rightIcon={<svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -755,8 +757,18 @@ export default function FormBuilder({
                       id={`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`}
                       type='string'
                     />
-                    {/* @ts-expect-error */}
-                    <CloseButton onClick={() => { Object.keys(watch(`forms[${index}].on_submit`)).length === 1 ? setValue(`forms[${index}].on_submit`, undefined) : setValue(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`, undefined) }} />
+                    <CloseButton onClick={() => {
+                      {/* @ts-expect-error */ }
+                      resetField(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`)
+                      {/* @ts-expect-error */ }
+                      if (Object.keys(watch(`forms[${index}].on_submit`)).length === 1) {
+                        {/* @ts-expect-error */ }
+                        setValue(`forms[${index}].on_submit`, undefined)
+                      } else {
+                        {/* @ts-expect-error */ }
+                        setValue(`forms[${index}].on_submit.ADD_ROLE_TO_SUBMITTER`, undefined)
+                      }
+                    }} />
                   </HStack>
                   {/* @ts-expect-error */}
                   <ErrorMessage error={errors.forms?.[index]?.on_submit?.ADD_ROLE_TO_SUBMITTER} />
@@ -773,8 +785,18 @@ export default function FormBuilder({
                       id={`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`}
                       type='string'
                     />
-                    {/* @ts-expect-error */}
-                    <CloseButton onClick={() => { Object.keys(watch(`forms[${index}].on_submit`)).length === 1 ? setValue(`forms[${index}].on_submit`, undefined) : setValue(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`, undefined) }} />
+                    <CloseButton onClick={() => {
+                      {/* @ts-expect-error */ }
+                      resetField(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`)
+                      {/* @ts-expect-error */ }
+                      if (Object.keys(watch(`forms[${index}].on_submit`)).length === 1) {
+                        {/* @ts-expect-error */ }
+                        setValue(`forms[${index}].on_submit`, undefined)
+                      } else {
+                        {/* @ts-expect-error */ }
+                        setValue(`forms[${index}].on_submit.REMOVE_ROLE_FROM_SUBMITTER`, undefined)
+                      }
+                    }} />
                   </HStack>
                   {/* @ts-expect-error */}
                   <ErrorMessage error={errors.forms?.[index]?.on_submit?.REMOVE_ROLE_FROM_SUBMITTER} />

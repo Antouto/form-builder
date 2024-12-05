@@ -15,6 +15,8 @@ import Counter from './Counter';
 import ErrorMessage from './ErrorMessage';
 import ButtonBuilder from './ButtonBuilder';
 import PermissionOverwritesBuilder from './PermissionOverwritesBuilder';
+import { useScreenHeightNumber } from '../util/width';
+
 
 export default function SubmitComponentsBuilder({ i, ii, control, getValues, resetField, setValue, register, errors, watch, premium, setPremiumFeatureTarget, onOpenPremium }: any) {
   const { fields, remove: _remove, append } = useFieldArray({
@@ -22,6 +24,8 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
     name: `forms.${i}.submit_components.${ii}.components`
   });
   const colorMode = useColorMode().colorMode
+
+  const windowHeight = useScreenHeightNumber()
 
   function remove(index: number) {
     _remove(index)
@@ -53,9 +57,12 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             </svg>}>
               Add
             </MenuButton>
-            <MenuList bg='#181414' p='4px'>
-              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, '')}>Add role to submitter</MenuItem>}
-              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, '')}>Remove role from submitter</MenuItem>}
+            <MenuList bg='#181414' p='4px' maxHeight={Math.floor(windowHeight/2.5) + 'px'} overflowY='scroll'>
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, '')} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`)}>Add role to submitter</MenuItem>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, '')} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`)}>Remove role from submitter</MenuItem>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`, '')} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`)}>Timeout submitter</MenuItem>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`) !== undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) !== undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) !== undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`)}>Kick submitter</MenuItem>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`) !== undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) !== undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) !== undefined || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DM_SUBMITTER_WITH_MODAL_INPUT`)}>Ban submitter</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`, '')}>Forward Submission</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`, {})} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`)}>Send message to this channel</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`, {})}>Send message to different channel</MenuItem>}
@@ -130,6 +137,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.ADD_ROLE_TO_SUBMITTER} />
           </Box>}
+
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) !== undefined && <Box>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`} display='flex' alignItems='flex-end'>
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Role ID - Remove role from submitter</Text>
@@ -144,6 +152,34 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, undefined) }} />
             </HStack>
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
+          </Box>}
+          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`) !== undefined && <Box>
+            <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`} display='flex' alignItems='flex-end'>
+              <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Seconds - Timeout submitter</Text>
+            </FormLabel>
+            <HStack>
+              <input
+                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`, { required: true })}
+                id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`}
+                type='number'
+                max={60*60*24*28}
+                inputmode="numeric"
+              />
+              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`, undefined) }} />
+            </HStack>
+            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.TIMEOUT_SUBMITTER} />
+          </Box>}
+          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) && <Box>
+            <HStack>
+              <FormLabel>Kick submitter</FormLabel>
+              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`, undefined) }} />
+            </HStack>
+          </Box>}
+          {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`) && <Box>
+            <HStack>
+              <FormLabel>Ban submitter</FormLabel>
+              <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`, undefined) }} />
+            </HStack>
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`) !== undefined && <Box>
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.FORWARD_SUBMISSION`} display='flex' alignItems='flex-end'>

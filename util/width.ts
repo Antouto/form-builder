@@ -19,3 +19,23 @@ export function useScreenWidth(size: number) {
 
     return width > size
 }
+
+export function useScreenHeightNumber() {
+    const [height, setHeight] = useState(0)
+
+    useEffect(() => {
+        function handleResize() {
+            setHeight(window.innerHeight)
+        }
+
+        window.addEventListener("resize", handleResize)
+
+        handleResize()
+
+        return () => {
+            window.removeEventListener("resize", handleResize)
+        }
+    }, [setHeight])
+
+    return height
+}

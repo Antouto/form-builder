@@ -50,6 +50,7 @@ export interface TextInputBuilderProperties<T extends FieldValues> {
   id?: string;
   compact?: boolean;
   pageIndex: number;
+  textInputMaxLength: number;
 }
 
 
@@ -65,7 +66,10 @@ export default function TextInputBuilder({
   fixMessage,
   id,
   compact,
-  pageIndex
+  pageIndex,
+  //@ts-expect-error
+  updateTextInputMaxLength,
+  textInputMaxLength
 }: TextInputBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, remove, append } = useFieldArray({
     control,
@@ -164,8 +168,11 @@ export default function TextInputBuilder({
               max_length: 1024
             }
           ]
-        })
-        fixMessage()
+        });
+        setTimeout(() => {
+          updateTextInputMaxLength();
+          fixMessage();
+        }, 0);
       }}>Add Text Input</Button>
     </VStack>
   }
@@ -180,7 +187,10 @@ export default function TextInputBuilder({
         let maximumLength = parseInt(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components[0].max_length`));
         return (
           <Box key={item.id} width='100%'>
-            <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label?.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ padding: 0 }}>
+            <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label?.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => {
+              remove(k)
+              updateTextInputMaxLength()
+              }} /> : null} style={{ padding: 0 }}>
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='center'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
@@ -288,7 +298,7 @@ export default function TextInputBuilder({
                   <FormLabel>Minimum to Maximum Character Range</FormLabel>
                   <RangeSlider
 
-                    width='99%' ml='.5%' defaultValue={[1, 1024]} min={1} max={1024} onChange={(value) => {
+                    width='99%' ml='.5%' defaultValue={[1, textInputMaxLength]} min={1} max={textInputMaxLength} onChange={(value) => {
                       //@ts-expect-error
                       setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, value[0])
                       if (value[0] === 1) resetField(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`)
@@ -299,7 +309,7 @@ export default function TextInputBuilder({
                     <RangeSliderTrack height='8px'>
                       <RangeSliderFilledTrack bg='blurple' />
                     </RangeSliderTrack>
-                    <RangeSliderThumb {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: 1024 })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
+                    <RangeSliderThumb {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: textInputMaxLength })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
                     <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>
                   </RangeSlider>
                 </VStack>
@@ -321,8 +331,11 @@ export default function TextInputBuilder({
               max_length: 1024
             }
           ]
-        })
-        fixMessage()
+        });
+        setTimeout(() => {
+          updateTextInputMaxLength();
+          fixMessage();
+        }, 0);
       }}>Add Text Input</Button>
     </VStack>
   );

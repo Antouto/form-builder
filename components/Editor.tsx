@@ -146,6 +146,8 @@ export function Editor({
 
   const [guilds, setGuilds] = useState()
 
+  const [textInputMaxLength, setTextInputMaxLength] = useState(1024)
+
   async function getGuild(id: string) {
     console.log('getGuild 1')
     let guildResponse = await fetch(`https://create.discordforms.app/api/discord/session?guild_id=${id}`);
@@ -720,7 +722,9 @@ export function Editor({
             onOpenAddToServer,
             guilds,
             currentGuildID,
-            setCurrentGuildID
+            setCurrentGuildID,
+            textInputMaxLength,
+            setTextInputMaxLength
           }}
         />
         <VStack width="100%" align="flex-start">
@@ -1066,7 +1070,7 @@ export function Editor({
           <VStack align='center' mt={5} width='100%' gap={5}>
             <Box width='100%' maxWidth='500px'>
               <FormTitleInput index={0} pageIndex={0} register={register} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
-              <TextInputBuilder compact id={`forms.0.pages.0.modal.components`} nestIndex={0} pageIndex={0} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
+              <TextInputBuilder compact id={`forms.0.pages.0.modal.components`} nestIndex={0} pageIndex={0} {...{ control, register, formState, watch, setValue, resetField, fixMessage, textInputMaxLength }} />
             </Box>
             <HStack>
               <Button variant='secondary' onClick={() => {

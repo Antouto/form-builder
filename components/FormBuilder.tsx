@@ -116,7 +116,11 @@ export default function FormBuilder({
   //@ts-expect-error
   currentGuildID,
   //@ts-expect-error
-  setCurrentGuildID
+  setCurrentGuildID,
+  //@ts-expect-error
+  textInputMaxLength,
+  //@ts-expect-error
+  setTextInputMaxLength
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -616,7 +620,7 @@ export default function FormBuilder({
               </Collapsible >
               <hr />
               <Collapsible name="Pages">
-                <PageBuilder {...{ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage, isOpenPremium, onOpenPremium, onClosePremium, setPremiumFeatureTarget }} />
+                <PageBuilder {...{ index, control, premium, getValues, setValue, register, formState, watch, resetField, fixMessage, setDisplayPage, isOpenPremium, onOpenPremium, onClosePremium, setPremiumFeatureTarget, textInputMaxLength, setTextInputMaxLength }} />
               </Collapsible>
               <hr />
               <Collapsible name="Submission & Confirmation Messages">

@@ -54,7 +54,7 @@ function Preview({
   setDisplayPage,
   displaySection,
   stage,
-  currentGuild
+  currentGuild,
 }: PreviewProperties) {
   const { colorMode } = useColorMode();
   const isTinyScreen = !useScreenWidth(575);
@@ -69,26 +69,32 @@ function Preview({
 
   // const [displayTextInputContent, setDisplayTextInputContent]= useState(['','','','',''])
 
-  const applicationCommandRef = useRef(null)
-  const formRef = useRef(null)
+  const applicationCommandRef = useRef(null);
+  const formRef = useRef(null);
 
-  //@ts-expect-error
-  const executeApplicationCommandScroll = () => applicationCommandRef.current.scrollIntoView({ behavior: 'smooth' })
-  //@ts-expect-error  
-  const executeFormScroll = () => formRef.current.scrollIntoView({ behavior: 'smooth' })
+  const executeApplicationCommandScroll = () => {
+    if (applicationCommandRef.current != null)
+      //@ts-expect-error
+      applicationCommandRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+  const executeFormScroll = () => {
+    if (formRef.current != null)
+      //@ts-expect-error
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   if (displayForm < 0) displayForm = 0;
 
   function decimalToHexColor(decimal: number) {
     // Extract the red, green, and blue components
-    let r = (decimal >> 16) & 0xFF;
-    let g = (decimal >> 8) & 0xFF;
-    let b = decimal & 0xFF;
+    let r = (decimal >> 16) & 0xff;
+    let g = (decimal >> 8) & 0xff;
+    let b = decimal & 0xff;
 
     // Convert each component to a hexadecimal string and pad with zeros if needed
-    let rHex = r.toString(16).padStart(2, '0');
-    let gHex = g.toString(16).padStart(2, '0');
-    let bHex = b.toString(16).padStart(2, '0');
+    let rHex = r.toString(16).padStart(2, "0");
+    let gHex = g.toString(16).padStart(2, "0");
+    let bHex = b.toString(16).padStart(2, "0");
 
     // Concatenate the hexadecimal values and prepend with a '#'
     return `#${rHex}${gHex}${bHex}`;
@@ -97,22 +103,25 @@ function Preview({
   const MessageEmbed = (
     <>
       {message?.embeds &&
-        message.embeds.map((embed) => (
+        message.embeds.map((embed, index) => (
           <Box
-            key={Math.random()}
+            key={index}
             borderLeftColor={
               //@ts-expect-error
-              parseInt(embed?.color) ? decimalToHexColor(embed?.color) : "#202225"
+              parseInt(embed?.color)
+                ? decimalToHexColor(embed?.color as number)
+                : "#202225"
             }
             borderLeftWidth="4px"
             mt="0.2rem"
             bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
-            borderLeft={`4px solid ${!isEmpty(embed?.color)
-              ? message?.embeds?.[0]?.color
-              : colorMode === "dark"
+            borderLeft={`4px solid ${
+              !isEmpty(embed?.color)
+                ? message?.embeds?.[0]?.color
+                : colorMode === "dark"
                 ? "#202225"
                 : "#e3e5e8"
-              }`}
+            }`}
             maxWidth="520px"
             borderRadius="4px"
           >
@@ -201,7 +210,9 @@ function Preview({
                     fontFamily="Whitney Bold"
                     fontSize="0.80rem"
                     color="#fbfbfb"
-                    width={`calc(100% - ${embed?.footer?.icon_url != undefined ? '32' : '0'}px)`}
+                    width={`calc(100% - ${
+                      embed?.footer?.icon_url != undefined ? "32" : "0"
+                    }px)`}
                   >
                     {embed?.footer?.text}
                   </Text>
@@ -217,42 +228,65 @@ function Preview({
   const HandleInteraction = () => setHidden(!FormsProfileHidden);
   const { isOpen, onToggle } = useDisclosure();
 
-  const [temporaryModalHighlight, setTemporaryModalHighlight] = useState(false)
-  const [temporarySubmissionHighlight, setTemporarySubmissionHighlight] = useState(false)
+  const [temporaryModalHighlight, setTemporaryModalHighlight] = useState(false);
+  const [temporarySubmissionHighlight, setTemporarySubmissionHighlight] =
+    useState(false);
 
-  const [discohook, setDiscohook] = useState(false)
+  const [discohook, setDiscohook] = useState(false);
 
   //@ts-expect-error
-  const discohookMessage = message => {
-    let msg = { ...message }
-    if (msg) msg.author = {
-      name: 'Forms',
-      icon_url: 'https://cdn.discordapp.com/avatars/942858850850205717/a_437f281f490a388866b7be0b3cd7cc33.gif'
-    }
-    return msg
-  }
+  const discohookMessage = (message) => {
+    let msg = { ...message };
+    if (msg)
+      msg.author = {
+        name: "Forms",
+        icon_url:
+          "https://cdn.discordapp.com/avatars/942858850850205717/a_437f281f490a388866b7be0b3cd7cc33.gif",
+      };
+    return msg;
+  };
 
   return (
     <Box
       overflowY="scroll"
-      p={isTinyScreen ? 0 : '16px 16px 16px 12px'}
+      p={isTinyScreen ? 0 : "16px 16px 16px 12px"}
       maxHeight="calc(100vh - 48px);"
       display={displaySection ? "block" : "none"}
     >
       <VStack align="start" spacing={isTinyScreen ? 0 : 3}>
-        {(!application_command) && (
+        {!application_command && (
           <PreviewStep
             number={1}
-            highlighted={!isTinyScreen && stage === 'openFormType'}
-            title={!forms?.[0].select_menu_option ? forms.length > 1 ? 'Buttons to open forms are sent to a channel' : 'A button to open forms is sent to a channel' : 'A select menu to open forms is sent to a channel'}
+            highlighted={!isTinyScreen && stage === "openFormType"}
+            title={
+              !forms?.[0].select_menu_option
+                ? forms.length > 1
+                  ? "Buttons to open forms are sent to a channel"
+                  : "A button to open forms is sent to a channel"
+                : "A select menu to open forms is sent to a channel"
+            }
           >
-
-
-            <Box display={discohook ? 'block' : 'none'} ><iframe
-              src={`https://discohook.app/viewer?data=${Buffer.from(JSON.stringify({ version: 'd2', messages: [{ data: discohookMessage(message) }] })).toString('base64')}&header=false`}
-              style={{ width: '100%', height: '200px', border: 'none', padding: '20px', background: 'white', borderRadius: '8px', resize: 'vertical', overflow: 'auto' }}
-              title="Content"
-            /></Box>
+            <Box display={discohook ? "block" : "none"}>
+              <iframe
+                src={`https://discohook.app/viewer?data=${Buffer.from(
+                  JSON.stringify({
+                    version: "d2",
+                    messages: [{ data: discohookMessage(message) }],
+                  })
+                ).toString("base64")}&header=false`}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  border: "none",
+                  padding: "20px",
+                  background: "white",
+                  borderRadius: "8px",
+                  resize: "vertical",
+                  overflow: "auto",
+                }}
+                title="Content"
+              />
+            </Box>
 
             <Box
               display={discohook ? "none" : "flex"}
@@ -286,7 +320,7 @@ function Preview({
                   />
                 </FormProfile>
               </Box>
-              <Box width='calc(100% - 56px)'>
+              <Box width="calc(100% - 56px)">
                 <Box display="flex" alignItems="center">
                   <Text
                     fontFamily="Whitney Bold"
@@ -375,44 +409,66 @@ function Preview({
                   {MessageEmbed}
                   <Box p="4px 0">
                     {!forms?.[0].select_menu_option &&
-                      message?.components?.[0]?.components?.map((component, index) => (
-                        <Button
-                          key={Math.random()}
-                          onClick={() => {
-                            if (component.style !== 5) {
-                              setDisplayPage(0)
-                              //@ts-expect-error
-                              setDisplayForm(parseInt(component.custom_id?.match(/\d+/)[0]) - 1)
-                              //@ts-expect-error
-                              if (displayForm === parseInt(component.custom_id?.match(/\d+/)[0]) - 1) {
-                                setTemporaryModalHighlight(true)
-                                executeFormScroll()
-                                setTimeout(() => setTemporaryModalHighlight(false), 300);
+                      message?.components?.[0]?.components?.map(
+                        (component, index) => (
+                          <Button
+                            key={Math.random()}
+                            onClick={() => {
+                              if (component.style !== 5) {
+                                setDisplayPage(0);
+                                setDisplayForm(
+                                  parseInt(
+                                    //@ts-expect-error
+                                    component.custom_id?.match(/\d+/)[0]
+                                  ) - 1
+                                );
+                                if (
+                                  displayForm ===
+                                  parseInt(
+                                    //@ts-expect-error
+                                    component.custom_id?.match(/\d+/)[0]
+                                  ) -
+                                    1
+                                ) {
+                                  setTemporaryModalHighlight(true);
+                                  executeFormScroll();
+                                  setTimeout(
+                                    () => setTemporaryModalHighlight(false),
+                                    300
+                                  );
+                                }
                               }
+                            }}
+                            height="32px"
+                            fontSize="14px"
+                            paddingBlock={0}
+                            paddingInline={0}
+                            padding="2px 16px"
+                            m="4px 8px 4px 0"
+                            variant={
+                              //@ts-expect-error
+                              message?.components[0].components[index]?.style ==
+                              1
+                                ? "discord-primary" //@ts-expect-error
+                                : message?.components[0].components[index]
+                                    ?.style == 2
+                                ? "discord-secondary" //@ts-expect-error
+                                : message?.components[0].components[index]
+                                    ?.style == 3
+                                ? "discord-success" //@ts-expect-error
+                                : message?.components[0].components[index]
+                                    ?.style == 4
+                                ? "discord-danger"
+                                : "discord-secondary"
                             }
-                          }}
-                          height="32px"
-                          fontSize="14px"
-                          paddingBlock={0}
-                          paddingInline={0}
-                          padding="2px 16px"
-                          m="4px 8px 4px 0"
-                          variant={
-                            //@ts-expect-error
-                            message?.components[0].components[index]?.style == 1
-                              ? "discord-primary"                             //@ts-expect-error
-                              : message?.components[0].components[index]?.style == 2
-                                ? "discord-secondary"                            //@ts-expect-error
-                                : message?.components[0].components[index]?.style == 3
-                                  ? "discord-success"                             //@ts-expect-error
-                                  : message?.components[0].components[index]?.style == 4
-                                    ? "discord-danger"
-                                    : "discord-secondary"
-                          }
-                        >
-                          {message?.components?.[0]?.components?.[index]?.label}
-                        </Button>
-                      ))}
+                          >
+                            {
+                              message?.components?.[0]?.components?.[index]
+                                ?.label
+                            }
+                          </Button>
+                        )
+                      )}
                     {forms?.[0].select_menu_option && (
                       <Box>
                         <Box
@@ -477,29 +533,40 @@ function Preview({
                               p={2}
                               onClick={() => {
                                 onToggle();
-                                setDisplayForm(index)
+                                setDisplayForm(index);
                                 if (displayForm === index) {
-                                  setTemporaryModalHighlight(true)
+                                  setTemporaryModalHighlight(true);
                                   setTimeout(() => executeFormScroll(), 1);
-                                  setTimeout(() => setTemporaryModalHighlight(false), 800);
+                                  setTimeout(
+                                    () => setTemporaryModalHighlight(false),
+                                    800
+                                  );
                                 }
                               }}
                             >
                               <HStack>
-                                {/* @ts-expect-error */}
-                                {form?.select_menu_option?.emoji?.id && <img width='22px' src={`https://cdn.discordapp.com/emojis/${form?.select_menu_option?.emoji?.id}.webp?size=96`} />}
+                                {form?.select_menu_option?.emoji?.id && (
+                                  <Image
+                                    width="22px"
+                                    src={`https://cdn.discordapp.com/emojis/${form?.select_menu_option?.emoji?.id}.webp?size=96`}
+                                    alt="Select menu emoji"
+                                  />
+                                )}
                                 <Box>
-
                                   <Text
                                     color={
-                                      colorMode == "light" ? "#424244" : "#eeeff0"
+                                      colorMode == "light"
+                                        ? "#424244"
+                                        : "#eeeff0"
                                     }
                                   >
                                     {form?.select_menu_option?.label}
                                   </Text>
                                   <Text
                                     color={
-                                      colorMode == "light" ? "#64666d" : "#9fa0a6"
+                                      colorMode == "light"
+                                        ? "#64666d"
+                                        : "#9fa0a6"
                                     }
                                     maxWidth={400}
                                   >
@@ -507,7 +574,6 @@ function Preview({
                                   </Text>
                                 </Box>
                               </HStack>
-
                             </Box>
                           ))}
                         </Box>
@@ -518,52 +584,107 @@ function Preview({
               </Box>
             </Box>
 
-
-
-
-            {!isTinyScreen && (/(:\w+:)|(<&\d+>)|(<@&?\d+>)|(<\/[\w ]+(:\d+)>)|(>(>>)? )|(#{1,3} )|(-# )/.test(JSON.stringify(message))) && <Box mt={2} display='flex' alignItems='center' justifyContent='right' fontSize='12px'>
-              <Switch
-                onChange={event => { setDiscohook(event.target.checked) }}
-                colorScheme='blurple'
-                size='sm'
-                mr={2}
-              />
-              Use discohook for message rendering
-            </Box>}
-
+            {!isTinyScreen &&
+              /(:\w+:)|(<&\d+>)|(<@&?\d+>)|(<\/[\w ]+(:\d+)>)|(>(>>)? )|(#{1,3} )|(-# )/.test(
+                JSON.stringify(message)
+              ) && (
+                <Box
+                  mt={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="right"
+                  fontSize="12px"
+                >
+                  <Switch
+                    onChange={(event) => {
+                      setDiscohook(event.target.checked);
+                    }}
+                    colorScheme="blurple"
+                    size="sm"
+                    mr={2}
+                  />
+                  Use discohook for message rendering
+                </Box>
+              )}
           </PreviewStep>
         )}
 
         <PreviewStep
           number={!application_command ? 2 : 1}
           title={
-            !application_command
-              ? "User opens a form"
-              : <>User opens the form with {application_command?.name
-                ? <SlashCommand>{application_command?.name}</SlashCommand> : 'the slash command'}</>
+            !application_command ? (
+              "User opens a form"
+            ) : (
+              <>
+                User opens the form with{" "}
+                {application_command?.name ? (
+                  <SlashCommand>{application_command?.name}</SlashCommand>
+                ) : (
+                  "the slash command"
+                )}
+              </>
+            )
           }
-          controls={forms?.[displayForm]?.pages.length > 1 && <HStack>
-            <svg onClick={() => displayPage > 0 && setDisplayPage(displayPage - 1)} style={{ cursor: displayPage > 0 ? 'pointer' : 'not-allowed', transform: `rotate(${270}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M12 10L8 6L4 10"
-                stroke={displayPage > 0 ? "#bcbcbc" : 'grey'}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <Text userSelect='none'>Page {displayPage + 1}</Text>
-            <svg onClick={() => ((displayPage + 1) < forms?.[displayForm]?.pages.length && setDisplayPage(displayPage + 1))} style={{ cursor: (displayPage + 1) < forms?.[displayForm]?.pages.length ? 'pointer' : 'not-allowed', transform: `rotate(${90}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M12 10L8 6L4 10"
-                stroke={(displayPage + 1) < forms?.[displayForm]?.pages.length ? "#bcbcbc" : 'grey'}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </HStack>}
-          highlighted={(!isTinyScreen && stage === 'form') || temporaryModalHighlight}
+          controls={
+            forms?.[displayForm]?.pages.length > 1 && (
+              <HStack>
+                <svg
+                  onClick={() =>
+                    displayPage > 0 && setDisplayPage(displayPage - 1)
+                  }
+                  style={{
+                    cursor: displayPage > 0 ? "pointer" : "not-allowed",
+                    transform: `rotate(${270}deg)`,
+                  }}
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M12 10L8 6L4 10"
+                    stroke={displayPage > 0 ? "#bcbcbc" : "grey"}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <Text userSelect="none">Page {displayPage + 1}</Text>
+                <svg
+                  onClick={() =>
+                    displayPage + 1 < forms?.[displayForm]?.pages.length &&
+                    setDisplayPage(displayPage + 1)
+                  }
+                  style={{
+                    cursor:
+                      displayPage + 1 < forms?.[displayForm]?.pages.length
+                        ? "pointer"
+                        : "not-allowed",
+                    transform: `rotate(${90}deg)`,
+                  }}
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M12 10L8 6L4 10"
+                    stroke={
+                      displayPage + 1 < forms?.[displayForm]?.pages.length
+                        ? "#bcbcbc"
+                        : "grey"
+                    }
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </HStack>
+            )
+          }
+          highlighted={
+            (!isTinyScreen && stage === "form") || temporaryModalHighlight
+          }
           reference={formRef}
         >
           <Box
@@ -571,14 +692,15 @@ function Preview({
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
             p={isTinyScreen ? 0 : 4}
-            width='100%'
+            width="100%"
           >
             <Box
-              border={`1px solid ${colorMode === "dark" ? "#292b2f" : "#e3e5e8"
-                }`}
+              border={`1px solid ${
+                colorMode === "dark" ? "#292b2f" : "#e3e5e8"
+              }`}
               borderRadius="3px"
               width="440px"
-              maxWidth='100%'
+              maxWidth="100%"
               height="fit-content"
               maxHeight="720px"
             >
@@ -591,7 +713,12 @@ function Preview({
                 alignItems="center"
                 p="16px"
               >
-                <Box display="flex" alignItems="center" height="24px" width='calc(100% - 32px)'>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  height="24px"
+                  width="calc(100% - 32px)"
+                >
                   <Image
                     src={AVATAR_URL}
                     alt="Forms Logo"
@@ -619,50 +746,56 @@ function Preview({
                 </Box>
               </Box>
               <Box>
-                {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map((actionRow, i) => (
-                  <><Box key={Math.random()} m="0 1em 1em">
-                    <Text
-
-                      fontSize="16px"
-                      mb="8px"
-                      color={colorMode === "dark" ? "#b9bbbe" : "#4f5660"}
-                    >
-                      {actionRow.components[0]?.label}
-                      {actionRow.components[0]?.required !== false && (
-                        <span style={{ color: "#ed4245", paddingLeft: "4px" }}>
-                          *
-                        </span>
-                      )}
-                    </Text>
-                    <Box position='relative'>
-                      <Box
-                        as={
-                          actionRow.components[0]?.style == 1
-                            ? "input"
-                            : "textarea"
-                        }
-                        bg={colorMode === "dark" ? "#202225" : "#e3e5e8"}
-                        height={
-                          actionRow.components[0]?.style == 2 ? "16" : "2.2rem"
-                        }
+                {forms?.[displayForm]?.pages?.[
+                  displayPage
+                ]?.modal.components.map((actionRow, i) => (
+                  <>
+                    <Box key={Math.random()} m="0 1em 1em">
+                      <Text
                         fontSize="16px"
-                        resize="none"
-                        border="0px"
-                        _focus={{ border: "0px" }}
-                        placeholder={actionRow.components[0]?.placeholder}
-                        //@ts-ignore
-                        //{...textInputs.register(`${actionRow.components[0].label}`)}
-                        // onChange={event => setDisplayTextInputContent(prev => {
-                        //   let newValue = [...prev]
-                        //   newValue[i] = event.target.value
-                        //   return newValue
-                        // })}
-                        // value={displayTextInputContent[i]}
-                        defaultValue={actionRow.components[0].value}
-                      />
-                    {/* {actionRow.components[0]?.style == 2 && <Box position='absolute' bottom='12px' right='14px'>{(actionRow.components[0]?.max_length || 4000) - displayTextInputContent[i].length}</Box>} */}
+                        mb="8px"
+                        color={colorMode === "dark" ? "#b9bbbe" : "#4f5660"}
+                      >
+                        {actionRow.components[0]?.label}
+                        {actionRow.components[0]?.required !== false && (
+                          <span
+                            style={{ color: "#ed4245", paddingLeft: "4px" }}
+                          >
+                            *
+                          </span>
+                        )}
+                      </Text>
+                      <Box position="relative">
+                        <Box
+                          as={
+                            actionRow.components[0]?.style == 1
+                              ? "input"
+                              : "textarea"
+                          }
+                          bg={colorMode === "dark" ? "#202225" : "#e3e5e8"}
+                          height={
+                            actionRow.components[0]?.style == 2
+                              ? "16"
+                              : "2.2rem"
+                          }
+                          fontSize="16px"
+                          resize="none"
+                          border="0px"
+                          _focus={{ border: "0px" }}
+                          placeholder={actionRow.components[0]?.placeholder}
+                          //@ts-ignore
+                          //{...textInputs.register(`${actionRow.components[0].label}`)}
+                          // onChange={event => setDisplayTextInputContent(prev => {
+                          //   let newValue = [...prev]
+                          //   newValue[i] = event.target.value
+                          //   return newValue
+                          // })}
+                          // value={displayTextInputContent[i]}
+                          defaultValue={actionRow.components[0].value}
+                        />
+                        {/* {actionRow.components[0]?.style == 2 && <Box position='absolute' bottom='12px' right='14px'>{(actionRow.components[0]?.max_length || 4000) - displayTextInputContent[i].length}</Box>} */}
+                      </Box>
                     </Box>
-                  </Box>
                   </>
                 ))}
               </Box>
@@ -687,13 +820,16 @@ function Preview({
                   border="0px"
                   _focus={{ border: "0px" }}
                   onClick={() => {
-                    if ((displayPage + 1) < forms?.[displayForm]?.pages.length) {
-                      setDisplayPage(displayPage + 1)
+                    if (displayPage + 1 < forms?.[displayForm]?.pages.length) {
+                      setDisplayPage(displayPage + 1);
                     } else {
-                      setTemporarySubmissionHighlight(true)
+                      setTemporarySubmissionHighlight(true);
                       //@ts-expect-error
-                      executeApplicationCommandScroll(applicationCommandRef)
-                      setTimeout(() => setTemporarySubmissionHighlight(false), 300);
+                      executeApplicationCommandScroll(applicationCommandRef);
+                      setTimeout(
+                        () => setTemporarySubmissionHighlight(false),
+                        300
+                      );
                     }
                   }}
                 >
@@ -706,9 +842,48 @@ function Preview({
 
         <PreviewStep
           number={!application_command ? 3 : 2}
-          //@ts-expect-error
-          title={forms[displayForm].submit_channel ? <>A channel is created for the submission</> : <>{forms[displayForm].submit_thread ? `A ${forms[displayForm].submit_thread?.type === 12 ? 'private ' : ''}thread is created for the submission` : <>The submission is sent to {forms[displayForm].submit_channel_id && Array.isArray(currentGuild) && currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id) ? <Channel>{currentGuild.find(channel => channel.id === forms[displayForm].submit_channel_id).name}</Channel> : 'a channel'}</>}</>}
-          highlighted={(!isTinyScreen && (stage === 'server_selection' || stage === 'submissions')) || temporarySubmissionHighlight}
+          title={
+            forms[displayForm].submit_channel ? (
+              <>A channel is created for the submission</>
+            ) : (
+              <>
+                {forms[displayForm].submit_thread ? (
+                  `A ${
+                    forms[displayForm].submit_thread?.type === 12
+                      ? "private "
+                      : ""
+                  }thread is created for the submission`
+                ) : (
+                  <>
+                    The submission is sent to{" "}
+                    {forms[displayForm].submit_channel_id &&
+                    Array.isArray(currentGuild) &&
+                    currentGuild.find(
+                      (channel) =>
+                        channel.id === forms[displayForm].submit_channel_id
+                    ) ? (
+                      <Channel>
+                        {
+                          currentGuild.find(
+                            (channel) =>
+                              channel.id ===
+                              forms[displayForm].submit_channel_id
+                          ).name
+                        }
+                      </Channel>
+                    ) : (
+                      "a channel"
+                    )}
+                  </>
+                )}
+              </>
+            )
+          }
+          highlighted={
+            (!isTinyScreen &&
+              (stage === "server_selection" || stage === "submissions")) ||
+            temporarySubmissionHighlight
+          }
           reference={applicationCommandRef}
         >
           <Box
@@ -743,7 +918,7 @@ function Preview({
                   />
                 </FormProfile>
               </Box>
-              <Box width='calc(100% - 56px)'>
+              <Box width="calc(100% - 56px)">
                 <Box display="flex" alignItems="center">
                   <Text
                     fontFamily="Whitney Bold"
@@ -799,62 +974,68 @@ function Preview({
                     {new Date().getMinutes()}
                   </Text>
                 </Box>
-                {forms?.[displayForm]?.submit_message?.content || forms?.[displayForm]?.guild_submit_message?.content || <>
-                  <Box
-                    bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
-                    borderLeft={
-                      colorMode === "dark"
-                        ? "4px solid #202225"
-                        : "4px solid #e3e5e8"
-                    }
-                    maxWidth="520px"
-                    borderRadius="4px"
-                  >
-                    <Box padding="0.5rem 1rem 1rem 0.75rem">
-                      <Box display="flex" alignItems="center" m="8px 0px 0px">
-                        <Image
-                          alt="Test User's Avatar"
-                          src="https://cdn.discordapp.com/embed/avatars/5.png"
-                          width="24px"
-                          height="24px"
-                          borderRadius="50%"
-                          mr="8px"
-                        />
-                        <Box
-                          fontFamily="Whitney Bold"
-                          fontSize="0.875rem"
-                          fontWeight="500"
-                        >
-                          User
-                        </Box>
-                      </Box>
-                      <Box>
-                        {forms?.[displayForm]?.pages?.[displayPage]?.modal.components.map(
-                          (actionRow) => (
-                            <Box key={Math.random()}>
-                              <Text
-                                fontFamily="Whitney Black"
-                                fontSize="0.875rem"
-                                mt="8px"
-                              >
-                                {actionRow.components[0]?.label}
-                              </Text>
-                              <Text
-                                fontSize="0.875rem"
-                                color={
-                                  actionRow.components[0]?.value
-                                    ? "white"
-                                    : "#a3a6aa"
-                                }
-                              >
-                                {actionRow.components[0]?.value ||
-                                  "(Answer will be displayed here)"}
-                              </Text>
+                {forms?.[displayForm]?.submit_message?.content ||
+                  forms?.[displayForm]?.guild_submit_message?.content || (
+                    <>
+                      <Box
+                        bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
+                        borderLeft={
+                          colorMode === "dark"
+                            ? "4px solid #202225"
+                            : "4px solid #e3e5e8"
+                        }
+                        maxWidth="520px"
+                        borderRadius="4px"
+                      >
+                        <Box padding="0.5rem 1rem 1rem 0.75rem">
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            m="8px 0px 0px"
+                          >
+                            <Image
+                              alt="Test User's Avatar"
+                              src="https://cdn.discordapp.com/embed/avatars/5.png"
+                              width="24px"
+                              height="24px"
+                              borderRadius="50%"
+                              mr="8px"
+                            />
+                            <Box
+                              fontFamily="Whitney Bold"
+                              fontSize="0.875rem"
+                              fontWeight="500"
+                            >
+                              User
                             </Box>
-                          )
-                        )}
-                      </Box>
-                      {/* <Box display="flex" alignItems="center" mt="8px">
+                          </Box>
+                          <Box>
+                            {forms?.[displayForm]?.pages?.[
+                              displayPage
+                            ]?.modal.components.map((actionRow) => (
+                              <Box key={Math.random()}>
+                                <Text
+                                  fontFamily="Whitney Black"
+                                  fontSize="0.875rem"
+                                  mt="8px"
+                                >
+                                  {actionRow.components[0]?.label}
+                                </Text>
+                                <Text
+                                  fontSize="0.875rem"
+                                  color={
+                                    actionRow.components[0]?.value
+                                      ? "white"
+                                      : "#a3a6aa"
+                                  }
+                                >
+                                  {actionRow.components[0]?.value ||
+                                    "(Answer will be displayed here)"}
+                                </Text>
+                              </Box>
+                            ))}
+                          </Box>
+                          {/* <Box display="flex" alignItems="center" mt="8px">
                       <Image
                         alt="ID"
                         src="https://cdn.discordapp.com/emojis/882601305871360040.png"
@@ -871,24 +1052,42 @@ function Preview({
                         643945264868098049
                       </Text>
                     </Box> */}
-                    </Box>
-                  </Box>
-                  <Box>
-                    {/* @ts-expect-error */}
-                    {forms?.[displayForm]?.submit_components?.map((action_row, i) =>
-                      <HStack key={Math.random()} gap={0}>
-                        {/* @ts-expect-error */}
-                        {forms?.[displayForm]?.submit_components[i].components?.map(button =>
-                          <Button key={Math.random()} height="32px"
-                            fontSize="14px"
-                            paddingBlock={0}
-                            paddingInline={0}
-                            padding="2px 16px"
-                            m="4px 8px 4px 0" variant={button.style === 1 ? 'discord-primary' : (button.style === 2 ? 'discord-secondary' : (button.style === 3 ? 'discord-success' : 'discord-danger'))}>{button.label}</Button>
+                        </Box>
+                      </Box>
+                      <Box>
+                        {forms?.[displayForm]?.submit_components?.map(
+                          (_: any, i: number) => (
+                            <HStack key={i} gap={0}>
+                              {forms?.[displayForm]?.submit_components?.[
+                                i
+                              ].components?.map((button) => (
+                                <Button
+                                  key={Math.random()}
+                                  height="32px"
+                                  fontSize="14px"
+                                  paddingBlock={0}
+                                  paddingInline={0}
+                                  padding="2px 16px"
+                                  m="4px 8px 4px 0"
+                                  variant={
+                                    button.style === 1
+                                      ? "discord-primary"
+                                      : button.style === 2
+                                      ? "discord-secondary"
+                                      : button.style === 3
+                                      ? "discord-success"
+                                      : "discord-danger"
+                                  }
+                                >
+                                  {button.label}
+                                </Button>
+                              ))}
+                            </HStack>
+                          )
                         )}
-                      </HStack>
-                    )}
-                  </Box></>}
+                      </Box>
+                    </>
+                  )}
               </Box>
             </Box>
           </Box>

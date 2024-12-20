@@ -19,9 +19,10 @@ export function ChannelIdHint() {
       py={3}
       my={2}
     >
-      <HStack>
+      <HStack pl={2}>
         <InfoIcon size={24} />
-        <Text fontSize={12}>
+        <Text fontSize={12} pl={2}>
+          <Text fontSize={15}>How to obtain the Channel ID</Text>
           User Settings → Advanced → Enable Developer Mode
           <br /> Right-click your channel → Copy Channel ID
         </Text>

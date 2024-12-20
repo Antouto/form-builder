@@ -35,6 +35,7 @@ import {
   Stack,
   Image,
   Avatar,
+  Container,
 } from "@chakra-ui/react";
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from "../components/JSONViewer";
 import ErrorMessage from "../components/ErrorMessage";
@@ -71,6 +72,7 @@ import Select from "react-select";
 
 import Cookies from "js-cookie";
 import { ChannelIcon, ThreadIcon } from "./Icons";
+import { ChannelIdHint } from "./Hints";
 
 const Defaults = {
   Embed: {
@@ -190,7 +192,7 @@ export function Editor({
     });
   }
 
-  const [guilds, setGuilds] = useState();
+  const [guilds, setGuilds] = useState<Guild[]>([]);
 
   const [textInputMaxLength, setTextInputMaxLength] = useState(1024);
 
@@ -223,7 +225,6 @@ export function Editor({
       (guild) => (guild.permissions & (1 << 3)) === 1 << 3
     );
 
-    //@ts-expect-error
     setGuilds(guildResponse);
   }
 
@@ -259,7 +260,7 @@ export function Editor({
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
   const [isReading, setReading] = useState(false);
 
-  const [currentGuildID, setCurrentGuildID] = useState();
+  const [currentGuildID, setCurrentGuildID] = useState<string>();
 
   const ReadFile = (targetFile: React.ChangeEvent<HTMLInputElement>) => {
     setReading(true);
@@ -1585,13 +1586,7 @@ export function Editor({
                         formState.errors.forms?.[0]?.submit_channel?.parent_id
                       }
                     />
-                    <Text fontSize={12}>
-                      User Settings –&gt; Advanced –&gt; Enable Developer Mode
-                      <br /> Then create a category for submissions in your
-                      server –&gt; Right Click –&gt; Copy Channel ID
-                      <br />
-                      <br />
-                    </Text>
+                    <ChannelIdHint />
                   </>
                 ) : (
                   <>
@@ -1692,12 +1687,7 @@ export function Editor({
                       ?.components?.[0]?.logic?.FORWARD_SUBMISSION
                   }
                 />
-                <Text fontSize={12}>
-                  User Settings –&gt; Advanced –&gt; Enable Developer Mode –&gt;
-                  <br /> Right-click your channel –&gt; Copy Channel ID
-                  <br />
-                  <br />
-                </Text>
+                <ChannelIdHint />
               </Box>
               <HStack>
                 <Button

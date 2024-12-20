@@ -2,6 +2,9 @@ export type ColorString = `#${string}` | number;
 
 export interface Guild {
   permissions: number;
+  name: string;
+  id: string;
+  icon: string;
 }
 
 export interface EmbedAuthor {

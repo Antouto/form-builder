@@ -1591,6 +1591,9 @@ export function Editor({
                 ) : (
                   <>
                     <SubmissionChannelIDInput
+                      onOpenWhereDoIFindSubmissionChannelID={
+                        onOpenWhereDoIFindSubmissionChannelID
+                      }
                       index={0}
                       register={register}
                       errors={formState.errors}

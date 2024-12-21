@@ -32,6 +32,7 @@ import { Footer } from "./Footer";
 import { StorageKeys } from "../types";
 import { resolveBoolean } from "./Toggle";
 import { Modal, ModalContent } from "./Modal";
+import { DEFAULT_API_URI } from "./config";
 
 export interface NavigationProps {
   modalHandler: () => void;
@@ -132,7 +133,7 @@ export function Navigation({
             <Text>
               API is running at:{" "}
               <Code borderRadius={5} px={1}>
-                {process?.env?.NEXT_PUBLIC_API_URL}
+                {process?.env?.NEXT_PUBLIC_API_URL ?? DEFAULT_API_URI}
               </Code>
             </Text>
           </ModalBody>

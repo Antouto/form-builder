@@ -73,7 +73,7 @@ import Select from "react-select";
 import Cookies from "js-cookie";
 import { ChannelIcon, ThreadIcon } from "./Icons";
 import { ChannelIdHint } from "./Hints";
-import { getApiUri } from "../util/config";
+import { API_URI, DEFAULT_API_URI } from "./config";
 import { env } from "process";
 
 const Defaults = {
@@ -200,12 +200,16 @@ export function Editor({
 
   async function getGuild(id: string) {
     console.log("getGuild 1");
-    let guildResponse = await fetch(
-      `${getApiUri()}/api/discord/session?guild_id=${id}`
-    );
-    guildResponse = await guildResponse.json();
+    let guildResponse = await (
+      await fetch(
+        `${
+          process.env?.NEXT_PUBLIC_API_URL == null
+            ? DEFAULT_API_URI
+            : process.env.NEXT_PUBLIC_API_URL
+        }/api/discord/session?guild_id=${id}`
+      )
+    ).json();
     console.log("getGuild 2");
-    //@ts-expect-error
     if (guildResponse.code && guildResponse.code === 50001) {
       setCurrentGuild(id);
       return false;
@@ -217,9 +221,14 @@ export function Editor({
 
   async function getGuilds() {
     // Fetch guild details from Discord using the access token
-    console.log(await (await fetch("/api/discord/session")).url);
     let guildResponse = (await (
-      await fetch("/api/discord/session")
+      await fetch(
+        `${
+          process.env?.NEXT_PUBLIC_API_URL == null
+            ? DEFAULT_API_URI
+            : process.env.NEXT_PUBLIC_API_URL
+        }/api/discord/session`
+      )
     ).json()) as Guild[];
     console.log("guildResponse");
     console.log("guildResponse here", guildResponse);

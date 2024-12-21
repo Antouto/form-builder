@@ -22,7 +22,7 @@ import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
 import { Channel, FormProfile, SlashCommand } from "./Mention";
 import { PreviewStep } from "./PreviewStep";
-import { AVATAR_URL } from "../util/config";
+import { AVATAR_URL } from "./config";
 import { useScreenWidth } from "../util/width";
 
 function isEmpty(value: any) {

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React, { CSSProperties, MouseEventHandler, useState } from "react";
 import Image from "next/image";
-import { AVATAR_URL } from "../util/config";
+import { AVATAR_URL } from "./config";
 
 export interface MentionProperties {
   children: React.ReactNode;

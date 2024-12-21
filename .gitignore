@@ -40,3 +40,6 @@ next-env.d.ts
 
 # Env files
 *.env
+
+# wrangler
+.wrangler

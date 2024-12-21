@@ -7,10 +7,11 @@ import {
   Tooltip,
   cssVar,
   useColorMode,
+  HStack,
 } from "@chakra-ui/react";
 import React, { CSSProperties, MouseEventHandler, useState } from "react";
 import Image from "next/image";
-import { AVATAR_URL } from "../util/config";
+import { AVATAR_URL } from "./config";
 
 export interface MentionProperties {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ export interface UserMentionProperties extends MentionProperties {
 
 export interface FormProfileProperties {
   children: React.ReactNode;
-  avatar: string;
+  avatar?: string;
   hidden: boolean;
   HandleInteraction: MouseEventHandler<HTMLDivElement>;
 }
@@ -92,7 +93,7 @@ export function FormProfile({
         <Box>
           <Box pb={2} textAlign="center">
             <Center>
-              <Image
+              {/* <Image
                 alt="Avatar"
                 src={avatar}
                 width={30}
@@ -101,7 +102,7 @@ export function FormProfile({
                   marginBottom: 2,
                   borderRadius: 1000000,
                 }}
-              />
+              /> */}
               <Heading size="md" px={3}>
                 Forms
               </Heading>
@@ -142,6 +143,11 @@ export function FormProfile({
   );
 }
 
+/**
+ * If {@link UserMention} should render avatars alongside the username.
+ */
+const SHOW_AVATARS = false;
+
 export function UserMention({
   children,
   isFormsBot,
@@ -150,27 +156,35 @@ export function UserMention({
   link,
 }: UserMentionProperties) {
   if (children === "Forms") isFormsBot = true;
-  if (avatar == null && isFormsBot) avatar = AVATAR_URL;
-  if (avatar == null) avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
-  if (avatar.startsWith("https://github.com"))
-    link = avatar.replace(".png", "");
-  const [hidden, setHidden] = useState(true);
-  const HandleInteraction = () => {
-    if (isFormsBot) setHidden(!hidden);
-  };
+
+  if (SHOW_AVATARS) {
+    // If Forms bot, then apply to avatar automatically
+    if (typeof avatar != "string" && isFormsBot) avatar = AVATAR_URL;
+    else if (avatar == null)
+      // default avatar
+      avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+    if (avatar.startsWith("https://github.com"))
+      link = avatar.replace(".png", "");
+  } else avatar = undefined;
+
   return (
-    <FormProfile {...{ avatar, HandleInteraction, hidden }}>
-      <a href={link} target="_blank" rel="noopener noreferrer">
-        <Mention
-          isActive={!hidden}
-          hover={{ textDecoration: "underline" }}
-          onClick={HandleInteraction}
-        >
+    <a href={link} target="_blank" rel="noopener noreferrer">
+      <Mention hover={{ textDecoration: "underline" }}>
+        <HStack>
+          {avatar && (
+            <Image
+              src={avatar}
+              alt="Avatar"
+              width={15}
+              height={15}
+              style={{ borderRadius: 100, marginLeft: 2 }}
+            />
+          )}
           <Text display="inline" textColor={text ?? "currentcolor"}>
             @{children}
           </Text>
-        </Mention>
-      </a>
-    </FormProfile>
+        </HStack>
+      </Mention>
+    </a>
   );
 }

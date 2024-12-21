@@ -1,8 +1,18 @@
 import {
   Box,
-  Button, Tooltip,
+  Button,
+  Tooltip,
   useColorMode,
-  useDisclosure, Link, HStack, Text
+  useDisclosure,
+  Link,
+  HStack,
+  Text,
+  ModalBody,
+  ModalCloseButton,
+  ModalHeader,
+  ModalOverlay,
+  ModalFooter,
+  Code,
 } from "@chakra-ui/react";
 import {
   Drawer,
@@ -21,6 +31,8 @@ import { useEffect, useState } from "react";
 import { Footer } from "./Footer";
 import { StorageKeys } from "../types";
 import { resolveBoolean } from "./Toggle";
+import { Modal, ModalContent } from "./Modal";
+import { DEFAULT_API_URI } from "./config";
 
 export interface NavigationProps {
   modalHandler: () => void;
@@ -33,16 +45,26 @@ export function Navigation({
   modalHandler,
   displaySection,
   setDisplaySection,
-  setStage
+  setStage,
 }: NavigationProps) {
   const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode;
   const { isOpen, onClose } = useDisclosure();
+  const {
+    isOpen: mIsOpen,
+    onClose: mOnClose,
+    onOpen: mOnOpen,
+  } = useDisclosure();
   const [isTipOpen, setTipOpen] = useState(false);
   useEffect(() => {
     const val = localStorage.getItem(StorageKeys.PreviewTip);
     const resolvedVal = val == null ? false : resolveBoolean(val);
-    if (typeof resolvedVal === "boolean" && resolvedVal === false && isTipOpen != true) setTipOpen(true);
+    if (
+      typeof resolvedVal === "boolean" &&
+      resolvedVal === false &&
+      isTipOpen != true
+    )
+      setTipOpen(true);
   }, []);
 
   useEffect(() => {
@@ -103,14 +125,35 @@ export function Navigation({
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+      <Modal isOpen={mIsOpen} onClose={mOnClose}>
+        <ModalContent>
+          <ModalHeader>Developer Tools</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pt={5}>
+            <Text>
+              API is running at:{" "}
+              <Code borderRadius={5} px={1}>
+                {process?.env?.NEXT_PUBLIC_API_URL ?? DEFAULT_API_URI}
+              </Code>
+            </Text>
+          </ModalBody>
+          <ModalFooter display="flex" justifyContent="space-between">
+            <HStack>
+              <Button variant="secondary" onClick={mOnClose}>
+                Ok
+              </Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Box display="flex" alignItems="center">
         <Tooltip label="Home" placement="bottom-end" hasArrow arrowSize={6}>
-          <NextLink href="/">
+          <NextLink href="/" onDoubleClick={mOnOpen}>
             <Image
               src="/forms.svg"
               alt="Forms Logo"
               onClick={() => {
-                setStage('welcome')
+                setStage("welcome");
               }}
               width={28}
               height={28}
@@ -153,10 +196,15 @@ export function Navigation({
               label={
                 <Box>
                   <HStack>
-                    <Text>
-                    You can preview your form here!
+                    <Text>You can preview your form here!</Text>
+                    <Text
+                      color="#00b0f4"
+                      cursor="pointer"
+                      _hover={{ textDecoration: "underline" }}
+                      onClick={() => setTipOpen(false)}
+                    >
+                      Ok
                     </Text>
-                    <Text color="#00b0f4" cursor='pointer' _hover={{ textDecoration: 'underline' }} onClick={() => setTipOpen(false)}>Ok</Text>
                   </HStack>
                 </Box>
               }
@@ -167,8 +215,8 @@ export function Navigation({
             >
               <Button
                 onClick={() => {
-                  if(isTipOpen) setTipOpen(false);
-                  setDisplaySection(2)
+                  if (isTipOpen) setTipOpen(false);
+                  setDisplaySection(2);
                 }}
                 variant="navigationDisplayMode"
                 color={
@@ -215,7 +263,7 @@ export function Navigation({
               Documentation
             </a>
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
-          {/* <ColorModeSwitcher
+            {/* <ColorModeSwitcher
             placement="bottom"
             position="absolute"
             height="32px"

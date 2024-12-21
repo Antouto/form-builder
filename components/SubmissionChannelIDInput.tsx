@@ -296,7 +296,11 @@ export default function SubmissionChannelIDInput({
                 ":before": {
                   flexShrink: 0,
                   backgroundImage: `url("https://cdn.discordapp.com/icons/${
-                    currentGuildID ? currentGuildID : guilds ? guilds[0].id : ""
+                    currentGuildID
+                      ? currentGuildID
+                      : guilds
+                      ? guilds[0]?.id
+                      : ""
                   }/${
                     currentGuildID
                       ? guilds

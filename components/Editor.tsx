@@ -73,6 +73,8 @@ import Select from "react-select";
 import Cookies from "js-cookie";
 import { ChannelIcon, ThreadIcon } from "./Icons";
 import { ChannelIdHint } from "./Hints";
+import { getApiUri } from "../util/config";
+import { env } from "process";
 
 const Defaults = {
   Embed: {
@@ -199,7 +201,7 @@ export function Editor({
   async function getGuild(id: string) {
     console.log("getGuild 1");
     let guildResponse = await fetch(
-      `https://create.discordforms.app/api/discord/session?guild_id=${id}`
+      `${getApiUri()}/api/discord/session?guild_id=${id}`
     );
     guildResponse = await guildResponse.json();
     console.log("getGuild 2");
@@ -215,8 +217,9 @@ export function Editor({
 
   async function getGuilds() {
     // Fetch guild details from Discord using the access token
+    console.log(await (await fetch("/api/discord/session")).url);
     let guildResponse = (await (
-      await fetch("https://create.discordforms.app/api/discord/session")
+      await fetch("/api/discord/session")
     ).json()) as Guild[];
     console.log("guildResponse");
     console.log("guildResponse here", guildResponse);
@@ -1591,9 +1594,7 @@ export function Editor({
                 ) : (
                   <>
                     <SubmissionChannelIDInput
-                      onOpenWhereDoIFindSubmissionChannelID={
-                        onOpenWhereDoIFindSubmissionChannelID
-                      }
+                      onOpenWhereDoIFindSubmissionChannelID={null}
                       index={0}
                       register={register}
                       errors={formState.errors}

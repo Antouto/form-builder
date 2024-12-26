@@ -17,7 +17,7 @@ export async function onRequest({ request, env }) {
 
   const client_id = "942858850850205717";
   const client_secret = env.DISCORD_CLIENT_SECRET;
-  const redirect_uri = `${getApiUrl()}/api/discord/callback`;
+  const redirect_uri = `${getApiUri()}/api/discord/callback`;
   console.log("callback 4");
 
   const body = new URLSearchParams({

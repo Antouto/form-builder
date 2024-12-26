@@ -37,7 +37,7 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta name="title" content={EmbedTitle} />
             <meta name="description" content={Configuration.Description} />
             <meta name="theme-color" content={Configuration.Color} />
-            <meta name="google" content="notranslate"/>
+            <meta name="google" content="notranslate" />
 
             {/* <meta property="og:image" content={Thumbnail} />
             <meta property="og:image:type" content="image/png" />
@@ -57,6 +57,10 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta property="twitter:title" content={EmbedTitle} />
             <meta property="twitter:description" content={Configuration.Description} />
             {/* <meta property="twitter:image" content={Thumbnail} /> */}
+
+            <link rel="preload" href="/preview/buttons.svg" as="image" type="image/svg+xml" />
+            <link rel="preload" href="/preview/select_menu.svg" as="image" type="image/svg+xml" />
+            <link rel="preload" href="/preview/app_command.svg" as="image" type="image/svg+xml" />
         </Head>
     );
 }

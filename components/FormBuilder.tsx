@@ -774,21 +774,20 @@ export default function FormBuilder({
                             Private
                           </FormLabel>
                           <Switch
-                            {...register(`forms.${index}.submit_thread.type`, {
-                              onChange: (e) => {
-                                setValue(
-                                  `forms.${index}.submit_thread.type`,
-                                  e.target.checked ? 12 : 11
-                                );
-                                if (!e.target.checked)
-                                  setValue(
-                                    `forms.${index}.submit_thread.invitable`,
-                                    undefined
-                                  );
-                              },
-                            })}
-                            colorScheme="blurple"
-                          />
+  checked={watch(`forms.${index}.submit_thread.type`) === 12}
+  onChange={(e) => {
+    const newValue = e.target.checked ? 12 : 11;
+    setValue(`forms.${index}.submit_thread.type`, newValue, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true
+    });
+    if (!e.target.checked) {
+      setValue(`forms.${index}.submit_thread.invitable`, undefined);
+    }
+  }}
+  colorScheme="blurple"
+/>
                         </Box>
                       </HStack>
                       {watch(`forms.${index}.submit_thread.type`) === 12 && (

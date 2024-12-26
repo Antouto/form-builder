@@ -1773,7 +1773,6 @@ export function Editor({
                   <HStack>
                     <Button
                       variant="success"
-                      disabled={!formState.isValid}
                       onClick={() => {
                         handleLoad();
                         downloadForm();

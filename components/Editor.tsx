@@ -71,7 +71,7 @@ import { IconContext } from "react-icons";
 import Select from "react-select";
 
 import Cookies from "js-cookie";
-import { ChannelIcon, ThreadIcon } from "./Icons";
+import { ChannelIcon, ThreadIcon, ForwardIcon, ReplyIcon } from "./Icons";
 import { ChannelIdHint } from "./Hints";
 import { API_URI, DEFAULT_API_URI } from "./config";
 import { env } from "process";
@@ -1037,7 +1037,10 @@ export function Editor({
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("approval_dm")}
                   >
-                    <Text fontWeight="bold">{"Approve Submissions → DM"}</Text>
+                    <HStack gap='6px'>
+                      <ReplyIcon size={18} />
+                      <Text fontWeight="medium">{"Approve Submissions → DM"}</Text>
+                    </HStack>
                     <Text color="#DBDEE1" fontSize="14px">
                       Send forms to a private channel and DM users on approval
                       or denial
@@ -1052,9 +1055,10 @@ export function Editor({
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("approval_forward")}
                   >
-                    <Text fontWeight="bold">
-                      {"Approve Submissions → Public channel"}
-                    </Text>
+                    <HStack gap='6px'>
+                      <ForwardIcon size={18} />
+                      <Text fontWeight="medium">{"Approve Submissions → Public channel"}</Text>
+                    </HStack>
                     <Text color="#DBDEE1" fontSize="14px">
                       Send forms to a private channel and forward to a public
                       channel on approval
@@ -1093,7 +1097,7 @@ export function Editor({
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("thread_ticket")}
                   >
-                    <HStack>
+                    <HStack gap='6px'>
                       <ThreadIcon size={18} />
                       <Text fontWeight="medium">{"Threads"}</Text>
                     </HStack>
@@ -1111,7 +1115,7 @@ export function Editor({
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("ticket")}
                   >
-                    <HStack>
+                    <HStack gap='6px'>
                       <ChannelIcon size={18} />
                       <Text fontWeight="medium">{"Channels"}</Text>
                     </HStack>

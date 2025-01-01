@@ -24,7 +24,7 @@ export default function MessageBuilder({ control, register, errors, setValue, ge
       </FormLabel>
       <textarea
         style={{ height: "99px" }}
-        {...register("message.content", { onChange: () => fixMessage() })}
+        {...register("message.content", { maxLength: 2000, onChange: () => fixMessage() })}
         id="message.content"
       />
       <EmbedBuilder

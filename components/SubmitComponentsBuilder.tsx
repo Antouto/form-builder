@@ -57,7 +57,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             </svg>}>
               Add
             </MenuButton>
-            <MenuList bg='#181414' p='4px' maxHeight={Math.floor(windowHeight/2.5) + 'px'} overflowY='scroll'>
+            <MenuList bg='#181414' p='4px' maxHeight={Math.floor(windowHeight / 2.5) + 'px'} overflowY='scroll'>
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, '')} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`)}>Add role to submitter</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`, '')} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`)}>Remove role from submitter</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`, '')} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.KICK_SUBMITTER`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.BAN_SUBMITTER`)}>Timeout submitter</MenuItem>}
@@ -111,14 +111,14 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 ]
               })} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`)}>Update this {getValues('forms')[i].submit_thread ? 'thread' : 'channel'}</MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <><MenuDivider /><MenuGroup title='Premium'>
-              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <MenuItem background='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' backgroundClip='text' border='2px solid transparent' _hover={{ border: '2px solid #5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => {
-                if (!premium) {
-                  setPremiumFeatureTarget('require_permissions')
-                  onOpenPremium()
-                  return;
-                }
-                setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')
-              }}>Require permissions to use</MenuItem>}
+                {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <MenuItem background='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' backgroundClip='text' border='2px solid transparent' _hover={{ border: '2px solid #5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => {
+                  if (!premium) {
+                    setPremiumFeatureTarget('require_permissions')
+                    onOpenPremium()
+                    return;
+                  }
+                  setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')
+                }}>Require permissions to use</MenuItem>}
               </MenuGroup></>}
             </MenuList>
           </Menu>
@@ -162,7 +162,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`, { required: true })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`}
                 type='number'
-                max={60*60*24*28}
+                max={60 * 60 * 24 * 28}
                 inputmode="numeric"
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.TIMEOUT_SUBMITTER`, undefined) }} />
@@ -209,18 +209,26 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             />
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.UPDATE_THIS_CHANNEL?.name} />
             {!getValues('forms')[i].submit_thread && <>
-            <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`}>Permission Overwrites</FormLabel>
-            Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
-            <PermissionOverwritesBuilder control={control} i={i} forPermissionOverwrite={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} /> 
+              <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`}>Permission Overwrites</FormLabel>
+              Use this <Link href='https://discordapi.com/permissions.html' target="_blank" rel="noopener noreferrer" color='#00b0f4'>permissions number generator</Link> for the allow and deny fields.
+              <PermissionOverwritesBuilder control={control} i={i} forPermissionOverwrite={`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL.permission_overwrites`} register={register} errors={errors} getValues={getValues} setValue={setValue} resetField={resetField} premium={premium} />
             </>}
           </Collapsible>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`) !== undefined && <Box>
-            <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`} display='flex' alignItems='flex-end'>
+            <FormLabel
+              htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`}
+              display="flex"
+              alignItems="center"
+            >
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Content - Send message to this channel</Text>
+              <Counter
+                count={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`)?.length}
+                max={2000}
+              />
             </FormLabel>
             <HStack>
-              <input
-                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`, { required: true })}
+              <textarea
+                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`, { required: true, maxLength: 2000 })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL.content`}
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE_TO_THIS_CHANNEL`, undefined) }} />
@@ -228,26 +236,35 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
             <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`) !== undefined && <Box>
-            <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.content`} display='flex' alignItems='flex-end'>
-              <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Channel ID - Send message to differnt channel</Text>
+            <FormLabel
+              htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`}
+              display="flex"
+              alignItems="center"
+            >
+              <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Channel ID - Send message to different channel</Text>
             </FormLabel>
             <HStack>
               <input
-                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`, { required: true })}
+                {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`, { required: true, pattern: /^\d{10,20}$/ })}
                 id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.channel_id`}
                 type='string'
                 inputmode="numeric"
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE`, undefined) }} />
             </HStack>
+            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.SEND_MESSAGE?.channel_id} />
             <FormLabel htmlFor={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.message.content`} display='flex' alignItems='flex-end'>
               <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Content - Send message to different channel</Text>
+              <Counter
+                count={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.message.content`)?.length}
+                max={2000}
+              />
             </FormLabel>
-            <input
-              {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.message.content`, { required: true })}
+            <textarea
+              {...register(`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.message.content`, { required: true, maxLength: 2000 })}
               id={`forms[${i}].submit_components.${ii}.components.${iii}.logic.SEND_MESSAGE.message.content`}
             />
-            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.REMOVE_ROLE_FROM_SUBMITTER} />
+            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.SEND_MESSAGE?.message?.content} />
           </Box>}
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) !== undefined && <Box>
             {/* @ts-expect-error */}

@@ -40,7 +40,7 @@ export default function OpenFormComponentBuilder({ control, premium, errors, get
             />
           </svg>} deleteButton={component.style === 5 ? <CloseButton onClick={() => formMessageComponentsRemove(i)} /> : undefined}>
         {/* @ts-expect-error */}
-        <HStack><ButtonBuilder forButton={`message.components.0.components.${i}`} error={errors?.message?.components?.[0]?.components?.[i]?.button?.label} errorURL={errors?.message?.components?.[0]?.components?.[i]?.button?.url} button={getValues(`message.components.0.components.${i}`)} register={register} fix={fixMessage} setValue={setValue} watch={watch} buttonLabelPlaceholder={component.style === 5 ? undefined : 'Open Form'} /></HStack>
+        <HStack><ButtonBuilder forButton={`message.components.0.components.${i}`} error={errors?.message?.components?.[0]?.components?.[i]?.label} errorURL={errors?.message?.components?.[0]?.components?.[i]?.url} button={getValues(`message.components.0.components.${i}`)} register={register} fix={fixMessage} setValue={setValue} watch={watch} buttonLabelPlaceholder={component.style === 5 ? undefined : 'Open Form'} /></HStack>
       </Collapsible>)}
       <Button variant='primary-outline' isDisabled={getValues(`message.components.0.components`)?.length >= 5} onClick={() => {
         formMessageComponentsAppend({

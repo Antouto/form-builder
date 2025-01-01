@@ -44,6 +44,16 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
         <input
           {...register(`${forButton}.url`, {
             required: true,
+            validate: {
+              validUrl: (value: string) => {
+                try {
+                  new URL(value);
+                  return true;
+                } catch {
+                  return false;
+                }
+              }
+            },
             onChange: () => fix()
           })}
           id={`${forButton}.url`}

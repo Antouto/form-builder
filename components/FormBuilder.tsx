@@ -994,7 +994,40 @@ export default function FormBuilder({
                               break;
                             }
                             case "custom": {
-                              setValue(`forms.${index}.dm_submit_message`, {})
+                              setValue(`forms.${index}.dm_submit_message`, {
+                                "embeds": [
+                                  {
+                                    "author": {
+                                      "name": "{MemberNickname}",
+                                      "icon_url": "{MemberAvatarURL}",
+                                      "url": "https://discord.com/users/{UserID}"
+                                    },
+                                    "color": "{UserAccentColour}",
+                                    "fields": [
+                                      {
+                                        "name": "{TextInputLabel1}",
+                                        "value": "{TextInputValue1}"
+                                      },
+                                      {
+                                        "name": "{TextInputLabel2}",
+                                        "value": "{TextInputValue2}"
+                                      },
+                                      {
+                                        "name": "{TextInputLabel3}",
+                                        "value": "{TextInputValue3}"
+                                      },
+                                      {
+                                        "name": "{TextInputLabel4}",
+                                        "value": "{TextInputValue4}"
+                                      },
+                                      {
+                                        "name": "{TextInputLabel5}",
+                                        "value": "{TextInputValue5}"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              })
                               break;
                             }
                             case "off": {

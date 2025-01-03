@@ -106,7 +106,7 @@ function Preview({
         //@ts-expect-error
         msg.embeds.map((embed, index) => (
           <Box
-            key={index}
+            key={Math.random()}
             borderLeftColor={
               parseInt(embed?.color)
                 ? decimalToHexColor(embed?.color as number)
@@ -177,7 +177,7 @@ function Preview({
               </Box>
               <Box>
               {/* @ts-expect-error */}
-              {embed?.fields?.length && embed?.fields?.map(field => <Box>
+              {embed?.fields?.length && embed?.fields?.map(field => <Box key={Math.random()}>
                 <Text                     
                     fontWeight="600"
                     fontSize='.875rem'

@@ -888,7 +888,7 @@ export default function FormBuilder({
                   </HStack> */}
                     <HStack>
                       <Text>
-                        Use variables to add the response content to your
+                        Use variables to add the submission content to your
                         message:
                       </Text>
                       <Link

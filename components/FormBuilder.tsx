@@ -969,7 +969,34 @@ export default function FormBuilder({
                       // @ts-expect-error
                       <MessageBuilder forMessage={`forms.${index}.guild_submit_message`} control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} premium={premium} />
                     }
-                    <HStack justifyContent="space-between" width="100%">
+
+                    <FormLabel>Buttons</FormLabel>
+                    <HStack>
+                      <IconContext.Provider
+                        value={{ color: "#b9bbbe", size: "20px" }}
+                      >
+                        <Box>
+                          <IoInformationCircle />
+                        </Box>
+                      </IconContext.Provider>
+                      <Text>
+                        Buttons can be used once and are then automatically
+                        disabled
+                      </Text>
+                    </HStack>
+                    <ActionRowBuilder
+                      control={control}
+                      i={index}
+                      getValues={getValues}
+                      resetField={resetField}
+                      setValue={setValue}
+                      register={register}
+                      errors={errors}
+                      watch={watch}
+                      premium={premium}
+                      {...{ setPremiumFeatureTarget, onOpenPremium }}
+                    />
+                                        <HStack justifyContent="space-between" width="100%">
                       <FormLabel whiteSpace="nowrap" m={0}>
                         DM Confirmation Message
                       </FormLabel>
@@ -1048,32 +1075,6 @@ export default function FormBuilder({
                       // @ts-expect-error
                       <MessageBuilder forMessage={`forms.${index}.dm_submit_message`} control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} premium={premium} />
                     }
-                    <FormLabel>Server Submission Buttons</FormLabel>
-                    <HStack>
-                      <IconContext.Provider
-                        value={{ color: "#b9bbbe", size: "20px" }}
-                      >
-                        <Box>
-                          <IoInformationCircle />
-                        </Box>
-                      </IconContext.Provider>
-                      <Text>
-                        Buttons can be used once and are then automatically
-                        disabled
-                      </Text>
-                    </HStack>
-                    <ActionRowBuilder
-                      control={control}
-                      i={index}
-                      getValues={getValues}
-                      resetField={resetField}
-                      setValue={setValue}
-                      register={register}
-                      errors={errors}
-                      watch={watch}
-                      premium={premium}
-                      {...{ setPremiumFeatureTarget, onOpenPremium }}
-                    />
                   </VStack>
                 </Collapsible>
                 <hr />

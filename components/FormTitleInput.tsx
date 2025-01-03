@@ -14,7 +14,7 @@ export default function FormTitleInput({ index, pageIndex, register, getValues, 
         <Counter count={getValues('forms')[index]?.pages?.[pageIndex]?.modal.title?.length} max={45} />
       </FormLabel>
       <input
-        {...register(`forms.${index}.pages.${pageIndex}.modal.title`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
+        {...register(`forms.${index}.pages.${pageIndex}.modal.title`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
         id={`forms[${index}].pages.${pageIndex}.modal.title`}
         style={{ marginBottom: '8px' }}
       />

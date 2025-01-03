@@ -6,26 +6,26 @@ import { useFieldArray } from 'react-hook-form';
 import Counter from './Counter';
 
   //@ts-expect-error
-export default function MessageBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage, openFormType, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium }) {
+export default function MessageBuilder({ forMessage, control, register, errors, setValue, getValues, resetField, fixMessage, openFormType, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium }) {
 
   
   return (
     <VStack align="flex-start" width="100%" marginBottom="8px">
       <FormLabel
-        htmlFor="message.content"
+        htmlFor={`${forMessage}.content`}
         display="flex"
         alignItems="center"
       >
         <Text>Content</Text>
         <Counter
-          count={getValues(`message.content`)?.length}
+          count={getValues(`${forMessage}.content`)?.length}
           max={2000}
         />
       </FormLabel>
       <textarea
         style={{ height: "99px" }}
-        {...register("message.content", { maxLength: 2000, onChange: () => fixMessage() })}
-        id="message.content"
+        {...register(`${forMessage}.content`, { maxLength: 2000, onChange: () => fixMessage(forMessage) })}
+        id={`${forMessage}.content`}
       />
       <EmbedBuilder
         {...{
@@ -37,9 +37,10 @@ export default function MessageBuilder({ control, register, errors, setValue, ge
           watch,
           resetField,
           fixMessage,
+          forMessage
         }}
       />
-      {openFormType === "select_menu" && (
+      {forMessage === 'message' && openFormType === "select_menu" && (
         <Box width="100%">
           <FormLabel htmlFor="select_menu_placeholder">
             Select Menu Placeholder
@@ -52,7 +53,7 @@ export default function MessageBuilder({ control, register, errors, setValue, ge
           />
         </Box>
       )}
-      {openFormType === "button" && <OpenFormComponentBuilder {...{ control, errors, getValues, register, fixMessage, setValue, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium  }}/>}
+      {forMessage === 'message' && openFormType === "button" && <OpenFormComponentBuilder {...{ control, errors, getValues, register, fixMessage, setValue, watch, formMessageComponents, formMessageComponentsAppend, formMessageComponentsRemove, formMessageComponentsMove, premium  }}/>}
     </VStack>
   )
 }

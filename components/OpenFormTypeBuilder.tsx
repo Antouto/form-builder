@@ -105,7 +105,7 @@ export default function OpenFormTypeBuilder({
         }
       >
         {(openFormType === "button" || openFormType === "select_menu") && (
-          <MessageBuilder control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} premium={premium}/>
+          <MessageBuilder forMessage={'message'} control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} formMessageComponents={formMessageComponents} formMessageComponentsAppend={formMessageComponentsAppend} formMessageComponentsRemove={formMessageComponentsRemove} formMessageComponentsMove={formMessageComponentsMove} premium={premium}/>
         )}
 
         {openFormType === "application_command" && (

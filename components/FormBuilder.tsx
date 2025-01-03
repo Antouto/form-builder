@@ -51,6 +51,7 @@ import ActionRowBuilder from "./ActionRowBuilder";
 import SubmissionChannelIDInput from "./SubmissionChannelIDInput";
 import PermissionOverwritesBuilder from "./PermissionOverwritesBuilder";
 import PageBuilder from "./PageBuilder";
+import MessageBuilder from "./MessageBuilder"
 import { AiFillExclamationCircle } from "react-icons/ai";
 
 export interface FormBuilderProperties<T extends FieldValues> {
@@ -144,7 +145,7 @@ export default function FormBuilder({
   //@ts-expect-error
   textInputMaxLength,
   //@ts-expect-error
-  setTextInputMaxLength,
+  setTextInputMaxLength
 }: FormBuilderProperties<FormAndOpenFormTypeBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -152,161 +153,11 @@ export default function FormBuilder({
     rules: { minLength: 1 },
   });
 
-  const [serverSubmissionMessage, __setServerSubmissionMessage] = useState([
-    "default",
-  ]);
-  const [dmSubmissionMessage, __setdmSubmissionMessage] = useState(["default"]);
   const isSmallScreen = !useScreenWidth(1240);
   const isReallySmallScreen = !useScreenWidth(400);
   const colorMode = useColorMode().colorMode;
 
   const [cooldownDisabled, setCooldownDisabled] = useState(false);
-
-  function _setServerSubmissionMessage(value: string, index: number) {
-    const array = serverSubmissionMessage.slice();
-    array[index] = value;
-    __setServerSubmissionMessage(array);
-    console.log("__setServerSubmissionMessage", serverSubmissionMessage);
-  }
-
-  function _setdmSubmissionMessage(value: string, index: number) {
-    const array = dmSubmissionMessage.slice();
-    array[index] = value;
-    __setdmSubmissionMessage(array);
-    console.log("__setdmSubmissionMessage", dmSubmissionMessage);
-  }
-
-  function setServerSubmissionMessage(value: string, index: number) {
-    _setServerSubmissionMessage(value, index);
-    console.log("_setServerSubmissionMessage");
-
-    switch (value) {
-      case "default": {
-        resetField(`forms.${index}.guild_submit_message`);
-        if (serverSubmissionMessage[index] === "same_as_dm") {
-          setValue(
-            `forms.${index}.dm_submit_message`,
-            getValues(`forms.${index}.submit_message`)
-          );
-          resetField(`forms.${index}.submit_message`);
-          _setServerSubmissionMessage("default", index);
-          console.log("_setdmSubmissionMessage");
-        }
-        if (dmSubmissionMessage[index] === "same_as_server") {
-          resetField(`forms.${index}.submit_message`);
-          _setdmSubmissionMessage("default", index);
-        }
-        break;
-      }
-      case "custom": {
-        if (serverSubmissionMessage[index] === "same_as_dm") {
-          setValue(
-            `forms.${index}.dm_submit_message`,
-            getValues(`forms.${index}.submit_message`)
-          );
-          resetField(`forms.${index}.submit_message`);
-        }
-        resetField(`forms.${index}.guild_submit_message`);
-        break;
-      }
-      case "same_as_dm": {
-        setValue(
-          `forms.${index}.submit_message`,
-          getValues(`forms.${index}.dm_submit_message`)
-        );
-        resetField(`forms.${index}.dm_submit_message`);
-        resetField(`forms.${index}.guild_submit_message`);
-        break;
-      }
-    }
-    fixSubmissionMessage(index);
-    fixdmSubmissionMessage(index);
-    fixServerSubmissionMessage(index);
-  }
-
-  function setdmSubmissionMessage(value: string, index: number) {
-    _setdmSubmissionMessage(value, index);
-    switch (value) {
-      case "default": {
-        resetField(`forms.${index}.dm_submit_message`);
-        if (dmSubmissionMessage[index] === "same_as_server") {
-          setValue(
-            `forms.${index}.guild_submit_message`,
-            getValues(`forms.${index}.submit_message`)
-          );
-          resetField(`forms.${index}.submit_message`);
-          _setdmSubmissionMessage("default", index);
-          console.log("_setServerSubmissionMessage");
-        }
-        if (serverSubmissionMessage[index] === "same_as_dm") {
-          resetField(`forms.${index}.submit_message`);
-          _setServerSubmissionMessage("default", index);
-        }
-        break;
-      }
-      case "custom": {
-        if (dmSubmissionMessage[index] === "same_as_server") {
-          setValue(
-            `forms.${index}.guild_submit_message`,
-            getValues(`forms.${index}.submit_message`)
-          );
-          resetField(`forms.${index}.submit_message`);
-        }
-        resetField(`forms.${index}.dm_submit_message`);
-        break;
-      }
-      case "same_as_server": {
-        setValue(
-          `forms.${index}.submit_message`,
-          getValues(`forms.${index}.guild_submit_message`)
-        );
-        resetField(`forms.${index}.guild_submit_message`);
-        resetField(`forms.${index}.dm_submit_message`);
-        break;
-      }
-      case "off": {
-        if (dmSubmissionMessage[index] === "same_as_server") {
-          setValue(
-            `forms.${index}.guild_submit_message`,
-            getValues(`forms.${index}.submit_message`)
-          );
-          resetField(`forms.${index}.submit_message`);
-        }
-        //@ts-expect-error
-        setValue(`forms.${index}.dm_submit_message`, null);
-        if (serverSubmissionMessage[index] === "same_as_dm") {
-          resetField(`forms.${index}.submit_message`);
-          _setServerSubmissionMessage("default", index);
-          console.log("_setServerSubmissionMessage");
-        }
-        break;
-      }
-    }
-    fixSubmissionMessage(index);
-    fixdmSubmissionMessage(index);
-    fixServerSubmissionMessage(index);
-  }
-
-  function fixServerSubmissionMessage(index: number) {
-    if (!getValues(`forms.${index}.guild_submit_message`)) return;
-    //@ts-expect-error
-    const { content } = getValues(`forms.${index}.guild_submit_message`);
-    if (!content) resetField(`forms.${index}.guild_submit_message`);
-  }
-
-  function fixdmSubmissionMessage(index: number) {
-    if (!getValues(`forms.${index}.dm_submit_message`)) return;
-    //@ts-expect-error
-    const { content } = getValues(`forms.${index}.dm_submit_message`);
-    if (!content) resetField(`forms.${index}.dm_submit_message`);
-  }
-
-  function fixSubmissionMessage(index: number) {
-    if (!getValues(`forms.${index}.submit_message`)) return;
-    //@ts-expect-error
-    const { content } = getValues(`forms.${index}.submit_message`);
-    if (!content) resetField(`forms.${index}.submit_message`);
-  }
 
   const [
     formsThatNeedSubmitChannelIDString,
@@ -368,8 +219,8 @@ export default function FormBuilder({
             getValues("application_command")
               ? 1
               : getValues("message") && getValues("forms.0.select_menu_option")
-              ? 25
-              : 5 -
+                ? 25
+                : 5 -
                 getValues("message.components.0.components")?.filter(
                   (component) => component.style === 5
                 )?.length
@@ -390,14 +241,13 @@ export default function FormBuilder({
           return (
             <>
               <Collapsible
-                name={`Form ${index + 1}${
-                  getValues("forms")[index]?.pages[0]?.modal.title &&
-                  getValues("forms")[index]?.pages?.[0]?.modal.title?.match(
-                    /\S/
-                  )
+                name={`Form ${index + 1}${getValues("forms")[index]?.pages[0]?.modal.title &&
+                    getValues("forms")[index]?.pages?.[0]?.modal.title?.match(
+                      /\S/
+                    )
                     ? ` – ${getValues("forms")[index]?.pages?.[0]?.modal.title}`
                     : ""
-                }`}
+                  }`}
                 variant="large"
                 deleteButton={
                   getValues("forms").length > 1 ? (
@@ -423,30 +273,18 @@ export default function FormBuilder({
                               ) {
                                 setValue(
                                   `message.components.0.components.${i}.custom_id`,
-                                  `{FormID${
-                                    parseInt(
-                                      //@ts-expect-error
-                                      (component?.custom_id ?? "").match(
-                                        /\d+/
-                                      )[0]
-                                    ) - 1
+                                  `{FormID${parseInt(
+                                    //@ts-expect-error
+                                    (component?.custom_id ?? "").match(
+                                      /\d+/
+                                    )[0]
+                                  ) - 1
                                   }}`
                                 );
                               }
                             }
                           );
                         }
-
-                        let newServerSubmissionMessage =
-                          serverSubmissionMessage;
-                        newServerSubmissionMessage.splice(index, 1);
-                        __setServerSubmissionMessage(
-                          newServerSubmissionMessage
-                        );
-
-                        let newdmSubmissionMessage = dmSubmissionMessage;
-                        newdmSubmissionMessage.splice(index, 1);
-                        __setdmSubmissionMessage(newdmSubmissionMessage);
 
                         setSubmissionType("delete", null, index);
                         setSubmissionChannel("delete", null, index);
@@ -774,20 +612,20 @@ export default function FormBuilder({
                             Private
                           </FormLabel>
                           <Switch
-  checked={watch(`forms.${index}.submit_thread.type`) === 12}
-  onChange={(e) => {
-    const newValue = e.target.checked ? 12 : 11;
-    setValue(`forms.${index}.submit_thread.type`, newValue, {
-      shouldDirty: true,
-      shouldTouch: true,
-      shouldValidate: true
-    });
-    if (!e.target.checked) {
-      setValue(`forms.${index}.submit_thread.invitable`, undefined);
-    }
-  }}
-  colorScheme="blurple"
-/>
+                            checked={watch(`forms.${index}.submit_thread.type`) === 12}
+                            onChange={(e) => {
+                              const newValue = e.target.checked ? 12 : 11;
+                              setValue(`forms.${index}.submit_thread.type`, newValue, {
+                                shouldDirty: true,
+                                shouldTouch: true,
+                                shouldValidate: true
+                              });
+                              if (!e.target.checked) {
+                                setValue(`forms.${index}.submit_thread.invitable`, undefined);
+                              }
+                            }}
+                            colorScheme="blurple"
+                          />
                         </Box>
                       </HStack>
                       {watch(`forms.${index}.submit_thread.type`) === 12 && (
@@ -859,7 +697,7 @@ export default function FormBuilder({
                                 {
                                   required: true,
                                   maxLength: 100,
-                                  onChange: () => fixMessage(),
+                                  onChange: () => fixMessage('message'),
                                 }
                               )}
                               id={`forms.${index}.select_menu_option.label`}
@@ -889,7 +727,7 @@ export default function FormBuilder({
                             <input
                               {...register(
                                 `forms.${index}.select_menu_option.description`,
-                                { maxLength: 100, onChange: () => fixMessage() }
+                                { maxLength: 100, onChange: () => fixMessage('message') }
                               )}
                               id={`forms.${index}.select_menu_option.description`}
                             />
@@ -934,7 +772,7 @@ export default function FormBuilder({
                           {
                             maxLength: 100,
                             pattern: /^\d{10,20}$/,
-                            onChange: () => fixMessage(),
+                            onChange: () => fixMessage('message'),
                           }
                         )}
                         id={`forms.${index}.select_menu_option.emoji.id`}
@@ -986,8 +824,8 @@ export default function FormBuilder({
                             event.target.value === ""
                               ? undefined
                               : parseInt(event.target.value) < 0
-                              ? 0
-                              : parseInt(event.target.value)
+                                ? 0
+                                : parseInt(event.target.value)
                           );
                         }}
                       />
@@ -1078,116 +916,59 @@ export default function FormBuilder({
                         }
                         _focus={{ borderWidth: "2px", borderColor: "blurple" }}
                         _hover={{ borderColor: "transparent" }}
-                        onChange={(event) =>
-                          setServerSubmissionMessage(event.target.value, index)
-                        }
-                        value={serverSubmissionMessage[index]}
+                        onChange={(event) => {
+                          if (event.target.value === "default") {
+                            resetField(`forms.${index}.guild_submit_message`);
+                            setValue(`forms.${index}.guild_submit_message`, undefined)
+                          }
+
+                          if (event.target.value === "custom") {
+                            setValue(`forms.${index}.guild_submit_message`, {
+                              "embeds": [
+                                {
+                                  "author": {
+                                    "name": "{MemberNickname}",
+                                    "icon_url": "{MemberAvatarURL}",
+                                    "url": "https://discord.com/users/{UserID}"
+                                  },
+                                  "color": "{UserAccentColour}",
+                                  "fields": [
+                                    {
+                                      "name": "{TextInputLabel1}",
+                                      "value": "{TextInputValue1}"
+                                    },
+                                    {
+                                      "name": "{TextInputLabel2}",
+                                      "value": "{TextInputValue2}"
+                                    },
+                                    {
+                                      "name": "{TextInputLabel3}",
+                                      "value": "{TextInputValue3}"
+                                    },
+                                    {
+                                      "name": "{TextInputLabel4}",
+                                      "value": "{TextInputValue4}"
+                                    },
+                                    {
+                                      "name": "{TextInputLabel5}",
+                                      "value": "{TextInputValue5}"
+                                    }
+                                  ]
+                                }
+                              ]
+                            })
+                          }
+                        }}
+                        value={watch(`forms.${index}.guild_submit_message`) === undefined ? "default" : "custom"}
                       >
                         <option value="default">Default</option>
                         <option value="custom">Custom</option>
-                        {dmSubmissionMessage[index] === "custom" && (
-                          <option value="same_as_dm">Same as DM</option>
-                        )}
                       </Select>
                     </HStack>
-                    {serverSubmissionMessage[index] === "custom" &&
-                      dmSubmissionMessage[index] !== "same_as_server" && (
-                        <Box width="100%">
-                          <FormLabel
-                            htmlFor={`forms.${index}.guild_submit_message.content`}
-                            display="flex"
-                            alignItems="center"
-                          >
-                            <Text>Content</Text>
-                            <Counter
-                              count={
-                                getValues("forms")[index].guild_submit_message
-                                  ?.content?.length
-                              }
-                              max={2000}
-                            ></Counter>
-                          </FormLabel>
-                          <textarea
-                            {...register(
-                              `forms.${index}.guild_submit_message.content`,
-                              {
-                                maxLength: 2000,
-                                onChange: () =>
-                                  fixServerSubmissionMessage(index),
-                              }
-                            )}
-                            id={`forms.${index}.guild_submit_message.content`}
-                            style={{ height: "99px" }}
-                          />
-                          <ErrorMessage
-                            error={
-                              errors.forms?.[index]?.guild_submit_message
-                                ?.content
-                            }
-                          />
-                          {serverSubmissionMessage[index] === "custom" &&
-                            getValues(`forms.${index}.guild_submit_message`)
-                              ?.content &&
-                            !JSON.stringify(
-                              getValues(
-                                `forms.${index}.guild_submit_message.content`
-                              )
-                            ).match(/\{TextInputValue\d{1,2}\}/) && (
-                              <ErrorMessage severity={ErrorSeverity.Warning}>
-                                {
-                                  "Don't forget to add variables such as {TextInputValue1}, {TextInputValue2} and so on, in order to see the submission contents."
-                                }
-                              </ErrorMessage>
-                            )}
-                        </Box>
-                      )}
-                    {serverSubmissionMessage[index] === "custom" &&
-                      dmSubmissionMessage[index] === "same_as_server" && (
-                        <Box width="100%">
-                          <FormLabel
-                            htmlFor={`forms.${index}.submit_message.content`}
-                            display="flex"
-                            alignItems="center"
-                          >
-                            <Text>Content</Text>
-                            <Counter
-                              count={
-                                getValues("forms")[index].submit_message
-                                  ?.content?.length
-                              }
-                              max={2000}
-                            ></Counter>
-                          </FormLabel>
-                          <textarea
-                            {...register(
-                              `forms.${index}.submit_message.content`,
-                              {
-                                maxLength: 2000,
-                                onChange: () => fixSubmissionMessage(index),
-                              }
-                            )}
-                            id={`forms.${index}.submit_message.content`}
-                            style={{ height: "99px" }}
-                          />
-                          <ErrorMessage
-                            error={
-                              errors.forms?.[index]?.submit_message?.content
-                            }
-                          />
-                          {serverSubmissionMessage[index] === "custom" &&
-                            getValues(`forms.${index}.submit_message`)
-                              ?.content &&
-                            !JSON.stringify(
-                              getValues(`forms.${index}.submit_message.content`)
-                            ).match(/\{TextInputValue\d{1,2}\}/) && (
-                              <ErrorMessage severity={ErrorSeverity.Warning}>
-                                {
-                                  "Don't forget to add variables such as {TextInputValue1}, {TextInputValue2} and so on, in order to see the submission contents."
-                                }
-                              </ErrorMessage>
-                            )}
-                        </Box>
-                      )}
+                    {watch(`forms.${index}.guild_submit_message`) !== undefined &&
+                      // @ts-expect-error
+                      <MessageBuilder forMessage={`forms.${index}.guild_submit_message`} control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} premium={premium} />
+                    }
                     <HStack justifyContent="space-between" width="100%">
                       <FormLabel whiteSpace="nowrap" m={0}>
                         DM Confirmation Message
@@ -1205,89 +986,35 @@ export default function FormBuilder({
                         }
                         _focus={{ borderWidth: "2px", borderColor: "blurple" }}
                         _hover={{ borderColor: "transparent" }}
-                        onChange={(event) =>
-                          setdmSubmissionMessage(event.target.value, index)
-                        }
-                        value={dmSubmissionMessage[index]}
+                        onChange={(event) => {
+                          switch (event.target.value) {
+                            case "default": {
+                              resetField(`forms.${index}.dm_submit_message`);
+                              setValue(`forms.${index}.dm_submit_message`, undefined)
+                              break;
+                            }
+                            case "custom": {
+                              setValue(`forms.${index}.dm_submit_message`, {})
+                              break;
+                            }
+                            case "off": {
+                              //@ts-expect-error
+                              setValue(`forms.${index}.dm_submit_message`, null);
+                              break;
+                            }
+                          }
+                        }}
+                        value={watch(`forms.${index}.dm_submit_message`) ? "custom" : watch(`forms.${index}.dm_submit_message`) === null ? "off" : "default"}
                       >
                         <option value="default">Default</option>
                         <option value="custom">Custom</option>
-                        {serverSubmissionMessage[index] === "custom" && (
-                          <option value="same_as_server">Same as Server</option>
-                        )}
                         <option value="off">Off</option>
                       </Select>
                     </HStack>
-                    {dmSubmissionMessage[index] === "custom" &&
-                      serverSubmissionMessage[index] !== "same_as_dm" && (
-                        <Box width="100%">
-                          <FormLabel
-                            htmlFor={`forms.${index}.dm_submit_message.content`}
-                            display="flex"
-                            alignItems="center"
-                          >
-                            <Text>Content</Text>
-                            <Counter
-                              count={
-                                getValues("forms")[index].dm_submit_message
-                                  ?.content?.length
-                              }
-                              max={2000}
-                            ></Counter>
-                          </FormLabel>
-                          <textarea
-                            {...register(
-                              `forms.${index}.dm_submit_message.content`,
-                              {
-                                maxLength: 2000,
-                                onChange: () => fixdmSubmissionMessage(index),
-                              }
-                            )}
-                            id={`forms.${index}.dmSubmissionMessage.content`}
-                            style={{ height: "99px" }}
-                          />
-                          <ErrorMessage
-                            error={
-                              errors.forms?.[index]?.dm_submit_message?.content
-                            }
-                          />
-                        </Box>
-                      )}
-                    {dmSubmissionMessage[index] === "custom" &&
-                      serverSubmissionMessage[index] === "same_as_dm" && (
-                        <Box width="100%">
-                          <FormLabel
-                            htmlFor={`forms.${index}.submit_message.content`}
-                            display="flex"
-                            alignItems="center"
-                          >
-                            <Text>Content</Text>
-                            <Counter
-                              count={
-                                getValues("forms")[index].submit_message
-                                  ?.content?.length
-                              }
-                              max={2000}
-                            ></Counter>
-                          </FormLabel>
-                          <textarea
-                            {...register(
-                              `forms.${index}.submit_message.content`,
-                              {
-                                maxLength: 2000,
-                                onChange: () => fixSubmissionMessage(index),
-                              }
-                            )}
-                            id={`forms.${index}.dmSubmissionMessage.content`}
-                            style={{ height: "99px" }}
-                          />
-                          <ErrorMessage
-                            error={
-                              errors.forms?.[index]?.submit_message?.content
-                            }
-                          />
-                        </Box>
-                      )}
+                    {watch(`forms.${index}.dm_submit_message`) !== undefined && watch(`forms.${index}.dm_submit_message`) !== null &&
+                      // @ts-expect-error
+                      <MessageBuilder forMessage={`forms.${index}.dm_submit_message`} control={control} register={register} errors={errors} setValue={setValue} getValues={getValues} resetField={resetField} fixMessage={fixMessage} openFormType={openFormType} watch={watch} premium={premium} />
+                    }
                     <FormLabel>Server Submission Buttons</FormLabel>
                     <HStack>
                       <IconContext.Provider
@@ -1333,11 +1060,11 @@ export default function FormBuilder({
                             ?.REMOVE_ROLE_FROM_SUBMITTER) ||
                         watch(`forms.${index}.on_submit`)
                           ?.REMOVE_ROLE_FROM_SUBMITTER === "") && (
-                        <AiFillExclamationCircle
-                          style={{ marginLeft: "4px" }}
-                          color={colorMode === "dark" ? "#ff7a6b" : "#d92f2f"}
-                        />
-                      )}
+                          <AiFillExclamationCircle
+                            style={{ marginLeft: "4px" }}
+                            color={colorMode === "dark" ? "#ff7a6b" : "#d92f2f"}
+                          />
+                        )}
                     </>
                   }
                 >
@@ -1376,152 +1103,152 @@ export default function FormBuilder({
                       {getValues(
                         `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`
                       ) === undefined && (
-                        <MenuItem
-                          bg="#181414"
-                          _hover={{ background: "#5865F2" }}
-                          borderRadius="4px"
-                          p="4px 10px"
-                          onClick={() =>
-                            setValue(
-                              `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`,
-                              ""
-                            )
-                          }
-                        >
-                          Add role to submitter
-                        </MenuItem>
-                      )}
+                          <MenuItem
+                            bg="#181414"
+                            _hover={{ background: "#5865F2" }}
+                            borderRadius="4px"
+                            p="4px 10px"
+                            onClick={() =>
+                              setValue(
+                                `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`,
+                                ""
+                              )
+                            }
+                          >
+                            Add role to submitter
+                          </MenuItem>
+                        )}
                       {getValues(
                         `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`
                       ) === undefined && (
-                        <MenuItem
-                          bg="#181414"
-                          _hover={{ background: "#5865F2" }}
-                          borderRadius="4px"
-                          p="4px 10px"
-                          onClick={() =>
-                            setValue(
-                              `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`,
-                              ""
-                            )
-                          }
-                        >
-                          Remove role from submitter
-                        </MenuItem>
-                      )}
+                          <MenuItem
+                            bg="#181414"
+                            _hover={{ background: "#5865F2" }}
+                            borderRadius="4px"
+                            p="4px 10px"
+                            onClick={() =>
+                              setValue(
+                                `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`,
+                                ""
+                              )
+                            }
+                          >
+                            Remove role from submitter
+                          </MenuItem>
+                        )}
                     </MenuList>
                   </Menu>
                   {getValues(
                     `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`
                   ) !== undefined && (
-                    <Box>
-                      <FormLabel
-                        htmlFor={`forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`}
-                        display="flex"
-                        alignItems="flex-end"
-                      >
-                        <Text
-                          _after={{
-                            content: '" *"',
-                            color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
-                          }}
+                      <Box>
+                        <FormLabel
+                          htmlFor={`forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`}
+                          display="flex"
+                          alignItems="flex-end"
                         >
-                          Role ID - Add role to submitter
-                        </Text>
-                      </FormLabel>
-                      <HStack>
-                        <input
-                          {...register(
-                            `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`,
-                            { required: true, pattern: /^\d{10,20}$/ }
-                          )}
-                          id={`forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`}
-                          type="string"
-                        />
-                        <CloseButton
-                          onClick={() => {
-                            resetField(
-                              `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`
-                            );
-                            if (
-                              Object.keys(
-                                watch(`forms.${index}.on_submit`) ?? {}
-                              ).length === 1
-                            ) {
-                              setValue(`forms.${index}.on_submit`, undefined);
-                            } else {
-                              setValue(
-                                `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`,
-                                undefined
+                          <Text
+                            _after={{
+                              content: '" *"',
+                              color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
+                            }}
+                          >
+                            Role ID - Add role to submitter
+                          </Text>
+                        </FormLabel>
+                        <HStack>
+                          <input
+                            {...register(
+                              `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`,
+                              { required: true, pattern: /^\d{10,20}$/ }
+                            )}
+                            id={`forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`}
+                            type="string"
+                          />
+                          <CloseButton
+                            onClick={() => {
+                              resetField(
+                                `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`
                               );
-                            }
-                          }}
+                              if (
+                                Object.keys(
+                                  watch(`forms.${index}.on_submit`) ?? {}
+                                ).length === 1
+                              ) {
+                                setValue(`forms.${index}.on_submit`, undefined);
+                              } else {
+                                setValue(
+                                  `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`,
+                                  undefined
+                                );
+                              }
+                            }}
+                          />
+                        </HStack>
+                        <ErrorMessage
+                          error={
+                            errors.forms?.[index]?.on_submit
+                              ?.ADD_ROLE_TO_SUBMITTER
+                          }
                         />
-                      </HStack>
-                      <ErrorMessage
-                        error={
-                          errors.forms?.[index]?.on_submit
-                            ?.ADD_ROLE_TO_SUBMITTER
-                        }
-                      />
-                    </Box>
-                  )}
+                      </Box>
+                    )}
                   {getValues(
                     `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`
                   ) !== undefined && (
-                    <Box>
-                      <FormLabel
-                        htmlFor={`forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`}
-                        display="flex"
-                        alignItems="flex-end"
-                      >
-                        <Text
-                          _after={{
-                            content: '" *"',
-                            color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
-                          }}
+                      <Box>
+                        <FormLabel
+                          htmlFor={`forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`}
+                          display="flex"
+                          alignItems="flex-end"
                         >
-                          Role ID - Remove role from submitter
-                        </Text>
-                      </FormLabel>
-                      <HStack>
-                        <input
-                          {...register(
-                            `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`,
-                            { required: true, pattern: /^\d{10,20}$/ }
-                          )}
-                          id={`forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`}
-                          type="string"
-                        />
-                        <CloseButton
-                          onClick={() => {
-                            resetField(
-                              `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`
-                            );
-
-                            if (
-                              Object.keys(
-                                getValues(`forms.${index}.on_submit`) ?? {}
-                              ).length === 1
-                            ) {
-                              setValue(`forms.${index}.on_submit`, undefined);
-                            } else {
-                              setValue(
-                                `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`,
-                                undefined
+                          <Text
+                            _after={{
+                              content: '" *"',
+                              color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
+                            }}
+                          >
+                            Role ID - Remove role from submitter
+                          </Text>
+                        </FormLabel>
+                        <HStack>
+                          <input
+                            {...register(
+                              `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`,
+                              { required: true, pattern: /^\d{10,20}$/ }
+                            )}
+                            id={`forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`}
+                            type="string"
+                          />
+                          <CloseButton
+                            onClick={() => {
+                              resetField(
+                                `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`
                               );
-                            }
-                          }}
+
+                              if (
+                                Object.keys(
+                                  getValues(`forms.${index}.on_submit`) ?? {}
+                                ).length === 1
+                              ) {
+                                setValue(`forms.${index}.on_submit`, undefined);
+                              } else {
+                                setValue(
+                                  `forms.${index}.on_submit.REMOVE_ROLE_FROM_SUBMITTER`,
+                                  undefined
+                                );
+                              }
+                            }}
+                          />
+                        </HStack>
+                        <ErrorMessage
+                          error={
+                            errors.forms?.[index]?.on_submit
+                              ?.REMOVE_ROLE_FROM_SUBMITTER
+                          }
                         />
-                      </HStack>
-                      <ErrorMessage
-                        error={
-                          errors.forms?.[index]?.on_submit
-                            ?.REMOVE_ROLE_FROM_SUBMITTER
-                        }
-                      />
-                    </Box>
-                  )}
+                      </Box>
+                    )}
                 </Collapsible>
               </Collapsible>
             </>
@@ -1572,12 +1299,10 @@ export default function FormBuilder({
               ],
             });
             setDisplayForm(fields.length);
-            serverSubmissionMessage.push("default");
-            dmSubmissionMessage.push("default");
             setSubmissionType("append", "bot");
             setSubmissionChannel("append", "existing");
 
-            fixMessage();
+            fixMessage('message');
           }}
         >
           Add Form

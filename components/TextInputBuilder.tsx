@@ -81,7 +81,7 @@ export default function TextInputBuilder({
 
   const colorMode = useColorMode().colorMode
 
-  useEffect(() => fixMessage(), [])
+  useEffect(() => fixMessage('message'), [])
 
   if (compact) {
     return <VStack align='flex-start' id={id}>
@@ -103,7 +103,7 @@ export default function TextInputBuilder({
                   />
                 </FormLabel>}
                 <input
-                  {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
+                  {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
                   id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                   defaultValue={textInput.label}
                 />
@@ -129,7 +129,7 @@ export default function TextInputBuilder({
                         let newTextInputStyle = textInputStyle
                         newTextInputStyle[k] = event.target.checked ? 2 : 1
                         setTextInputStyle(newTextInputStyle)
-                        fixMessage();
+                        fixMessage('message');
                       }}
                       isChecked={field.value === 1 ? false : true}
                       colorScheme='blurple'
@@ -144,7 +144,7 @@ export default function TextInputBuilder({
                   name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.required`}
                   render={({ field }) => (
                     <Switch
-                      onChange={event => { field.onChange(event); fixMessage() }}
+                      onChange={event => { field.onChange(event); fixMessage('message') }}
                       colorScheme='blurple'
                       isChecked={field.value === false ? false : true}
                     />
@@ -171,7 +171,7 @@ export default function TextInputBuilder({
         });
         setTimeout(() => {
           updateTextInputMaxLength();
-          fixMessage();
+          fixMessage('message');
         }, 0);
       }}>Add Text Input</Button>
     </VStack>
@@ -193,7 +193,7 @@ export default function TextInputBuilder({
               }} /> : null} style={{ padding: 0 }}>
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='center'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
-                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
+                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
                 id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                 defaultValue={textInput.label}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
@@ -213,7 +213,7 @@ export default function TextInputBuilder({
                           let newTextInputStyle = textInputStyle
                           newTextInputStyle[k] = event.target.checked ? 2 : 1
                           setTextInputStyle(newTextInputStyle)
-                          fixMessage();
+                          fixMessage('message');
                         }}
                         isChecked={field.value === 1 ? false : true}
                         colorScheme='blurple'
@@ -228,7 +228,7 @@ export default function TextInputBuilder({
                     name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.required`}
                     render={({ field }) => (
                       <Switch
-                        onChange={event => { field.onChange(event); fixMessage() }}
+                        onChange={event => { field.onChange(event); fixMessage('message') }}
                         colorScheme='blurple'
                         isChecked={field.value === false ? false : true}
                       />
@@ -241,7 +241,7 @@ export default function TextInputBuilder({
                 <Counter count={textInput?.placeholder?.length || 0} max={100} />
               </FormLabel>
               <input
-                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage() })}
+                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage('message') })}
                 id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
@@ -263,7 +263,7 @@ export default function TextInputBuilder({
               </FormLabel>
               <Box
                 as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
-                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage() })}
+                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage('message') })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
@@ -304,7 +304,7 @@ export default function TextInputBuilder({
                       if (value[0] === 1) resetField(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`)
                       //@ts-expect-error
                       value[1] ? setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1)
-                      fixMessage()
+                      fixMessage('message')
                     }}>
                     <RangeSliderTrack height='8px'>
                       <RangeSliderFilledTrack bg='blurple' />
@@ -334,7 +334,7 @@ export default function TextInputBuilder({
         });
         setTimeout(() => {
           updateTextInputMaxLength();
-          fixMessage();
+          fixMessage('message');
         }, 0);
       }}>Add Text Input</Button>
     </VStack>

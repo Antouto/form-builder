@@ -1,4 +1,4 @@
-export type ColorString = `#${string}` | number;
+export type ColorString = number | "{UserAccentColour}";
 
 export interface Guild {
   permissions: number;
@@ -18,6 +18,11 @@ export interface EmbedFooter {
   icon_url: string;
 }
 
+export interface EmbedField {
+  name: string;
+  value: string;
+}
+
 export interface Embed {
   author?: EmbedAuthor;
   title?: string;
@@ -25,6 +30,7 @@ export interface Embed {
   color?: ColorString;
   image?: { url: string };
   footer?: EmbedFooter;
+  fields?: EmbedField[];
 }
 
 interface Emoji {

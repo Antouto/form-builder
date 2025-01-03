@@ -620,7 +620,7 @@ export default function SubmissionChannelIDInput({
             {...register(`forms.${index}.submit_channel_id`, {
               required: true,
               pattern: /^\d{10,20}$/,
-              onChange: () => fixMessage(),
+              onChange: () => fixMessage('message'),
             })}
             id={`forms[${index}].submit_channel_id`}
             type="number"

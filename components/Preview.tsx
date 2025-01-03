@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons/lib";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
+import { EmbedField, FormBuilder, FormOpenFormTypeBuilder } from "../util/types";
 import { Channel, FormProfile, SlashCommand } from "./Mention";
 import { PreviewStep } from "./PreviewStep";
 import { AVATAR_URL } from "./config";
@@ -100,14 +100,14 @@ function Preview({
     return `#${rHex}${gHex}${bHex}`;
   }
 
-  const MessageEmbed = (
+  const MessageEmbed = (msg: any) => (
     <>
-      {message?.embeds &&
-        message.embeds.map((embed, index) => (
+      {msg?.embeds &&
+        //@ts-expect-error
+        msg.embeds.map((embed, index) => (
           <Box
             key={index}
             borderLeftColor={
-              //@ts-expect-error
               parseInt(embed?.color)
                 ? decimalToHexColor(embed?.color as number)
                 : "#202225"
@@ -117,7 +117,7 @@ function Preview({
             bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
             borderLeft={`4px solid ${
               !isEmpty(embed?.color)
-                ? message?.embeds?.[0]?.color
+                ? msg?.embeds?.[0]?.color
                 : colorMode === "dark"
                 ? "#202225"
                 : "#e3e5e8"
@@ -144,7 +144,7 @@ function Preview({
                   {embed?.author?.icon_url != undefined && (
                     <Image
                       alt="Author Image"
-                      src={embed.author.icon_url}
+                      src={embed.author.icon_url === '{MemberAvatarURL}' ? 'https://cdn.discordapp.com/embed/avatars/5.png' : embed.author.icon_url}
                       style={{
                         width: "24px",
                         height: "24px",
@@ -171,9 +171,27 @@ function Preview({
                 >
                   {embed?.title}
                 </Text>
-                <Text fontSize="0.875rem" color="#c5c5d3" whiteSpace="pre-wrap">
+                <Text fontSize="0.875rem" whiteSpace="pre-wrap">
                   {embed?.description}
                 </Text>
+              </Box>
+              <Box>
+              {/* @ts-expect-error */}
+              {embed?.fields?.length && embed?.fields?.map(field => <Box>
+                <Text                     
+                    fontWeight="600"
+                    fontSize='.875rem'
+                    whiteSpace="pre-wrap">{field?.name}</Text>
+                    {/^{TextInputValue\d}$/.test(field?.value) ? <Text
+                                  fontSize="0.875rem"
+                                  color="#a3a6aa"
+                                >
+                                  Answer will be displayed here
+                                </Text> :
+                <Text fontSize='.875rem'
+                    whiteSpace="pre-wrap">{field?.value}</Text>}
+                                                    
+              </Box>)}
               </Box>
               {!isEmpty(embed?.image?.url) && (
                 <Image
@@ -406,7 +424,7 @@ function Preview({
                       {message.content}
                     </Text>
                   )}
-                  {MessageEmbed}
+                  {MessageEmbed(message)}
                   <Box p="4px 0">
                     {!forms?.[0].select_menu_option &&
                       message?.components?.[0]?.components?.map(
@@ -979,8 +997,15 @@ function Preview({
                     {new Date().getMinutes()}
                   </Text>
                 </Box>
-                {forms?.[displayForm]?.submit_message?.content ||
-                  forms?.[displayForm]?.guild_submit_message?.content || (
+                {forms?.[displayForm]?.submit_message && <>
+                  {forms?.[displayForm]?.submit_message?.content}
+                  {MessageEmbed(forms?.[displayForm]?.submit_message)}
+                </>}
+                {forms?.[displayForm]?.guild_submit_message && <>
+                  {forms?.[displayForm]?.guild_submit_message?.content}
+                  {MessageEmbed(forms?.[displayForm]?.guild_submit_message)}
+                </>}
+                {!(forms?.[displayForm]?.submit_message || forms?.[displayForm]?.guild_submit_message) && (
                     <>
                       <Box
                         bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}

@@ -593,50 +593,60 @@ export function Editor({
 
   // }
 
-  function fixMessage() {
-    const message = getValues("message");
+  function fixMessage(forMessage: string) {
+    //@ts-expect-error
+    const message = getValues(forMessage);
     if (!message) return;
     const { content, embeds } = message;
-    if (!content) setValue(`message.content`, undefined);
+    //@ts-expect-error
+    if (!content) setValue(`${forMessage}.content`, undefined);
     if (embeds?.length) {
       for (let i = 0; i < embeds.length; i++) {
         const { title, description, color, image, author, footer } = embeds[i];
         if (!author?.name && !author?.icon_url && !author?.url) {
-          setValue(`message.embeds.${i}.author`, undefined);
+          //@ts-expect-error
+          setValue(`${forMessage}.embeds.${i}.author`, undefined);
         } else {
           if (!author?.name)
             //@ts-expect-error
-            setValue(`message.embeds.${i}.author.name`, undefined);
+            setValue(`${forMessage}.embeds.${i}.author.name`, undefined);
           if (!author?.icon_url)
             //@ts-expect-error
-            setValue(`message.embeds.${i}.author.icon_url`, undefined);
+            setValue(`${forMessage}.embeds.${i}.author.icon_url`, undefined);
           if (!author?.url)
             //@ts-expect-error
-            setValue(`message.embeds.${i}.author.url`, undefined);
+            setValue(`${forMessage}.embeds.${i}.author.url`, undefined);
         }
-        if (!title) setValue(`message.embeds.${i}.title`, undefined);
+        //@ts-expect-error
+        if (!title) setValue(`${forMessage}.embeds.${i}.title`, undefined);
         if (!description)
-          setValue(`message.embeds.${i}.description`, undefined);
+          //@ts-expect-error
+          setValue(`${forMessage}.embeds.${i}.description`, undefined);
         if (typeof color === "string" && color.length) {
-          setValue(`message.embeds.${i}.color`, parseInt(color));
+          //@ts-expect-error
+          setValue(`${forMessage}.embeds.${i}.color`, parseInt(color));
         }
         if (typeof color === "string" && !color.length) {
-          setValue(`message.embeds.${i}.color`, undefined);
+          //@ts-expect-error
+          setValue(`${forMessage}.embeds.${i}.color`, undefined);
         }
-        if (!image?.url) setValue(`message.embeds.${i}.image`, undefined);
+        //@ts-expect-error
+        if (!image?.url) setValue(`${forMessage}.embeds.${i}.image`, undefined);
         if (!footer?.text && !footer?.icon_url) {
-          setValue(`message.embeds.${i}.footer`, undefined);
+          //@ts-expect-error
+          setValue(`${forMessage}.embeds.${i}.footer`, undefined);
         } else {
           if (!footer?.text)
             //@ts-expect-error
-            setValue(`message.embeds.${i}.footer.text`, undefined);
+            setValue(`${forMessage}.embeds.${i}.footer.text`, undefined);
           if (!footer?.icon_url)
             //@ts-expect-error
-            setValue(`message.embeds.${i}.footer.icon_url`, undefined);
+            setValue(`${forMessage}.embeds.${i}.footer.icon_url`, undefined);
         }
       }
     } else {
-      setValue(`message.embeds`, undefined);
+      //@ts-expect-error
+      setValue(`${forMessage}.embeds`, undefined);
     }
 
     // Also fix text inputs
@@ -866,7 +876,7 @@ export function Editor({
                 currentGuildID,
                 setCurrentGuildID,
                 textInputMaxLength,
-                setTextInputMaxLength,
+                setTextInputMaxLength
               }}
             />
             <VStack width="100%" align="flex-start">
@@ -909,12 +919,14 @@ export function Editor({
                               title,
                               description,
                               author,
+                              fields,
                               footer,
                             } of embeds) {
                               if (
                                 !(
                                   title ||
                                   description ||
+                                  fields ||
                                   author?.name ||
                                   footer?.text
                                 )
@@ -957,6 +969,7 @@ export function Editor({
                         for (const {
                           title,
                           description,
+                          fields,
                           author,
                           image,
                           footer,
@@ -965,6 +978,7 @@ export function Editor({
                             !(
                               title ||
                               description ||
+                              fields ||
                               author?.name ||
                               image?.url ||
                               footer?.text

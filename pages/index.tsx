@@ -191,6 +191,7 @@ export default function App() {
         setDisplayPage(0);
         setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)]);
         setValue(`forms.${index}.cooldown`, undefined);
+        if(getValues(`forms.${index}.dm_submit_message`) === null) setValue(`forms.${index}.dm_submit_message`, undefined);
         getValues(`forms.${index}.submit_components`)?.forEach(
           (action_row, ii) => {
             getValues(
@@ -538,6 +539,7 @@ export default function App() {
                 });
             }, 1);
           }
+          if(form.dm_submit_message === null) setPremium(true)
           if (form.submit_components) {
             //@ts-expect-error
             form.submit_components.forEach((action_row, ii) => {

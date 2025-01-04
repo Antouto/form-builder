@@ -53,6 +53,7 @@ import PermissionOverwritesBuilder from "./PermissionOverwritesBuilder";
 import PageBuilder from "./PageBuilder";
 import MessageBuilder from "./MessageBuilder"
 import { AiFillExclamationCircle } from "react-icons/ai";
+import ReactSelect from "react-select";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -242,11 +243,11 @@ export default function FormBuilder({
             <>
               <Collapsible
                 name={`Form ${index + 1}${getValues("forms")[index]?.pages[0]?.modal.title &&
-                    getValues("forms")[index]?.pages?.[0]?.modal.title?.match(
-                      /\S/
-                    )
-                    ? ` – ${getValues("forms")[index]?.pages?.[0]?.modal.title}`
-                    : ""
+                  getValues("forms")[index]?.pages?.[0]?.modal.title?.match(
+                    /\S/
+                  )
+                  ? ` – ${getValues("forms")[index]?.pages?.[0]?.modal.title}`
+                  : ""
                   }`}
                 variant="large"
                 deleteButton={
@@ -903,26 +904,45 @@ export default function FormBuilder({
                       <FormLabel whiteSpace="nowrap" m={0}>
                         Server Submission Message
                       </FormLabel>
-                      <Select
-                        height="24px!important"
-                        maxWidth="155px"
-                        borderWidth="2px"
-                        borderColor="transparent"
-                        borderRadius="4px"
-                        bg={
-                          colorMode === "dark"
-                            ? "grey.extradark"
-                            : "grey.extralight"
-                        }
-                        _focus={{ borderWidth: "2px", borderColor: "blurple" }}
-                        _hover={{ borderColor: "transparent" }}
-                        onChange={(event) => {
-                          if (event.target.value === "default") {
+                      <ReactSelect
+                        // onChange={async (option) => {
+                        //   for (let i = 0; i < getValues("forms").length; i++) {
+                        //     //@ts-expect-error setting to undefined
+                        //     setValue(`forms.${i}.submit_channel_id`, undefined);
+                        //   }
+
+                        //   if (!option) return;
+                        //   setCurrentGuildID(option.value);
+
+                        //   setLoadingGuild(true);
+                        //   let guildResponse = await getGuild(option.value);
+                        //   setLoadingGuild(false);
+
+                        //   if (guildResponse === false) {
+                        //     onOpenAddToServer();
+                        //   } else {
+                        //     //setStage('submissions')
+                        //   }
+                        // }}
+                        // isLoading={loadingGuild}
+                        //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
+                        // value={
+                        //   currentGuildID && guilds
+                        //     ? {
+                        //         label:
+                        //           guilds.find((guild) => guild.id === currentGuildID)
+                        //             ?.name || "Server Name Unknown",
+                        //         value: currentGuildID,
+                        //       }
+                        //     : null
+                        // }
+                        onChange={(option) => {
+                          if (option.value === "default") {
                             resetField(`forms.${index}.guild_submit_message`);
                             setValue(`forms.${index}.guild_submit_message`, undefined)
                           }
 
-                          if (event.target.value === "custom") {
+                          if (option.value === "custom") {
                             setValue(`forms.${index}.guild_submit_message`, {
                               "embeds": [
                                 {
@@ -959,11 +979,111 @@ export default function FormBuilder({
                             })
                           }
                         }}
-                        value={watch(`forms.${index}.guild_submit_message`) === undefined ? "default" : "custom"}
-                      >
-                        <option value="default">Default</option>
-                        <option value="custom">Custom</option>
-                      </Select>
+                        value={watch(`forms.${index}.guild_submit_message`) === undefined ? { label: "Default", value: "default" } : { label: "Custom", value: "custom"}}
+                        isClearable={false}
+                        isSearchable={false}
+                        // placeholder={"Select a server"}
+                        // noOptionsMessage={() => "No results found"}
+                        name="Select submission confirmation message"
+                        options={[
+                          {
+                            label: 'Default',
+                            value: 'default'
+                          },
+                          {
+                            label: 'Custom',
+                            value: 'custom'
+                          }
+                        ]}
+                        menuPortalTarget={document.body} // Renders dropdown at the top of the DOM
+                        menuPosition="fixed"
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            height: "43.5px",
+                            background: "oklab(0.23892 0.000131361 -0.00592163)",
+                            border: "1px solid oklab(0.23892 0.000131361 -0.00592163)",
+                            borderBottomLeftRadius: state.menuIsOpen ? 0 : "4px",
+                            borderBottomRightRadius: state.menuIsOpen ? 0 : "4px",
+                            "&:hover": {
+                              borderColor: "oklab(0.23892 0.000131361 -0.00592163)",
+                            },
+                            boxShadow: "none",
+                            boxSizing: "content-box",
+                          }),
+                          input: (baseStyles, state) => ({
+                            ...baseStyles,
+                            margin: "0",
+                            alignItems: "center",
+                            height: '24px!important',
+                            display: "flex",
+                            color: 'oklab(0.899401 -0.00192499 -0.00481987)'
+                          }),
+                          valueContainer: (baseStyles) => ({
+                            ...baseStyles,
+                            height: "43.5px",
+                            padding: "0 12px",
+                          }),
+                          singleValue: (baseStyles, state) => ({
+                            ...baseStyles,
+                            color: 'oklab(0.899401 -0.00192499 -0.00481987)',
+                            margin: "0"
+                          }),
+                          placeholder: (baseStyles, state) => ({
+                            ...baseStyles,
+
+                          }),
+                          option: (baseStyles, state) => ({
+                            ...baseStyles,
+                            background: state.isSelected
+                              ? '#404249'
+                              : state.isFocused
+                                ? "#35373c"
+                                : "transparent",
+                            color: 'inherit',
+                            padding: "9.75px",
+                            display: "flex",
+                            ":active": {
+                              background: state.isSelected
+                                ? '#404249'
+                                : state.isFocused
+                                  ? "#35373c"
+                                  : "transparent",
+                            },
+                          }),
+                          menu: (baseStyles, state) => ({
+                            ...baseStyles,
+                            color: "oklab(0.786807 -0.0025776 -0.0110238)",
+                            background: "#2b2d31",
+                            margin: 0,
+                            borderTopLeftRadius: state.menuPlacement === "top" ? 0 : "4px",
+                            borderTopRightRadius: state.menuPlacement === "top" ? 0 : "4px",
+                            borderBottomLeftRadius:
+                              state.menuPlacement === "bottom" ? 0 : "4px",
+                            borderBottomRightRadius:
+                              state.menuPlacement === "bottom" ? 0 : "4px",
+                          }),
+                          menuList: (baseStyles) => ({
+                            ...baseStyles,
+                            padding: 0,
+                          }),
+                          indicatorSeparator: () => ({
+                            display: "none",
+                          }),
+                          dropdownIndicator: (baseStyles, state) => ({
+                            ...baseStyles,
+                            color: "oklab(0.786807 -0.0025776 -0.0110238)",
+                            // transition: 'transform 0.2s ease',
+                            transform: state.selectProps.menuIsOpen
+                              ? "rotate(180deg)"
+                              : "rotate(0)",
+                            "&:hover": {
+                              color: "oklab(0.786807 -0.0025776 -0.0110238)",
+                            },
+                          }),
+                          menuPortal: (baseStyles) => ({ ...baseStyles, zIndex: 9999 }),
+                        }}
+                      />
                     </HStack>
                     {watch(`forms.${index}.guild_submit_message`) !== undefined &&
                       // @ts-expect-error
@@ -996,25 +1116,45 @@ export default function FormBuilder({
                       premium={premium}
                       {...{ setPremiumFeatureTarget, onOpenPremium }}
                     />
-                                        <HStack justifyContent="space-between" width="100%">
+                    <HStack justifyContent="space-between" width="100%">
                       <FormLabel whiteSpace="nowrap" m={0}>
                         DM Confirmation Message
                       </FormLabel>
-                      <Select
-                        height="24px!important"
-                        maxWidth="155px"
-                        borderWidth="2px"
-                        borderColor="transparent"
-                        borderRadius="4px"
-                        bg={
-                          colorMode === "dark"
-                            ? "grey.extradark"
-                            : "grey.extralight"
-                        }
-                        _focus={{ borderWidth: "2px", borderColor: "blurple" }}
-                        _hover={{ borderColor: "transparent" }}
-                        onChange={(event) => {
-                          switch (event.target.value) {
+                      <ReactSelect
+                        // onChange={async (option) => {
+                        //   for (let i = 0; i < getValues("forms").length; i++) {
+                        //     //@ts-expect-error setting to undefined
+                        //     setValue(`forms.${i}.submit_channel_id`, undefined);
+                        //   }
+
+                        //   if (!option) return;
+                        //   setCurrentGuildID(option.value);
+
+                        //   setLoadingGuild(true);
+                        //   let guildResponse = await getGuild(option.value);
+                        //   setLoadingGuild(false);
+
+                        //   if (guildResponse === false) {
+                        //     onOpenAddToServer();
+                        //   } else {
+                        //     //setStage('submissions')
+                        //   }
+                        // }}
+                        // isLoading={loadingGuild}
+                        //defaultValue={guilds ? { label: guilds[0].name, value: guilds[0].id } : null}
+                        // value={
+                        //   currentGuildID && guilds
+                        //     ? {
+                        //         label:
+                        //           guilds.find((guild) => guild.id === currentGuildID)
+                        //             ?.name || "Server Name Unknown",
+                        //         value: currentGuildID,
+                        //       }
+                        //     : null
+                        // }
+                        onChange={(option) => {
+                          // @ts-expect-error
+                          switch (option.value) {
                             case "default": {
                               resetField(`forms.${index}.dm_submit_message`);
                               setValue(`forms.${index}.dm_submit_message`, undefined)
@@ -1058,18 +1198,126 @@ export default function FormBuilder({
                               break;
                             }
                             case "off": {
+                              if (!premium) {
+                                setPremiumFeatureTarget(null)
+                                onOpenPremium()
+                                break;
+                              }
                               //@ts-expect-error
                               setValue(`forms.${index}.dm_submit_message`, null);
                               break;
                             }
                           }
                         }}
-                        value={watch(`forms.${index}.dm_submit_message`) ? "custom" : watch(`forms.${index}.dm_submit_message`) === null ? "off" : "default"}
-                      >
-                        <option value="default">Default</option>
-                        <option value="custom">Custom</option>
-                        <option value="off">Off</option>
-                      </Select>
+                        value={watch(`forms.${index}.dm_submit_message`) ? { label: "Custom", value: "custom" } : watch(`forms.${index}.dm_submit_message`) === null ? { label: "Off", value: "off" } : { label: "Default", value: "default" }}
+                        isClearable={false}
+                        isSearchable={false}
+                        // placeholder={"Select a server"}
+                        // noOptionsMessage={() => "No results found"}
+                        name="Select submission confirmation message"
+                        options={[
+                          {
+                            label: 'Default',
+                            value: 'default'
+                          },
+                          {
+                            label: 'Custom',
+                            value: 'custom'
+                          },
+                          {
+                            label: 'Off',
+                            value: 'off'
+                          }
+                        ]}
+                        menuPortalTarget={document.body} // Renders dropdown at the top of the DOM
+                        menuPosition="fixed"
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            height: "43.5px",
+                            background: "oklab(0.23892 0.000131361 -0.00592163)",
+                            border: "1px solid oklab(0.23892 0.000131361 -0.00592163)",
+                            borderBottomLeftRadius: state.menuIsOpen ? 0 : "4px",
+                            borderBottomRightRadius: state.menuIsOpen ? 0 : "4px",
+                            "&:hover": {
+                              borderColor: "oklab(0.23892 0.000131361 -0.00592163)",
+                            },
+                            boxShadow: "none",
+                            boxSizing: "content-box",
+                          }),
+                          input: (baseStyles, state) => ({
+                            ...baseStyles,
+                            margin: "0",
+                            alignItems: "center",
+                            height: '24px!important',
+                            display: "flex",
+                            color: 'oklab(0.899401 -0.00192499 -0.00481987)'
+                          }),
+                          valueContainer: (baseStyles) => ({
+                            ...baseStyles,
+                            height: "43.5px",
+                            padding: "0 12px",
+                          }),
+                          singleValue: (baseStyles, state) => ({
+                            ...baseStyles,
+                            color: state.data.value === "off" ? 'rgb(26,92,190)' : 'oklab(0.899401 -0.00192499 -0.00481987)',
+                            margin: "0"
+                          }),
+                          placeholder: (baseStyles, state) => ({
+                            ...baseStyles,
+
+                          }),
+                          option: (baseStyles, state) => ({
+                            ...baseStyles,
+                            background: state.isSelected
+                              ? '#404249'
+                              : state.isFocused
+                                ? "#35373c"
+                                : "transparent",
+                            color: state.data.value === 'off' ? 'rgb(26,92,190)' : 'inherit',
+                            padding: "9.75px",
+                            display: "flex",
+                            ":active": {
+                              background: state.isSelected
+                                ? '#404249'
+                                : state.isFocused
+                                  ? "#35373c"
+                                  : "transparent",
+                            },
+                          }),
+                          menu: (baseStyles, state) => ({
+                            ...baseStyles,
+                            color: "oklab(0.786807 -0.0025776 -0.0110238)",
+                            background: "#2b2d31",
+                            margin: 0,
+                            borderTopLeftRadius: state.menuPlacement === "top" ? 0 : "4px",
+                            borderTopRightRadius: state.menuPlacement === "top" ? 0 : "4px",
+                            borderBottomLeftRadius:
+                              state.menuPlacement === "bottom" ? 0 : "4px",
+                            borderBottomRightRadius:
+                              state.menuPlacement === "bottom" ? 0 : "4px",
+                          }),
+                          menuList: (baseStyles) => ({
+                            ...baseStyles,
+                            padding: 0,
+                          }),
+                          indicatorSeparator: () => ({
+                            display: "none",
+                          }),
+                          dropdownIndicator: (baseStyles, state) => ({
+                            ...baseStyles,
+                            color: "oklab(0.786807 -0.0025776 -0.0110238)",
+                            // transition: 'transform 0.2s ease',
+                            transform: state.selectProps.menuIsOpen
+                              ? "rotate(180deg)"
+                              : "rotate(0)",
+                            "&:hover": {
+                              color: "oklab(0.786807 -0.0025776 -0.0110238)",
+                            },
+                          }),
+                          menuPortal: (baseStyles) => ({ ...baseStyles, zIndex: 9999 }),
+                        }}
+                      />
                     </HStack>
                     {watch(`forms.${index}.dm_submit_message`) !== undefined && watch(`forms.${index}.dm_submit_message`) !== null &&
                       // @ts-expect-error

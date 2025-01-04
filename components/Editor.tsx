@@ -365,6 +365,7 @@ export function Editor({
               });
           }, 1);
         }
+        if(form.dm_submit_message === null) setPremium(true)
         if (form.submit_components) {
           form.submit_components.forEach((action_row, ii) => {
             if (action_row.components) {
@@ -2192,7 +2193,7 @@ export function Editor({
                 </Text>
               </HStack>
               <Text fontWeight="400">
-                Unlock all premium features for €4.99/month
+                Unlock these and more premium features<br/>for €4.99/month
               </Text>
             </VStack>
           </ModalBody>

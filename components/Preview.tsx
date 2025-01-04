@@ -1132,7 +1132,7 @@ function Preview({
             </Box>
           </Box>
           {forms?.[displayForm]?.dm_submit_message !== null && <Text mt={2} fontWeight={isTinyScreen ? '600' : '500'}>User{forms?.[displayForm]?.dm_submit_message === undefined ? ' also' : ''} gets a DM confirmation of their submission</Text>}
-          {forms?.[displayForm]?.dm_submit_message && !forms?.[displayForm]?.submit_message && <>
+          {(forms?.[displayForm]?.dm_submit_message || forms?.[displayForm]?.guild_submit_message) && !forms?.[displayForm]?.submit_message && <>
           <Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"

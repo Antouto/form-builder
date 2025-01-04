@@ -937,11 +937,13 @@ export default function FormBuilder({
                         //     : null
                         // }
                         onChange={(option) => {
+                          // @ts-expect-error
                           if (option.value === "default") {
                             resetField(`forms.${index}.guild_submit_message`);
                             setValue(`forms.${index}.guild_submit_message`, undefined)
                           }
 
+                          // @ts-expect-error
                           if (option.value === "custom") {
                             setValue(`forms.${index}.guild_submit_message`, {
                               "embeds": [

@@ -29,6 +29,16 @@ function isEmpty(value: any) {
   return value == null || value == "";
 }
 
+const confirmationComponents = [{
+  type: 1,
+  components: [{
+    type: 2,
+    disabled: true,
+    label: 'Sucessfully submitted form',
+    style: 2
+  }]
+}]
+
 export interface PreviewProperties {
   message: FormOpenFormTypeBuilder;
   forms: FormBuilder[];
@@ -1121,6 +1131,246 @@ function Preview({
               </Box>
             </Box>
           </Box>
+          {forms?.[displayForm]?.dm_submit_message !== null && <Text mt={2} fontWeight={isTinyScreen ? '600' : '500'}>User{forms?.[displayForm]?.dm_submit_message === undefined ? ' also' : ''} gets a DM confirmation of their submission</Text>}
+          {forms?.[displayForm]?.dm_submit_message && !forms?.[displayForm]?.submit_message && <>
+          <Box
+            bg={colorMode === "dark" ? "grey.dark" : "white"}
+            borderRadius="8px"
+            mt={2}
+          >
+            <HStack display={isTinyScreen ? 'none' : 'flex'} gap={0} height='48px' borderBottomColor='rgba(0,0,0,.4)' borderBottomWidth='1px'>
+            <FormProfile
+                  {...{
+                    avatar: AVATAR_URL,
+                    hidden: FormsProfileHidden,
+                    HandleInteraction,
+                  }}
+                >
+                  <Image
+                    alt="Form's Avatar"
+                    src={AVATAR_URL}
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                      clipPath: "circle(50%)",
+                      marginTop: "5px",
+                      marginRight: "16px",
+                    }}
+                    clipPath="circle(50%)"
+                    mx="12px"
+                  />
+                </FormProfile>
+                <Text fontSize='16px' fontWeight='600'>Forms</Text>
+            </HStack>
+            <Box display="flex" p={isTinyScreen ? 0 : 4}>
+              <Box flexShrink={0}>
+                <FormProfile
+                  {...{
+                    avatar: AVATAR_URL,
+                    hidden: FormsProfileHidden,
+                    HandleInteraction,
+                  }}
+                >
+                  <Image
+                    alt="Form's Avatar"
+                    src={AVATAR_URL}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      clipPath: "circle(50%)",
+                      marginTop: "5px",
+                      marginRight: "16px",
+                    }}
+                    width="40px"
+                    height="40px"
+                    clipPath="circle(50%)"
+                    mt="5px"
+                    mr="16px"
+                  />
+                </FormProfile>
+              </Box>
+              <Box width="calc(100% - 56px)">
+                <Box display="flex" alignItems="center">
+                  <Text
+                    fontFamily="Whitney Bold"
+                    _hover={{ textDecoration: "underline", cursor: "pointer" }}
+                  >
+                    Forms
+                  </Text>
+                  <Box
+                    display="flex"
+                    backgroundColor="#5865F2"
+                    borderRadius=".1875rem"
+                    ml="4px"
+                    height=".9375rem"
+                    width="39px"
+                  >
+                    <Tooltip
+                      hasArrow
+                      label={<Box>Verified App</Box>}
+                      placement="top"
+                      bg="#181414"
+                    >
+                      <svg
+                        color="white"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 15.2"
+                      >
+                        <path
+                          d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
+                    </Tooltip>
+                    <Text
+                      fontFamily="Whitney Bold"
+                      fontSize=".625rem"
+                      textColor="white"
+                    >
+                      APP
+                    </Text>
+                  </Box>
+                  <Text
+                    fontFamily="Whitney Bold"
+                    fontSize="0.75rem"
+                    color="#a3a6aa"
+                    ml=".5rem"
+                    alignSelf="flex-end"
+                    mb="1px"
+                  >
+                    Today at {new Date().getHours() < 10 ? "0" : ""}
+                    {new Date().getHours()}:
+                    {new Date().getMinutes() < 10 ? "0" : ""}
+                    {new Date().getMinutes()}
+                  </Text>
+                </Box>
+                {forms?.[displayForm]?.submit_message && <>
+                  {forms?.[displayForm]?.submit_message?.content}
+                  {MessageEmbed(forms?.[displayForm]?.submit_message)}
+                </>}
+                {forms?.[displayForm]?.dm_submit_message && <>
+                  {forms?.[displayForm]?.dm_submit_message?.content}
+                  {MessageEmbed(forms?.[displayForm]?.dm_submit_message)}
+                </>}
+                {!(forms?.[displayForm]?.submit_message || forms?.[displayForm]?.dm_submit_message) && (
+                    <>
+                      <Box
+                        bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
+                        borderLeft={
+                          colorMode === "dark"
+                            ? "4px solid #202225"
+                            : "4px solid #e3e5e8"
+                        }
+                        maxWidth="520px"
+                        borderRadius="4px"
+                      >
+                        <Box padding="0.5rem 1rem 1rem 0.75rem">
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            m="8px 0px 0px"
+                          >
+                            <Image
+                              alt="Test User's Avatar"
+                              src="https://cdn.discordapp.com/embed/avatars/5.png"
+                              width="24px"
+                              height="24px"
+                              borderRadius="50%"
+                              mr="8px"
+                            />
+                            <Box
+                              fontFamily="Whitney Bold"
+                              fontSize="0.875rem"
+                              fontWeight="500"
+                            >
+                              User
+                            </Box>
+                          </Box>
+                          <Box>
+                            {forms?.[displayForm]?.pages?.[
+                              displayPage
+                            ]?.modal.components.map((actionRow) => (
+                              <Box key={Math.random()}>
+                                <Text
+                                  fontFamily="Whitney Black"
+                                  fontSize="0.875rem"
+                                  mt="8px"
+                                >
+                                  {actionRow.components[0]?.label}
+                                </Text>
+                                <Text
+                                  fontSize="0.875rem"
+                                  color={
+                                    actionRow.components[0]?.value
+                                      ? "white"
+                                      : "#a3a6aa"
+                                  }
+                                >
+                                  {actionRow.components[0]?.value ||
+                                    "(Answer will be displayed here)"}
+                                </Text>
+                              </Box>
+                            ))}
+                          </Box>
+                          {/* <Box display="flex" alignItems="center" mt="8px">
+                      <Image
+                        alt="ID"
+                        src="https://cdn.discordapp.com/emojis/882601305871360040.png"
+                        width="20px"
+                        height="20px"
+                        mr="8px"
+                        borderRadius="50%"
+                      />
+                      <Text
+                        fontFamily="Whitney Bold"
+                        fontSize="0.75rem"
+                        color={colorMode === "dark" ? "#fbfbfb" : "#313338"}
+                      >
+                        643945264868098049
+                      </Text>
+                    </Box> */}
+                        </Box>
+                      </Box>
+                    </>
+                  )}
+                                      <Box>
+                        {confirmationComponents.map(
+                          (_: any, i: number) => (
+                            <HStack key={i} gap={0}>
+                              {confirmationComponents[
+                                i
+                              ].components?.map((button) => (
+                                <Button
+                                  key={Math.random()}
+                                  height="32px"
+                                  fontSize="14px"
+                                  paddingBlock={0}
+                                  paddingInline={0}
+                                  padding="2px 16px"
+                                  isDisabled={button.disabled}
+                                  m="4px 8px 4px 0"
+                                  variant={
+                                    button.style === 1
+                                      ? "discord-primary"
+                                      : button.style === 2
+                                      ? "discord-secondary"
+                                      : button.style === 3
+                                      ? "discord-success"
+                                      : "discord-danger"
+                                  }
+                                >
+                                  {button.label}
+                                </Button>
+                              ))}
+                            </HStack>
+                          )
+                        )}
+                      </Box>
+              </Box>
+            </Box>
+          </Box>
+          </>}
         </PreviewStep>
       </VStack>
     </Box>

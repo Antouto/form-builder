@@ -54,6 +54,7 @@ import PageBuilder from "./PageBuilder";
 import MessageBuilder from "./MessageBuilder"
 import { AiFillExclamationCircle } from "react-icons/ai";
 import ReactSelect from "react-select";
+import { RoleIcon } from "./Icons";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -1418,7 +1419,7 @@ export default function FormBuilder({
                     >
                       Add
                     </MenuButton>
-                    <MenuList bg="#181414" p="4px">
+                    <MenuList bg="#181414" px="4px" py="10px">
                       {getValues(
                         `forms.${index}.on_submit.ADD_ROLE_TO_SUBMITTER`
                       ) === undefined && (
@@ -1434,7 +1435,7 @@ export default function FormBuilder({
                               )
                             }
                           >
-                            Add role to submitter
+                            <RoleIcon/><Text ml={2}>Add role to submitter</Text>
                           </MenuItem>
                         )}
                       {getValues(
@@ -1452,7 +1453,7 @@ export default function FormBuilder({
                               )
                             }
                           >
-                            Remove role from submitter
+                            <RoleIcon/><Text ml={2}>Remove role from submitter</Text>
                           </MenuItem>
                         )}
                     </MenuList>

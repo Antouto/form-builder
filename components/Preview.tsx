@@ -125,13 +125,12 @@ function Preview({
             borderLeftWidth="4px"
             mt="0.2rem"
             bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
-            borderLeft={`4px solid ${
-              !isEmpty(embed?.color)
+            borderLeft={`4px solid ${!isEmpty(embed?.color)
                 ? msg?.embeds?.[0]?.color
                 : colorMode === "dark"
-                ? "#202225"
-                : "#e3e5e8"
-            }`}
+                  ? "#202225"
+                  : "#e3e5e8"
+              }`}
             maxWidth="520px"
             borderRadius="4px"
           >
@@ -186,22 +185,22 @@ function Preview({
                 </Text>
               </Box>
               <Box>
-              {/* @ts-expect-error */}
-              {embed?.fields?.length && embed?.fields?.map(field => <Box key={Math.random()}>
-                <Text                     
+                {/* @ts-expect-error */}
+                {embed?.fields?.length && embed?.fields?.map(field => <Box key={Math.random()}>
+                  <Text
                     fontWeight="600"
                     fontSize='.875rem'
                     whiteSpace="pre-wrap">{field?.name}</Text>
-                    {/^{TextInputValue\d}$/.test(field?.value) ? <Text
-                                  fontSize="0.875rem"
-                                  color="#a3a6aa"
-                                >
-                                  Answer will be displayed here
-                                </Text> :
-                <Text fontSize='.875rem'
-                    whiteSpace="pre-wrap">{field?.value}</Text>}
-                                                    
-              </Box>)}
+                  {/^{TextInputValue\d}$/.test(field?.value) ? <Text
+                    fontSize="0.875rem"
+                    color="#a3a6aa"
+                  >
+                    Answer will be displayed here
+                  </Text> :
+                    <Text fontSize='.875rem'
+                      whiteSpace="pre-wrap">{field?.value}</Text>}
+
+                </Box>)}
               </Box>
               {!isEmpty(embed?.image?.url) && (
                 <Image
@@ -238,9 +237,8 @@ function Preview({
                     fontFamily="Whitney Bold"
                     fontSize="0.80rem"
                     color="#fbfbfb"
-                    width={`calc(100% - ${
-                      embed?.footer?.icon_url != undefined ? "32" : "0"
-                    }px)`}
+                    width={`calc(100% - ${embed?.footer?.icon_url != undefined ? "32" : "0"
+                      }px)`}
                   >
                     {embed?.footer?.text}
                   </Text>
@@ -444,8 +442,8 @@ function Preview({
                             onClick={() => {
                               if (component.style === 5) {
                                 try {
-                                  window.open(component.url,"_blank");
-                                } catch {} 
+                                  window.open(component.url, "_blank");
+                                } catch { }
                               } else {
                                 setDisplayPage(0);
                                 setDisplayForm(
@@ -460,7 +458,7 @@ function Preview({
                                     //@ts-expect-error
                                     component.custom_id?.match(/\d+/)[0]
                                   ) -
-                                    1
+                                  1
                                 ) {
                                   setTemporaryModalHighlight(true);
                                   executeFormScroll();
@@ -480,23 +478,23 @@ function Preview({
                             variant={
                               //@ts-expect-error
                               message?.components[0].components[index]?.style ==
-                              1
+                                1
                                 ? "discord-primary" //@ts-expect-error
                                 : message?.components[0].components[index]
-                                    ?.style == 2
-                                ? "discord-secondary" //@ts-expect-error
-                                : message?.components[0].components[index]
+                                  ?.style == 2
+                                  ? "discord-secondary" //@ts-expect-error
+                                  : message?.components[0].components[index]
                                     ?.style == 3
-                                ? "discord-success" //@ts-expect-error
-                                : message?.components[0].components[index]
-                                    ?.style == 4
-                                ? "discord-danger"
-                                : "discord-secondary"
+                                    ? "discord-success" //@ts-expect-error
+                                    : message?.components[0].components[index]
+                                      ?.style == 4
+                                      ? "discord-danger"
+                                      : "discord-secondary"
                             }
                           >
                             {
                               message?.components?.[0]?.components?.[index]
-                              ?.label
+                                ?.label
                             }
                             {message?.components?.[0]?.components?.[index].style == 5 && <Box ml='8px'><svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M15 2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0V4.41l-4.3 4.3a1 1 0 1 1-1.4-1.42L19.58 3H16a1 1 0 0 1-1-1Z"></path><path fill="currentColor" d="M5 2a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 1 0-2 0v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 1 0 0-2H5Z"></path></svg></Box>}
                           </Button>
@@ -728,9 +726,8 @@ function Preview({
             width="100%"
           >
             <Box
-              border={`1px solid ${
-                colorMode === "dark" ? "#292b2f" : "#e3e5e8"
-              }`}
+              border={`1px solid ${colorMode === "dark" ? "#292b2f" : "#e3e5e8"
+                }`}
               borderRadius="3px"
               width="440px"
               maxWidth="100%"
@@ -881,20 +878,19 @@ function Preview({
             ) : (
               <>
                 {forms[displayForm].submit_thread ? (
-                  `A ${
-                    forms[displayForm].submit_thread?.type === 12
-                      ? "private "
-                      : ""
+                  `A ${forms[displayForm].submit_thread?.type === 12
+                    ? "private "
+                    : ""
                   }thread is created for the submission`
                 ) : (
                   <>
                     The submission is sent to{" "}
                     {forms[displayForm].submit_channel_id &&
-                    Array.isArray(currentGuild) &&
-                    currentGuild.find(
-                      (channel) =>
-                        channel.id === forms[displayForm].submit_channel_id
-                    ) ? (
+                      Array.isArray(currentGuild) &&
+                      currentGuild.find(
+                        (channel) =>
+                          channel.id === forms[displayForm].submit_channel_id
+                      ) ? (
                       <Channel>
                         {
                           currentGuild.find(
@@ -1016,66 +1012,65 @@ function Preview({
                   {MessageEmbed(forms?.[displayForm]?.guild_submit_message)}
                 </>}
                 {!(forms?.[displayForm]?.submit_message || forms?.[displayForm]?.guild_submit_message) && (
-                    <>
+                  <Box
+                    bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
+                    borderLeft={
+                      colorMode === "dark"
+                        ? "4px solid #202225"
+                        : "4px solid #e3e5e8"
+                    }
+                    maxWidth="520px"
+                    borderRadius="4px"
+                  >
+                    <Box padding="0.5rem 1rem 1rem 0.75rem">
                       <Box
-                        bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
-                        borderLeft={
-                          colorMode === "dark"
-                            ? "4px solid #202225"
-                            : "4px solid #e3e5e8"
-                        }
-                        maxWidth="520px"
-                        borderRadius="4px"
+                        display="flex"
+                        alignItems="center"
+                        m="8px 0px 0px"
                       >
-                        <Box padding="0.5rem 1rem 1rem 0.75rem">
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            m="8px 0px 0px"
-                          >
-                            <Image
-                              alt="Test User's Avatar"
-                              src="https://cdn.discordapp.com/embed/avatars/5.png"
-                              width="24px"
-                              height="24px"
-                              borderRadius="50%"
-                              mr="8px"
-                            />
-                            <Box
-                              fontFamily="Whitney Bold"
+                        <Image
+                          alt="Test User's Avatar"
+                          src="https://cdn.discordapp.com/embed/avatars/5.png"
+                          width="24px"
+                          height="24px"
+                          borderRadius="50%"
+                          mr="8px"
+                        />
+                        <Box
+                          fontFamily="Whitney Bold"
+                          fontSize="0.875rem"
+                          fontWeight="500"
+                        >
+                          User
+                        </Box>
+                      </Box>
+                      <Box>
+                        {forms?.[displayForm]?.pages?.[
+                          displayPage
+                        ]?.modal.components.map((actionRow) => (
+                          <Box key={Math.random()}>
+                            <Text
+                              fontFamily="Whitney Black"
                               fontSize="0.875rem"
-                              fontWeight="500"
+                              mt="8px"
                             >
-                              User
-                            </Box>
+                              {actionRow.components[0]?.label}
+                            </Text>
+                            <Text
+                              fontSize="0.875rem"
+                              color={
+                                actionRow.components[0]?.value
+                                  ? "white"
+                                  : "#a3a6aa"
+                              }
+                            >
+                              {actionRow.components[0]?.value ||
+                                "(Answer will be displayed here)"}
+                            </Text>
                           </Box>
-                          <Box>
-                            {forms?.[displayForm]?.pages?.[
-                              displayPage
-                            ]?.modal.components.map((actionRow) => (
-                              <Box key={Math.random()}>
-                                <Text
-                                  fontFamily="Whitney Black"
-                                  fontSize="0.875rem"
-                                  mt="8px"
-                                >
-                                  {actionRow.components[0]?.label}
-                                </Text>
-                                <Text
-                                  fontSize="0.875rem"
-                                  color={
-                                    actionRow.components[0]?.value
-                                      ? "white"
-                                      : "#a3a6aa"
-                                  }
-                                >
-                                  {actionRow.components[0]?.value ||
-                                    "(Answer will be displayed here)"}
-                                </Text>
-                              </Box>
-                            ))}
-                          </Box>
-                          {/* <Box display="flex" alignItems="center" mt="8px">
+                        ))}
+                      </Box>
+                      {/* <Box display="flex" alignItems="center" mt="8px">
                       <Image
                         alt="ID"
                         src="https://cdn.discordapp.com/emojis/882601305871360040.png"
@@ -1092,54 +1087,53 @@ function Preview({
                         643945264868098049
                       </Text>
                     </Box> */}
-                        </Box>
-                      </Box>
-                      <Box>
-                        {forms?.[displayForm]?.submit_components?.map(
-                          (_: any, i: number) => (
-                            <HStack key={i} gap={0}>
-                              {forms?.[displayForm]?.submit_components?.[
-                                i
-                              ].components?.map((button) => (
-                                <Button
-                                  key={Math.random()}
-                                  height="32px"
-                                  fontSize="14px"
-                                  paddingBlock={0}
-                                  paddingInline={0}
-                                  padding="2px 16px"
-                                  m="4px 8px 4px 0"
-                                  variant={
-                                    button.style === 1
-                                      ? "discord-primary"
-                                      : button.style === 2
-                                      ? "discord-secondary"
-                                      : button.style === 3
-                                      ? "discord-success"
-                                      : "discord-danger"
-                                  }
-                                >
-                                  {button.label}
-                                </Button>
-                              ))}
-                            </HStack>
-                          )
-                        )}
-                      </Box>
-                    </>
+                    </Box>
+                  </Box>
+                )}
+                <Box>
+                  {forms?.[displayForm]?.submit_components?.map(
+                    (_: any, i: number) => (
+                      <HStack key={i} gap={0}>
+                        {forms?.[displayForm]?.submit_components?.[
+                          i
+                        ].components?.map((button) => (
+                          <Button
+                            key={Math.random()}
+                            height="32px"
+                            fontSize="14px"
+                            paddingBlock={0}
+                            paddingInline={0}
+                            padding="2px 16px"
+                            m="4px 8px 4px 0"
+                            variant={
+                              button.style === 1
+                                ? "discord-primary"
+                                : button.style === 2
+                                  ? "discord-secondary"
+                                  : button.style === 3
+                                    ? "discord-success"
+                                    : "discord-danger"
+                            }
+                          >
+                            {button.label}
+                          </Button>
+                        ))}
+                      </HStack>
+                    )
                   )}
+                </Box>
               </Box>
             </Box>
           </Box>
           {forms?.[displayForm]?.dm_submit_message !== null && <Text mt={2} fontWeight={isTinyScreen ? '600' : '500'}>User{forms?.[displayForm]?.dm_submit_message === undefined ? ' also' : ''} gets a DM confirmation of their submission</Text>}
           {(forms?.[displayForm]?.dm_submit_message || forms?.[displayForm]?.guild_submit_message) && !forms?.[displayForm]?.submit_message && <>
-          <Box
-            bg={colorMode === "dark" ? "grey.dark" : "white"}
-            borderRadius="8px"
-            mt={2}
-          >
-            <HStack display={isTinyScreen ? 'none' : 'flex'} gap={0} height='48px' borderBottomColor='rgba(0,0,0,.4)' borderBottomWidth='1px'>
-            <FormProfile
+            <Box
+              bg={colorMode === "dark" ? "grey.dark" : "white"}
+              borderRadius="8px"
+              mt={2}
+            >
+              <HStack display={isTinyScreen ? 'none' : 'flex'} gap={0} height='48px' borderBottomColor='rgba(0,0,0,.4)' borderBottomWidth='1px'>
+                <FormProfile
                   {...{
                     avatar: AVATAR_URL,
                     hidden: FormsProfileHidden,
@@ -1161,99 +1155,99 @@ function Preview({
                   />
                 </FormProfile>
                 <Text fontSize='16px' fontWeight='600'>Forms</Text>
-            </HStack>
-            <Box display="flex" p={isTinyScreen ? 0 : 4}>
-              <Box flexShrink={0}>
-                <FormProfile
-                  {...{
-                    avatar: AVATAR_URL,
-                    hidden: FormsProfileHidden,
-                    HandleInteraction,
-                  }}
-                >
-                  <Image
-                    alt="Form's Avatar"
-                    src={AVATAR_URL}
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      clipPath: "circle(50%)",
-                      marginTop: "5px",
-                      marginRight: "16px",
+              </HStack>
+              <Box display="flex" p={isTinyScreen ? 0 : 4}>
+                <Box flexShrink={0}>
+                  <FormProfile
+                    {...{
+                      avatar: AVATAR_URL,
+                      hidden: FormsProfileHidden,
+                      HandleInteraction,
                     }}
-                    width="40px"
-                    height="40px"
-                    clipPath="circle(50%)"
-                    mt="5px"
-                    mr="16px"
-                  />
-                </FormProfile>
-              </Box>
-              <Box width="calc(100% - 56px)">
-                <Box display="flex" alignItems="center">
-                  <Text
-                    fontFamily="Whitney Bold"
-                    _hover={{ textDecoration: "underline", cursor: "pointer" }}
                   >
-                    Forms
-                  </Text>
-                  <Box
-                    display="flex"
-                    backgroundColor="#5865F2"
-                    borderRadius=".1875rem"
-                    ml="4px"
-                    height=".9375rem"
-                    width="39px"
-                  >
-                    <Tooltip
-                      hasArrow
-                      label={<Box>Verified App</Box>}
-                      placement="top"
-                      bg="#181414"
-                    >
-                      <svg
-                        color="white"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 15.2"
-                      >
-                        <path
-                          d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </Tooltip>
+                    <Image
+                      alt="Form's Avatar"
+                      src={AVATAR_URL}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        clipPath: "circle(50%)",
+                        marginTop: "5px",
+                        marginRight: "16px",
+                      }}
+                      width="40px"
+                      height="40px"
+                      clipPath="circle(50%)"
+                      mt="5px"
+                      mr="16px"
+                    />
+                  </FormProfile>
+                </Box>
+                <Box width="calc(100% - 56px)">
+                  <Box display="flex" alignItems="center">
                     <Text
                       fontFamily="Whitney Bold"
-                      fontSize=".625rem"
-                      textColor="white"
+                      _hover={{ textDecoration: "underline", cursor: "pointer" }}
                     >
-                      APP
+                      Forms
+                    </Text>
+                    <Box
+                      display="flex"
+                      backgroundColor="#5865F2"
+                      borderRadius=".1875rem"
+                      ml="4px"
+                      height=".9375rem"
+                      width="39px"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={<Box>Verified App</Box>}
+                        placement="top"
+                        bg="#181414"
+                      >
+                        <svg
+                          color="white"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 15.2"
+                        >
+                          <path
+                            d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z"
+                            fill="currentColor"
+                          ></path>
+                        </svg>
+                      </Tooltip>
+                      <Text
+                        fontFamily="Whitney Bold"
+                        fontSize=".625rem"
+                        textColor="white"
+                      >
+                        APP
+                      </Text>
+                    </Box>
+                    <Text
+                      fontFamily="Whitney Bold"
+                      fontSize="0.75rem"
+                      color="#a3a6aa"
+                      ml=".5rem"
+                      alignSelf="flex-end"
+                      mb="1px"
+                    >
+                      Today at {new Date().getHours() < 10 ? "0" : ""}
+                      {new Date().getHours()}:
+                      {new Date().getMinutes() < 10 ? "0" : ""}
+                      {new Date().getMinutes()}
                     </Text>
                   </Box>
-                  <Text
-                    fontFamily="Whitney Bold"
-                    fontSize="0.75rem"
-                    color="#a3a6aa"
-                    ml=".5rem"
-                    alignSelf="flex-end"
-                    mb="1px"
-                  >
-                    Today at {new Date().getHours() < 10 ? "0" : ""}
-                    {new Date().getHours()}:
-                    {new Date().getMinutes() < 10 ? "0" : ""}
-                    {new Date().getMinutes()}
-                  </Text>
-                </Box>
-                {forms?.[displayForm]?.submit_message && <>
-                  {forms?.[displayForm]?.submit_message?.content}
-                  {MessageEmbed(forms?.[displayForm]?.submit_message)}
-                </>}
-                {forms?.[displayForm]?.dm_submit_message && <>
-                  {forms?.[displayForm]?.dm_submit_message?.content}
-                  {MessageEmbed(forms?.[displayForm]?.dm_submit_message)}
-                </>}
-                {!(forms?.[displayForm]?.submit_message || forms?.[displayForm]?.dm_submit_message) && (
+                  {forms?.[displayForm]?.submit_message && <>
+                    {forms?.[displayForm]?.submit_message?.content}
+                    {MessageEmbed(forms?.[displayForm]?.submit_message)}
+                  </>}
+                  {forms?.[displayForm]?.dm_submit_message && <>
+                    {forms?.[displayForm]?.dm_submit_message?.content}
+                    {MessageEmbed(forms?.[displayForm]?.dm_submit_message)}
+                  </>}
+                  {!(forms?.[displayForm]?.submit_message || forms?.[displayForm]?.dm_submit_message) && (
                     <>
                       <Box
                         bg={colorMode === "dark" ? "#2f3136" : "#f2f3f5"}
@@ -1334,42 +1328,42 @@ function Preview({
                       </Box>
                     </>
                   )}
-                                      <Box>
-                        {confirmationComponents.map(
-                          (_: any, i: number) => (
-                            <HStack key={i} gap={0}>
-                              {confirmationComponents[
-                                i
-                              ].components?.map((button) => (
-                                <Button
-                                  key={Math.random()}
-                                  height="32px"
-                                  fontSize="14px"
-                                  paddingBlock={0}
-                                  paddingInline={0}
-                                  padding="2px 16px"
-                                  isDisabled={button.disabled}
-                                  m="4px 8px 4px 0"
-                                  variant={
-                                    button.style === 1
-                                      ? "discord-primary"
-                                      : button.style === 2
-                                      ? "discord-secondary"
-                                      : button.style === 3
+                  <Box>
+                    {confirmationComponents.map(
+                      (_: any, i: number) => (
+                        <HStack key={i} gap={0}>
+                          {confirmationComponents[
+                            i
+                          ].components?.map((button) => (
+                            <Button
+                              key={Math.random()}
+                              height="32px"
+                              fontSize="14px"
+                              paddingBlock={0}
+                              paddingInline={0}
+                              padding="2px 16px"
+                              isDisabled={button.disabled}
+                              m="4px 8px 4px 0"
+                              variant={
+                                button.style === 1
+                                  ? "discord-primary"
+                                  : button.style === 2
+                                    ? "discord-secondary"
+                                    : button.style === 3
                                       ? "discord-success"
                                       : "discord-danger"
-                                  }
-                                >
-                                  {button.label}
-                                </Button>
-                              ))}
-                            </HStack>
-                          )
-                        )}
-                      </Box>
+                              }
+                            >
+                              {button.label}
+                            </Button>
+                          ))}
+                        </HStack>
+                      )
+                    )}
+                  </Box>
+                </Box>
               </Box>
             </Box>
-          </Box>
           </>}
         </PreviewStep>
       </VStack>

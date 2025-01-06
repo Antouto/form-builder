@@ -799,6 +799,7 @@ export default function FormBuilder({
                     </FormLabel>
                     <NumberInput
                       min={60}
+                      max={31536000}
                       isDisabled={!premium && cooldownDisabled}
                       onClick={() => {
                         if (!premium) {

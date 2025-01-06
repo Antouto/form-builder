@@ -32,7 +32,18 @@ export async function onRequest({ request, env }) {
     console.log("user 5");
 
     const guild_id = url.searchParams.get("guild_id");
+    const checkIfAdmin = url.searchParams.get("checkIfAdmin");
+
     if (guild_id && guildResponse.some((guild) => guild.id === guild_id)) {
+      
+      
+      if(checkIfAdmin === 'true') {
+        return new Response(`User is an admin in this server`, {
+          status: 200,
+        });
+      }
+
+
       let specificGuildResponse = await fetch(
         `https://discord.com/api/guilds/${guild_id}/channels`,
         {
@@ -50,6 +61,10 @@ export async function onRequest({ request, env }) {
         status: specificGuildResponse.status,
       });
     }
+
+    if(checkIfAdmin === 'true') return new Response('User is NOT an admin in this server', {
+      status: 200,
+    });
 
     // Return guild list to frontend
     return new Response(JSON.stringify(guildResponse), {

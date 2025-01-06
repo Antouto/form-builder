@@ -1,13 +1,9 @@
-export function onRequest({ params }) {
+export async function onRequest({ params }) {
   const guildId = params.guild
-  
-  let guildResponse;
-  await (async () => {
-    guildResponse = await ( await fetch(
-      `https://create.discordforms.app/api/discord/session?guild_id=${guildId}&checkIfAdmin=true`
-    )
-  ).text();
-  })()
+
+  const guildResponse = await fetch(
+    `https://create.discordforms.app/api/discord/session?guild_id=${guildId}&checkIfAdmin=true`
+  ).then(res => res.text());
 
   return new Response(guildResponse)
 }

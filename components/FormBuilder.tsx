@@ -798,7 +798,7 @@ export default function FormBuilder({
                       <Text>Cooldown (seconds)</Text>
                     </FormLabel>
                     <NumberInput
-                      min={0}
+                      min={60}
                       isDisabled={!premium && cooldownDisabled}
                       onClick={() => {
                         if (!premium) {
@@ -816,7 +816,6 @@ export default function FormBuilder({
                           border: "none",
                         }}
                         height="36px"
-                        placeholder="OFF, Use 0 for Infinity"
                         backgroundImage="linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))"
                         {...register(`forms.${index}.cooldown`)}
                         id={`forms.${index}.cooldown`}

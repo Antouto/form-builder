@@ -75,6 +75,7 @@ import { ChannelIcon, ThreadIcon, ForwardIcon, ReplyIcon } from "./Icons";
 import { ChannelIdHint } from "./Hints";
 import { API_URI, DEFAULT_API_URI } from "./config";
 import { env } from "process";
+import Counter from "./Counter";
 
 const Defaults = {
   Embed: {
@@ -1508,6 +1509,17 @@ export function Editor({
                   fixMessage={fixMessage}
                   errors={formState.errors}
                 />
+                <FormLabel margin={0} display="flex"
+                  alignItems="center">
+                  <Text _after={{
+                    content: '" *"',
+                    color: "#ff7a6b",
+                  }}>Text Inputs</Text>
+                  <Counter
+                    count={watch(`forms.0.pages.0.modal.components`).length}
+                    max={5}
+                  />
+                </FormLabel>
                 <TextInputBuilder
                   compact
                   id={`forms.0.pages.0.modal.components`}

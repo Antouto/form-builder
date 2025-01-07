@@ -83,34 +83,31 @@ export default function TextInputBuilder({
 
   useEffect(() => fixMessage('message'), [])
 
-  if (compact) {
+  if (true || compact) {
     return <VStack align='flex-start' id={id}>
       {fields.map((item, k) => {
         let textInput = watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0`) as ModalComponentBuilder;
+        //@ts-expect-error
+        let minimumLength = parseInt(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components[0].min_length`));
+        //@ts-expect-error
+        let maximumLength = parseInt(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components[0].max_length`));
         return (
           <Box key={item.id} width='100%'>
             <HStack gap={3} alignItems='flex-start'>
               <Box width='100%' >
-                {k === 0 && <FormLabel margin={0} display="flex"
-                  alignItems="center">
-                  <Text _after={{
-                    content: '" *"',
-                    color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
-                  }}>Text Inputs</Text>
-                  <Counter
-                    count={watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components`).length}
-                    max={5}
-                  />
-                </FormLabel>}
-                <input
+                <ErrorMessage small error={errors?.forms?.[nestIndex]?.pages?.[pageIndex]?.modal?.components?.[k]?.components?.[0]?.label} />
+                <Collapsible onlyToggleWithArrow name={<HStack width='100%'>
+                  <input
                   {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
                   id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                   defaultValue={textInput.label}
+                  style={{ color: 'white', fontFamily: 'Whitney',  width: 'calc(100% - 40px)' }}
                 />
-                <ErrorMessage error={errors?.forms?.[nestIndex]?.pages?.[pageIndex]?.modal?.components?.[k]?.components?.[0]?.label} />
-              </Box>
-              <Box minWidth='62px'>
-                {k === 0 && <FormLabel margin={0}>Multiline</FormLabel>}
+                <CloseButton isDisabled={fields.length === 1} my='auto' onClick={() => remove(k)} />
+                </HStack>}>
+                <HStack mb='8px'>
+                            <Box minWidth='62px'>
+                <FormLabel margin={0}>Multiline</FormLabel>
                 <Controller
                   control={control}
                   name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`}
@@ -138,7 +135,7 @@ export default function TextInputBuilder({
                 />
               </Box>
               <Box minWidth='62px'>
-                {k === 0 && <FormLabel margin={0}>Required</FormLabel>}
+                <FormLabel margin={0}>Required</FormLabel>
                 <Controller
                   control={control}
                   name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.required`}
@@ -151,7 +148,66 @@ export default function TextInputBuilder({
                   )}
                 />
               </Box>
-              {fields.length > 1 && <CloseButton my='auto' onClick={() => remove(k)} />}
+              </HStack>
+<FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='center'><Text>Placeholder</Text>
+                <Counter count={textInput?.placeholder?.length || 0} max={100} />
+              </FormLabel>
+
+
+
+              <input
+                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage('message') })}
+                id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`}
+                style={{ marginRight: "25px", marginBottom: '8px' }}
+              />
+              
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='center'>
+              <Text>Preset Value</Text>
+                <span
+                  style={{
+                    display: 'inline',
+                    marginLeft: '7px',
+                    fontSize: '13px',
+                    //@ts-expect-error
+                    color: (textInput?.value?.length !== 0 && (textInput?.value?.length < (Number.isNaN(minimumLength) ? 1 : minimumLength) || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'),
+                    fontFamily: 'Whitney Bold Italic'
+                  }}
+                >
+                  {!Number.isNaN(minimumLength) && minimumLength === maximumLength ? `Must be ${minimumLength} characters` : `Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
+                </span>
+              </FormLabel>
+              <Box
+                as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
+                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage('message') })}
+                id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
+                style={{ marginRight: "25px", marginBottom: '8px' }}
+              />
+
+
+              <VStack width='100%' alignItems='flex-start' gap={8}>
+                  <FormLabel>Minimum to Maximum Character Range</FormLabel>
+                  <RangeSlider
+
+                    width='99%' ml='.5%' defaultValue={[1, textInputMaxLength]} min={1} max={textInputMaxLength} onChange={(value) => {
+                      //@ts-expect-error
+                      setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, value[0])
+                      if (value[0] === 1) resetField(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`)
+                      //@ts-expect-error
+                      value[1] ? setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1)
+                      fixMessage('message')
+                    }}>
+                    <RangeSliderTrack height='8px'>
+                      <RangeSliderFilledTrack bg='blurple' />
+                    </RangeSliderTrack>
+                    <RangeSliderThumb {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: textInputMaxLength })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
+                    <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>
+                  </RangeSlider>
+                </VStack>
+
+                </Collapsible>
+
+              </Box>
+
             </HStack>
           </Box>
 
@@ -170,7 +226,7 @@ export default function TextInputBuilder({
           ]
         });
         setTimeout(() => {
-          updateTextInputMaxLength();
+          if(updateTextInputMaxLength !== undefined) updateTextInputMaxLength();
           fixMessage('message');
         }, 0);
       }}>Add Text Input</Button>

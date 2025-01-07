@@ -13,9 +13,10 @@ export interface ErrorMessageProperties extends TextProps {
   };
   severity?: ErrorSeverity
   children?: React.ReactNode;
+  small?: boolean;
 }
 
-export default function ErrorMessage({ children, error, severity }: ErrorMessageProperties) {
+export default function ErrorMessage({ children, error, severity, small }: ErrorMessageProperties) {
   if (error) {
     const message = (() => {
       switch(error?.type) {
@@ -31,7 +32,7 @@ export default function ErrorMessage({ children, error, severity }: ErrorMessage
   return (
     <HStack>
       {children ? <Box><AiFillExclamationCircle color={severity === ErrorSeverity.Warning ? 'rgb(252, 164, 28)' : (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f')} /></Box> : null}
-      <Text color={severity === ErrorSeverity.Warning ? 'rgb(252, 164, 28)' : (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f')}>
+      <Text fontSize={small ? '12px' : '16px'} color={severity === ErrorSeverity.Warning ? 'rgb(252, 164, 28)' : (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f')}>
         {children}
       </Text>
     </HStack>

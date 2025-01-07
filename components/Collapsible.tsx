@@ -10,9 +10,10 @@ export interface CollapsibleProperties {
   variant?: string;
   style?: CSSProperties;
   defaultIsOpen?: boolean;
+  onlyToggleWithArrow?: boolean
 }
 
-function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, children, variant, style, defaultIsOpen }: CollapsibleProperties) {
+function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, children, variant, style, defaultIsOpen, onlyToggleWithArrow }: CollapsibleProperties) {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen });
   const { colorMode } = useColorMode();
 
@@ -27,7 +28,7 @@ function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, childre
       pt={1}
       pb={1}>
       <Button
-        onClick={onToggle}
+        onClick={onlyToggleWithArrow ? undefined : onToggle}
         as='div'
         margin={0}
         padding={variant === 'large' ? '0px 6px 0px 14px' : '0px'}
@@ -40,8 +41,8 @@ function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, childre
         bg='transparent'
         color={variant === 'large' ? (colorMode === 'dark' ? 'white' : 'black') : (colorMode === 'dark' ? '#bcbcbc' : '#4f5660')}
       >
-        <Box display='flex' alignItems='center'>
-          <svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <Box width='100%' display='flex' alignItems='center'>
+          <svg onClick={onlyToggleWithArrow ? onToggle : undefined} style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
               d="M12 10L8 6L4 10"
               stroke="#bcbcbc"
@@ -53,7 +54,7 @@ function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, childre
         </Box>
         <HStack>{moveDownButton}{moveUpButton}{deleteButton}</HStack>
         </Button>
-      <Collapse in={isOpen} animateOpacity style={{ margin: 0 }}>
+      <Collapse in={isOpen} animateOpacity style={{ margin: `${onlyToggleWithArrow ? '8px' : '0'} 0 0 ${onlyToggleWithArrow ? '8px' : '0'}`, }}>
         <Box
           p='0px 14px 14px'
           rounded='md'

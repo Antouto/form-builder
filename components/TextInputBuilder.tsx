@@ -71,7 +71,7 @@ export default function TextInputBuilder({
   updateTextInputMaxLength,
   textInputMaxLength
 }: TextInputBuilderProperties<FormAndOpenFormTypeBuilder>) {
-  const { fields, remove, append } = useFieldArray({
+  const { fields, remove, append, move, insert } = useFieldArray({
     control,
     name: `forms.${nestIndex}.pages.${pageIndex}.modal.components`
   });
@@ -82,6 +82,29 @@ export default function TextInputBuilder({
   const colorMode = useColorMode().colorMode
 
   useEffect(() => fixMessage('message'), [])
+
+  //@ts-expect-error
+  function appendTextInput(data, k) {
+    if (data) {
+      insert(k + 1, data)
+    } else {
+      append({
+        type: 1,
+        components: [
+          {
+            type: 4,
+            label: '',
+            style: 1,
+            max_length: 1024
+          }
+        ]
+      });
+    }
+    setTimeout(() => {
+      if (updateTextInputMaxLength !== undefined) updateTextInputMaxLength();
+      fixMessage('message');
+    }, 0);
+  }
 
   if (true || compact) {
     return <VStack align='flex-start' id={id}>
@@ -98,111 +121,174 @@ export default function TextInputBuilder({
                 <ErrorMessage small error={errors?.forms?.[nestIndex]?.pages?.[pageIndex]?.modal?.components?.[k]?.components?.[0]?.label} />
                 <Collapsible onlyToggleWithArrow name={<HStack width='100%'>
                   <input
-                  {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
-                  id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
-                  defaultValue={textInput.label}
-                  style={{ color: 'white', fontFamily: 'Whitney',  width: 'calc(100% - 40px)' }}
-                />
-                <CloseButton isDisabled={fields.length === 1} my='auto' onClick={() => remove(k)} />
+                    {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
+                    id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
+                    defaultValue={textInput.label}
+                    style={{ color: 'white', fontFamily: 'Whitney', width: 'calc(100% - 40px)' }}
+                  />
+                  <Tooltip
+                    hasArrow
+                    label={<Box>Move up</Box>}
+                    placement="top"
+                    bg="#181414"
+                  >
+                    <svg onClick={() => {
+                      if (k !== 0) {
+                        move(k, k - 1)
+                      }
+                    }} style={{ marginRight: '8px', cursor: k === 0 ? 'not-allowed' : 'pointer', transition: 'transform 0.2s', transform: `rotate(0deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M12 10L8 6L4 10"
+                        stroke={k === 0 ? '#666' : "#bcbcbc"}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Tooltip>
+                  <Tooltip
+                    hasArrow
+                    label={<Box>Move down</Box>}
+                    placement="top"
+                    bg="#181414"
+                  >
+                    <svg onClick={() => {
+                      if (k !== fields.length - 1) {
+                        move(k, k + 1)
+                      }
+                    }} style={{ marginRight: '8px', cursor: k === fields.length - 1 ? 'not-allowed' : 'pointer', transition: 'transform 0.2s', transform: `rotate(180deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M12 10L8 6L4 10"
+                        stroke={k === fields.length - 1 ? '#666' : "#bcbcbc"}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Tooltip>
+                  <Tooltip
+                    hasArrow
+                    label={<Box>Duplicate</Box>}
+                    placement="top"
+                    bg="#181414"
+                  >
+
+                  <svg style={{ marginRight: '8px' }} onClick={() => {
+                    if(fields.length < 5) {
+                      appendTextInput(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}`), k)
+                    }
+                    }} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 10H2.5C1.67157 10 1 9.32845 1 8.50002L1 2.5C1 1.67157 1.67158 1 2.50001 1L8.5 1.00002C9.32843 1.00002 10 1.67159 10 2.50002V3.00002M13.4999 6.00008L7.49994 6.00006C6.67151 6.00006 5.99994 6.67164 5.99994 7.50006L5.99993 13.5001C5.99993 14.3285 6.67151 15.0001 7.49993 15.0001H13.4999C14.3284 15.0001 14.9999 14.3285 14.9999 13.5001V7.50008C14.9999 6.67165 14.3284 6.00008 13.4999 6.00008Z" stroke={fields.length === 5 ? '#666' : "#bcbcbc"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </Tooltip>
+                  <Tooltip
+                    hasArrow
+                    label={<Box>Remove</Box>}
+                    placement="top"
+                    bg="#181414"
+                  >
+                    <svg onClick={() => {
+                      if (fields.length !== 1) { remove(k) }
+                    }} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 3L3 13M3 3L13 13" stroke={fields.length === 1 ? '#666' : "#bcbcbc"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </Tooltip>
+
                 </HStack>}>
-                <HStack mb='8px'>
-                            <Box minWidth='62px'>
-                <FormLabel margin={0}>Multiline</FormLabel>
-                <Controller
-                  control={control}
-                  name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`}
-                  render={({ field }) => (
-                    <Switch
-                      onChange={event => {
-                        console.log(event.target.checked)
-                        field.onChange(event.target.checked ? 2 : 1);
-                        console.log(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`))
-                        // setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`, event.target.checked ? 2 : 1)
-                        console.log(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`))
+                  <HStack mb='8px'>
+                    <Box minWidth='62px'>
+                      <FormLabel margin={0}>Multiline</FormLabel>
+                      <Controller
+                        control={control}
+                        name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`}
+                        render={({ field }) => (
+                          <Switch
+                            onChange={event => {
+                              console.log(event.target.checked)
+                              field.onChange(event.target.checked ? 2 : 1);
+                              console.log(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`))
+                              // setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`, event.target.checked ? 2 : 1)
+                              console.log(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`))
 
-                        console.log('a', field.value, field.value === 1 ? false : true)
+                              console.log('a', field.value, field.value === 1 ? false : true)
 
 
-                        let newTextInputStyle = textInputStyle
-                        newTextInputStyle[k] = event.target.checked ? 2 : 1
-                        setTextInputStyle(newTextInputStyle)
-                        fixMessage('message');
+                              let newTextInputStyle = textInputStyle
+                              newTextInputStyle[k] = event.target.checked ? 2 : 1
+                              setTextInputStyle(newTextInputStyle)
+                              fixMessage('message');
+                            }}
+                            isChecked={field.value === 1 ? false : true}
+                            colorScheme='blurple'
+                          />
+                        )}
+                      />
+                    </Box>
+                    <Box minWidth='62px'>
+                      <FormLabel margin={0}>Required</FormLabel>
+                      <Controller
+                        control={control}
+                        name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.required`}
+                        render={({ field }) => (
+                          <Switch
+                            onChange={event => { field.onChange(event); fixMessage('message') }}
+                            colorScheme='blurple'
+                            isChecked={field.value === false ? false : true}
+                          />
+                        )}
+                      />
+                    </Box>
+                  </HStack>
+                  <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='center'><Text>Placeholder</Text>
+                    <Counter count={textInput?.placeholder?.length || 0} max={100} />
+                  </FormLabel>
+
+
+
+                  <input
+                    {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage('message') })}
+                    id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`}
+                    style={{ marginRight: "25px", marginBottom: '8px' }}
+                  />
+
+                  <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='center'>
+                    <Text>Preset Value</Text>
+                    <span
+                      style={{
+                        display: 'inline',
+                        marginLeft: '7px',
+                        fontSize: '13px',
+                        //@ts-expect-error
+                        color: (textInput?.value?.length !== 0 && (textInput?.value?.length < (Number.isNaN(minimumLength) ? 1 : minimumLength) || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'),
+                        fontFamily: 'Whitney Bold Italic'
                       }}
-                      isChecked={field.value === 1 ? false : true}
-                      colorScheme='blurple'
-                    />
-                  )}
-                />
-              </Box>
-              <Box minWidth='62px'>
-                <FormLabel margin={0}>Required</FormLabel>
-                <Controller
-                  control={control}
-                  name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.required`}
-                  render={({ field }) => (
-                    <Switch
-                      onChange={event => { field.onChange(event); fixMessage('message') }}
-                      colorScheme='blurple'
-                      isChecked={field.value === false ? false : true}
-                    />
-                  )}
-                />
-              </Box>
-              </HStack>
-<FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='center'><Text>Placeholder</Text>
-                <Counter count={textInput?.placeholder?.length || 0} max={100} />
-              </FormLabel>
+                    >
+                      {!Number.isNaN(minimumLength) && minimumLength === maximumLength ? `Must be ${minimumLength} characters` : `Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
+                    </span>
+                  </FormLabel>
+                  <Box
+                    as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
+                    {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage('message') })}
+                    id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
+                    style={{ marginRight: "25px", marginBottom: '8px' }}
+                  />
 
 
+                  <VStack width='100%' alignItems='flex-start' gap={8}>
+                    <FormLabel>Minimum to Maximum Character Range</FormLabel>
+                    <RangeSlider
 
-              <input
-                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage('message') })}
-                id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.placeholder`}
-                style={{ marginRight: "25px", marginBottom: '8px' }}
-              />
-              
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='center'>
-              <Text>Preset Value</Text>
-                <span
-                  style={{
-                    display: 'inline',
-                    marginLeft: '7px',
-                    fontSize: '13px',
-                    //@ts-expect-error
-                    color: (textInput?.value?.length !== 0 && (textInput?.value?.length < (Number.isNaN(minimumLength) ? 1 : minimumLength) || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'),
-                    fontFamily: 'Whitney Bold Italic'
-                  }}
-                >
-                  {!Number.isNaN(minimumLength) && minimumLength === maximumLength ? `Must be ${minimumLength} characters` : `Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
-                </span>
-              </FormLabel>
-              <Box
-                as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
-                {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage('message') })}
-                id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
-                style={{ marginRight: "25px", marginBottom: '8px' }}
-              />
-
-
-              <VStack width='100%' alignItems='flex-start' gap={8}>
-                  <FormLabel>Minimum to Maximum Character Range</FormLabel>
-                  <RangeSlider
-
-                    width='99%' ml='.5%' defaultValue={[1, textInputMaxLength]} min={1} max={textInputMaxLength} onChange={(value) => {
-                      //@ts-expect-error
-                      setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, value[0])
-                      if (value[0] === 1) resetField(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`)
-                      //@ts-expect-error
-                      value[1] ? setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1)
-                      fixMessage('message')
-                    }}>
-                    <RangeSliderTrack height='8px'>
-                      <RangeSliderFilledTrack bg='blurple' />
-                    </RangeSliderTrack>
-                    <RangeSliderThumb {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: textInputMaxLength })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
-                    <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>
-                  </RangeSlider>
-                </VStack>
+                      width='99%' ml='.5%' defaultValue={[1, textInputMaxLength]} min={1} max={textInputMaxLength} onChange={(value) => {
+                        //@ts-expect-error
+                        setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, value[0])
+                        if (value[0] === 1) resetField(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`)
+                        //@ts-expect-error
+                        value[1] ? setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1)
+                        fixMessage('message')
+                      }}>
+                      <RangeSliderTrack height='8px'>
+                        <RangeSliderFilledTrack bg='blurple' />
+                      </RangeSliderTrack>
+                      <RangeSliderThumb {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: textInputMaxLength })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
+                      <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>
+                    </RangeSlider>
+                  </VStack>
 
                 </Collapsible>
 
@@ -214,21 +300,8 @@ export default function TextInputBuilder({
         );
       })}
       <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => {
-        append({
-          type: 1,
-          components: [
-            {
-              type: 4,
-              label: '',
-              style: 1,
-              max_length: 1024
-            }
-          ]
-        });
-        setTimeout(() => {
-          if(updateTextInputMaxLength !== undefined) updateTextInputMaxLength();
-          fixMessage('message');
-        }, 0);
+        //@ts-expect-error
+        appendTextInput()
       }}>Add Text Input</Button>
     </VStack>
   }
@@ -246,7 +319,7 @@ export default function TextInputBuilder({
             <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label?.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => {
               remove(k)
               updateTextInputMaxLength()
-              }} /> : null} style={{ padding: 0 }}>
+            }} /> : null} style={{ padding: 0 }}>
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='center'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}

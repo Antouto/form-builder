@@ -152,15 +152,17 @@ export default function App() {
         setTimeout(() => {
           setValue("message", undefined);
         }, 1);
-        getValues("forms").forEach((form, i) => {
-          setValue(`forms.${i}.select_menu_option`, undefined);
-          setValue(`forms.${i}.button`, undefined);
-          if (setContent) {
-            setValue("application_command", {
-              name: "",
-            });
-          }
-        });
+        // This should be updated for the new form.pages[i] format
+
+        // getValues("forms").forEach((form, i) => {
+        //   setValue(`forms.${i}.select_menu_option`, undefined);
+        //   setValue(`forms.${i}.button`, undefined);
+        //   if (setContent) {
+        //     setValue("application_command", {
+        //       name: "",
+        //     });
+        //   }
+        // });
         break;
     }
   };
@@ -190,6 +192,7 @@ export default function App() {
       getValues("forms").forEach((form, index) => {
         setDisplayPage(0);
         setValue(`forms.${index}.pages`, [getValues(`forms.${index}.pages.0`)]);
+        setValue(`forms.${index}.google_sheets_url`, undefined, { shouldValidate: true });
         setValue(`forms.${index}.cooldown`, undefined);
         if(getValues(`forms.${index}.dm_submit_message`) === null) setValue(`forms.${index}.dm_submit_message`, undefined);
         getValues(`forms.${index}.submit_components`)?.forEach(
@@ -661,7 +664,6 @@ export default function App() {
           setStage={setStage}
           //@ts-expect-error
           formMessageComponents={formMessageComponents}
-          //@ts-expect-error
           formMessageComponentsAppend={formMessageComponentsAppend}
           formMessageComponentsRemove={formMessageComponentsRemove}
           formMessageComponentsMove={formMessageComponentsMove}

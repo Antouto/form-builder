@@ -146,10 +146,7 @@ export interface FormBuilder {
     type: number;
     invitable?: boolean;
   };
-  // I don't know if this is supposed to be here...
-  button?: {
-    label: string;
-  };
+  google_sheets_url?: string;
   cooldown?: number;
   application_command?: ApplicationCommandBuilder;
   select_menu_option?: SelectMenuBuilder;

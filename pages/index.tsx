@@ -664,6 +664,7 @@ export default function App() {
           setStage={setStage}
           //@ts-expect-error
           formMessageComponents={formMessageComponents}
+          //@ts-expect-error
           formMessageComponentsAppend={formMessageComponentsAppend}
           formMessageComponentsRemove={formMessageComponentsRemove}
           formMessageComponentsMove={formMessageComponentsMove}

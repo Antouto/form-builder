@@ -56,6 +56,7 @@ import { AiFillExclamationCircle } from "react-icons/ai";
 import ReactSelect from "react-select";
 import { RoleIcon } from "./Icons";
 import Image from "next/image";
+import PremiumFeatureTag from "./PremiumFeatureTag";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -160,7 +161,7 @@ export default function FormBuilder({
   const isReallySmallScreen = !useScreenWidth(400);
   const colorMode = useColorMode().colorMode;
 
-  const [cooldownDisabled, setCooldownDisabled] = useState(false);
+  const [temporaryDisablePremiumFields, setTemporaryDisablePremiumFields] = useState(false);
 
   const [
     formsThatNeedSubmitChannelIDString,
@@ -657,23 +658,33 @@ export default function FormBuilder({
                       )}
                     </Collapsible>
                   )}
-                  
+
                   <FormLabel mt={2} htmlFor={`forms[${index}].google_sheets_url`} display='flex' alignItems='center'>
-                    <HStack>
-                      <Image src="sheets.png" alt="" width='16' height='16'/>
+                    <HStack mb={2}>
+                      <Image src="sheets.png" alt="" width='16' height='16' />
                       <Text>Google Sheet URL</Text>
+                      <PremiumFeatureTag/>
                     </HStack>
                   </FormLabel>
                   <input
                     {...register(`forms.${index}.google_sheets_url`, { pattern: /^https:\/\/docs.google.com\/spreadsheets\/.+/ })}
                     id={`forms[${index}].google_sheets_url`}
                     inputMode="url"
-                    disabled={!premium}
+                    onClick={() => {
+                      if (!premium) {
+                        setPremiumFeatureTarget("");
+                        setTemporaryDisablePremiumFields(true);
+                        setTimeout(() => setTemporaryDisablePremiumFields(false), 1);
+                        onOpenPremium();
+                        return;
+                      }
+                    }}
+                    disabled={!premium && temporaryDisablePremiumFields}
                     placeholder='https://docs.google.com/spreadsheets/ ...'
-                    style={{ backgroundImage: "linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))", marginBottom: '8px' }}
+                    style={{ marginBottom: '8px' }}
                   />
                   <ErrorMessage error={errors.forms?.[index]?.google_sheets_url} />
-                  <Text>Share a new google sheet with submissions@discordforms.iam.gserviceaccount.com and grant edit permissions.</Text>
+                  <Text>To send submissions to a google sheet, share a new google sheet with submissions@discordforms.iam.gserviceaccount.com and grant edit permissions.</Text>
                   <Stack
                     direction={isSmallScreen ? "column" : "row"}
                     marginBottom="8px"
@@ -797,18 +808,22 @@ export default function FormBuilder({
                       htmlFor={`forms.${index}.cooldown`}
                       display="flex"
                       alignItems="center"
+                      mb={2}
                     >
+                      <HStack>
                       <Text>Cooldown (seconds)</Text>
+                      <PremiumFeatureTag/>
+                      </HStack>
                     </FormLabel>
                     <NumberInput
                       min={60}
                       max={31536000}
-                      isDisabled={!premium && cooldownDisabled}
+                      isDisabled={!premium && temporaryDisablePremiumFields}
                       onClick={() => {
                         if (!premium) {
                           setPremiumFeatureTarget("submission_cooldown");
-                          setCooldownDisabled(true);
-                          setTimeout(() => setCooldownDisabled(false), 1);
+                          setTemporaryDisablePremiumFields(true);
+                          setTimeout(() => setTemporaryDisablePremiumFields(false), 1);
                           onOpenPremium();
                           return;
                         }
@@ -820,18 +835,14 @@ export default function FormBuilder({
                           border: "none",
                         }}
                         height="36px"
-                        backgroundImage="linear-gradient(to right, rgba(52, 66, 217, 0.5), rgba(1, 118, 164, 0.5))"
-                        {...register(`forms.${index}.cooldown`)}
+                        border='none'
+                        borderRadius='4px'
+                        background='grey.extradark'
+                        {...register(`forms.${index}.cooldown`, { valueAsNumber: true })}
                         id={`forms.${index}.cooldown`}
-                        onChange={(event) => {
-                          setValue(
-                            `forms.${index}.cooldown`,
-                            event.target.value === ""
-                              ? undefined
-                              : parseInt(event.target.value) < 0
-                                ? 0
-                                : parseInt(event.target.value)
-                          );
+                        onBlur={(event) => {
+                          if(parseInt(event.target.value) < 60) setValue(`forms.${index}.cooldown`, 60)
+                          if(parseInt(event.target.value) > 31536000) setValue(`forms.${index}.cooldown`, 31536000)
                         }}
                       />
                     </NumberInput>

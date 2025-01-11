@@ -1521,7 +1521,7 @@ export default function FormBuilder({
                     )}
                 </Collapsible>
               </Collapsible>
-              {!(watch(`forms.${index}.submit_channel_id`) || watch(`forms.${index}.google_sheets_url`) || watch(`forms.${index}.submit_channel`) || watch(`forms.${index}.submit_thread`) || watch(`forms.${index}.webhook_url`)) && <Box mb={6}><ErrorMessage severity={ErrorSeverity.Warning}>You haven't set a channel or google sheet for submissions to be sent to.</ErrorMessage></Box>}
+              {!(watch(`forms.${index}.submit_channel_id`) || watch(`forms.${index}.google_sheets_url`) || watch(`forms.${index}.submit_channel`) || watch(`forms.${index}.submit_thread`) || watch(`forms.${index}.webhook_url`)) && <Box mb={6}><ErrorMessage severity={ErrorSeverity.Warning}>{"You haven't set a channel or google sheet for submissions to be sent to."}</ErrorMessage></Box>}
               
             </>
           );

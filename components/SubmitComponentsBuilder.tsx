@@ -112,16 +112,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
                 ]
               })} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`)}><UpdateChannelIcon/><Text ml={2}>Update this {getValues('forms')[i].submit_thread ? 'thread' : 'channel'}</Text></MenuItem>}
               {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_CHANNEL`, true)} isDisabled={getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.DELETE_THIS_MESSAGE`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_THIS_CHANNEL`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.UPDATE_COMPONENT`) || getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ALL_OTHER_COMPONENTS_IN_ACTION_ROW`)}><DeleteChannelIcon/><Text ml={2}>Delete this {getValues('forms')[i].submit_thread ? 'thread' : 'channel'}</Text></MenuItem>}
-              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <><MenuDivider /><MenuGroup title='Premium'>
-                {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <MenuItem background='linear-gradient(to right, rgb(52, 66, 217), rgb(1, 118, 164))' backgroundClip='text' border='2px solid transparent' _hover={{ border: '2px solid #5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => {
-                  if (!premium) {
-                    setPremiumFeatureTarget('require_permissions')
-                    onOpenPremium()
-                    return;
-                  }
-                  setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')
-                }}><LockIcon/><Text ml={2}>Require permissions to use</Text></MenuItem>}
-              </MenuGroup></>}
+              {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`) === undefined && <MenuItem bg='#181414' _hover={{ background: '#5865F2' }} borderRadius='4px' p='4px 10px' onClick={() => setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`, '')}><LockIcon/><Text ml={2}>Require permissions to use</Text></MenuItem>}
             </MenuList>
           </Menu>
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`) !== undefined && <Box>

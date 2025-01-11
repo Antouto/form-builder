@@ -195,18 +195,6 @@ export default function App() {
         setValue(`forms.${index}.google_sheets_url`, undefined, { shouldValidate: true });
         setValue(`forms.${index}.cooldown`, undefined);
         if(getValues(`forms.${index}.dm_submit_message`) === null) setValue(`forms.${index}.dm_submit_message`, undefined);
-        getValues(`forms.${index}.submit_components`)?.forEach(
-          (action_row, ii) => {
-            getValues(
-              `forms.${index}.submit_components.${ii}.components`
-            )?.forEach((component, iii) => {
-              setValue(
-                `forms.${index}.submit_components.${ii}.components.${iii}.logic.REQUIRED_PERMISSIONS`,
-                undefined
-              );
-            });
-          }
-        );
       });
     }
   }
@@ -549,11 +537,6 @@ export default function App() {
               if (action_row.components) {
                 //@ts-expect-error
                 action_row.components.forEach((component, iii) => {
-                  if (
-                    component?.logic &&
-                    component?.logic?.REQUIRED_PERMISSIONS
-                  )
-                    setPremium(true);
                   setTimeout(() => {
                     if (
                       component?.logic?.UPDATE_THIS_CHANNEL

@@ -672,7 +672,7 @@ export default function FormBuilder({
                     inputMode="url"
                     onClick={() => {
                       if (!premium) {
-                        setPremiumFeatureTarget("");
+                        setPremiumFeatureTarget("google_sheets");
                         setTemporaryDisablePremiumFields(true);
                         setTimeout(() => setTemporaryDisablePremiumFields(false), 1);
                         onOpenPremium();

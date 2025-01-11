@@ -16,7 +16,8 @@ import {
   Tooltip,
   useDisclosure,
   useToast,
-  VStack
+  VStack,
+  Checkbox
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -68,6 +69,7 @@ import Counter from "./Counter";
 import { ChannelIdHint } from "./Hints";
 import { ChannelIcon, ForwardIcon, ReplyIcon, ThreadIcon } from "./Icons";
 import { DEFAULT_API_URI } from "./config";
+import PremiumFeatureTag from "./PremiumFeatureTag";
 
 const Defaults = {
   Embed: {
@@ -1593,6 +1595,35 @@ export function Editor({
             </Text>
             <VStack align="center" mt={5} width="100%" gap={5}>
               <Box width="100%" maxWidth="500px">
+
+                {/* <VStack>
+                  <HStack justifyContent='space-between' maxWidth="300px" width="100%">
+                    <HStack>
+                    <img style={{ borderRadius: '50%' }} width="40px" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" />
+                    <Text>Discord Channel</Text>
+                    </HStack>
+                    <Checkbox defaultChecked onChange={(event) => {
+                      setValue()
+                    }}/>
+                  </HStack>
+                  <HStack justifyContent='space-between' maxWidth="300px" width="100%">
+                  <HStack>
+                  <svg width="40px" height="40px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 88">
+  <path d="M 42,0 64,22 53,24 42,22 40,11 Z" fill="#188038"/>
+  <path d="M 42,22 V 0 H 6 C 2.685,0 0,2.685 0,6 v 76 c 0,3.315 2.685,6 6,6 h 52 c 3.315,0 6,-2.685 6,-6 V 22 Z" fill="#34a853"/>
+  <path d="M 12,34 V 63 H 52 V 34 Z M 29.5,58 H 17 v -7 h 12.5 z m 0,-12 H 17 V 39 H 29.5 Z M 47,58 H 34.5 V 51 H 47 Z M 47,46 H 34.5 V 39 H 47 Z" fill="#fff"/>
+</svg>
+                    <HStack>
+                      <Text>Google Sheets</Text>
+                      <PremiumFeatureTag/>
+                    </HStack>
+                    </HStack>
+                  <Checkbox/>
+
+                  </HStack>
+                </VStack> */}
+
+
                 {/* Create a webhook in the channel you want submissions to be sent to.<br /><br />
               <WebhookURLInput index={0} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>

@@ -163,45 +163,6 @@ export default function FormBuilder({
 
   const [temporaryDisablePremiumFields, setTemporaryDisablePremiumFields] = useState(false);
 
-  const [
-    formsThatNeedSubmitChannelIDString,
-    setFormsThatNeedSubmitChannelIDString,
-  ] = useState("");
-
-  useEffect(() => {
-    let formsThatNeedSubmitChannelID: number[] = [];
-    console.log(formsThatNeedSubmitChannelID);
-    fields.forEach((form, i) => {
-      if (
-        submissionChannel[i] === "existing" &&
-        submissionType[i] === "bot" &&
-        (formState.errors.forms?.[i]?.submit_channel_id ||
-          !getValues(`forms.${i}.submit_channel_id`) ||
-          getValues(`forms.${i}.submit_channel`))
-      ) {
-        formsThatNeedSubmitChannelID.push(i + 1);
-      }
-    });
-    console.log(formsThatNeedSubmitChannelID);
-
-    if (formsThatNeedSubmitChannelID.length) {
-      if (formsThatNeedSubmitChannelID.length === 1) {
-        setFormsThatNeedSubmitChannelIDString(
-          ` ${formsThatNeedSubmitChannelID[0]} requires`
-        );
-      } else {
-        const lastElement = formsThatNeedSubmitChannelID.pop();
-        setFormsThatNeedSubmitChannelIDString(
-          `s ${formsThatNeedSubmitChannelID.join(
-            ", "
-          )}, and ${lastElement} require`
-        );
-      }
-    } else {
-      setFormsThatNeedSubmitChannelIDString("");
-    }
-  }, [formState, fields, submissionChannel]);
-
   // function handleCooldownClick(index) {
   //   if (!premium) {
   //     setPremiumFeatureTarget('submission_cooldown')
@@ -231,15 +192,6 @@ export default function FormBuilder({
           }
         />
       </FormLabel>
-      {formsThatNeedSubmitChannelIDString && (
-        <Box mb={4}>
-          <ErrorMessage>
-            <Text>
-              Form{formsThatNeedSubmitChannelIDString} a Submission Channel.
-            </Text>
-          </ErrorMessage>
-        </Box>
-      )}
       <ul>
         {fields.map((item, index) => {
           return (
@@ -300,23 +252,7 @@ export default function FormBuilder({
                 key={item.id}
               >
                 <Collapsible
-                  name={
-                    <>
-                      General
-                      {(!(
-                        watch(`forms.${index}.submit_channel_id`) ||
-                        watch(`forms.${index}.webhook_url`)
-                      ) ||
-                        formState?.errors?.forms?.[index]?.submit_channel_id ||
-                        formState?.errors?.forms?.[index]?.webhook_url) &&
-                        !watch(`forms.${index}.submit_channel`) && (
-                          <AiFillExclamationCircle
-                            style={{ marginLeft: "4px" }}
-                            color={colorMode === "dark" ? "#ff7a6b" : "#d92f2f"}
-                          />
-                        )}
-                    </>
-                  }
+                  name={"General"}
                 >
                   <HStack wrap="wrap" mb="8px">
                     <FormLabel whiteSpace="nowrap" m={0}>
@@ -1585,6 +1521,8 @@ export default function FormBuilder({
                     )}
                 </Collapsible>
               </Collapsible>
+              {!(watch(`forms.${index}.submit_channel_id`) || watch(`forms.${index}.google_sheets_url`) || watch(`forms.${index}.submit_channel`) || watch(`forms.${index}.submit_thread`) || watch(`forms.${index}.webhook_url`)) && <Box mb={6}><ErrorMessage severity={ErrorSeverity.Warning}>You haven't set a channel or google sheet for submissions to be sent to.</ErrorMessage></Box>}
+              
             </>
           );
         })}

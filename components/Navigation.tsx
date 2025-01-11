@@ -256,11 +256,10 @@ export function Navigation({
               Invite Bot
             </a>
             <a
-              href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940"
+              href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b"
               target="_blank"
-              rel="noopener noreferrer"
             >
-              Documentation
+              Premium
             </a>
             {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
             {/* <ColorModeSwitcher

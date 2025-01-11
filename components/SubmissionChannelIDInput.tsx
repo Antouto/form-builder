@@ -121,10 +121,6 @@ export default function SubmissionChannelIDInput({
     >
       <Text
         marginRight="5px"
-        _after={{
-          content: '" *"',
-          color: colorMode === "dark" ? "#ff7a6b" : "#d92f2f",
-        }}
       >
         Submission Channel {inputMethod === "manual" ? "ID" : ""}
       </Text>
@@ -252,11 +248,11 @@ export default function SubmissionChannelIDInput({
             value={
               currentGuildID && guilds
                 ? {
-                    label:
-                      guilds.find((guild) => guild.id === currentGuildID)
-                        ?.name || "Server Name Unknown",
-                    value: currentGuildID,
-                  }
+                  label:
+                    guilds.find((guild) => guild.id === currentGuildID)
+                      ?.name || "Server Name Unknown",
+                  value: currentGuildID,
+                }
                 : null
             }
             isClearable={false}
@@ -267,9 +263,9 @@ export default function SubmissionChannelIDInput({
             options={
               guilds
                 ? guilds.map((guild) => ({
-                    label: guild.name,
-                    value: guild.id,
-                  }))
+                  label: guild.name,
+                  value: guild.id,
+                }))
                 : []
             }
             menuPortalTarget={document.body} // Renders dropdown at the top of the DOM
@@ -295,20 +291,18 @@ export default function SubmissionChannelIDInput({
                 display: "flex",
                 ":before": {
                   flexShrink: 0,
-                  backgroundImage: `url("https://cdn.discordapp.com/icons/${
-                    currentGuildID
+                  backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID
                       ? currentGuildID
                       : guilds
-                      ? guilds[0]?.id
-                      : ""
-                  }/${
-                    currentGuildID
+                        ? guilds[0]?.id
+                        : ""
+                    }/${currentGuildID
                       ? guilds
                         ? guilds.find((guild) => guild.id === currentGuildID)
-                            ?.icon
+                          ?.icon
                         : ""
                       : "linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))"
-                  }.webp?size=100")`,
+                    }.webp?size=100")`,
                   backgroundSize: "contain",
                   borderRadius: 10,
                   content: '" "',
@@ -331,12 +325,11 @@ export default function SubmissionChannelIDInput({
                 alignItems: "center",
                 display: "flex",
                 ":before": {
-                  backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${
-                    guilds
+                  backgroundImage: `url("https://cdn.discordapp.com/icons/${currentGuildID}/${guilds
                       ? guilds.find((guild) => guild.id === state.data.value)
-                          ?.icon
+                        ?.icon
                       : ""
-                  }.webp?size=100")`,
+                    }.webp?size=100")`,
                   backgroundSize: "contain",
                   borderRadius: 10,
                   content: '" "',
@@ -367,24 +360,22 @@ export default function SubmissionChannelIDInput({
                 background: state.isSelected
                   ? "#404249"
                   : state.isFocused
-                  ? "#35373c"
-                  : "transparent",
+                    ? "#35373c"
+                    : "transparent",
                 // height: '43.5px',
                 padding: "9.75px",
                 display: "flex",
                 ":before": {
                   backgroundImage:
                     guilds &&
-                    guilds.find((guild) => guild.id === state.data.value)
+                      guilds.find((guild) => guild.id === state.data.value)
                       ? guilds.find((guild) => guild.id === state.data.value)
-                          ?.icon
-                        ? `url("https://cdn.discordapp.com/icons/${
-                            state.data.value
-                          }/${
-                            guilds.find(
-                              (guild) => guild.id === state.data.value
-                            )?.icon
-                          }.webp?size=100")`
+                        ?.icon
+                        ? `url("https://cdn.discordapp.com/icons/${state.data.value
+                        }/${guilds.find(
+                          (guild) => guild.id === state.data.value
+                        )?.icon
+                        }.webp?size=100")`
                         : "linear-gradient(rgba(255, 255, 255, .1), rgb(255, 255, 255, .1))"
                       : "",
                   backgroundSize: "contain",
@@ -399,8 +390,8 @@ export default function SubmissionChannelIDInput({
                   background: state.isSelected
                     ? "#404249"
                     : state.isFocused
-                    ? "#35373c"
-                    : "transparent",
+                      ? "#35373c"
+                      : "transparent",
                 },
               }),
               menu: (baseStyles, state) => ({
@@ -471,20 +462,20 @@ export default function SubmissionChannelIDInput({
               value={
                 watch(`forms.${index}.submit_channel_id`)
                   ? {
-                      label:
-                        currentGuild.find(
-                          (channel) =>
-                            channel.id ===
-                            watch(`forms.${index}.submit_channel_id`)
-                        )?.name || "Channel Name Unknown",
-                      value: watch(`forms.${index}.submit_channel_id`),
-                      type:
-                        currentGuild.find(
-                          (channel) =>
-                            channel.id ===
-                            watch(`forms.${index}.submit_channel_id`)
-                        )?.type || "1",
-                    }
+                    label:
+                      currentGuild.find(
+                        (channel) =>
+                          channel.id ===
+                          watch(`forms.${index}.submit_channel_id`)
+                      )?.name || "Channel Name Unknown",
+                    value: watch(`forms.${index}.submit_channel_id`),
+                    type:
+                      currentGuild.find(
+                        (channel) =>
+                          channel.id ===
+                          watch(`forms.${index}.submit_channel_id`)
+                      )?.type || "1",
+                  }
                   : null
               }
               isClearable={false}
@@ -552,8 +543,8 @@ export default function SubmissionChannelIDInput({
                   background: state.isSelected
                     ? "#404249"
                     : state.isFocused
-                    ? "#35373c"
-                    : "transparent",
+                      ? "#35373c"
+                      : "transparent",
                   // height: '43.5px',
                   padding: "9.75px",
                   display: "flex",
@@ -561,8 +552,8 @@ export default function SubmissionChannelIDInput({
                     background: state.isSelected
                       ? "#404249"
                       : state.isFocused
-                      ? "#35373c"
-                      : "transparent",
+                        ? "#35373c"
+                        : "transparent",
                   },
                 }),
                 menu: (baseStyles, state) => ({
@@ -618,7 +609,6 @@ export default function SubmissionChannelIDInput({
           <Label />
           <input
             {...register(`forms.${index}.submit_channel_id`, {
-              required: true,
               pattern: /^\d{10,20}$/,
               onChange: () => fixMessage('message'),
             })}
@@ -628,16 +618,9 @@ export default function SubmissionChannelIDInput({
             style={{ marginBottom: "2px" }}
           />
 
-          {(errors.forms?.[index]?.submit_channel_id ||
-            (onOpenWhereDoIFindSubmissionChannelID &&
-              !watch(`forms.${index}.submit_channel_id`))) && (
-            <ErrorMessage
-              error={{
-                type:
-                  errors.forms?.[index]?.submit_channel_id?.type || "required",
-              }}
-            />
-          )}
+
+          <ErrorMessage error={errors.forms?.[index]?.submit_channel_id} />
+
           {!cookieValue && (
             <>
               {!Array.isArray(currentGuild) &&

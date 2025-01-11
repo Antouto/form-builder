@@ -1911,7 +1911,7 @@ export function Editor({
                       : ""
                   }
                 >
-                  Send submissions to google sheets
+                 Google sheets integration
                 </Text>
               </HStack>
               <HStack>

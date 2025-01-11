@@ -55,6 +55,7 @@ import MessageBuilder from "./MessageBuilder"
 import { AiFillExclamationCircle } from "react-icons/ai";
 import ReactSelect from "react-select";
 import { RoleIcon } from "./Icons";
+import Image from "next/image";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -656,7 +657,13 @@ export default function FormBuilder({
                       )}
                     </Collapsible>
                   )}
-                  <FormLabel htmlFor={`forms[${index}].google_sheets_url`} display='flex' alignItems='center'>Google Sheet URL</FormLabel>
+                  
+                  <FormLabel mt={2} htmlFor={`forms[${index}].google_sheets_url`} display='flex' alignItems='center'>
+                    <HStack>
+                      <Image src="sheets.png" alt="" width='16' height='16'/>
+                      <Text>Google Sheet URL</Text>
+                    </HStack>
+                  </FormLabel>
                   <input
                     {...register(`forms.${index}.google_sheets_url`, { pattern: /^https:\/\/docs.google.com\/spreadsheets\/.+/ })}
                     id={`forms[${index}].google_sheets_url`}

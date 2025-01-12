@@ -120,12 +120,28 @@ export default function TextInputBuilder({
               <Box width='100%' >
                 <ErrorMessage small error={errors?.forms?.[nestIndex]?.pages?.[pageIndex]?.modal?.components?.[k]?.components?.[0]?.label} />
                 <Collapsible onlyToggleWithArrow name={<HStack width='100%'>
-                  <input
-                    {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
-                    id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
-                    defaultValue={textInput.label}
-                    style={{ color: 'white', fontFamily: 'Whitney', width: 'calc(100% - 40px)' }}
-                  />
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <input
+                      {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage('message') })}
+                      id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
+                      defaultValue={textInput.label}
+                      maxLength={45}
+                      style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney'}}
+                    />
+                    <Text style={{
+                      fontFamily: 'Whitney',
+                      fontSize: '12px',
+                      position: 'absolute',
+                      right: '15px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: '#bcbcbc',
+                      pointerEvents: 'none'
+                    }}>
+                      {/* @ts-expect-error */}
+                      {45 - watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`)?.length}
+                    </Text>
+                  </div>
                   <Tooltip
                     hasArrow
                     label={<Box>Move up</Box>}
@@ -173,10 +189,10 @@ export default function TextInputBuilder({
                     bg="#181414"
                   >
 
-                  <svg style={{ marginRight: '8px' }} onClick={() => {
-                    if(fields.length < 5) {
-                      appendTextInput(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}`), k)
-                    }
+                    <svg style={{ marginRight: '8px' }} onClick={() => {
+                      if (fields.length < 5) {
+                        appendTextInput(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}`), k)
+                      }
                     }} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 10H2.5C1.67157 10 1 9.32845 1 8.50002L1 2.5C1 1.67157 1.67158 1 2.50001 1L8.5 1.00002C9.32843 1.00002 10 1.67159 10 2.50002V3.00002M13.4999 6.00008L7.49994 6.00006C6.67151 6.00006 5.99994 6.67164 5.99994 7.50006L5.99993 13.5001C5.99993 14.3285 6.67151 15.0001 7.49993 15.0001H13.4999C14.3284 15.0001 14.9999 14.3285 14.9999 13.5001V7.50008C14.9999 6.67165 14.3284 6.00008 13.4999 6.00008Z" stroke={fields.length === 5 ? '#666' : "#bcbcbc"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                   </Tooltip>
                   <Tooltip

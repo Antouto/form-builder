@@ -603,7 +603,9 @@ export default function FormBuilder({
                     </HStack>
                   </FormLabel>
                   <input
-                    {...register(`forms.${index}.google_sheets_url`, { pattern: /^https:\/\/docs.google.com\/spreadsheets\/.+/ })}
+                    {...register(`forms.${index}.google_sheets_url`, { pattern: /^https:\/\/docs.google.com\/spreadsheets\/.+/, onBlur: (event) => {
+                      setValue(`forms.${index}.google_sheets_url`, event.target.value || undefined)
+                    } })}
                     id={`forms[${index}].google_sheets_url`}
                     inputMode="url"
                     onClick={() => {
@@ -777,8 +779,7 @@ export default function FormBuilder({
                         {...register(`forms.${index}.cooldown`, { valueAsNumber: true })}
                         id={`forms.${index}.cooldown`}
                         onBlur={(event) => {
-                          if(parseInt(event.target.value) < 60) setValue(`forms.${index}.cooldown`, 60)
-                          if(parseInt(event.target.value) > 31536000) setValue(`forms.${index}.cooldown`, 31536000)
+                          if(isNaN(parseInt(event.target.value))) { setValue(`forms.${index}.cooldown`, undefined) } else if(parseInt(event.target.value) < 60) { setValue(`forms.${index}.cooldown`, 60) } else if(parseInt(event.target.value) > 31536000) setValue(`forms.${index}.cooldown`, 31536000)
                         }}
                       />
                     </NumberInput>

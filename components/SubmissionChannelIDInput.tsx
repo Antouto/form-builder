@@ -611,6 +611,10 @@ export default function SubmissionChannelIDInput({
             {...register(`forms.${index}.submit_channel_id`, {
               pattern: /^\d{10,20}$/,
               onChange: () => fixMessage('message'),
+              onBlur: (event) => {
+                //@ts-expect-error
+                setValue(`forms.${index}.submit_channel_id`, event.target.value || undefined)
+              }
             })}
             id={`forms[${index}].submit_channel_id`}
             type="number"

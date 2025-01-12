@@ -462,7 +462,8 @@ export default function App() {
       }
       default: {
         setFormCreationFeatures([]);
-        setStage("openFormType");
+        //setStage("openFormType");
+        setStage("form")
       }
     }
   }

@@ -1530,15 +1530,16 @@ export function Editor({
                 <Button
                   variant="secondary"
                   onClick={() => {
-                    switch (openFormType) {
-                      case "application_command":
-                        setStage("applicationCommand");
-                        break;
-                      case "button":
-                      case "select_menu":
-                        setStage("openFormType");
-                        break;
-                    }
+                    setStage("welcome")
+                    // switch (openFormType) {
+                    //   case "application_command":
+                    //     setStage("applicationCommand");
+                    //     break;
+                    //   case "button":
+                    //   case "select_menu":
+                    //     setStage("openFormType");
+                    //     break;
+                    // }
                   }}
                 >
                   Go back

@@ -1489,6 +1489,7 @@ export function Editor({
             </Text>
             <VStack align="center" mt={5} width="100%" gap={5}>
               <VStack align='flex-start' width="100%" maxWidth="500px">
+                {/* @ts-expect-error */}
                 <FormTitleInput
                   index={0}
                   pageIndex={0}

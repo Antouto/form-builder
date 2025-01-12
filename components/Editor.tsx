@@ -247,11 +247,6 @@ export function Editor({
 
   const [webhookUrlFocused, webhookUrlSetFocused] = useState(false);
   const {
-    isOpen,
-    onOpen: onOpenWhereDoIFindSubmissionChannelID,
-    onClose,
-  } = useDisclosure();
-  const {
     isOpen: isOpenPremium,
     onOpen: onOpenPremium,
     onClose: onClosePremium,
@@ -733,7 +728,7 @@ export function Editor({
                       });
                     } else fileInput.click();
                   }}
-                  variant="secondary"
+                  variant="secondary-outline"
                   isLoading={isReading}
                 >
                   Upload JSON
@@ -751,7 +746,7 @@ export function Editor({
                   }}
                 />
                 <Button
-                  variant="danger-outline"
+                  variant="secondary-outline"
                   onClick={() => {
                     //@ts-expect-error
                     reset(ClearedValues);
@@ -841,7 +836,6 @@ export function Editor({
                 setSubmissionType,
                 submissionChannel,
                 setSubmissionChannel,
-                onOpenWhereDoIFindSubmissionChannelID,
                 fixSubmitChannel,
                 formMessageComponents,
                 formMessageComponentsAppend,
@@ -888,7 +882,7 @@ export function Editor({
             {JSON.stringify(watch(), null, 2)}
           </JSONViewer> */}
               <VStack alignItems="flex-start">
-                <HStack alignItems="flex-start">
+                <HStack alignItems="flex-start" wrap='wrap'>
                   <Button
                     variant="success"
                     //@ts-expect-error
@@ -1653,7 +1647,6 @@ export function Editor({
                 ) : (
                   <>
                     <SubmissionChannelIDInput
-                      onOpenWhereDoIFindSubmissionChannelID={null}
                       index={0}
                       register={register}
                       errors={formState.errors}
@@ -1864,29 +1857,6 @@ export function Editor({
           </>
         )}
       </VStack>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent bg="grey.dark">
-          <ModalHeader>How to get your Submission Channel ID</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pt={5}>
-            <Text fontFamily="Whitney Bold">1. Enable Developer Mode</Text> Go
-            to your User Settings in discord and in the advanced section enable
-            "Developer Mode".
-            <br />
-            <br />
-            <Text fontFamily="Whitney Bold">2. Copy the Channel ID</Text> Go to
-            the discord channel where you'd like to have submissions posted to,
-            right click it and click "Copy Channel ID".
-          </ModalBody>
-
-          <ModalFooter>
-            <Button variant="primary" onClick={onClose}>
-              Okay
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
       <Modal isOpen={isOpenAddToServer} onClose={onCloseAddToServer}>
         <ModalOverlay />
         <ModalContent bg="grey.dark">

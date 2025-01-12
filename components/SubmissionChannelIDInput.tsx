@@ -33,7 +33,6 @@ export default function SubmissionChannelIDInput({
   errors,
   fixMessage,
   watch,
-  onOpenWhereDoIFindSubmissionChannelID,
   currentGuild,
   getValues,
   setValue,
@@ -55,7 +54,6 @@ export default function SubmissionChannelIDInput({
   errors: FieldErrors<FormAndOpenFormTypeBuilder>;
   fixMessage: any;
   watch: UseFormWatch<FormAndOpenFormTypeBuilder>;
-  onOpenWhereDoIFindSubmissionChannelID: (() => unknown) | null;
   currentGuild: Guild;
   getValues: UseFormGetValues<FormAndOpenFormTypeBuilder>;
   setValue: SetFieldValue<FormAndOpenFormTypeBuilder>;
@@ -122,20 +120,8 @@ export default function SubmissionChannelIDInput({
       <Text
         marginRight="5px"
       >
-        Submission Channel {inputMethod === "manual" ? "ID" : ""}
+        Submission Channel {(inputMethod === "manual" || (stage === "editor" && !cookieValue)) ? "ID" : ""}
       </Text>
-      {onOpenWhereDoIFindSubmissionChannelID &&
-        !Array.isArray(currentGuild) && (
-          <Text
-            color="#00b0f4"
-            fontFamily="Whitney"
-            textDecoration="underline"
-            onClick={onOpenWhereDoIFindSubmissionChannelID}
-            _hover={{ cursor: "pointer" }}
-          >
-            Where do I find this?
-          </Text>
-        )}
     </FormLabel>
   );
 
@@ -622,8 +608,7 @@ export default function SubmissionChannelIDInput({
 
           {!cookieValue && (
             <>
-              {!Array.isArray(currentGuild) &&
-                !onOpenWhereDoIFindSubmissionChannelID && <ChannelIdHint />}
+              {!Array.isArray(currentGuild) && <ChannelIdHint />}
               <HStack gap={1}>
                 <Text>or</Text>
                 <button

@@ -99,8 +99,6 @@ export default function FormBuilder({
   //@ts-expect-error
   setSubmissionChannel,
   //@ts-expect-error
-  onOpenWhereDoIFindSubmissionChannelID,
-  //@ts-expect-error
   fixSubmitChannel,
   //@ts-expect-error
   formMessageComponents,
@@ -338,9 +336,6 @@ export default function FormBuilder({
                         errors={formState.errors}
                         watch={watch}
                         fixMessage={fixMessage}
-                        onOpenWhereDoIFindSubmissionChannelID={
-                          onOpenWhereDoIFindSubmissionChannelID
-                        }
                         currentGuild={currentGuild}
                         getValues={getValues}
                         setValue={setValue}

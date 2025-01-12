@@ -1,9 +1,9 @@
-import { Container, HStack, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import { InfoIcon } from "./Icons";
 
 export function ChannelIdHint() {
   return (
-    <Container
+    <Box
       style={{
         display: "flex", // Enable flexbox
         flexDirection: "column", // Stack items vertically
@@ -23,10 +23,10 @@ export function ChannelIdHint() {
         <InfoIcon size={24} />
         <Text fontSize={12} pl={2}>
           <Text fontSize={15}>How to obtain the Channel ID</Text>
-          User Settings → Advanced → Enable Developer Mode
+          Go to your Discord User Settings → Advanced → Enable Developer Mode
           <br /> Right-click your channel → Copy Channel ID
         </Text>
       </HStack>
-    </Container>
+    </Box>
   );
 }

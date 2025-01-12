@@ -216,12 +216,7 @@ export default function SubmissionChannelIDInput({
       {cookieValue && (
         <Box mb={1}>
           <FormLabel display="flex" alignItems="center">
-            <Text
-              marginRight="5px"
-              _after={{ content: '" *"', color: "#ff7a6b" }}
-            >
               Server
-            </Text>
           </FormLabel>
           <ReactSelect
             onChange={async (option) => {

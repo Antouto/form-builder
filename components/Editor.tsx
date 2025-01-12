@@ -1488,12 +1488,13 @@ export function Editor({
               Setup form
             </Text>
             <VStack align="center" mt={5} width="100%" gap={5}>
-              <Box width="100%" maxWidth="500px">
+              <VStack align='flex-start' width="100%" maxWidth="500px">
                 <FormTitleInput
                   index={0}
                   pageIndex={0}
                   register={register}
                   getValues={getValues}
+                  watch={watch}
                   fixMessage={fixMessage}
                   errors={formState.errors}
                 />
@@ -1509,7 +1510,6 @@ export function Editor({
                   />
                 </FormLabel>
                 <TextInputBuilder
-                  compact
                   id={`forms.0.pages.0.modal.components`}
                   nestIndex={0}
                   pageIndex={0}
@@ -1524,7 +1524,7 @@ export function Editor({
                     textInputMaxLength,
                   }}
                 />
-              </Box>
+              </VStack>
               <HStack>
                 <Button
                   variant="secondary"

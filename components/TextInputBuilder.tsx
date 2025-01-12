@@ -16,7 +16,9 @@ import {
   RangeSlider,
   RangeSliderTrack,
   RangeSliderThumb,
-  RangeSliderFilledTrack
+  RangeSliderFilledTrack,
+  NumberInput,
+  NumberInputField
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import {
@@ -126,7 +128,7 @@ export default function TextInputBuilder({
                       id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                       defaultValue={textInput.label}
                       maxLength={45}
-                      style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney'}}
+                      style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney' }}
                     />
                     <Text style={{
                       fontFamily: 'Whitney',
@@ -207,14 +209,68 @@ export default function TextInputBuilder({
                   </Tooltip>
 
                 </HStack>}>
-                  <HStack mb='8px'>
-                    <Box minWidth='62px'>
+                  <HStack mb='8px'  wrap="wrap">
+                  <Box>
+                        <FormLabel>Min</FormLabel>
+                        <input
+                          {...register(
+                            `forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`,
+                            {
+                              valueAsNumber: true
+                            }
+                          )}
+                          min="1"
+                          max="1024"
+                          onBlur={(event) => {
+                            if(isNaN(parseInt(event.target.value)) || parseInt(event.target.value) < 1) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, undefined)
+                            } else if (parseInt(event.target.value) > 1024) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, 1024)
+                            }
+                          }}
+                          id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`}
+                          type="number"
+                          style={{ width: '60px' }}
+                          inputMode="numeric"
+                        />
+                      </Box>
+                      <Box>
+                        <FormLabel>Max</FormLabel>
+                        <input
+                          {...register(
+                            `forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`,
+                            {
+                              valueAsNumber: true
+                            }
+                          )}
+                          min="0"
+                          max="1024"
+                          onBlur={(event) => {
+                            if (isNaN(parseInt(event.target.value)) || parseInt(event.target.value) > 1024) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1024)
+                            } else if (parseInt(event.target.value) < 1) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1)
+                            }
+                          }}
+                          id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`}
+                          type="number"
+                          style={{ width: '60px' }}
+                          inputMode="numeric"
+                        />
+                      </Box>
+                      { watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) && watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`) && (watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) > watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`)) && <Box width="100%"><ErrorMessage>Min must be less than max</ErrorMessage></Box> }
+                    <Box height='60px'>
                       <FormLabel margin={0}>Multiline</FormLabel>
                       <Controller
                         control={control}
                         name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.style`}
                         render={({ field }) => (
                           <Switch
+                            mt='7px'
                             onChange={event => {
                               console.log(event.target.checked)
                               field.onChange(event.target.checked ? 2 : 1);
@@ -236,13 +292,14 @@ export default function TextInputBuilder({
                         )}
                       />
                     </Box>
-                    <Box minWidth='62px'>
+                    <Box height='60px'>
                       <FormLabel margin={0}>Required</FormLabel>
                       <Controller
                         control={control}
                         name={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.required`}
                         render={({ field }) => (
                           <Switch
+                            mt='7px'
                             onChange={event => { field.onChange(event); fixMessage('message') }}
                             colorScheme='blurple'
                             isChecked={field.value === false ? false : true}
@@ -287,8 +344,60 @@ export default function TextInputBuilder({
 
 
                   <VStack width='100%' alignItems='flex-start' gap={8}>
-                    <FormLabel>Minimum to Maximum Character Range</FormLabel>
-                    <RangeSlider
+                    {/* <HStack>
+                    <Box>
+                        <FormLabel>Minimum Characters</FormLabel>
+                        <input
+                          {...register(
+                            `forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`,
+                            {
+                              valueAsNumber: true
+                            }
+                          )}
+                          min="1"
+                          max="1024"
+                          onBlur={(event) => {
+                            if(isNaN(parseInt(event.target.value)) || parseInt(event.target.value) < 1) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, undefined)
+                            } else if (parseInt(event.target.value) > 1024) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, 1024)
+                            }
+                          }}
+                          id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`}
+                          type="number"
+                          inputMode="numeric"
+                        />
+                      </Box>
+                      <Box>
+                        <FormLabel>Maximum Characters</FormLabel>
+                        <input
+                          {...register(
+                            `forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`,
+                            {
+                              valueAsNumber: true
+                            }
+                          )}
+                          min="0"
+                          max="1024"
+                          onBlur={(event) => {
+                            if (isNaN(parseInt(event.target.value)) || parseInt(event.target.value) > 1024) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1024)
+                            } else if (parseInt(event.target.value) < 1) {
+                              //@ts-expect-error
+                              setValue(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`, 1)
+                            }
+                          }}
+                          id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`}
+                          type="number"
+                          inputMode="numeric"
+                        />
+                      </Box>
+                    </HStack> */}
+
+                    {/* <RangeSlider
 
                       width='99%' ml='.5%' defaultValue={[1, textInputMaxLength]} min={1} max={textInputMaxLength} onChange={(value) => {
                         //@ts-expect-error
@@ -303,7 +412,7 @@ export default function TextInputBuilder({
                       </RangeSliderTrack>
                       <RangeSliderThumb {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: textInputMaxLength })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
                       <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>
-                    </RangeSlider>
+                    </RangeSlider> */}
                   </VStack>
 
                 </Collapsible>

@@ -1006,17 +1006,17 @@ export function Editor({
               </Text>
               <VStack width="100%">
                 <Text fontSize={19} fontFamily="Whitney Bold">
-                  Free templates
+                  Templates
                 </Text>
                 <VStack
                   background="rgb(47, 49, 54)"
                   width="100%"
                   maxWidth="476px"
                   borderRadius="8px"
-                  gap={2}
-                  padding={2}
+                  gap={1}
+                  padding={1}
                 >
-                  <Text
+                  {/* <Text
                     width="100%"
                     textTransform="uppercase"
                     fontFamily="Sofia Sans"
@@ -1025,19 +1025,20 @@ export function Editor({
                     fontSize="14px"
                   >
                     Accept/Deny Buttons
-                  </Text>
+                  </Text> */}
                   <Box
                     background="rgb(54, 57, 63)"
                     p="4px 8px"
                     width="100%"
                     borderRadius={4}
+                    borderBottomRadius={0}
                     transition="filter .3s"
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("approval_dm")}
                   >
                     <HStack gap='6px'>
                       <ReplyIcon size={18} />
-                      <Text fontWeight="medium">{"Approve Submissions → DM"}</Text>
+                      <Text fontWeight="medium">{"Applications (Accept/Deny)"}</Text>
                     </HStack>
                     <Text color="#DBDEE1" fontSize="14px">
                       Send forms to a private channel and DM users on approval
@@ -1048,56 +1049,33 @@ export function Editor({
                     background="rgb(54, 57, 63)"
                     p="4px 8px"
                     width="100%"
-                    borderRadius={4}
+                    borderRadius={0}
                     transition="filter .3s"
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("approval_forward")}
                   >
                     <HStack gap='6px'>
                       <ForwardIcon size={18} />
-                      <Text fontWeight="medium">{"Approve Submissions → Public channel"}</Text>
+                      <Text fontWeight="medium">{"Accept before sending to public channel"}</Text>
                     </HStack>
                     <Text color="#DBDEE1" fontSize="14px">
                       Send forms to a private channel and forward to a public
                       channel on approval
                     </Text>
                   </Box>
-                </VStack>
-              </VStack>
-              <VStack width="100%">
-                <Text fontSize={19} fontFamily="Whitney Bold">
-                  Premium templates
-                </Text>
-                <VStack
-                  background="rgb(47, 49, 54)"
-                  width="100%"
-                  maxWidth="476px"
-                  borderRadius="8px"
-                  gap={2}
-                  padding={2}
-                >
-                  <Text
-                    width="100%"
-                    textTransform="uppercase"
-                    fontFamily="Sofia Sans"
-                    color="#DBDEE1"
-                    fontWeight="extrabold"
-                    fontSize="14px"
-                  >
-                    Ticket Systems
-                  </Text>
                   <Box
                     background="rgb(54, 57, 63)"
                     width="100%"
                     p="4px 8px"
-                    borderRadius={4}
+                    borderRadius={0}
                     transition="filter .3s"
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("thread_ticket")}
                   >
                     <HStack gap='6px'>
                       <ThreadIcon size={18} />
-                      <Text fontWeight="medium">{"Threads"}</Text>
+                      <Text fontWeight="medium">{"Thread Tickets"}</Text>
+                      <PremiumFeatureTag withText/>
                     </HStack>
                     <Text color="#DBDEE1" fontSize="14px">
                       Send submissions to a new thread and add the submitter to
@@ -1109,13 +1087,15 @@ export function Editor({
                     width="100%"
                     p="4px 8px"
                     borderRadius={4}
+                    borderTopRadius={0}
                     transition="filter .3s"
                     _hover={{ cursor: "pointer", filter: "brightness(1.15)" }}
                     onClick={() => setPreset("ticket")}
                   >
                     <HStack gap='6px'>
                       <ChannelIcon size={18} />
-                      <Text fontWeight="medium">{"Channels"}</Text>
+                      <Text fontWeight="medium">{"Channel Tickets"}</Text>
+                      <PremiumFeatureTag withText/>
                     </HStack>
                     <Text color="#DBDEE1" fontSize="14px">
                       Send submissions to a new channel and add the submitter to

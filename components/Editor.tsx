@@ -2200,7 +2200,7 @@ export function Editor({
               </HStack>
 
               <Text fontWeight="400">
-                Unlock these and more premium features<br/>for €4.99/month
+                Unlock these and more premium features<br/>for €5.99/month
               </Text>
             </VStack>
           </ModalBody>

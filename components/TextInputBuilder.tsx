@@ -125,9 +125,6 @@ export default function TextInputBuilder({
                       id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                       defaultValue={textInput.label}
                       maxLength={45}
-                      onFocus={(event) => {
-                        if(event.target.value === "Example Text Input") event.target.select()
-                      }}
                       style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney' }}
                     />
                     <Text style={{
@@ -250,9 +247,6 @@ export default function TextInputBuilder({
                           )}
                           min="0"
                           max="1024"
-                          onFocus={(event) => {
-                            if(event.target.value === "1024") event.target.select()
-                          }}
                           onBlur={(event) => {
                             if (isNaN(parseInt(event.target.value)) || parseInt(event.target.value) > 1024) {
                               //@ts-expect-error

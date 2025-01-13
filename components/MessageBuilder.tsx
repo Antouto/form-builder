@@ -26,9 +26,6 @@ export default function MessageBuilder({ forMessage, control, register, errors, 
         style={{ height: "99px" }}
         {...register(`${forMessage}.content`, { maxLength: 2000, onChange: () => fixMessage(forMessage) })}
         id={`${forMessage}.content`}
-        onFocus={(event) => {
-          if(event.target.value === "Fill out the form below") event.target.select()
-        }}
       />
       <EmbedBuilder
         {...{

@@ -24,6 +24,9 @@ export default function ButtonBuilder({ register, fix, setValue, watch, forButto
           })}
           id={`${forButton}.label`}
           placeholder={buttonLabelPlaceholder ? buttonLabelPlaceholder : ''}
+          onFocus={(event) => {
+            if(event.target.value === "Open Form") event.target.select()
+          }}
         />
         <ErrorMessage error={error} />
       </Box>

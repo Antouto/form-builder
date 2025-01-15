@@ -340,6 +340,10 @@ export default function TextInputBuilder({
                     {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage('message') })}
                     id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
                     style={{ marginRight: "25px", marginBottom: '8px' }}
+                    onBlur={(event) => {
+                      //@ts-expect-error
+                      if(event.target.value === "") setValue(`forms[${nestIndex}].modal.components[${k}].components[0].value`, undefined)
+                    }}
                   />
 
 

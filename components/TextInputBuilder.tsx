@@ -308,7 +308,7 @@ export default function TextInputBuilder({
                       />
                     </Box>
                   </HStack>
-                  <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='center'><Text>Placeholder</Text>
+                  <FormLabel htmlFor={`forms[${nestIndex}].pages.${pageIndex}.modal.components[${k}].components[0].placeholder`} display='flex' alignItems='center'><Text>Placeholder</Text>
                     <Counter count={textInput?.placeholder?.length || 0} max={100} />
                   </FormLabel>
 
@@ -320,7 +320,7 @@ export default function TextInputBuilder({
                     style={{ marginRight: "25px", marginBottom: '8px' }}
                   />
 
-                  <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='center'>
+                  <FormLabel htmlFor={`forms[${nestIndex}].pages.${pageIndex}.modal.components[${k}].components[0].value`} display='flex' alignItems='center'>
                     <Text>Preset Value</Text>
                     <span
                       style={{
@@ -338,11 +338,11 @@ export default function TextInputBuilder({
                   <Box
                     as={textInputStyle[k] === 1 ? 'input' : 'textarea'}
                     {...register(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage('message') })}
-                    id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
+                    id={`forms[${nestIndex}].pages[${pageIndex}].modal.components[${k}].components[0].value`}
                     style={{ marginRight: "25px", marginBottom: '8px' }}
                     onBlur={(event) => {
                       //@ts-expect-error
-                      if(event.target.value === "") setValue(`forms[${nestIndex}].modal.components[${k}].components[0].value`, undefined)
+                      if(event.target.value === "") setValue(`forms[${nestIndex}].pages[${pageIndex}].modal.components[${k}].components[0].value`, undefined)
                     }}
                   />
 

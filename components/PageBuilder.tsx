@@ -44,7 +44,7 @@ export default function PageBuilder({ index, control, premium, getValues, setVal
       <FormTitleInput premium={premium} setPremiumFeatureTarget={setPremiumFeatureTarget} onOpenPremium={onOpenPremium} remove={remove} insert={insert} append={append} move={move} setDisplayPage={setDisplayPage} updateTextInputMaxLength={updateTextInputMaxLength} fields={fields} index={index} pageIndex={i} register={register} watch={watch} getValues={getValues} fixMessage={fixMessage} errors={formState.errors} />
     } defaultIsOpen={i === 0} >
 
-      <VStack align='flex-start' mt={2} pl={3}>
+      <VStack align='flex-start' mt={2}>
         <FormLabel margin={0} display="flex"
           alignItems="center">
           <Text _after={{

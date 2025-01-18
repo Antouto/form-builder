@@ -450,6 +450,7 @@ export function Editor({
 
   const isSmallScreen = !useScreenWidth(1070);
   const isReallySmallScreen = !useScreenWidth(500);
+  const isTinyScreen = !useScreenWidth(450);
 
   function setSubmissionType(type: string, value: string, index: number) {
     let newSubmissionType = submissionType;
@@ -707,7 +708,8 @@ export function Editor({
       <VStack
         align="flex-start"
         overflowY="scroll"
-        p="16px"
+        p={isTinyScreen ? "4px" : "16px"}
+        pr={isTinyScreen ? "0" : "16px"}
         height="calc(100vh - 48px);"
         display={displaySection ? "flex" : "none"}
       >
@@ -718,7 +720,7 @@ export function Editor({
               justifyContent="space-between"
               width="100%"
             >
-              <HStack>
+              <HStack mt='2px'>
                 <Button
                   onClick={() => {
                     if (fileInput == null) {
@@ -1462,7 +1464,7 @@ export function Editor({
               Setup form
             </Text>
             <VStack align="center" mt={5} width="100%" gap={5}>
-              <VStack align='flex-start' width="100%" maxWidth="500px">
+              <VStack align='flex-start' px={3} width="100%" maxWidth="500px">
                 {/* @ts-expect-error */}
                 <FormTitleInput
                   index={0}

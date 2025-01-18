@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react'
 import { Button, Collapse, Box, useDisclosure, useColorMode, Tooltip, HStack } from '@chakra-ui/react'
+import { useScreenWidth } from '../util/width';
 
 export interface CollapsibleProperties {
   name: any;
@@ -16,6 +17,8 @@ export interface CollapsibleProperties {
 function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, children, variant, style, defaultIsOpen, onlyToggleWithArrow }: CollapsibleProperties) {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen });
   const { colorMode } = useColorMode();
+  const isTinyScreen = !useScreenWidth(450);
+
 
   return (
     <Box
@@ -56,7 +59,7 @@ function Collapsible({ name, deleteButton, moveUpButton, moveDownButton, childre
         </Button>
       <Collapse in={isOpen} animateOpacity style={{ margin: `${onlyToggleWithArrow ? '8px' : '0'} 0 0 ${onlyToggleWithArrow ? '8px' : '0'}`, }}>
         <Box
-          p='0px 14px 14px'
+          p={`0px ${onlyToggleWithArrow && isTinyScreen ? '0' : '14'}px 14px 14px`}
           rounded='md'
           shadow='md'
           margin='0'

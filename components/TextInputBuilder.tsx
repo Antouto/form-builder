@@ -124,7 +124,7 @@ export default function TextInputBuilder({
                     id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                     defaultValue={textInput.label}
                     maxLength={45}
-                    style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney' }}
+                    style={{ color: 'white', fontFamily: 'Whitney' }}
                   />
                   <Text style={{
                     fontFamily: 'Whitney',
@@ -140,7 +140,7 @@ export default function TextInputBuilder({
                     {45 - watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`)?.length}
                   </Text>
                 </div>
-                <Tooltip
+                {fields.length > 1 && (fields.length === 2 ? k !== 0 : true) && <Tooltip
                   hasArrow
                   label={<Box>Move up</Box>}
                   placement="top"
@@ -159,8 +159,8 @@ export default function TextInputBuilder({
                       strokeLinejoin="round"
                     />
                   </svg>
-                </Tooltip>
-                <Tooltip
+                </Tooltip>}
+                {fields.length > 1 && (fields.length === 2 ? k !== 1 : true) && <Tooltip
                   hasArrow
                   label={<Box>Move down</Box>}
                   placement="top"
@@ -179,8 +179,8 @@ export default function TextInputBuilder({
                       strokeLinejoin="round"
                     />
                   </svg>
-                </Tooltip>
-                <Tooltip
+                </Tooltip>}
+                {fields.length < 5 && !isTinyScreen && <Tooltip
                   hasArrow
                   label={<Box>Duplicate</Box>}
                   placement="top"
@@ -192,8 +192,8 @@ export default function TextInputBuilder({
                       appendTextInput(watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}`), k)
                     }
                   }} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 10H2.5C1.67157 10 1 9.32845 1 8.50002L1 2.5C1 1.67157 1.67158 1 2.50001 1L8.5 1.00002C9.32843 1.00002 10 1.67159 10 2.50002V3.00002M13.4999 6.00008L7.49994 6.00006C6.67151 6.00006 5.99994 6.67164 5.99994 7.50006L5.99993 13.5001C5.99993 14.3285 6.67151 15.0001 7.49993 15.0001H13.4999C14.3284 15.0001 14.9999 14.3285 14.9999 13.5001V7.50008C14.9999 6.67165 14.3284 6.00008 13.4999 6.00008Z" stroke={fields.length === 5 ? '#666' : "#bcbcbc"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                </Tooltip>
-                <Tooltip
+                </Tooltip> }
+                {fields.length !== 1 && <Tooltip
                   hasArrow
                   label={<Box>Remove</Box>}
                   placement="top"
@@ -205,7 +205,7 @@ export default function TextInputBuilder({
                       updateTextInputMaxLength()
                     }
                   }} width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 3L3 13M3 3L13 13" stroke={fields.length === 1 ? '#666' : "#bcbcbc"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                </Tooltip>
+                </Tooltip>}
 
               </HStack>}>
                 <HStack mb='8px' wrap="wrap">

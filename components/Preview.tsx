@@ -284,13 +284,7 @@ function Preview({
           <PreviewStep
             number={1}
             highlighted={!isTinyScreen && stage === "openFormType"}
-            title={
-              !forms?.[0].select_menu_option
-                ? forms.length > 1
-                  ? "Buttons to open forms are sent to a channel"
-                  : "A button to open forms is sent to a channel"
-                : "A select menu to open forms is sent to a channel"
-            }
+            title={<>A form is sent to the channel where <SlashCommand>form create</SlashCommand> is run</>}
           >
             <Box display={discohook ? "block" : "none"}>
               <iframe

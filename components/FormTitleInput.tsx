@@ -43,7 +43,7 @@ export default function FormTitleInput({ index, pageIndex, register, getValues, 
           {...register(`forms.${index}.pages.${pageIndex}.modal.title`, { required: true, onChange: () => fixMessage('message') })}
           id={`forms[${index}].pages.${pageIndex}.modal.title`}
           maxLength={45}
-          style={{ color: 'white', fontFamily: 'Whitney' }}
+          style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney' }}
         />
         <Text style={{
           fontFamily: 'Whitney',

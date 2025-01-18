@@ -124,7 +124,7 @@ export default function TextInputBuilder({
                     id={`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`}
                     defaultValue={textInput.label}
                     maxLength={45}
-                    style={{ color: 'white', fontFamily: 'Whitney' }}
+                    style={{ paddingRight: '40px', color: 'white', fontFamily: 'Whitney' }}
                   />
                   <Text style={{
                     fontFamily: 'Whitney',
@@ -134,7 +134,7 @@ export default function TextInputBuilder({
                     top: '50%',
                     transform: 'translateY(-50%)',
                     color: '#bcbcbc',
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
                   }}>
                     {/* @ts-expect-error */}
                     {45 - watch(`forms.${nestIndex}.pages.${pageIndex}.modal.components.${k}.components.0.label`)?.length}

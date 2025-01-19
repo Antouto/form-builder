@@ -709,7 +709,6 @@ export function Editor({
         align="flex-start"
         overflowY="scroll"
         p={isTinyScreen ? "4px" : "16px"}
-        pr={isTinyScreen ? "0" : "16px"}
         height="calc(100vh - 48px);"
         display={displaySection ? "flex" : "none"}
       >

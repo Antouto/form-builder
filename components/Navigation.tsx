@@ -256,7 +256,7 @@ export function Navigation({
               Invite Bot
             </a>
             <a
-              href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b"
+              href="https://premium.discordforms.app/"
               target="_blank"
             >
               Premium

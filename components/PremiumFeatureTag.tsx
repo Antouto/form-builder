@@ -9,7 +9,7 @@ export default function PremiumFeatureTag({ withText }: any) {
       mb={1}
       bg="#181414"
     >
-      <a href="https://forms.lemonsqueezy.com/buy/6c238e6d-28f7-44ea-b965-b2f8c9e2512b" target="_blank">
+      <a href="https://premium.discordforms.app" target="_blank">
         <HStack background='#5865f26b' borderRadius='100px'>
           <svg style={{ paddingLeft: withText ? '4px' : 0 }} width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             {/* <circle cx="16" cy="16" r="16" fill="#5865F2" fill-opacity="0.4" /> */}

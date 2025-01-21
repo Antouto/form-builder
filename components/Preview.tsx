@@ -894,9 +894,9 @@ function Preview({
                           ).name
                         }
                       </Channel>
-                    ) : (
+                    ) : forms[displayForm].submit_channel_id !== undefined ? 
                       "a channel"
-                    )}
+                     : "(No discord submission location selected)"}
                   </>
                 )}
               </>

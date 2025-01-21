@@ -487,7 +487,7 @@ export function Editor({
         _setSubmissionChannel(newSubmissionChannel);
         switch (value) {
           case "existing": {
-            setValue(`forms.${index}.submit_channel`, undefined);
+            setValue(`forms.${index}.submit_channel`, "");
             setValue(`forms.${index}.submit_thread`, undefined);
             break;
           }
@@ -1605,6 +1605,7 @@ export function Editor({
               <WebhookURLInput index={0} register={register} webhookUrlFocused={webhookUrlFocused} webhookUrlSetFocused={webhookUrlSetFocused} errors={formState.errors} fixMessage={fixMessage} />
               <Text fontSize={12}>Channel Settings –&gt; Integrations –&gt; Webhooks –&gt; New Webhook –&gt; Copy Webhook URL<br /><br /></Text>
               In the webhooks settings you can customise the name and avatar of your submissions. */}
+
 
                 {getValues("forms.0.submit_channel") ? (
                   <>

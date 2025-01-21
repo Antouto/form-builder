@@ -252,7 +252,93 @@ export default function FormBuilder({
                 <Collapsible
                   name={"General"}
                 >
+                  
+                        
+                        <HStack pb={1}>
+                        
+                        <Switch
+                          
+                          onChange={event => {
+                            if(event.target.checked) {
+                              switch(submissionChannel[index]) {
+                                case "new": {
+                                  setValue(`forms.${index}.submit_thread`, undefined);
+                                  setValue(`forms.${index}.webhook_url`, undefined);
+                                  setValue(`forms.${index}.submit_channel_id`, undefined);
+                                  setValue(`forms.${index}.submit_channel.type`, 0);
+                                  setValue(`forms.${index}.submit_channel.name`, "ticket");
+                                  setValue(`forms.${index}.submit_channel.permission_overwrites`, [
+                                    {
+                                      id: "{ServerID}",
+                                      type: 0,
+                                      deny: 1024,
+                                    },
+                                    {
+                                      id: "{ApplicationID}",
+                                      type: 1,
+                                      allow: 19456,
+                                    },
+                                    {
+                                      id: "{UserID}",
+                                      type: 1,
+                                      allow: 52224,
+                                    },
+                                  ]);
+                                  setTimeout(() => {
+                                    if (getValues(`forms.${index}.submit_channel.parent_id`) === "")
+                                      setValue(`forms.${index}.submit_channel.parent_id`, undefined);
+                                    getValues(
+                                      `forms.${index}.submit_channel.permission_overwrites`
+                                    ).map((overwrite, i) => {
+                                      if (overwrite.allow === "")
+                                        setValue(
+                                          `forms.${index}.submit_channel.permission_overwrites.${i}.allow`,
+                                          undefined
+                                        );
+                      
+                                      if (overwrite.deny === "")
+                                        setValue(
+                                          `forms.${index}.submit_channel.permission_overwrites.${i}.deny`,
+                                          undefined
+                                        );
+                                    });
+                                  }, 1);
+                                  break;
+                                }
+                                case "existing":  {
+                                  setValue(`forms.${index}.submit_channel_id`, "");
+                                  break;
+                                }
+                                case "new_thread": {
+                                  setValue(`forms.${index}.submit_channel_id`, "");
+                                  setValue(`forms.${index}.submit_channel`, undefined);
+                                  setValue(`forms.${index}.submit_thread`, undefined);
+                                  setValue(`forms.${index}.webhook_url`, undefined);
+                      
+                                  setValue(`forms.${index}.submit_thread`, {
+                                    name: "ticket",
+                                    type: 12,
+                                    add_submitter: true,
+                                  });
+                                  break;
+                                }
+                              }
+                            } else {
+                              setValue(`forms.${index}.submit_channel_id`, undefined)
+                              setValue(`forms.${index}.submit_channel`, undefined)
+                              setValue(`forms.${index}.submit_thread`, undefined)
+                            }
+                          }}
+                          isChecked={watch(`forms.${index}.submit_channel_id`) !== undefined || watch(`forms.${index}.submit_channel`) !== undefined || watch(`forms.${index}.submit_thread`) !== undefined}
+                          colorScheme='blurple'
+                        />
+                        <FormLabel>Send submissions to discord</FormLabel>
+                        </HStack>
+
+ 
+                          <Box display={watch(`forms.${index}.submit_channel_id`) !== undefined || watch(`forms.${index}.submit_channel`) !== undefined || watch(`forms.${index}.submit_thread`) !== undefined ? 'block' : 'none'} >
                   <HStack wrap="wrap" mb="8px">
+
                     <FormLabel whiteSpace="nowrap" m={0}>
                       Send submissions using
                     </FormLabel>
@@ -589,6 +675,7 @@ export default function FormBuilder({
                       )}
                     </Collapsible>
                   )}
+                  </Box>
 
                   <FormLabel mt={2} htmlFor={`forms[${index}].google_sheets_url`} display='flex' alignItems='center'>
                     <HStack mb={2}>

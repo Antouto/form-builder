@@ -487,8 +487,9 @@ export function Editor({
         _setSubmissionChannel(newSubmissionChannel);
         switch (value) {
           case "existing": {
-            setValue(`forms.${index}.submit_channel`, "");
+            setValue(`forms.${index}.submit_channel`, undefined);
             setValue(`forms.${index}.submit_thread`, undefined);
+            setValue(`forms.${index}.submit_channel_id`, "");
             break;
           }
           case "new": {

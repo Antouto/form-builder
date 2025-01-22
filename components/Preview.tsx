@@ -890,7 +890,7 @@ function Preview({
                           ).name
                         }
                       </Channel></>
-                    ) : forms[displayForm].submit_channel_id !== undefined ? 
+                    ) : forms?.[displayForm]?.google_sheets_url === undefined || forms[displayForm].submit_channel_id !== undefined ? 
                       "The submission is sent to a channel"
                      : null
           }
@@ -901,7 +901,7 @@ function Preview({
           }
           reference={applicationCommandRef}
         >
-        {(forms?.[displayForm]?.submit_channel_id !== undefined || forms?.[displayForm]?.submit_channel !== undefined || forms?.[displayForm]?.submit_thread !== undefined) && <><Box
+        {(forms?.[displayForm]?.google_sheets_url === undefined || (forms?.[displayForm]?.submit_channel_id !== undefined || forms?.[displayForm]?.submit_channel !== undefined || forms?.[displayForm]?.submit_thread !== undefined)) && <><Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
             p={isTinyScreen ? 0 : 4}
@@ -1351,7 +1351,7 @@ function Preview({
               </Box>
             </Box>
           </>}</>}
-          {forms?.[displayForm]?.google_sheets_url !== undefined && <Text mt={2} fontWeight={isTinyScreen ? '600' : '500'}>Submission is{forms?.[displayForm]?.submit_channel_id !== undefined || forms?.[displayForm]?.submit_channel !== undefined ? ' also' : ''} sent to the <a style={{
+          {forms?.[displayForm]?.google_sheets_url !== undefined && <Text mt={2} fontWeight={isTinyScreen ? '600' : '500'}>The submission is{forms?.[displayForm]?.submit_channel_id !== undefined || forms?.[displayForm]?.submit_channel !== undefined ? ' also' : ''} sent to the <a style={{
                     color: "oklab(0.700834 -0.0780351 -0.1469)",
                   }} href={forms?.[displayForm]?.google_sheets_url} target="_blank"><Text display='inline-block' _hover={{ textDecor: 'underline' }}>google sheet</Text></a></Text>}
 

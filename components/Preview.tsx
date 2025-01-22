@@ -24,6 +24,7 @@ import { Channel, FormProfile, SlashCommand } from "./Mention";
 import { PreviewStep } from "./PreviewStep";
 import { AVATAR_URL } from "./config";
 import { useScreenWidth } from "../util/width";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 function isEmpty(value: any) {
   return value == null || value == "";
@@ -869,23 +870,18 @@ function Preview({
           title={
             forms[displayForm].submit_channel ? (
               <>A channel is created for the submission</>
-            ) : (
-              <>
-                {forms[displayForm].submit_thread ? (
+            ) : forms[displayForm].submit_thread ? (
                   `A ${forms[displayForm].submit_thread?.type === 12
                     ? "private "
                     : ""
                   }thread is created for the submission`
-                ) : (
-                  <>
-                    The submission is sent to{" "}
-                    {forms[displayForm].submit_channel_id &&
+                ) : forms[displayForm].submit_channel_id &&
                       Array.isArray(currentGuild) &&
                       currentGuild.find(
                         (channel) =>
                           channel.id === forms[displayForm].submit_channel_id
                       ) ? (
-                      <Channel>
+                      <>The submission is sent to <Channel>
                         {
                           currentGuild.find(
                             (channel) =>
@@ -893,14 +889,10 @@ function Preview({
                               forms[displayForm].submit_channel_id
                           ).name
                         }
-                      </Channel>
+                      </Channel></>
                     ) : forms[displayForm].submit_channel_id !== undefined ? 
-                      "a channel"
-                     : "(No discord submission location selected)"}
-                  </>
-                )}
-              </>
-            )
+                      "The submission is sent to a channel"
+                     : null
           }
           highlighted={
             (!isTinyScreen &&
@@ -909,7 +901,7 @@ function Preview({
           }
           reference={applicationCommandRef}
         >
-          <Box
+        {(forms?.[displayForm]?.submit_channel_id !== undefined || forms?.[displayForm]?.submit_channel !== undefined || forms?.[displayForm]?.submit_thread !== undefined) && <><Box
             bg={colorMode === "dark" ? "grey.dark" : "white"}
             borderRadius="8px"
             p={isTinyScreen ? 0 : 4}
@@ -1358,7 +1350,11 @@ function Preview({
                 </Box>
               </Box>
             </Box>
-          </>}
+          </>}</>}
+          {forms?.[displayForm]?.google_sheets_url !== undefined && <Text mt={2} fontWeight={isTinyScreen ? '600' : '500'}>Submission is{forms?.[displayForm]?.submit_channel_id !== undefined || forms?.[displayForm]?.submit_channel !== undefined ? ' also' : ''} sent to the <a style={{
+                    color: "oklab(0.700834 -0.0780351 -0.1469)",
+                  }} href={forms?.[displayForm]?.google_sheets_url} target="_blank"><Text display='inline-block' _hover={{ textDecor: 'underline' }}>google sheet</Text></a></Text>}
+
         </PreviewStep>
       </VStack>
     </Box>

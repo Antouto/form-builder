@@ -33,6 +33,7 @@ export default function SubmissionChannelIDInput({
   errors,
   fixMessage,
   watch,
+  onOpenWhereDoIFindSubmissionChannelID,
   currentGuild,
   getValues,
   setValue,
@@ -207,8 +208,7 @@ export default function SubmissionChannelIDInput({
           <ReactSelect
             onChange={async (option) => {
               for (let i = 0; i < getValues("forms").length; i++) {
-                //@ts-expect-error setting to undefined
-                setValue(`forms.${i}.submit_channel_id`, undefined);
+                setValue(`forms.${i}.submit_channel_id`, "");
               }
 
               if (!option) return;

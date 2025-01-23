@@ -9,7 +9,7 @@ export default function ColorModeCSS() {
     }
 
     ::-webkit-scrollbar-corner {
-      background - color: transparent;
+      background-color: transparent;
     }
 
     ::-webkit-scrollbar-thumb {
@@ -24,8 +24,22 @@ export default function ColorModeCSS() {
       background-color: ${colorMode === "dark" ? "rgb(46, 51, 56)" : "#f2f2f2"};
       border: 4px solid transparent;
       border-radius: 8px;
-      margin-bottom: 8px;
       background-clip: padding-box;
+    }
+    
+    .scrollbar-modal::-webkit-scrollbar {
+      width: 8px;
+      height: 8px
+    }
+
+    .scrollbar-modal::-webkit-scrollbar-track {
+      background-color: transparent;
+      background-clip: unset;
+    }
+
+    .scrollbar-modal::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      min-height: 40px
     }
 
     .hljs-attr, .hljs-number {

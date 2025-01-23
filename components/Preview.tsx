@@ -737,7 +737,7 @@ function Preview({
                 height="fit-content"
                 justifyContent="space-between"
                 alignItems="center"
-                p="16px"
+                p="16px 12px"
               >
                 <Box
                   display="flex"
@@ -771,12 +771,12 @@ function Preview({
                   </svg>
                 </Box>
               </Box>
-              <Box>
+              <Box overflow='hidden scroll' className="scrollbar-modal" maxH='588px'>
                 {forms?.[displayForm]?.pages?.[
                   displayPage
                 ]?.modal.components.map((actionRow, i) => (
                   <>
-                    <Box key={Math.random()} m="0 1em 1em">
+                    <Box key={Math.random()} p="0 4px 1em 12px" >
                       <Text
                         fontSize="13px"
                         mb="8px"
@@ -804,7 +804,7 @@ function Preview({
                           bg={colorMode === "dark" ? "#202225" : "#e3e5e8"}
                           height={
                             actionRow.components[0]?.style == 2
-                              ? "16"
+                              ? "85px"
                               : "2.2rem"
                           }
                           borderRadius='3px'

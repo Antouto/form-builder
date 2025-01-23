@@ -728,6 +728,7 @@ function Preview({
               maxWidth="100%"
               height="fit-content"
               maxHeight="720px"
+              userSelect='none'
             >
               {" "}
               {/* overflowY='scroll' */}
@@ -761,10 +762,10 @@ function Preview({
                     {forms?.[displayForm]?.pages?.[displayPage]?.modal.title}
                   </Text>
                 </Box>
-                <Box display="flex" p="4px" cursor="pointer">
+                <Box display="flex" p="4px" cursor="pointer" opacity='.5' _hover={{ opacity: 1 }} transition='opacity.2s ease-in-out'>
                   <svg width="24" height="24" viewBox="0 0 24 24">
                     <path
-                      fill="#b9bbbe"
+                      fill="#b5bac1"
                       d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"
                     ></path>
                   </svg>
@@ -777,14 +778,17 @@ function Preview({
                   <>
                     <Box key={Math.random()} m="0 1em 1em">
                       <Text
-                        fontSize="16px"
+                        fontSize="13px"
                         mb="8px"
                         color={colorMode === "dark" ? "#b9bbbe" : "#4f5660"}
+                        fontFamily='Noto Sans'
+                        textTransform='uppercase'
+                        fontWeight='750'
                       >
                         {actionRow.components[0]?.label}
                         {actionRow.components[0]?.required !== false && (
                           <span
-                            style={{ color: "#ed4245", paddingLeft: "4px" }}
+                            style={{ color: "#fa777b", paddingLeft: "4px", fontFamily: 'Whitney' }}
                           >
                             *
                           </span>
@@ -803,6 +807,7 @@ function Preview({
                               ? "16"
                               : "2.2rem"
                           }
+                          borderRadius='3px'
                           fontSize="16px"
                           resize="none"
                           border="0px"

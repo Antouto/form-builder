@@ -75,6 +75,11 @@ input {
     src: url('/Fonts/Whitney/WhitneySemiboldItalic.otf');
 }
 
+@font-face {
+    font-family: 'Noto Sans';
+    src: url('/Fonts/NotoSans/NotoSans-VariableFont_wdth,wght.ttf') format('truetype');
+  }
+
 body {
     font-family: 'Whitney' !important;
 }

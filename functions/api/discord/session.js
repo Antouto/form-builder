@@ -1,7 +1,6 @@
 import { parse } from "cookie";
 
 export async function onRequest({ request, env }) {
-  console.log('cs', env.DISCORD_CLIENT_SECRET)
   console.log("user 1");
   const url = new URL(request.url);
   const cookie = parse(request.headers.get("Cookie") || "");

@@ -76,6 +76,14 @@ export default function SubmissionChannelIDInput({
   const [inputMethod, _setInputMethod] = useState<InputMethod | null>(); // login or manual
   const isReallySmallScreen = !useScreenWidth(450);
 
+  useEffect(()=> {
+    if(guilds) {
+      setCookieValue(true)
+    } else {
+      setCookieValue(false)
+    }
+  },[guilds])
+
   function setInputMethod(method: InputMethod) {
     _setInputMethod(method);
     if (method === "login") {
@@ -173,7 +181,7 @@ export default function SubmissionChannelIDInput({
       )}
 
       {/* Not Logged in and input method not chosen and stage not editor */}
-      {false && !cookieValue && !inputMethod && stage !== "editor" && (
+      {!cookieValue && !inputMethod && stage !== "editor" && (
         <Stack
           direction={isReallySmallScreen ? "column" : "row"}
           justifyContent="center"
@@ -201,7 +209,7 @@ export default function SubmissionChannelIDInput({
       )}
 
       {/* Logged in so Server Selection */}
-      {false && cookieValue && (
+      {cookieValue && (
         <Box mb={1}>
           <FormLabel display="flex" alignItems="center">
               Server
@@ -414,7 +422,7 @@ export default function SubmissionChannelIDInput({
       )}
 
       {/* Logged In or Input method manual */}
-      {(false && cookieValue || inputMethod === "manual") &&
+      {(cookieValue || inputMethod === "manual") &&
         Array.isArray(currentGuild) && (
           <>
             <Label />
@@ -577,7 +585,7 @@ export default function SubmissionChannelIDInput({
           </>
         )}
 
-      {false && cookieValue && (
+      {cookieValue && (
         <Text
           mt={1}
           fontSize="14px"
@@ -587,7 +595,7 @@ export default function SubmissionChannelIDInput({
         </Text>
       )}
 
-      {true || (inputMethod === "manual" || (stage === "editor" && !cookieValue)) && (
+      {(inputMethod === "manual" || (stage === "editor" && !cookieValue)) && (
         <>
           <Label />
           <input

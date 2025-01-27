@@ -216,7 +216,7 @@ export function Editor({
 
   async function getGuilds() {
     // Fetch guild details from Discord using the access token
-    const guildRequest = (
+    let guildResponse = (await (
       await fetch(
         `${
           process.env?.NEXT_PUBLIC_API_URL == null
@@ -224,9 +224,7 @@ export function Editor({
             : process.env.NEXT_PUBLIC_API_URL
         }/api/discord/session`
       )
-    )
-    if(!guildRequest.ok) return;
-    let guildResponse = (await guildRequest.json()) as Guild[];
+    ).json()) as Guild[];
     console.log("guildResponse");
     console.log("guildResponse here", guildResponse);
 

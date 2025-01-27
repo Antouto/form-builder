@@ -587,7 +587,7 @@ export default function SubmissionChannelIDInput({
         </Text>
       )}
 
-      {true || (inputMethod === "manual" || (stage === "editor" && !cookieValue)) && (
+      {/* {true || (inputMethod === "manual" || (stage === "editor" && !cookieValue)) && ( */}
         <>
           <Label />
           <input
@@ -608,7 +608,7 @@ export default function SubmissionChannelIDInput({
 
           <ErrorMessage error={errors.forms?.[index]?.submit_channel_id} />
 
-          {!cookieValue && (
+          {/* {!cookieValue && (
             <>
               {!Array.isArray(currentGuild) && <ChannelIdHint />}
               <HStack gap={1}>
@@ -626,9 +626,9 @@ export default function SubmissionChannelIDInput({
                 </button>
               </HStack>
             </>
-          )}
+          )} */}
         </>
-      )}
+      {/* )} */}
     </>
   );
 }

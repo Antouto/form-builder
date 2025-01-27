@@ -11,7 +11,7 @@ import {
   CircularProgress,
   Center,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import ReactSelect from "react-select";
 import { useScreenWidth } from "../util/width";
@@ -75,14 +75,6 @@ export default function SubmissionChannelIDInput({
 
   const [inputMethod, _setInputMethod] = useState<InputMethod | null>(); // login or manual
   const isReallySmallScreen = !useScreenWidth(450);
-
-  useEffect(()=> {
-    if(guilds) {
-      setCookieValue(true)
-    } else {
-      setCookieValue(false)
-    }
-  },[guilds])
 
   function setInputMethod(method: InputMethod) {
     _setInputMethod(method);

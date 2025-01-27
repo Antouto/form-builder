@@ -122,8 +122,9 @@ export default function SubmissionChannelIDInput({
       <Text
         marginRight="5px"
       >
-        Submission Channel {(inputMethod === "manual" || (stage === "editor" && !cookieValue)) ? "ID" : ""}
+        Submission Channel {(inputMethod === "manual" || (stage === "editor" && !cookieValue)) ? "ID" : "ID"} 
       </Text>
+      {/* remove 2nd id normally */}
     </FormLabel>
   );
 

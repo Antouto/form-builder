@@ -24,7 +24,10 @@ export async function onRequest({ request, env }) {
       }
     );
     console.log("user 4");
+    if(!guildResponse.ok) console.log('Guild response failed', guildResponse.status)
     guildResponse = await guildResponse.json();
+    console.log('guildResponse', guildResponse)
+    
 
     guildResponse = guildResponse.filter(
       (guild) => (guild.permissions & (1 << 3)) === 1 << 3

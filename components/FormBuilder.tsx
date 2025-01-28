@@ -704,7 +704,7 @@ export default function FormBuilder({
                     style={{ marginBottom: '8px' }}
                   />
                   <ErrorMessage error={errors.forms?.[index]?.google_sheets_url} />
-                  <Text>To send submissions to a google sheet, share a new google sheet with submissions@discordforms.iam.gserviceaccount.com and grant edit permissions.</Text>
+                  <Text>To send submissions to a google sheet, share a new google sheet with submissions@discordforms.iam.gserviceaccount.com and grant edit permissions.<br/>Important: Do not cange the sheet name from the default "Sheet1" as the bot does not recognise it otherwise. {"(Changing the document name is fine)"}</Text>
                   <Stack
                     direction={isSmallScreen ? "column" : "row"}
                     marginBottom="8px"

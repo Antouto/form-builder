@@ -61,6 +61,7 @@ export function Meta({ children: Title }: MetaProperties) {
             <link rel="preload" href="/preview/buttons.svg" as="image" type="image/svg+xml" />
             <link rel="preload" href="/preview/select_menu.svg" as="image" type="image/svg+xml" />
             <link rel="preload" href="/preview/app_command.svg" as="image" type="image/svg+xml" />
+            {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> */}
         </Head>
     );
 }

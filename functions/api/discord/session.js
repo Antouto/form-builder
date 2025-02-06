@@ -24,6 +24,11 @@ export async function onRequest({ request, env }) {
       }
     );
     console.log("user 4");
+    console.log('guildResponse.status', guildResponse.status)
+    if(!guildResponse.ok) {
+      console.log(await guildResponse.json())
+    }
+
     guildResponse = await guildResponse.json();
 
     guildResponse = guildResponse.filter(

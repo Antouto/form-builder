@@ -73,7 +73,7 @@ export function Channel({ children }: MentionProperties) {
 }
 
 const Invite =
-  "https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot";
+  "https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762447896&scope=applications.commands%20bot";
 export function FormProfile({
   children,
   avatar,

@@ -933,7 +933,7 @@ export function Editor({
                     {loading && <Spinner size="sm" />}
                   </Button>
                   <Link
-                    href="https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309456&scope=bot+applications.commands"
+                    href="https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762447896&scope=bot+applications.commands"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -1809,7 +1809,7 @@ export function Editor({
                       {loading && <Spinner size="sm" />}
                     </Button>
                     <Link
-                      href="https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=805309456&scope=bot+applications.commands"
+                      href="https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762447896&scope=bot+applications.commands"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -1856,7 +1856,7 @@ export function Editor({
                 onCloseAddToServer();
 
                 const popup = window.open(
-                  `https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762431504&integration_type=0&scope=bot+applications.commands&guild_id=${currentGuild}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fcreate.discordforms.app%2Fapi%2Fdiscord%2Fauthorized`,
+                  `https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762447896&integration_type=0&scope=bot+applications.commands&guild_id=${currentGuild}&disable_guild_select=true&response_type=code&redirect_uri=https%3A%2F%2Fcreate.discordforms.app%2Fapi%2Fdiscord%2Fauthorized`,
                   "popup",
                   "popup=true,width=485,height=700"
                 );

@@ -50,6 +50,8 @@ export async function onRequest({ request, env }) {
 
     const sessionID = crypto.randomUUID();
 
+    console.log(expires_in, 'expires_in')
+
     await env.SESSIONS.put(sessionID, JSON.stringify({ token: access_token }), {
       expirationTtl: expires_in,
     });

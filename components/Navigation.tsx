@@ -103,7 +103,7 @@ export function Navigation({
               Support Server
             </Link>
             <Link
-              href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot"
+              href="https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762447896&scope=bot+applications.commands"
               onClick={onClose}
               target="_blank"
               rel="noopener noreferrer"
@@ -249,7 +249,7 @@ export function Navigation({
               Support Server
             </a>
             <a
-              href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot"
+              href="https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=378762447896&scope=bot+applications.commands"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -128,7 +128,7 @@ export default function SubmitComponentsBuilder({ i, ii, control, getValues, res
               />
               <CloseButton onClick={() => { resetField(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`); setValue(`forms[${i}].submit_components.${ii}.components.${iii}.logic.ADD_ROLE_TO_SUBMITTER`, undefined) }} />
             </HStack>
-            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii].components?.[iii]?.logic?.ADD_ROLE_TO_SUBMITTER} />
+            <ErrorMessage error={errors.forms?.[i]?.submit_components?.[ii]?.components?.[iii]?.logic?.ADD_ROLE_TO_SUBMITTER} />
           </Box>}
 
           {getValues(`forms[${i}].submit_components.${ii}.components.${iii}.logic.REMOVE_ROLE_FROM_SUBMITTER`) !== undefined && <Box>

@@ -480,6 +480,9 @@ export default function App() {
       const urlPreset = urlParams.get("preset");
 
       if (urlPreset) setPreset(urlPreset);
+      if(!urlPreset && !urlData) {
+        window.location.href = "https://dash.discordforms.app";
+      }
       if (urlData) {
         const { data } = JSON.parse(
           Buffer.from(decodeURIComponent(urlData), "base64").toString("utf-8")

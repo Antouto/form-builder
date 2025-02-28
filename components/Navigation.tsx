@@ -148,7 +148,7 @@ export function Navigation({
       </Modal>
       <Box display="flex" alignItems="center">
         <Tooltip label="Home" placement="bottom-end" hasArrow arrowSize={6}>
-          <NextLink href="/" onDoubleClick={mOnOpen}>
+          <NextLink href="https://dash.discordforms.app" onDoubleClick={mOnOpen}>
             <Image
               src="/forms.svg"
               alt="Forms Logo"
